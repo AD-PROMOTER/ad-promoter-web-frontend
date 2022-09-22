@@ -14,7 +14,7 @@ export const VariableStyle = createGlobalStyle`
         --gray: #666666;
         --dark-gray: #333333;
         --dark-gray-1: #383838;
-        --dark-gray-2: #404040;
+        --dark-gray-2: #4D4D4D;
         --dark-gray-2: #454545;
         --light-gray: #E8E5FF;
         --light-gray-1: #616161;
@@ -48,4 +48,4 @@ export const VariableStyle = createGlobalStyle`
         
         --font-family: 'Poppins', sans-serif;
     }
-`
+`;
