@@ -1,9 +1,9 @@
-import Sidebar from "./PromoterSidebar/index";
+import Navbar from "./PromoterNavbar/index";
 
 const PromoterLayout = ({ children }) => {
     return (
-      <div style={{display: 'flex'}}>
-        <Sidebar />
+      <div>
+        <Navbar />
         {children}
       </div>
     );
