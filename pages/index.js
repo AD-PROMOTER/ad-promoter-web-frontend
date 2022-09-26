@@ -8,8 +8,15 @@ import google from '@/public/assets/google.svg';
 import fb from '@/public/assets/fb.svg';
 import apple from '@/public/assets/apple.svg';
 import caret from '@/public/assets/caret.svg';
+import SignupBtn from '@/components/authBtn/index';
 import { StyledContent, StyledNav, StyledOnboarding } from '@/styles/onboard';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 export default function Home() {
+  const router = useRouter();
+  useEffect(() => {
+    router.prefetch('/signup');
+  }, [router]);
   return (
     <StyledOnboarding>
       <StyledNav>
@@ -26,7 +33,11 @@ export default function Home() {
             <p>English (United States)</p>
             <Image src={caret} alt="caret" />
           </div>
-          <div className="login-btn">Log in</div>
+          <div className="login-btn">
+            <Link href="/login">
+              <a>Log in</a>
+            </Link>
+          </div>
         </div>
       </StyledNav>
 
@@ -51,13 +62,7 @@ export default function Home() {
               <div></div>
             </div>
             <div className="onboard-text-container-subhead-bottom">
-              <div className="cta">
-                <Link href="/signup" passHref>
-                  <a>
-                    <p>Sign up with email</p>
-                  </a>
-                </Link>
-              </div>
+              <SignupBtn text="Sign up with email" path="/signup" />
               <div className="terms">
                 <p>
                   By signing up, you agree to the{' '}

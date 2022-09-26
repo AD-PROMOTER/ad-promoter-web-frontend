@@ -37,6 +37,12 @@ export const StyledNav = styled.nav`
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      a {
+        font-weight: 400;
+        font-size: 1.6rem;
+        line-height: 24px;
+        color: var(--black-4);
+      }
     }
   }
 `;
@@ -45,7 +51,7 @@ export const StyledContent = styled.div`
   display: flex;
   justify-content: space-between;
   .onboard-image {
-    height: 100%;
+    height: 1024px;
     img {
       /* height: 200%; */
       /* width: 100%;
@@ -114,22 +120,6 @@ export const StyledContent = styled.div`
         align-items: flex-start;
         padding: 0px;
         gap: 8px;
-        .cta {
-          width: 46rem;
-          height: 5.6rem;
-          background: var(--primary);
-          border-radius: 40px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          p {
-            color: #fff;
-            font-weight: 400;
-            font-size: 1.8rem;
-            line-height: 27px;
-          }
-        }
         .terms {
           padding: 0.8rem;
           text-align: center;
