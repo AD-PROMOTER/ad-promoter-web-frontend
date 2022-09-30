@@ -8,11 +8,10 @@ import { BgContainer } from '@/components/onboardingBg/styles'
 import { Overlay } from '@/styles/signupPreference'
 import { useEffect } from 'react'
 import { useContext } from "react";
-import AppContext from '@/context/context'
+import PreferenceContext from '@/context/preferenceContext'
+
 const Preference = () => {
-  const value = useContext(AppContext);
-  let { userRole } = value.userRole;
-  // let { setUserRole } = value.setUserRole;
+  const {userPref,setUserPref} = useContext(PreferenceContext)
   const router = useRouter();
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -21,22 +20,20 @@ const Preference = () => {
   useEffect(() => {
     router.prefetch('/signup/visualReq')
   }, [router])
-  // const [selected, setSelected] = useState('place')
-  const handleChange = e => {
-    value.setUserRole(e.target.value);
+  const handleChange = event => {
+    setUserPref(event.target.value);
+    console.log(userPref);
   };
   return (
-    <BgContainer>
-      <Image 
+    <BgContainer image={bg}>
+      {/* <Image 
         src={bg}
         alt='background image'
         layout="fill"
         objectFit="cover"
         objectPosition="center"
-        quality={100}
         className='landing-image'
-        priority
-      />
+      /> */}
       <Overlay className="overlay">
         <div className="close" onClick={()=>router.back()}>
           <Close />
@@ -52,22 +49,24 @@ const Preference = () => {
             <div className="placers">
               <input 
                 type="radio" 
-                id="placers" 
+                id="place" 
                 value='place' 
                 name='pref'
-                
-                onChange={handleChange}/>
-              <label htmlFor="placers">Place ads</label>
+                checked={userPref === 'place'}
+                onChange={handleChange}
+                />
+              <label htmlFor="place">Place ads</label>
             </div>
             <div className="promoters">
               <input 
                 type="radio" 
-                id="promoters" 
+                id="promote" 
                 value='promote' 
                 name='pref'
-                
-                onChange={handleChange}/>
-              <label htmlFor='promoters'>Promote ads</label>
+                checked={userPref === 'promote'}
+                onChange={handleChange}
+                />
+              <label htmlFor='promote'>Promote ads</label>
             </div>
             <Button text='Next' />
           </form>

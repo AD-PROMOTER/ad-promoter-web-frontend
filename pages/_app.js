@@ -1,11 +1,9 @@
 import PromoterLayout from '@/components/PromoterLayout';
-import AppContext from '@/context/context';
 import { GlobalStyle } from '@/styles/global';
 import { SanitizeStyle } from '@/styles/sanitize';
 import { VariableStyle } from '@/styles/variables';
-import { useState } from 'react';
+import { PreferenceProvider } from '@/context/preferenceContext';
 function MyApp({ Component, pageProps, router }) {
-  const [userRole, setUserRole] = useState('place');
   if (router.pathname.startsWith('/promoters')) {
     return (
       <PromoterLayout>
@@ -17,14 +15,12 @@ function MyApp({ Component, pageProps, router }) {
     );
   }
   return (
-    <AppContext.Provider
-      value={{ userRole: userRole, setUserRole: setUserRole }}
-    >
+    <PreferenceProvider>
       <VariableStyle />
       <GlobalStyle />
       <SanitizeStyle />
       <Component {...pageProps} />
-    </AppContext.Provider>
+    </PreferenceProvider>
   );
 }
 

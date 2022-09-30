@@ -9,7 +9,7 @@ import Link from 'next/link'
 import Close from '@/public/assets/close-icon'
 // import Home from '@/pages/index'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { BgContainer } from '@/components/onboardingBg/styles'
 const Index = () => {
   const router = useRouter()
@@ -20,17 +20,17 @@ const Index = () => {
   useEffect(() => {
     router.prefetch('/signup/preference')
   }, [router])
-
+  const [isPasswordShown,setIsPasswordShown] = useState(false)
   return (
-    <BgContainer>
-      <Image 
+    <BgContainer image={bg}>
+      {/* <Image 
       src={bg}
       alt='background image'
       layout="fill"
       objectFit="cover"
       objectPosition="center"
       className='landing-image'
-      priority/>
+      /> */}
       <Overlay className='overlay'>
         <div className="close" onClick={()=>router.back()}>
           <Close />
@@ -57,12 +57,16 @@ const Index = () => {
               <div className="input-container">
                 <div className="label">
                   <label htmlFor="password">Your password</label>
-                  <div className="hide">
+                  <div className="hide" onClick={()=>setIsPasswordShown(!isPasswordShown)}>
                     <Image src={icon} alt='password hide icon'/>
-                    <p>Hide</p>
+                    {isPasswordShown ? (
+                      <p>Hide</p>
+                    ):(
+                      <p>Show</p>
+                    )}
                   </div>
                 </div>
-                <input type="password" id="password" required/>
+                <input type={isPasswordShown ? "text" : "password"} id="password" required/>
               </div>
               <p>Forgot your password</p>
             </div>

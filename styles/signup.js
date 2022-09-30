@@ -87,6 +87,7 @@ export const Overlay = styled.div`
               display: flex;
               align-items: center;
               gap: 0.6rem;
+              cursor: pointer;
               p {
                 font-weight: 400;
                 font-size: 1.8rem;

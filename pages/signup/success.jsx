@@ -5,32 +5,30 @@ import logo from '@/public/assets/onboard-logo.svg'
 import Image from "next/image"
 import successMark from '@/public/assets/Rectangle.svg'
 import { useContext } from "react";
-import AppContext from '@/context/context'
+import PreferenceContext from "@/context/preferenceContext"
 import { useRouter } from "next/router"
 const Success = () => {
+  const {userPref} = useContext(PreferenceContext)
   const router = useRouter();
-  const value = useContext(AppContext);
-  let { userRole } = value.userRole;
+ 
   const handleSubmit = ()=>{
-    if(userRole === 'place'){
-      router.push('/placers')
+    if(userPref === 'promote'){
+      router.push('/promoters')
     }
     else{
-      router.push('/promoters')
+      router.push('/placers')
     }
   }
   return (
-    <BgContainer>
-        <Image 
+    <BgContainer image={bg}>
+        {/* <Image 
           src={bg}
           alt='background image'
           layout="fill"
           objectFit="cover"
           objectPosition="center"
-          quality={100}
           className='landing-image'
-          priority
-        />
+        /> */}
         <Overlay className="overlay">
             <Image src={logo} alt='ad-promoter'/>
             <div className="content">

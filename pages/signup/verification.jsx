@@ -16,17 +16,15 @@ const Verification = () => {
         router.prefetch('/signup/success')
       }, [router])
   return (
-    <BgContainer>
-        <Image 
+    <BgContainer image={bg}>
+        {/* <Image 
             src={bg}
             alt='background image'
             layout="fill"
             objectFit="cover"
             objectPosition="center"
-            quality={100}
             className='landing-image'
-            priority
-        />
+        /> */}
         <Overlay className="overlay">
             <div className="content">
                 <div className="verify-info">

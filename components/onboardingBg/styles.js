@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 
 export const BgContainer = styled.div`
-  /* background: linear-gradient( rgba(17, 17, 17, 0.5) 100%, rgba(17, 17, 17, 0.5) 100%),url(${(
-    props
-  ) => props.image.src}); */
+  background: linear-gradient(
+      rgba(17, 17, 17, 0.5) 100%,
+      rgba(17, 17, 17, 0.5) 100%
+    ),
+    url(${(props) => props.image.src});
   width: 100%;
   height: 102.4rem;
   /* background-size: cover;
@@ -12,6 +14,7 @@ export const BgContainer = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
+  background: linear-gradient(rgba(17, 17, 17, 0.5));
   .landing-image {
     height: 102.4rem;
     width: 100%;

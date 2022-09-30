@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
 export const StyledOnboarding = styled.div`
-  /* height: 100%; */
+  /* height: 100vh; */
   background-color: var(--white);
+  /* overflow-y: hidden; */
 `;
 
 export const StyledNav = styled.nav`
@@ -49,9 +50,11 @@ export const StyledNav = styled.nav`
 
 export const StyledContent = styled.div`
   display: flex;
-  justify-content: space-between;
+  /* justify-content: center; */
+  align-items: center;
+
   .onboard-image {
-    height: 1024px;
+    /* height: 100vh; */
     img {
       /* height: 200%; */
       /* width: 100%;
