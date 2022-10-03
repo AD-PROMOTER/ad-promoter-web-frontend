@@ -65,6 +65,7 @@ export const Overlay = styled.div`
           outline: none;
           width: 52.8rem;
           height: 5.6rem;
+          padding-left: 2rem;
         }
       }
       .password {

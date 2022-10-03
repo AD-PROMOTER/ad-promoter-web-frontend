@@ -22,7 +22,6 @@ const Preference = () => {
   }, [router])
   const handleChange = event => {
     setUserPref(event.target.value);
-    console.log(userPref);
   };
   return (
     <BgContainer image={bg}>

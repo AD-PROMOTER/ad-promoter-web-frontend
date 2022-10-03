@@ -8,12 +8,22 @@ import Link from 'next/link'
 import Button from '@/components/authBtn/index'
 import { useRouter } from "next/router"
 import { useEffect } from 'react'
+import { useState } from 'react'
 const VisualReq = () => {
+    const [userVisualReq,setUserVisualReq] = useState('yes')
     const router = useRouter();
     const handleSubmit = (e) => {
         e.preventDefault()
-        router.push("/signup/verification")
+        if(userVisualReq === 'yes'){
+            router.push("/signup/visualverification")
+        }
+        else{
+            router.push("/signup/verification")
+        }
     }
+    const handleChange = event => {
+        setUserVisualReq(event.target.value);
+    };
     useEffect(() => {
     router.prefetch('/signup/verification')
   }, [router])
@@ -41,15 +51,36 @@ const VisualReq = () => {
                 </div>
                 <form action="" onSubmit={handleSubmit}>
                     <div className="yes">
-                        <input type="radio" id="yes" value='yes' name='visual'/>
+                        <input 
+                            type="radio" 
+                            id="yes" 
+                            value='yes' 
+                            name='visual'
+                            checked={userVisualReq === 'yes'}
+                            onChange={handleChange}
+                        />
                         <label htmlFor="yes">Yes, I do</label>
                     </div>
                     <div className="no">
-                        <input type="radio" id="no" value='no' name='visual' />
+                        <input 
+                            type="radio" 
+                            id="no" 
+                            value='no' 
+                            name='visual' 
+                            checked={userVisualReq === 'no'}
+                            onChange={handleChange}
+                            />
                         <label htmlFor='no'>No, I don&apos;t</label>
                     </div>
                     <div className="remind">
-                        <input type="radio" id="remind" value='remind' name='visual' />
+                        <input 
+                            type="radio" 
+                            id="remind" 
+                            value='remind' 
+                            name='visual' 
+                            checked={userVisualReq === 'remind'}
+                            onChange={handleChange}
+                            />
                         <label htmlFor='remind'>Remind me later</label>
                     </div>
                     <Button text='Sign me in' />
