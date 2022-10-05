@@ -52,11 +52,6 @@ export const GlobalStyle = createGlobalStyle`
     outline: none;
   }
 
-  input {
-    -webkit-appearance: none;
-    appearance: none;
-  }
-
   button,
   label,
   input,
