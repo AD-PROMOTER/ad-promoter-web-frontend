@@ -67,28 +67,60 @@ const WalletStyles = styled.div`
       width: 20rem;
     }
 
-    // &__select {
-    //   background:red;
-    //   width: 100px;
+    &__select {
+      background: red;
+      width: 100px;
+      position: relative;
 
-    //   input[type="checkbox"] {
-    //     // opacity: 0;
-    //     cursor: pointer;
-    //     width: 100%;
-    //   }
+      input[type='checkbox'] {
+        // opacity: 0;
+        cursor: pointer;
+        width: 100%;
+        // z-index: 1000;
+        position: absolute;
+        top: 0.6rem;
+        left: 4rem;
+      }
 
-    //   .checkmark {
-    //     width: 1.6rem;
-    //     height: 1.6rem;
-    //     background: transparent;
-    //     border: 1px solid #b5bcc6;
-    //     // background: #6b8bfc;
-    //   }
+      .checkmark {
+        width: 1.6rem;
+        height: 1.6rem;
+        background: transparent;
+        border: 1px solid #b5bcc6;
+        position: absolute;
+        // background: #6b8bfc;
+        border-radius: 50%;
+        left: 8.2rem;
+        top: 0.5rem;
+        // z-index: -1;
+      }
 
-    //   input[type="checkbox"]:checked ~ .checkmark {
-    //     background: #6b8bfc;
-    //   }
-    // }
+      input:checked ~ .checkmark {
+        background: var(--light-blue);
+      }
+
+      .checkmark:after {
+        content: '';
+        position: absolute;
+        display: none;
+      }
+
+      input[type='checkbox']:checked ~ .checkmark:after {
+        display: block;
+      }
+
+      .checkmark:after {
+        left: 9px;
+        top: 5px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+    }
   }
 
   .container:hover {

@@ -37,7 +37,7 @@ const Wallet = (props) => {
               <p className="acctName">Skylar Diaz</p>
             </div>
           </div>
-          <div>
+          <div className="container__select">
             <input type="checkbox" id="bank-1" />
             <label htmlFor="bank-1"></label>
           </div>
