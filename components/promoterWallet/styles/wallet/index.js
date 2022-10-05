@@ -1,0 +1,140 @@
+import styled from 'styled-components';
+
+export const WalletDropdownStyles = styled.div`
+  width: 7.1rem;
+  border-radius: 0.5rem;
+  box-shadow: 1px 3px 29px rgba(0, 0, 0, 0.05);
+  padding-top: 0.7rem 0;
+  position: absolute;
+  top: 11rem;
+  left: 30rem;
+  // display: none;
+  // z-index: 1000;
+
+  ul {
+    font-size: 1rem;
+    padding: 0 1rem;
+
+    li {
+      margin-bottom: 1rem;
+
+      button {
+        background: transparent;
+        width: 100%;
+        text-align: start;
+        cursor: pointer;
+      }
+    }
+  }
+`;
+
+const WalletStyles = styled.div`
+  background: var(--white);
+  box-shadow: var(--shadow-6);
+  border-radius: 0.6rem;
+  padding: 1.5rem;
+  height: fit-content;
+  position: relative;
+  // z-index: -1;
+
+  .intro {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2.25rem;
+
+    h1 {
+      font-weight: 600;
+      font-size: 1.6rem;
+      line-height: 2.25rem;
+    }
+
+    &__add {
+      background: transparent;
+      cursor: pointer;
+    }
+  }
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #ebebed;
+    padding: 1.2rem 1.5rem;
+    border-radius: 0.8rem;
+
+    &__acctdetails {
+      display: flex;
+      justify-content: space-between;
+      width: 20rem;
+    }
+
+    // &__select {
+    //   background:red;
+    //   width: 100px;
+
+    //   input[type="checkbox"] {
+    //     // opacity: 0;
+    //     cursor: pointer;
+    //     width: 100%;
+    //   }
+
+    //   .checkmark {
+    //     width: 1.6rem;
+    //     height: 1.6rem;
+    //     background: transparent;
+    //     border: 1px solid #b5bcc6;
+    //     // background: #6b8bfc;
+    //   }
+
+    //   input[type="checkbox"]:checked ~ .checkmark {
+    //     background: #6b8bfc;
+    //   }
+    // }
+  }
+
+  .container:hover {
+    border: 0.07rem solid #dce4ff;
+  }
+
+  .bank1 {
+    margin-bottom: 2.8rem;
+  }
+
+  .acctName {
+    font-size: 1rem;
+    line-height: 1.8rem;
+    color: #101c79;
+    margin-top: 0.6rem;
+  }
+
+  .acctNum {
+    font-weight: 500;
+    line-height: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .buttonContainer {
+    margin-top: 5.3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    button {
+      background: #4f00ce;
+      padding: 1rem 1.5rem;
+      border-radius: 1rem;
+      display: flex;
+      cursor: pointer;
+
+      p {
+        color: #fff;
+        font-weight: 500;
+        line-height: 1.5rem;
+        margin-left: 0.8rem;
+        margin-top: 0.5rem;
+      }
+    }
+  }
+`;
+
+export default WalletStyles;
