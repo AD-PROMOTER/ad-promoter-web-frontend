@@ -10,6 +10,8 @@ import EditWalletDropdown from './Dropdown';
 
 const Wallet = (props) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [firstBank, setFirstBank] = useState(false);
+  const [secondBank, setSecondBank] = useState(false);
 
   const toggleDropdown = () => {
     if(showDropdown) {
@@ -17,6 +19,30 @@ const Wallet = (props) => {
     } else {
       setShowDropdown(true)
     }
+  }
+
+  const toggleFirstBank = () => {
+    if(firstBank) {
+      setFirstBank(false);
+    }
+    return;
+  }
+
+  const toggleSecondBank = () => {
+    if(secondBank) {
+      setSecondBank(false);
+    }
+    return;
+  }
+
+  const selectFirstBank = () => {
+    setFirstBank(true);
+    toggleSecondBank();
+  }
+
+  const selectSecondBank = () => {
+    setSecondBank(true);
+    toggleFirstBank();
   }
 
   return (
@@ -29,7 +55,7 @@ const Wallet = (props) => {
       </div>
 
       <div>
-        <div className="container bank1">
+        <div className={firstBank ? "container bank1 clicked" : "container bank1"} onClick={selectFirstBank}>
           <div className="container__acctdetails">
             <Image src={gtb} alt="Guarantee trust bank logo" />
             <div>
@@ -38,12 +64,12 @@ const Wallet = (props) => {
             </div>
           </div>
           <div className="container__select">
-            <input type="checkbox" id="bank-1" />
-            <label htmlFor="bank-1"></label>
+          {firstBank ? <input type="checkbox" id="bank-2" name="" checked /> : <input type="checkbox" id="bank-2" name="" />}
+            <span className="checkmark"></span>
           </div>
         </div>
 
-        <div className="container">
+        <div className={secondBank ? "container bank1 clicked" : "container bank1"} onClick={selectSecondBank}>
           <div className="container__acctdetails">
             <Image src={fcmb} alt="FCMB logo" />
             <div>
@@ -52,9 +78,8 @@ const Wallet = (props) => {
             </div>
           </div>
           <div className="container__select">
+            {secondBank ? <input type="checkbox" id="bank-2" name="" checked /> : <input type="checkbox" id="bank-2" name="" />}            
             <span className="checkmark"></span>
-            <input type="checkbox" id="bank-2" name="" />
-            <label htmlFor="bank-2"></label>
           </div>
         </div>
       </div>

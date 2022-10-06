@@ -25,12 +25,18 @@ export const WithdrawProcessStyles = styled.div`
     .acct {
       margin-top: 2.5rem;
 
+      &__clicked {
+        background: #dce4ff;
+        border: 1px solid var(--light-blue);
+      }
+
       &__container {
         display: flex;
         justify-content: space-between;
         border: 1px solid #ebebed;
         padding: 1.2rem 1.5rem;
         border-radius: 0.8rem;
+        cursor: pointer;
 
         .acctDetails {
           display: flex;
@@ -48,6 +54,58 @@ export const WithdrawProcessStyles = styled.div`
             font-weight: 500;
             line-height: 1.8rem;
             margin-bottom: 0.5rem;
+          }
+        }
+
+        .select {
+          position: relative;
+          width: 50px;
+
+          input[type='checkbox'] {
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            z-index: 1000;
+            position: absolute;
+            top: 0.6rem;
+            left: 1.5rem;
+          }
+
+          .checkmark {
+            width: 1.6rem;
+            height: 1.6rem;
+            background: transparent;
+            border: 1px solid #b5bcc6;
+            position: absolute;
+            border-radius: 50%;
+            left: 3.2rem;
+            top: 0.5rem;
+          }
+
+          input[type='checkbox']:checked ~ .checkmark {
+            background: var(--light-blue);
+          }
+
+          .checkmark:after {
+            content: '';
+            position: absolute;
+            display: none;
+          }
+
+          input[type='checkbox']:checked ~ .checkmark:after {
+            display: block;
+          }
+
+          .checkmark:after {
+            left: 0.5rem;
+            top: 0.1rem;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
           }
         }
       }

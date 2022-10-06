@@ -7,9 +7,9 @@ export const WalletDropdownStyles = styled.div`
   padding-top: 0.7rem 0;
   position: absolute;
   top: 11rem;
-  left: 30rem;
+  left: 35rem;
   // display: none;
-  // z-index: 1000;
+  z-index: 1000;
 
   ul {
     font-size: 1rem;
@@ -68,15 +68,14 @@ const WalletStyles = styled.div`
     }
 
     &__select {
-      background: red;
       width: 100px;
       position: relative;
 
       input[type='checkbox'] {
-        // opacity: 0;
+        opacity: 0;
         cursor: pointer;
         width: 100%;
-        // z-index: 1000;
+        z-index: 1000;
         position: absolute;
         top: 0.6rem;
         left: 4rem;
@@ -88,11 +87,9 @@ const WalletStyles = styled.div`
         background: transparent;
         border: 1px solid #b5bcc6;
         position: absolute;
-        // background: #6b8bfc;
         border-radius: 50%;
         left: 8.2rem;
         top: 0.5rem;
-        // z-index: -1;
       }
 
       input:checked ~ .checkmark {
@@ -110,8 +107,8 @@ const WalletStyles = styled.div`
       }
 
       .checkmark:after {
-        left: 9px;
-        top: 5px;
+        left: 0.5rem;
+        top: 0.1rem;
         width: 5px;
         height: 10px;
         border: solid white;
@@ -121,6 +118,11 @@ const WalletStyles = styled.div`
         transform: rotate(45deg);
       }
     }
+  }
+
+  .clicked {
+    background: #dce4ff;
+    border: 1px solid var(--light-blue);
   }
 
   .container:hover {

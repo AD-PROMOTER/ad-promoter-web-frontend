@@ -10,6 +10,8 @@ import { WithdrawProcessStyles } from './styles';
 
 const ProcessWithdrawModal = (props) => {
   const [amount, setAmount] = useState('');
+  const [firstBank, setFirstBank] = useState(false);
+  const [secondBank, setSecondBank] = useState(false);
   const inputRef = useRef();
 
   const {onOpenWithdrawDetails, onCloseWithdrawProcess} = props;
@@ -20,6 +22,30 @@ const ProcessWithdrawModal = (props) => {
   const handleChange = (props) => {
     setAmount(inputRef.current.value);
   };
+
+  const toggleFirstBank = () => {
+    if(firstBank) {
+      setFirstBank(false);
+    }
+    return;
+  }
+
+  const toggleSecondBank = () => {
+    if(secondBank) {
+      setSecondBank(false);
+    }
+    return;
+  }
+
+  const selectFirstBank = () => {
+    setFirstBank(true);
+    toggleSecondBank();
+  }
+
+  const selectSecondBank = () => {
+    setSecondBank(true);
+    toggleFirstBank();
+  }
 
   return (
     <ModalContainer>
@@ -32,7 +58,7 @@ const ProcessWithdrawModal = (props) => {
         <form>
           <h2>Withdraw Process</h2>
           <div className="acct">
-            <div className="acct__container acct__bank1">
+            <div className={firstBank ? "acct__container acct__bank1 acct__clicked" :"acct__container acct__bank1"} onClick={selectFirstBank}>
               <div className="acctDetails">
                 <Image src={gtb} alt="Guarantee trust bank logo" />
                 <div>
@@ -40,13 +66,14 @@ const ProcessWithdrawModal = (props) => {
                   <p className="acctName">Skylar Diaz</p>
                 </div>
               </div>
-              <div>
-                <input type="checkbox" id="bank-1" />
-                <label htmlFor="bank-1"></label>
+              <div div className="select">
+                {firstBank ? <input type="checkbox" id="bank-1" checked /> : <input type="checkbox" id="bank-1" />}
+                
+                <span className="checkmark"></span>
               </div>
             </div>
 
-            <div className="acct__container">
+            <div className={secondBank ? "acct__container acct__clicked" : "acct__container"} onClick={selectSecondBank}>
               <div className="acctDetails">
                 <Image src={fcmb} alt="FCMB logo" />
                 <div>
@@ -54,10 +81,9 @@ const ProcessWithdrawModal = (props) => {
                   <p className="acctName">Mitchelle Diaz</p>
                 </div>
               </div>
-              <div className="container__select">
+              <div className="select">
+                {secondBank ? <input type="checkbox" id="bank-2" name="" checked /> : <input type="checkbox" id="bank-2" name="" />}                
                 <span className="checkmark"></span>
-                <input type="checkbox" id="bank-2" name="" />
-                <label htmlFor="bank-2"></label>
               </div>
             </div>
           </div>

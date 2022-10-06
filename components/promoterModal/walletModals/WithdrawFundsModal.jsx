@@ -84,8 +84,7 @@ const WithdrawFundsModal = (props) => {
               <p>Please review your withdrawal details</p>
             </div>
             <p className="funds__message">
-              Withdrawal was Sucessful. Check your mail for transaction
-              verification.
+            Withdrawal was not completed. Please try again or contact <span style={{color: "#7194ff"}}>Customer Support</span> for more details.
             </p>
             <div className="funds__withdrawal">
               <hr />
