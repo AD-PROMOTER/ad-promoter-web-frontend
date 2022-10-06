@@ -15,7 +15,11 @@ const Preference = () => {
   const router = useRouter();
   const handleSubmit = (e) => {
     e.preventDefault()
-    router.push("/signup/visualReq")
+    if(userPref === 'promote'){
+      router.push("/signup/visualReq")
+    }else{
+      router.push("/signup/verification")
+    }
   }
   useEffect(() => {
     router.prefetch('/signup/visualReq')

@@ -1,12 +1,15 @@
 import Link from "next/link"
 import { StyledBtn } from "./styles"
 import { useRouter } from "next/router"
+import { useContext } from "react";
+import PreferenceContext from '@/context/preferenceContext'
 const Index = ({text,path}) => {
   const router = useRouter();
+  const {isInputWithValue} = useContext(PreferenceContext)
   return (
     <StyledBtn>
       {router.pathname.startsWith('/signup') || router.pathname === '/login' ? (
-        <button className="btn-lg" type="submit">
+        <button className={isInputWithValue ? 'btn-lg' : 'btn-lg-inactive'} type="submit">
           {text}
         </button>
       ):(

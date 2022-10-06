@@ -7,7 +7,8 @@ export const StyledBtn = styled.div`
     width: 46rem;
     height: 5.6rem;
     border-radius: 40px;
-    background: #d3bff3;
+    /* background: #d3bff3; */
+    background: var(--primary);
     /* opacity: 0.25; */
     display: flex;
     align-items: center;
@@ -15,7 +16,7 @@ export const StyledBtn = styled.div`
     cursor: pointer;
     &:hover {
       /* opacity: none; */
-      background: var(--primary);
+      background: #3d019d;
     }
     &:active {
       background: #3d019d;
@@ -30,7 +31,7 @@ export const StyledBtn = styled.div`
   .btn-lg {
     width: 52.8rem;
     height: 6.4rem;
-    background: #d3bff3;
+    background: var(--primary);
     /* opacity: 0.25; */
     border-radius: 40px;
     display: flex;
@@ -42,11 +43,27 @@ export const StyledBtn = styled.div`
     font-size: 1.8rem;
     line-height: 27px;
     &:hover {
+      background: #3d019d;
       /* opacity: 0; */
-      background: var(--primary);
     }
     &:active {
       background: #3d019d;
     }
+  }
+  .btn-lg-inactive {
+    background: #d3bff3;
+    width: 52.8rem;
+    height: 6.4rem;
+    /* background: var(--primary); */
+    /* opacity: 0.25; */
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 400;
+    font-size: 1.8rem;
+    line-height: 27px;
   }
 `;

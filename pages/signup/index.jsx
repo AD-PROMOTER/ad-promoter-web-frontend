@@ -11,6 +11,8 @@ import Close from '@/public/assets/close-icon'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { BgContainer } from '@/components/onboardingBg/styles'
+import { useContext } from "react";
+import PreferenceContext from '@/context/preferenceContext'
 const Index = () => {
   const router = useRouter()
   const handleSubmit = (e) => {
@@ -21,6 +23,22 @@ const Index = () => {
     router.prefetch('/signup/preference')
   }, [router])
   const [isPasswordShown,setIsPasswordShown] = useState(false)
+  const {userFormValue,setUserFormValue,setIsInputWithValue,IsInputWithValue} = useContext(PreferenceContext)
+  const handleChange = (e) =>{
+    const value = e.target.value;
+    // const objVal = {
+    //   [e.target.name]: value
+    // }
+    setUserFormValue({
+      ...userFormValue,[e.target.name]: value
+    })
+    // console.log(objVal.email);
+    if(value === ''){
+      setIsInputWithValue(false)
+    }else if(value !== ''){
+      setIsInputWithValue(true)
+    }
+  }
   return (
     <BgContainer image={bg}>
       {/* <Image 
@@ -47,11 +65,25 @@ const Index = () => {
           <form action="" onSubmit={handleSubmit}>
             <div className="name">
               <label htmlFor="name">Your name</label>
-              <input type="text" id="name" required/>
+              <input 
+                type="text" 
+                id="name"
+                name='name'
+                value={userFormValue.name} 
+                required
+                onChange={handleChange}
+              />
             </div>
             <div className="email">
               <label htmlFor="email">Your email</label>
-              <input type="email" id="email" required/>
+              <input 
+                type="email" 
+                id="email"
+                name='email'
+                required
+                value={userFormValue.email}
+                onChange={handleChange}
+              />
             </div>
             <div className="password">
               <div className="input-container">
@@ -66,7 +98,14 @@ const Index = () => {
                     )}
                   </div>
                 </div>
-                <input type={isPasswordShown ? "text" : "password"} id="password" required/>
+                <input 
+                  type={isPasswordShown ? "text" : "password"} 
+                  id="password"
+                  name='password'
+                  required
+                  value={userFormValue.password}
+                  onChange={handleChange}
+                  />
               </div>
               <p>Forgot your password</p>
             </div>
