@@ -119,12 +119,10 @@ const Index = () => {
       <div className="home-ad-detail">
         {/* This is where the right part would go into */}
 
-
-
         <div className="tab">
             <div className="switch-tab">
-                <button onClick={()=>setToggleShow(true)}>recents</button>
-                <button onClick={()=>setToggleShow(false)}>saved jobs</button>
+                <button onClick={()=>setToggleShow(true)}>Recents</button>
+                <button onClick={()=>setToggleShow(false)}>Saved Jobs</button>
             </div>
 
             <button className="sort-btn">
