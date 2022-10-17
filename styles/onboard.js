@@ -105,7 +105,7 @@ export const StyledContent = styled.div`
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 23px;
+        gap: 2.3rem;
         p {
           font-weight: 400;
           font-size: 1.5rem;

@@ -44,28 +44,69 @@ export const Overlay = styled.div`
       gap: 2.4rem;
       .name,
       .email,
-      .password {
+      .password,
+      .tel {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         padding: 0px;
         gap: 0.4rem;
-        /* .label{
-                    disp[la]
-                } */
+        position: relative;
+        /* width: 528px;
+        height: 87px; */
+
         label {
           font-weight: 400;
           font-size: 1.6rem;
           line-height: 2.4rem;
           color: var(--gray);
         }
-        input {
+        .input {
           border: 1px solid rgba(102, 102, 102, 0.35);
           border-radius: 12px;
           outline: none;
           width: 52.8rem;
           height: 5.6rem;
           padding-left: 2rem;
+        }
+        .tel-input {
+          input {
+            /* border: 1px solid rgba(102, 102, 102, 0.35); */
+            /* border-radius: 12px; */
+            outline: none;
+            border: none;
+            /* width: 52.8rem;
+            height: 5.6rem; */
+          }
+        }
+        .invalid {
+          border: 1px solid var(--red);
+          border-radius: 12px;
+          outline: none;
+          width: 52.8rem;
+          height: 5.6rem;
+          padding-left: 2rem;
+          /* padding-left: 7rem; */
+          z-index: 1000;
+        }
+
+        .PhoneInputInput {
+          padding-left: 7rem;
+        }
+        .PhoneInputCountry {
+          position: absolute;
+          z-index: 1;
+          top: 55%;
+          left: 4%;
+        }
+        .phoneState {
+          color: var(--red);
+        }
+        .tel-input {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          justify-content: center;
         }
       }
       .password {

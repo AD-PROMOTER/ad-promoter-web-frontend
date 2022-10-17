@@ -8,7 +8,9 @@ export function PreferenceProvider({ children }) {
     name: '',
     email: '',
     password: '',
+    confirmPassword: '',
   });
+  const [userTel, setUserTel] = useState('');
   const [isInputWithValue, setIsInputWithValue] = useState(false);
   return (
     <PreferenceContext.Provider
@@ -19,6 +21,8 @@ export function PreferenceProvider({ children }) {
         setUserFormValue,
         isInputWithValue,
         setIsInputWithValue,
+        userTel,
+        setUserTel,
       }}
     >
       {children}

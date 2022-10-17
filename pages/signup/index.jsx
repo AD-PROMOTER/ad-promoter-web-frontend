@@ -9,30 +9,54 @@ import Link from 'next/link'
 import Close from '@/public/assets/close-icon'
 // import Home from '@/pages/index'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { BgContainer } from '@/components/onboardingBg/styles'
 import { useContext } from "react";
 import PreferenceContext from '@/context/preferenceContext'
+import PhoneInput,{ formatPhoneNumber, formatPhoneNumberIntl, isValidPhoneNumber,isPossiblePhoneNumber } from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
 const Index = () => {
+  const [isPasswordShown,setIsPasswordShown] = useState(false)
+  const [isConfirmPasswordShown,setIsConfirmPasswordShown] = useState(false)
+  const phoneRef = useRef(true)
+  const [phoneState,setPhoneState] = useState(true)
+  const [passwordState,setPasswordState] = useState(true)
+  const passwordRef = useRef(true)
+  const {userFormValue,setUserFormValue,setIsInputWithValue,IsInputWithValue,userTel,setUserTel} = useContext(PreferenceContext)
   const router = useRouter()
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    router.push("/signup/preference")
-  }
+  
   useEffect(() => {
     router.prefetch('/signup/preference')
   }, [router])
-  const [isPasswordShown,setIsPasswordShown] = useState(false)
-  const {userFormValue,setUserFormValue,setIsInputWithValue,IsInputWithValue} = useContext(PreferenceContext)
+
+  const handleSubmit = (e) => {
+    e.preventDefault()    
+    if(userTel && isPossiblePhoneNumber(userTel) && userTel && isValidPhoneNumber(userTel) && userTel && formatPhoneNumber(userTel) && formatPhoneNumberIntl(userTel)){
+      phoneRef.current = true
+      setPhoneState(true)
+    }
+    else{
+      phoneRef.current = false
+      setPhoneState(false)
+    }
+    if(userFormValue.confirmPassword === userFormValue.password){
+      passwordRef.current = true
+      setPasswordState(true)
+    }else{
+      passwordRef.current = false
+      setPasswordState(false)
+    }
+    if(passwordRef.current && phoneRef.current === true) {
+      router.push('/signup/preference')
+    }
+  }
+
   const handleChange = (e) =>{
     const value = e.target.value;
-    // const objVal = {
-    //   [e.target.name]: value
-    // }
     setUserFormValue({
       ...userFormValue,[e.target.name]: value
     })
-    // console.log(objVal.email);
+    
     if(value === ''){
       setIsInputWithValue(false)
     }else if(value !== ''){
@@ -72,6 +96,7 @@ const Index = () => {
                 value={userFormValue.name} 
                 required
                 onChange={handleChange}
+                className= 'input'
               />
             </div>
             <div className="email">
@@ -83,8 +108,22 @@ const Index = () => {
                 required
                 value={userFormValue.email}
                 onChange={handleChange}
+                className= 'input'
               />
             </div>
+            <div className="tel">
+              <label htmlFor="tel">Your Phone number</label>
+              <div className="tel-input">
+                <PhoneInput
+                  defaultCountry="NG"
+                  international
+                  value={userTel}
+                  onChange={userTel => setUserTel(userTel)}
+                  className={phoneState ? 'input' : 'invalid'}
+                />
+              </div>
+            </div>
+
             <div className="password">
               <div className="input-container">
                 <div className="label">
@@ -98,7 +137,9 @@ const Index = () => {
                     )}
                   </div>
                 </div>
-                <input 
+                <input
+                  className='input'
+                  // type = 'text' 
                   type={isPasswordShown ? "text" : "password"} 
                   id="password"
                   name='password'
@@ -107,8 +148,35 @@ const Index = () => {
                   onChange={handleChange}
                   />
               </div>
-              <p>Forgot your password</p>
             </div>
+
+            <div className="password">
+              <div className="input-container">
+                <div className="label">
+                  <label htmlFor="confirmPassword">Confirm password</label>
+                  <div className="hide" onClick={()=>setIsConfirmPasswordShown(!isConfirmPasswordShown)}>
+                    <Image src={icon} alt='password hide icon'/>
+                    {isConfirmPasswordShown ? (
+                      <p>Hide</p>
+                    ):(
+                      <p>Show</p>
+                    )}
+                  </div>
+                </div>
+                <input
+                  className={passwordState ? 'input' : 'invalid'}
+                  // className= {passwordState.current ? 'input' : 'invalid'} 
+                  type={isConfirmPasswordShown ? "text" : "password"}
+                  // type='text' 
+                  id="confirmPassword"
+                  name='confirmPassword'
+                  required
+                  value={userFormValue.confirmPassword}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            
             <Button text='Next' />
           </form>
         </div>

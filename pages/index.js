@@ -54,7 +54,6 @@ export default function Home() {
             <div className="socials">
               <SocialBtn icon={google} text="Google" />
               <SocialBtn icon={fb} text="Facebook" />
-              <SocialBtn icon={apple} text="Apple" />
             </div>
             <div className="divider">
               <div></div>
