@@ -8,28 +8,27 @@ import { StyledContent } from "@/styles/visualverification.styled"
 import Image from "next/image"
 import logo from '@/public/assets/onboard-logo.svg'
 import Button from '@/components/authBtn/index'
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import PreferenceContext from "@/context/preferenceContext"
 const Visualverification = () => {
+    const {setIsInputWithValue} = useContext(PreferenceContext)
     const [inputValue,setInputValue] = useState('')
-    const [copied, setCopied] = useState(false);
     const router = useRouter()
+
+    useEffect(() =>{
+        if(inputValue !== ''){
+            setIsInputWithValue(true)
+        }else{
+            setIsInputWithValue(false)
+        }
+    })
     const handleClick = () =>{
-        router.push("/signup/verification")
+        if(inputValue !== ''){
+            router.push("/signup/verification")
+        }
     }
     const handleChange = event => {
         setInputValue(event.target.value);
-    };
-    const copyToClipboard = () => {
-        navigator.clipboard.writeText(inputValue)
-            .then(()=>{
-                setCopied(true);
-                setTimeout(() => {
-                    setCopied(false);
-                }, 2000);
-            })
-            .catch((err)=>{
-                console.log('failed to copy',err.message);
-            })
     };
   return (
     <BgContainer image={bg}>
@@ -48,20 +47,21 @@ const Visualverification = () => {
                 <div className="submitform">
                     <div className="paste-input-container">
                         <div className="paste-input">
-                            <div className="copy-icon" onClick={copyToClipboard}>
+                            <div className="copy-icon">
                                 <Copy />
                             </div>
                             <div className="input">
-                                <input type="text" onChange={handleChange}/>
+                                <input 
+                                    type="text" 
+                                    onChange={handleChange}
+                                    value = {inputValue}
+                                    required    
+                                />
                             </div>
                             <div className="button">
                                 <p>paste</p>
                             </div>
                         </div>
-                        {copied ? (
-                            <p className="copied">Sucessfully Copied!</p>
-                            ) : 
-                            ''}
                     </div>
                     <div onClick={handleClick}>
                         <Button text="Submit"/>

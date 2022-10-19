@@ -22,12 +22,18 @@ const Index = () => {
   const [phoneState,setPhoneState] = useState(true)
   const [passwordState,setPasswordState] = useState(true)
   const passwordRef = useRef(true)
+  const [inputValidation, setInputValidation] = useState()
   const {userFormValue,setUserFormValue,setIsInputWithValue,IsInputWithValue,userTel,setUserTel} = useContext(PreferenceContext)
   const router = useRouter()
   
   useEffect(() => {
     router.prefetch('/signup/preference')
-  }, [router])
+    if(userFormValue.name !== '' && userFormValue.email !== '' && userFormValue.password !== '' && userFormValue.confirmPassword !=='' && userTel !==''){
+      setIsInputWithValue(true)
+    }else{
+      setIsInputWithValue(false)
+    }
+  }, [inputValidation, router, setIsInputWithValue, userFormValue, userTel])
 
   const handleSubmit = (e) => {
     e.preventDefault()    
@@ -56,12 +62,6 @@ const Index = () => {
     setUserFormValue({
       ...userFormValue,[e.target.name]: value
     })
-    
-    if(value === ''){
-      setIsInputWithValue(false)
-    }else if(value !== ''){
-      setIsInputWithValue(true)
-    }
   }
   return (
     <BgContainer image={bg}>

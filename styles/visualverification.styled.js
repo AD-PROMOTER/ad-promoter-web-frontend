@@ -49,7 +49,6 @@ export const StyledContent = styled.div`
         .copy-icon {
           margin-right: -4rem;
           z-index: 10;
-          cursor: pointer;
         }
         .input {
           input {
