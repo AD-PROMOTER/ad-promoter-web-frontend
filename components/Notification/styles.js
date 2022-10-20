@@ -5,7 +5,7 @@ export const NotificationModalContainer = styled.div`
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 1060px; //Would change it later
   background: rgba(0, 0, 0, 0.25);
   .notification-modal {
     background: #f7f7f7;
@@ -30,7 +30,7 @@ export const NotificationModalContainer = styled.div`
         width: 57.2rem;
         h3 {
           font-weight: 600;
-          font-size: 24px;
+          font-size: 2.4rem;
           line-height: 150%;
           letter-spacing: -0.03em;
           color: var(--black-1);
@@ -38,6 +38,77 @@ export const NotificationModalContainer = styled.div`
         }
         .close-icon {
           cursor: pointer;
+        }
+      }
+    }
+    &-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      overflow-y: auto;
+      height: 66.6rem;
+      padding-top: 1rem;
+      &-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        padding: 2.4rem;
+        gap: 2.4rem;
+        background: #ffffff;
+        border-radius: 10px;
+        width: 56.1rem;
+        &-textContainer {
+          display: flex;
+          flex-direction: row;
+          align-items: flex-start;
+          gap: 1.2rem;
+          &-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0px;
+            gap: 1.2rem;
+            &-head {
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+              align-items: center;
+              padding: 0px;
+              gap: 0.8rem;
+              h3 {
+                font-weight: 600;
+                font-size: 1.6rem;
+                line-height: 150%;
+                letter-spacing: -0.03em;
+                color: var(--black-1);
+              }
+              .red-circle {
+                width: 1rem;
+                height: 1rem;
+                background: var(--red);
+                border-radius: 50%;
+              }
+            }
+            &-info {
+              p {
+                font-weight: 400;
+                font-size: 16px;
+                line-height: 150%;
+                letter-spacing: -0.03em;
+                color: var(--dark-gray-2);
+              }
+            }
+          }
+        }
+        .time-stamp {
+          p {
+            font-weight: 400;
+            font-size: 1.4rem;
+            line-height: 150%;
+            letter-spacing: -0.03em;
+            color: var(--light-gray-2);
+          }
         }
       }
     }
