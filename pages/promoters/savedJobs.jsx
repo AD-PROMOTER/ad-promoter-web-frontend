@@ -22,7 +22,7 @@ const SavedJobs = () => {
         achieved: 'Achieved',
         achievedRate: '10 Visitors',
         price: 'Price',
-        priceRate: '#25/Visitor',
+        priceRate: '₦25/Visitor',
         description: 'At our store, you can get the best chocolate cakes at a super affordable price and with a customization on all our cakes. You also get a 50% discount on all cakespurchased in the next 48hrs.',
         notifIcon: adLink,
         posterImg: poster,
@@ -46,7 +46,7 @@ const SavedJobs = () => {
         achieved: 'Achieved',
         achievedRate: '10 Visitors',
         price: 'Price',
-        priceRate: '#25/Visitor',
+        priceRate: '₦25/Visitor',
         description: 'At our store, you can get the best chocolate cakes at a super affordable price and with a customization on all our cakes. You also get a 50% discount on all cakespurchased in the next 48hrs.',
         more: 'Read more',
         time: 'Posted 1 hour ago',
@@ -66,6 +66,7 @@ const SavedJobs = () => {
 
     return ( 
         <>
+
             {adTabs.map(({adtype,name,poster,aim,aimRate,achieved,achievedRate,price,priceRate,description,more,time,notifIcon,posterImg,copyAd,exportAd,addAd,aimIcon,achievedIcon,priceIcon,bg,linkbg})=>(
                 <div className="notifBox" key={adTabs.id} style={{backgroundColor: bg}}>
                     <div className="link-box">

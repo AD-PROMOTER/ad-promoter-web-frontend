@@ -10,6 +10,7 @@ import chart from '@/public/assets/chart-square.svg'
 import Recent from "./recent"
 import SavedJobs from "./savedJobs"
 import sort from '@/public/assets/sort.svg'
+import sortup from '@/public/assets/sortup.png'
 import { useState } from 'react'
 
 
@@ -65,11 +66,13 @@ const Index = () => {
    
   ]
 
- 
+
 
 
 
   return (
+
+    
     
     <StyledHome>
 
@@ -125,10 +128,13 @@ const Index = () => {
                 <button onClick={()=>setToggleShow(false)}>Saved Jobs</button>
             </div>
 
-            <button className="sort-btn">
+            <button className="sort-btn" id="sortbtn" onClick={() => console.log('clicked')}>
                 <p>Sort</p>
                 <p><Image src={sort} alt='sort-drop-down' /></p>
             </button>
+
+
+
         </div>
 
         <div>{toggleShow ? <Recent /> : <SavedJobs />}</div>

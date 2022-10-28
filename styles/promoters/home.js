@@ -162,6 +162,10 @@ export const StyledHome = styled.div`
 
         }
 
+        .sort-up-btn {
+          display: none;
+        }
+
         .sort-btn {
           display: flex;
           margin-left: 9.75rem;
@@ -175,6 +179,7 @@ export const StyledHome = styled.div`
           text-align: center;
           align-items: center;
           border-radius: 4px;
+
     
         }
       }
