@@ -136,6 +136,70 @@ export const DashboardSummaryContainer = styled.div`
         }
       }
     }
+    &-activity {
+      width: 837px;
+      height: 324px;
+      background: #f5f5f7;
+      border-radius: 10px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+
+      &-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        h3 {
+          font-weight: 600;
+          font-size: 24px;
+          line-height: 36px;
+          color: #141522;
+        }
+        .time-filter {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          padding: 0px;
+          gap: 17px;
+          .time-week {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 4px 16px;
+            gap: 8px;
+            background: #ffffff;
+            border-radius: 4px;
+            h4 {
+              font-weight: 500;
+              font-size: 14px;
+              line-height: 21px;
+              letter-spacing: -0.02em;
+              color: #141522;
+            }
+          }
+          .month-filter {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 0px;
+            gap: 4px;
+            h4 {
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 16px;
+              color: #2e3a59;
+            }
+          }
+        }
+      }
+      &-chart {
+        width: 797px;
+        height: 230px;
+        background: #ffffff;
+        border-radius: 10px;
+      }
+    }
   }
 `;
 

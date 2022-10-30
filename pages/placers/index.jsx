@@ -6,6 +6,9 @@ import Placers from '@/public/assets/placers-frame'
 import Flash from '@/public/assets/flash'
 import Cup from '@/public/assets/cup'
 import Trend from '@/public/assets/trending-up'
+import Chevron from '@/public/assets/chevron'
+import ChevronRight from "@/public/assets/chevron-right"
+import ChevronLeft from "@/public/assets/chevron-left"
 const index = () => {
   const summary = [
     {
@@ -49,6 +52,7 @@ const index = () => {
           <div className="header-text">
             <h3>Dashboard Summary</h3>
           </div>
+
           <div className="dashboard-info">
             <div className="dashboard-info-board">
               {summary.map(({Icon,name,num,bg})=>(
@@ -63,7 +67,30 @@ const index = () => {
                 </div>
               ))}
             </div>
+
+            <div className="dashboard-info-activity">
+              <div className="dashboard-info-activity-title">
+                <h3>Activity</h3>
+                <div className="time-filter">
+                  <div className="time-week">
+                    <h4>Week 1</h4>
+                    <div className="chevron">
+                      <Chevron />
+                    </div>
+                  </div>
+                  <div className="month-filter">
+                    <ChevronLeft />
+                    <h4>Aug 2021</h4>
+                    <ChevronRight />
+                  </div>
+                </div>
+              </div>
+              <div className="dashboard-info-activity-chart">
+                
+              </div>
+            </div>
           </div>
+
         </DashboardSummaryContainer>
       </DashboardContainer>
       <RecentAdsContainer></RecentAdsContainer>
