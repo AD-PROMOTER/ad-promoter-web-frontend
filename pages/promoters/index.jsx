@@ -10,7 +10,6 @@ import chart from '@/public/assets/chart-square.svg'
 import Recent from "../../components/PromoterHomeAdDetail/recent"
 import SavedJobs from "../../components/PromoterHomeAdDetail/savedJobs"
 import sort from '@/public/assets/sort.svg'
-import { useEffect, useState } from 'react'
 import Link from "next/link"
 import { withRouter } from "next/router"
 import ArrowDown from "@/public/assets/arrow-down"
@@ -103,6 +102,7 @@ const Index = ({router}) => {
         <div className="dashboard-summary">
           <div className="dashboard-summary-header">
             <h3>Dashboard Summary</h3>
+            
             <div className="filter">
               <p>Filter</p>
               <div className="arrow-drop">
@@ -162,6 +162,7 @@ const Index = ({router}) => {
           {isTabTwo && <SavedJobs />}
         </div>
       </TabContainer>
+
 
       
     </StyledHome>
