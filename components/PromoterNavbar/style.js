@@ -45,5 +45,10 @@ export const StyledNavBar = styled.div`
     display: flex;
     justify-content: flex-end;
     gap: 24px;
+    .notif {
+      &-img {
+        cursor: pointer;
+      }
+    }
   }
 `;
