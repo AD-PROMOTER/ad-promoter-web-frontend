@@ -10,6 +10,7 @@ export const VariableStyle = createGlobalStyle`
         --black-1: #0D0D0D;
         --black-2: #2C2828;
         --black-3: #010101;
+        --black-4: #111111;
         --white: #FFFFFF;
         --gray: #666666;
         --dark-gray: #333333;
