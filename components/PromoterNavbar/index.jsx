@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import {  StyledNavBar } from './style'
 import { links } from './links'
-import logo from '@/public/assets/logo.svg'
+import logo from '@/public/assets/newLogo.svg'
 import notif from '@/public/assets/notif.svg'
 import profile from '@/public/assets/Profil.svg'
 import { useRouter } from 'next/router'

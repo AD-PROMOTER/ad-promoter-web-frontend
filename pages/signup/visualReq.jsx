@@ -3,7 +3,7 @@ import { Overlay } from '@/styles/visualReq.styles'
 import Close from '@/public/assets/close-icon'
 import bg from '@/public/assets/onboard-bg.svg'
 import Image from 'next/image'
-import logo from '@/public/assets/onboard-logo.svg'
+import logo from '@/public/assets/newOnboardLogo.svg'
 import Link from 'next/link'
 import Button from '@/components/authBtn/index'
 import { useRouter } from "next/router"
@@ -29,14 +29,6 @@ const VisualReq = () => {
   }, [router])
   return (
     <BgContainer image={bg}>
-        {/* <Image 
-            src={bg}
-            alt='background image'
-            layout="fill"
-            objectFit="cover"
-            objectPosition="center"
-            className='landing-image'
-        /> */}
         <Overlay className='overlay'>
             <div className="close" onClick={()=>router.back()}>
                 <Close />

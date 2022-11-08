@@ -2,7 +2,7 @@
 import bg from '@/public/assets/onboard-bg.svg'
 import { Overlay } from '@/styles/signup'
 import Image from 'next/image'
-import logo from '@/public/assets/onboard-logo.svg'
+import logo from '@/public/assets/newOnboardLogo.svg'
 import icon from '@/public/assets/hide-icon.svg'
 import Button from '@/components/authBtn/index'
 import Link from 'next/link'
@@ -65,14 +65,6 @@ const Index = () => {
   }
   return (
     <BgContainer image={bg}>
-      {/* <Image 
-      src={bg}
-      alt='background image'
-      layout="fill"
-      objectFit="cover"
-      objectPosition="center"
-      className='landing-image'
-      /> */}
       <Overlay className='overlay'>
         <div className="close" onClick={()=>router.back()}>
           <Close />

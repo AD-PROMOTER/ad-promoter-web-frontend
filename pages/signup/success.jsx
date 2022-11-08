@@ -1,7 +1,7 @@
 import { BgContainer } from "@/components/onboardingBg/styles"
 import bg from '@/public/assets/onboard-bg.svg'
 import { Overlay } from "@/styles/success"
-import logo from '@/public/assets/onboard-logo.svg'
+import logo from '@/public/assets/newOnboardLogo.svg'
 import Image from "next/image"
 import successMark from '@/public/assets/Rectangle.svg'
 import { useContext } from "react";
@@ -21,19 +21,11 @@ const Success = () => {
   }
   return (
     <BgContainer image={bg}>
-        {/* <Image 
-          src={bg}
-          alt='background image'
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
-          className='landing-image'
-        /> */}
         <Overlay className="overlay">
             <Image src={logo} alt='ad-promoter'/>
             <div className="content">
                 <h3>Success!</h3>
-                <Image src={successMark} alt='success'/>
+                {/* <Image src={successMark} alt='success'/> */}
                 <p>Congratulations, You have successfully created an account. Click on the link below to go home.</p>
                 <div className="btn" onClick={handleSubmit}>Take me home</div>
             </div>

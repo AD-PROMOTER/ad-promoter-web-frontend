@@ -3,15 +3,18 @@ import { GlobalStyle } from '@/styles/global';
 import { SanitizeStyle } from '@/styles/sanitize';
 import { VariableStyle } from '@/styles/variables';
 import { PreferenceProvider } from '@/context/preferenceContext';
+import { NotificationProvider } from '@/context/notificationContext';
 function MyApp({ Component, pageProps, router }) {
   if (router.pathname.startsWith('/promoters')) {
     return (
-      <PromoterLayout>
-        <VariableStyle />
-        <GlobalStyle />
-        <SanitizeStyle />
-        <Component {...pageProps} />
-      </PromoterLayout>
+      <NotificationProvider>
+        <PromoterLayout>
+          <VariableStyle />
+          <GlobalStyle />
+          <SanitizeStyle />
+          <Component {...pageProps} />
+        </PromoterLayout>
+      </NotificationProvider>
     );
   }
   return (

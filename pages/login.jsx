@@ -3,7 +3,7 @@ import bg from '@/public/assets/onboard-bg.svg'
 import { Overlay } from "@/styles/login.styles"
 import Close from '@/public/assets/close-icon'
 import Image from "next/image"
-import logo from '@/public/assets/onboard-logo.svg'
+import logo from '@/public/assets/newOnboardLogo.svg'
 import SocialBtn from '@/components/socialMediaBtn/index';
 import google from '@/public/assets/google.svg';
 import fb from '@/public/assets/fb.svg';

@@ -10,7 +10,7 @@ export const StyledNav = styled.nav`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 3rem;
+  padding: 1.5rem 3rem;
   border-bottom: 1px solid rgba(102, 102, 102, 0.25);
   .cta {
     display: flex;
