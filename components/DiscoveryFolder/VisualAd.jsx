@@ -3,19 +3,30 @@ import more from '@/public/assets/ellipsis.svg'
 import vector from '@/public/assets/Vector.svg'
 import cup from '@/public/assets/cupIcon.svg'
 import currency from '@/public/assets/money-send.svg'
-import download from '@/public/assets/downloadIcon2.svg'
-import archive from '@/public/assets/shareIcon.svg'
-import exportLink from '@/public/assets/bookmarkIcon.svg'
+import download from '@/public/assets/downloadIcon3.svg'
+import archive from '@/public/assets/shareIcon1.svg'
+import exportLink from '@/public/assets/bookmarkIcon1.svg'
 import linkFrame from '@/public/assets/linkframe.svg'
 import { Feed } from './discovery.style'
 import Image from 'next/image'
 import { visualAd } from './data'
+import Carousel from './Carousel/Carousel'
 
 const VisualAd = ({click}) => {
     const [showPaste, setShowPaste] = useState(false)
     const [showSubmit, setShowSubmit] = useState(true)
     const [showReport, setShowReport] = useState(false)
+    const [inputValue, setInputValue] = useState('');
+    const [isReadMore, setIsReadMore] = useState(true);
     const ref = useRef(null)
+
+    const handleChange = (event) => {
+        setInputValue(event.target.value);
+    };
+
+    const toggleReadMore = () => {
+        setIsReadMore(!isReadMore);
+    };
 
     const onClickOutside = () => {
         setShowReport(false)
@@ -65,7 +76,14 @@ const VisualAd = ({click}) => {
                 </div>
                 <div className='product'>
                     <p>
-                       {item.desc}<span>Read More</span>
+                        {isReadMore ? item.desc.slice(0, 156) : item.desc}
+                        {item.desc.length > 156 ? (
+                            <span onClick={toggleReadMore}>
+                                {isReadMore ? " Read more" : " Show less"}
+                            </span>
+                        ):(
+                           <p></p>
+                        )}
                     </p>
                 </div>
                 <div className='desc'>
@@ -91,21 +109,34 @@ const VisualAd = ({click}) => {
                         <p className='para'>{item.conversions} Videos</p>
                     </div>
                 </div>
-                <div className='adImage'>
+                {/* <Carousel>
                     <Image src={item.productImg} alt=""/>
-                </div>
+                    <Image src={item.productImg1} alt=""/>
+                </Carousel> */}
                 <div className='submit'>
                     {showSubmit && <button onClick={handleShowPaste}>Submit</button>}
                     {showPaste && (
-                        <div className='paste'>
+                        <form className='paste'>
                             <div className='pasteLink'>
                                 <Image src={linkFrame} alt=""/>
                             </div>
-                            <div className='pasteButton'>
-                                Paste
-                            </div>
-                            <input />
-                        </div>
+                            {inputValue === '' ? (
+                                <button className='pasteButton'>
+                                    Paste
+                                </button>
+                            ):(
+                                <button className='pasteButton'>
+                                    Submit
+                                </button>
+                            )}
+                            <input 
+                                type="text"
+                                id="inputValue"
+                                name="inputValue"
+                                onChange={handleChange}
+                                value={inputValue}
+                            />
+                        </form>
                     )}
                 </div>
                 <div className='time'>

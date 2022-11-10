@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Filterstyled = styled.div`
   background-color: var(--white);
   width: 100%;
+  position: sticky;
 
   .searchFilter {
     display: flex;
@@ -141,18 +142,22 @@ export const Feed = styled.div`
         font-size: 1.4rem;
 
         ul {
-          border-radius: 0.8rem;
+          border-radius: 0.9rem;
           box-shadow: var(--shadow-1);
           background-color: var(--white);
           position: absolute;
           top: 0;
           right: 0;
-          width: 25rem;
-
+          width: 20rem;
           li {
             padding: 1.2rem 2.4rem;
-            border-bottom: 0.1rem solid #d9d9d9;
+            border-bottom: 1px solid #dbd8fc;
             cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 18px;
+            color: var(--black-1);
+            /* padding: 0px 24px; */
           }
         }
       }
@@ -160,12 +165,13 @@ export const Feed = styled.div`
 
     .adlink {
       margin-top: 3rem;
-
+      margin-bottom: 2.4rem;
       .profile {
         display: flex;
         align-items: center;
         gap: 0.5rem;
         font-size: 1.2rem;
+        /* margin-top: 1rem; */
 
         .tag {
           padding: 0.8rem 1.6rem;
@@ -237,15 +243,29 @@ export const Feed = styled.div`
     .recProduct {
       margin-top: 3rem;
       font-size: 1.6rem;
-    }
-    .product {
-      margin-top: 5rem;
-      font-size: 1.6rem;
-
-      span {
-        font-weight: bold;
+      P {
+        font-weight: 400;
+        font-size: 1.6rem;
+        line-height: 2.4rem;
+        color: var(--dark-gray);
+        span {
+          font-weight: bold;
+        }
       }
     }
+
+    .product {
+      p {
+        font-weight: 400;
+        font-size: 1.6rem;
+        line-height: 2.4rem;
+        color: var(--dark-gray);
+        span {
+          font-weight: bold;
+        }
+      }
+    }
+
     .time {
       display: flex;
       justify-content: space-between;
@@ -373,23 +393,33 @@ export const Feed = styled.div`
           left: 0;
           display: flex;
           align-items: center;
-          padding-left: 1.2rem;
+          padding-left: 0.8rem;
         }
 
         .pasteButton {
           position: absolute;
-          top: 0.5rem;
-          right: 0.8rem;
+          top: 0.7rem;
+          right: 0.6rem;
           background-color: var(--light-blue);
-          padding: 0.8rem 1.2rem;
+          padding: 1rem;
           color: var(--white);
-          border-radius: 0.8rem;
+          border-radius: 1rem;
+          max-width: 8.1rem;
+          width: 100%;
+          font-weight: 500;
+          font-size: 13px;
+          line-height: 20px;
         }
         input {
-          padding: 1.5rem 7rem;
-          border: none;
+          padding-left: 6rem;
+          padding-right: 10rem;
           border-radius: 0.8rem;
-          width: 40rem;
+          background: #ffffff;
+          border: 2px solid #ffffff;
+          width: 47.376rem;
+          /* width: 100%; */
+          height: 5.6rem;
+          /* height: 100%; */
           box-shadow: var(--shadow-1);
         }
       }
@@ -401,6 +431,16 @@ export const Feed = styled.div`
         border-radius: 0.8rem;
         cursor: pointer;
       }
+    }
+  }
+`;
+
+export const DiscoveryContainer = styled.div`
+  .scroll-container {
+    height: 100vh;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      display: none;
     }
   }
 `;

@@ -6,7 +6,11 @@ import { ModalContainer } from './ModalStyle'
 
 const Modal = () => {
     const [showDropdown, setShowDropdown] = useState(false)
-
+    const [listValue, setListValue] = useState('It has gory images')
+    const ClickedList = (e) =>{
+      setListValue(e.target.innerText)
+      console.log(listValue);
+    }
   return (
     <ModalContainer>
       <div className='report'>
@@ -15,15 +19,15 @@ const Modal = () => {
       </div>
       <div className='language'>Why are you reporting this advert</div>
       <div className='inputArea' onClick={() => setShowDropdown(!showDropdown)}>
-        <div className='inputText'>It has gory images</div>
+        <div className='inputText'>{listValue}</div>
         {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
       </div>
       {showDropdown && (
         <ul>
-            <li>It has gory images</li>
-            <li>It is a scam advert</li>
-            <li>It has nudity or sexual content</li>
-            <li>Other reasons</li>
+            <li onClick={ClickedList}>It has gory images</li>
+            <li onClick={ClickedList}>It is a scam advert</li>
+            <li onClick={ClickedList}>It has nudity or sexual content</li>
+            <li onClick={ClickedList}>Other reasons</li>
         </ul>
       )}
       <div className='reportButton'>
