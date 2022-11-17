@@ -49,7 +49,7 @@ const Wallet = (props) => {
     <WalletStyles>
       <div className="intro">
         <h1>Wallet</h1>
-        <button className="intro__add" onClick={toggleDropdown}>
+        <button className="intro__add" onClick={props.onOpenPaymentDetailsModal}>
           <Image src={plus} alt="Add banck account icon" />
         </button>
       </div>
@@ -90,7 +90,7 @@ const Wallet = (props) => {
           <p>Process Withdrawal </p>
         </button>
       </div>
-      {showDropdown ? <EditWalletDropdown onOpen={props.onOpenPaymentDetailsModal} /> : null}
+      {/* {showDropdown ? <EditWalletDropdown onOpen={props.onOpenPaymentDetailsModal} /> : null} */}
     </WalletStyles>
   );
 };

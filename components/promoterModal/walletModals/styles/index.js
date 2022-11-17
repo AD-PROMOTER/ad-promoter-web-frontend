@@ -504,6 +504,10 @@ export const VerificationStyles = styled.div`
           height: 2.2rem;
           text-align: center;
         }
+
+        input:focus {
+          border-color: #4f00cf;
+        }
       }
     }
 

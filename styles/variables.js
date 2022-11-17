@@ -22,6 +22,7 @@ export const VariableStyle = createGlobalStyle`
         --lighter-gray: #F5F5F7;
         --light-gray-3: #BEBEBE;
         --green: #1EB624;
+        --green-2: #00B068;
         --blue: #2C59F7;
         --light-blue: #6B8BFC;
         --light-blue-1: #5C85FF;

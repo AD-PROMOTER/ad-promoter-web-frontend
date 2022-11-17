@@ -5,11 +5,11 @@ export const WalletDropdownStyles = styled.div`
   border-radius: 0.5rem;
   box-shadow: 1px 3px 29px rgba(0, 0, 0, 0.05);
   padding-top: 0.7rem 0;
-  position: absolute;
-  top: 11rem;
-  left: 35rem;
+  // position: absolute;
+  // top: 9rem;
+  // left: 27rem;
   // display: none;
-  z-index: 1000;
+  z-index: 1;
 
   ul {
     font-size: 1rem;
@@ -75,7 +75,6 @@ const WalletStyles = styled.div`
         opacity: 0;
         cursor: pointer;
         width: 100%;
-        z-index: 1000;
         position: absolute;
         top: 0.6rem;
         left: 4rem;

@@ -7,6 +7,7 @@ export const WalletSummaryStyles = styled.div`
   box-shadow: var(--shadow-6);
   border-radius: 0.6rem;
   padding: 1.5rem;
+  position: relative;
 
   .intro {
     display: flex;
@@ -19,9 +20,28 @@ export const WalletSummaryStyles = styled.div`
       line-height: 2.25rem;
     }
 
-    button {
-      background: transparent;
-      cursor: pointer;
+    &__filter {
+      display: flex;
+      justify-content: space-between;
+      border: 1px solid #dbd8fc;
+      border-radius: 0.6rem;
+      padding: 0.8rem 1.5rem;
+      width: 17.5rem;
+
+      p {
+        color: var(--black-3);
+        font-size: 1.3rem;
+        padding-top: 0.3rem;
+      }
+
+      .rotate {
+        transform: rotate(-180deg);
+        transition: all 0.5s ease;
+      }
+
+      .arrow {
+        cursor: pointer;
+      }
     }
   }
 
@@ -59,5 +79,34 @@ export const CardStyles = styled.div`
     font-size: 1.5rem;
     line-height: 2.3rem;
     margin-top: 1.1rem;
+  }
+`;
+
+export const FilterDropdownStyles = styled.div`
+  background: #fff;
+  position: absolute;
+  top: 6rem;
+  right: 1.8rem;
+  border-radius: 0.7rem;
+  box-shadow: 4px 4px 12px rgba(39, 58, 123, 0.25);
+  width: 17rem;
+
+  ul {
+    padding: 0.7rem 0;
+  }
+
+  li {
+    color: var(--black-3);
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    border-bottom: 0.5px solid #dbd8fc;
+    padding: 0.7rem 1.5rem;
+    cursor: pointer;
+  }
+
+  li:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
   }
 `;
