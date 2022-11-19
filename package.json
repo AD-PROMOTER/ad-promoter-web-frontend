@@ -20,6 +20,7 @@
     "yarn": "^1.22.19"
   },
   "devDependencies": {
+    "babel-plugin-inline-react-svg": "^2.0.1",
     "eslint": "^8.23.1",
     "eslint-config-next": "12.3.0",
     "eslint-config-prettier": "^8.5.0",
