@@ -10,6 +10,7 @@ import { motion } from 'framer-motion'
 import { useContext } from 'react'
 import NotificationContext from '@/context/notificationContext'
 import NotificationContainer from '@/components/Notification/index'
+
 const Index = () => {
     const router = useRouter();
     const { isNotifClicked,setIsNotifClicked } = useContext(NotificationContext)
@@ -18,42 +19,44 @@ const Index = () => {
         stop: { width: 0 }
     };
   return (
-    <StyledNavBar>
-        <div className="logo">
-            <Link href='/promoters'>
-                <a>
-                    <Image src={logo} alt='ad-promoter'/>
-                </a>
-            </Link>
-        </div>
-
-        <div className="links">
-            {links.map(({name,link})=>(
-                <div className="link" key={link}>
-                    <Link href={link}>
-                        <a className={router.pathname === link ? "activeLink" : ""}>{name}</a>
-                    </Link>
-                    <motion.div 
-                        className={router.pathname === link ? "bottom-dash" : ""}
-                        variants={variants}
-                        animate={router.pathname === link ? 'animate' : 'stop'}
-                    ></motion.div>
-                </div>
-            ))}
-        </div>
-
-        <div className="profile">
-            <div className="notif" onClick={()=>setIsNotifClicked(!isNotifClicked)}>
-                <div className="notif-img">
-                    <Image src={notif} alt='notification bell'/>
-                </div>
-                {isNotifClicked &&(
-                    <NotificationContainer />
-                )}
+    <div>
+        <StyledNavBar>
+            <div className="logo">
+                <Link href='/promoters'>
+                    <a>
+                        <Image src={logo} alt='ad-promoter'/>
+                    </a>
+                </Link>
             </div>
-            <Image src={profile} alt='profile picture'/>
-        </div>
-    </StyledNavBar>
+
+            <div className="links">
+                {links.map(({name,link})=>(
+                    <div className="link" key={link}>
+                        <Link href={link}>
+                            <a className={router.pathname === link ? "activeLink" : ""}>{name}</a>
+                        </Link>
+                        <motion.div 
+                            className={router.pathname === link ? "bottom-dash" : ""}
+                            variants={variants}
+                            animate={router.pathname === link ? 'animate' : 'stop'}
+                        ></motion.div>
+                    </div>
+                ))}
+            </div>
+
+            <div className="profile">
+                <div className="notif" onClick={()=>setIsNotifClicked(!isNotifClicked)}>
+                    <div className="notif-img">
+                        <Image src={notif} alt='notification bell'/>
+                    </div>
+                    {isNotifClicked &&(
+                        <NotificationContainer />
+                    )}
+                </div>
+                <Image src={profile} alt='profile picture'/>
+            </div>
+        </StyledNavBar>
+    </div>
   )
 }
 

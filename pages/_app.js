@@ -5,7 +5,19 @@ import { VariableStyle } from '@/styles/variables';
 import { PreferenceProvider } from '@/context/preferenceContext';
 import { NotificationProvider } from '@/context/notificationContext';
 import { DiscoveryGlobalStyle } from '@/styles/discoveryGlobal';
+
 function MyApp({ Component, pageProps, router }) {
+  if (router.pathname.startsWith('/promoters/settings')) {
+    return (
+      <NotificationProvider>
+        <VariableStyle />
+        <GlobalStyle />
+        <SanitizeStyle />
+        <Component {...pageProps} />
+      </NotificationProvider>
+    );
+  }
+
   if (router.pathname.startsWith('/promoters/discovery')) {
     return (
       <NotificationProvider>

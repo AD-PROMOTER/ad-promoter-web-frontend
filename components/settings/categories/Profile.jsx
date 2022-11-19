@@ -5,13 +5,27 @@ import profileImg from '../../../public/assets/profile.jpg'
 import upload from '../../../public/assets/upload.png'
 import { VscClose } from 'react-icons/vsc';
 import { AiOutlineCloudUpload } from 'react-icons/ai'
-
+import arrowUp from '@/public/assets/arrow-up.svg'
+import arrowDown from '@/public/assets/arrow-down.svg'
 
 const Profile = () => {
     const [name, setName] = useState('Skylar Diaz');
     const [email, setEmail] = useState('skylardiaz@gmail.com');
     const [phoneNumber, setPhoneNumber] = useState('+2348191014589');
     const [profileModal, setProfileModal] = useState(false);
+    const [listValue, setListValue] = useState('English ( Default )')
+    const [showDropdown, setShowDropdown] = useState(false)
+    const [isChangesMade, setIsChangesMade] = useState(false)
+
+    const ClickedList = (e) =>{
+        setListValue(e.target.innerText)
+        setIsChangesMade(true)
+    }
+
+    const handleSaveChanges = (e) =>{
+        e.preventDefault()
+        setIsChangesMade(false)
+    }
 
     return (
         <StyledProfile style={{ alignItems: profileModal && 'center' }}>
@@ -66,17 +80,17 @@ const Profile = () => {
             <div className='profile-details'>
                 <div className='form-field account-name'>
                     <label htmlFor="name" > Account Name </label>
-                    <input type='text' name='name' value={name} id='name' onChange={(e) => setName(e.target.value)} />
+                    <input type='text' name='name' value={name} id='name' onChange={(e) => {setName(e.target.value),setIsChangesMade(true)}} />
                 </div>
 
                 <div className='form-field account-address'>
                     <label htmlFor="account-address" > Email Address </label>
-                    <input type='email' name='account-address' value={email} id='name' onChange={(e) => setEmail(e.target.value)} />
+                    <input type='email' name='account-address' value={email} id='name' onChange={(e) => {setEmail(e.target.value),setIsChangesMade(true)}} />
                 </div>
 
                 <div className='form-field account-phoneNumber'>
                     <label htmlFor="account-phoneNumber" > Phone Number </label>
-                    <input type='tel' maxLength={14} name='account-phoneNumber' value={phoneNumber} id='name' onChange={(e) => setPhoneNumber(e.target.value)} />
+                    <input type='tel' maxLength={14} name='account-phoneNumber' value={phoneNumber} id='name' onChange={(e) => {setPhoneNumber(e.target.value),setIsChangesMade(true)}} />
                 </div>
 
                 <div className='form-field account-birth'>
@@ -84,19 +98,25 @@ const Profile = () => {
                     <input type='date' name='date'  />
                 </div>
 
-                <div className='form-field gender'>
-                    <label htmlFor="name" > Gender </label>
-                    <select name='gender'>
-                        <option> None </option>
-                        <option> Male </option>
-                        <option>Female </option>
-                    </select>
+                <div className="dropdownContainer">
+                    <h3>Gender</h3>
+                    <div className='dropdown form-field ' onClick={() => setShowDropdown(!showDropdown)}>
+                        <p className='inputText'>{listValue}</p>
+                    </div>
+                    {showDropdown && (
+                        <ul className="">
+                            <li onClick={ClickedList}>English ( Default )</li>
+                            <li onClick={ClickedList}>Spanish</li>
+                            <li onClick={ClickedList}>Greek</li>
+                            <li onClick={ClickedList}>Yoruba</li>
+                        </ul>
+                    )}
                 </div>
             </div>
 
             <div className="controls">
                 <PlainButton> Discard </PlainButton>
-                <Button>Save changes </Button>
+                <Button onClick={handleSaveChanges} className={isChangesMade ? '' : 'inactive'}>Save changes </Button>
             </div>
         </StyledProfile>
     )
