@@ -1,10 +1,12 @@
+import Settings from "@/components/settings/Settings"
 
 const settings = () => {
-  return (
-    <div className="dummy">
-      <p>Customize your app</p>  
-    </div>
-  )
+    return (
+        <div style={{ position: 'relative'  }} className="dummy">
+            <Settings />
+        </div>
+    )
 }
 
 export default settings
+

@@ -1,6 +1,10 @@
 import Head from 'next/head';
 
 export default function Home() {
+  const router = useRouter();
+  useEffect(() => {
+    router.prefetch('/signup');
+  }, [router]);
   return (
     <div>
       <Head>

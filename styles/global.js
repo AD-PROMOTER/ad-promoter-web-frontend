@@ -52,11 +52,6 @@ export const GlobalStyle = createGlobalStyle`
     outline: none;
   }
 
-  input {
-    -webkit-appearance: none;
-    appearance: none;
-  }
-
   button,
   label,
   input,
@@ -128,5 +123,17 @@ export const GlobalStyle = createGlobalStyle`
     justify-content: center;
     color: var(--primary);
     width: 100%;
+  }
+
+  .blurred-bg{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(25px);
   }
 `;
