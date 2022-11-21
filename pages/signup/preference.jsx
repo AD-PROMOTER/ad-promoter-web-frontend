@@ -11,7 +11,7 @@ import { useContext } from "react";
 import PreferenceContext from '@/context/preferenceContext'
 
 const Preference = () => {
-  const {userPref,setUserPref} = useContext(PreferenceContext)
+  const {userPref,setUserPref,setIsPrefWithValue,setIsInputWithValue,isInputWithValue} = useContext(PreferenceContext)
   const router = useRouter();
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -23,9 +23,12 @@ const Preference = () => {
   }
   useEffect(() => {
     router.prefetch('/signup/visualReq')
+    setIsInputWithValue(!isInputWithValue)
+
   }, [router])
   const handleChange = event => {
     setUserPref(event.target.value);
+    setIsPrefWithValue(true)
   };
   return (
     <BgContainer image={bg}>
@@ -47,7 +50,7 @@ const Preference = () => {
                 id="place" 
                 value='place' 
                 name='pref'
-                checked={userPref === 'place'}
+                // checked={userPref === 'place'}
                 onChange={handleChange}
                 />
               <label htmlFor="place">Place ads</label>
@@ -58,7 +61,7 @@ const Preference = () => {
                 id="promote" 
                 value='promote' 
                 name='pref'
-                checked={userPref === 'promote'}
+                // checked={userPref === 'promote'}
                 onChange={handleChange}
                 />
               <label htmlFor='promote'>Promote ads</label>

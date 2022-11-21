@@ -6,7 +6,12 @@ const Notification = () => {
     const [email , setEmail] = useState(true);
     const [desktop , setDesktop] = useState(false);
     const [others , setOthers] = useState(true);
+    const [isChangesMade, setIsChangesMade] = useState(false)
 
+    const handleSaveChanges = (e) =>{
+        e.preventDefault()
+        setIsChangesMade(false)
+    }
 
     return (
         <StyledNotification>
@@ -17,7 +22,7 @@ const Notification = () => {
                                 className='checkbox'
                                 id='checkbox'
                                 type='checkbox'
-                                onChange={() => setClicked(!clicked) }
+                                onChange={() => {setClicked(!clicked),setIsChangesMade(true)} }
                                 checked={!clicked}
                             />
 
@@ -37,7 +42,7 @@ const Notification = () => {
                                 className='checkbox'    
                                 id="checkbox-2"      
                                 type='checkbox'
-                                onChange={() => setEmail(!email)}
+                                onChange={() => {setEmail(!email), setIsChangesMade(true)}}
                                 checked={!email}
                             />
 
@@ -57,7 +62,7 @@ const Notification = () => {
                                 className='checkbox'                       
                                 type='checkbox'
                                 id="checkbox-3"
-                                onChange={() => setDesktop(!desktop)}
+                                onChange={() => {setDesktop(!desktop), setIsChangesMade(true)}}
                                 checked={!desktop}
                             />
 
@@ -77,7 +82,7 @@ const Notification = () => {
                                 className='checkbox'          
                                 type='checkbox'
                                 id="checkbox-4"
-                                onChange={() => setOthers(!others)}
+                                onChange={() => {setOthers(!others),setIsChangesMade(true)}}
                                 checked={!others}
                             />
 
@@ -95,7 +100,7 @@ const Notification = () => {
             </ul>
 
             <div className="controls">
-                <Button> Save changes </Button>
+                <Button onClick={handleSaveChanges} className={isChangesMade ? '' : 'inactive'}> Save changes </Button>
             </div>
         </StyledNotification>
     )

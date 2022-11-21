@@ -11,25 +11,33 @@ import Button from '@/components/authBtn/index'
 import icon from '@/public/assets/hide-icon.svg'
 import { useRouter } from "next/router"
 import Link from "next/link"
+import { useContext, useState,useEffect } from "react"
+import { BsEyeFill,BsEyeSlashFill } from "react-icons/bs"
 // import Container from '@/components/onBoardBg/index'
+import PreferenceContext from "@/context/preferenceContext"
+
 const Login = () => {
   const router = useRouter();
+  const [isPasswordShown,setIsPasswordShown] = useState(false)
+  const [userEmail,setUserEmail] = useState('')
+  const [userPassword,setUserPassword] = useState('')
+  const {isLoginInputWithValue,setIsLoginInputWithValue} = useContext(PreferenceContext)
+
+  useEffect(() => {
+    if(userEmail !== '' && userPassword !== '' ){
+      setIsLoginInputWithValue(true)
+    }else{
+      setIsLoginInputWithValue(false)
+    }
+  }, [router, setIsLoginInputWithValue, userEmail, userPassword])
+
+
   const handleSubmit = (e) => {
     e.preventDefault()
     router.push("/")
   }
   return (
-    <BgContainer>
-      <Image 
-        src={bg}
-        alt='background image'
-        layout="fill"
-        objectFit="cover"
-        objectPosition="center"
-        quality={100}
-        className='landing-image'
-        priority
-      />
+    <BgContainer image={bg}>
       <Overlay className='overlay'>
         <div className="close" onClick={()=>router.back()}>
           <Close />
@@ -54,18 +62,39 @@ const Login = () => {
           <form action="" onSubmit={handleSubmit}>
             <div className="email">
               <label htmlFor="email">Your email</label>
-              <input type="email" id="email" required/>
+              <input 
+                type="email" 
+                id="email" 
+                required
+                value={userEmail}
+                onChange={e => setUserEmail(e.target.value)}
+                />
             </div>
             <div className="password">
               <div className="input-container">
                 <div className="label">
                   <label htmlFor="password">Your password</label>
-                  <div className="hide">
-                    <Image src={icon} alt='password hide icon'/>
-                    <p>Hide</p>
+                  <div className="hide" onClick={()=>setIsPasswordShown(!isPasswordShown)}>
+                    {isPasswordShown ? (
+                      <BsEyeSlashFill style={{color: 'rgba(102,102,102,0.8)'}} />
+                      ):(
+                      <BsEyeFill style={{color: 'rgba(102,102,102,0.8)'}} />
+                    )}
+                    {isPasswordShown ? (
+                      <p>Hide</p>
+                    ):(
+                      <p>Show</p>
+                    )}
                   </div>
                 </div>
-                <input type="password" id="password" required/>
+                <input  
+                  id="password"
+                  name='password'
+                  required
+                  type={isPasswordShown ? "text" : "password"}
+                  value={userPassword}
+                  onChange={e => setUserPassword(e.target.value)}
+                />
               </div>
               <p>Forgot your password</p>
             </div>

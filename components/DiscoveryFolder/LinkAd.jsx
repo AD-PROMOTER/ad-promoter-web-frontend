@@ -3,9 +3,9 @@ import more from '@/public/assets/ellipsis.svg'
 import vector from '@/public/assets/Vector.svg'
 import cup from '@/public/assets/cupIcon.svg'
 import currency from '@/public/assets/money-send.svg'
-import download from '@/public/assets/linkIcon.svg'
-import archive from '@/public/assets/shareIcon.svg'
-import exportLink from '@/public/assets/bookmarkIcon.svg'
+import download from '@/public/assets/downloadIcon3.svg'
+import archive from '@/public/assets/shareIcon1.svg'
+import exportLink from '@/public/assets/bookmarkIcon1.svg'
 import { Feed } from './discovery.style'
 import Image from 'next/image'
 import { directlinkAd } from './data'
@@ -13,6 +13,12 @@ import { directlinkAd } from './data'
 const LinkAd = ({click}) => {
     const [showReport, setShowReport] = useState(false)
     const ref = useRef(null)
+    const [isReadMore, setIsReadMore] = useState(true);
+
+    const toggleReadMore = () => {
+        setIsReadMore(!isReadMore);
+    };
+
     const onClickOutside = () => {
         setShowReport(false)
     }
@@ -56,7 +62,14 @@ const LinkAd = ({click}) => {
                 </div>
                 <div className='product'>
                     <p>
-                        {item.desc}<span>Read More</span>
+                        {isReadMore ? item.desc.slice(0, 156) : item.desc}
+                        {item.desc.length > 156 ? (
+                            <span onClick={toggleReadMore}>
+                                {isReadMore ? " Read more" : " Show less"}
+                            </span>
+                        ):(
+                           <p></p>
+                        )}
                     </p>
                 </div>
                 <div className='desc'>

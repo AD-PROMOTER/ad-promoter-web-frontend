@@ -9,14 +9,21 @@ import mastercard from '../../../public/assets/mastercard.png'
 const Payment = () => {
     const [clicked, setClicked] = useState(false);
     const [selected, setSelected] = useState(true);
-
+    const [isChangesMade, setIsChangesMade] = useState(false)
     const handleClick = () => {
         setSelected(false);
         setClicked(true);
+        setIsChangesMade(true)
     }
     const handleSelected = () => {
         setClicked(false);
         setSelected(true);
+        setIsChangesMade(true)
+    }
+
+    const handleSaveChanges = (e) =>{
+        e.preventDefault()
+        setIsChangesMade(false)
     }
 
     return (
@@ -73,7 +80,7 @@ const Payment = () => {
             </div>
 
             <div className="controls">
-                <Button> Save changes </Button>
+                <Button onClick={handleSaveChanges} className={isChangesMade ? '' : 'inactive'}> Save changes </Button>
             </div>
         </StyledPayment>
     )

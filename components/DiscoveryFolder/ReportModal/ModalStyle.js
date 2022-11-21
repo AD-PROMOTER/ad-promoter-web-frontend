@@ -4,12 +4,13 @@ export const ModalContainer = styled.div`
   position: fixed;
   z-index: 500;
   background-color: var(--white);
-  width: 50%;
-  border-radius: 0.8rem;
+  width: 62.3rem;
+  min-height: 42.6rem;
+  border-radius: 1rem;
   box-shadow: var(--shadow-2);
   padding: 4.8rem;
   left: 30%;
-  top: 30%;
+  top: 10%;
 
   .report {
     text-align: center;
@@ -40,20 +41,31 @@ export const ModalContainer = styled.div`
     border: 0.1rem solid var(--lighter-gray);
 
     .inputText {
+      font-weight: 500;
+      line-height: 1.8rem;
       font-size: 1.2rem;
+      letter-spacing: -0.02em;
+      color: var(--dark-gray);
     }
   }
   ul {
     background-color: var(--white);
-    border-radius: 0.8rem;
-    box-shadow: var(--shadow-1);
-    margin-top: 1rem;
+    border: 1px solid #dbd8fc;
+    border-radius: 1rem;
+    margin-top: 2rem;
     width: 52.7rem;
 
     li {
-      padding: 1.2rem 2.4rem;
-      border-bottom: 0.1rem solid #d9d9d9;
+      padding: 1rem 2rem;
+      border-bottom: 0.1rem solid #dbd8fc;
       cursor: pointer;
+      font-size: 1.2rem;
+      line-height: 1.8rem;
+      letter-spacing: -0.02em;
+      color: var(--dark-gray);
+      &:last-child {
+        border-bottom: none;
+      }
     }
   }
 
@@ -63,12 +75,15 @@ export const ModalContainer = styled.div`
     margin-top: 5rem;
 
     button {
-      padding: 0.8rem 3rem;
+      padding: 1.2rem 3.6rem;
       background-color: var(--primary);
       color: white;
-      border-radius: 1rem;
-      font-size: 1.6rem;
+      border-radius: 0.8rem;
       cursor: pointer;
+      font-weight: 600;
+      font-size: 1.4rem;
+      line-height: 150%;
+      text-align: center;
     }
   }
 `;

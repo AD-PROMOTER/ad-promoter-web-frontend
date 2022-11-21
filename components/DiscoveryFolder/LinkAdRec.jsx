@@ -5,14 +5,20 @@ import more from '@/public/assets/ellipsis.svg'
 import vector from '@/public/assets/Vector.svg'
 import cup from '@/public/assets/cupIcon.svg'
 import currency from '@/public/assets/money-send.svg'
-import download from '@/public/assets/linkIcon.svg'
-import archive from '@/public/assets/shareIcon.svg'
-import exportLink from '@/public/assets/bookmarkIcon.svg'
+import download from '@/public/assets/downloadIcon3.svg'
+import archive from '@/public/assets/shareIcon1.svg'
+import exportLink from '@/public/assets/bookmarkIcon1.svg'
 import { directlinkAd } from './data'
 
 const LinkAdRec = ({click}) => {
   const [showReport, setShowReport] = useState(false)
   const ref = useRef(null)
+  const [isReadMore, setIsReadMore] = useState(true);
+
+  const toggleReadMore = () => {
+    setIsReadMore(!isReadMore);
+  };
+
   const onClickOutside = () => {
       setShowReport(false)
   }
@@ -56,7 +62,14 @@ const LinkAdRec = ({click}) => {
           </div>
           <div className='recProduct'>
             <p>
-              {item.desc}
+              {isReadMore ? item.desc.slice(0, 156) : item.desc}
+              {item.desc.length > 156 ? (
+                  <span onClick={toggleReadMore}>
+                      {isReadMore ? " Read more" : " Show less"}
+                  </span>
+              ):(
+                  <p></p>
+              )}
             </p>
           </div>
           <div className='recDesc'>
@@ -92,13 +105,13 @@ const LinkAdRec = ({click}) => {
             </div>
             <div className='recPost'>
               <div className='recIcons'>
-                <Image src={download} alt="" width={30}/>
+                <Image src={download} alt=""/>
               </div>
               <div className='recIcons'>
-                <Image src={exportLink} alt="" width={30}/>
+                <Image src={exportLink} alt=""/>
               </div>
               <div className='recIcons'>
-                <Image src={archive} alt="" width={30}/>
+                <Image src={archive} alt=""/>
               </div>
            </div>
           </div>

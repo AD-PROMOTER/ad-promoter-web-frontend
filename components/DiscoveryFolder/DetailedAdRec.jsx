@@ -5,14 +5,20 @@ import more from '@/public/assets/ellipsis.svg'
 import vector from '@/public/assets/Vector.svg'
 import cup from '@/public/assets/cupIcon.svg'
 import currency from '@/public/assets/money-send.svg'
-import download from '@/public/assets/downloadIcon2.svg'
-import archive from '@/public/assets/shareIcon.svg'
-import exportLink from '@/public/assets/bookmarkIcon.svg'
+import download from '@/public/assets/downloadIcon3.svg'
+import bookmarkIcon from '@/public/assets/bookmarkIcon1.svg'
+import shareIcon from '@/public/assets/shareIcon1.svg'
 import { detailsAd } from './data'
 
 
 const DetailedAdRec = ({click}) => {
   const [showReport, setShowReport] = useState(false)
+  const [isReadMore, setIsReadMore] = useState(true);
+  
+  const toggleReadMore = () => {
+    setIsReadMore(!isReadMore);
+  };
+
   const ref = useRef(null)
   const onClickOutside = () => {
         setShowReport(false)
@@ -58,7 +64,14 @@ const DetailedAdRec = ({click}) => {
               </div>
               <div className='recProduct'>
                 <p>
-                 {item.desc} <span style={{fontWeight: 'bold'}}>Read More</span> 
+                  {isReadMore ? item.desc.slice(0, 156) : item.desc}
+                  {item.desc.length > 156 ? (
+                      <span onClick={toggleReadMore}>
+                          {isReadMore ? " Read more" : " Show less"}
+                      </span>
+                  ):(
+                      <p></p>
+                  )}
                 </p>
               </div>
               <div className='recDesc'>
@@ -97,13 +110,13 @@ const DetailedAdRec = ({click}) => {
                 </div>
                 <div className='recPost'>
                   <div className='recIcons'>
-                    <Image src={download} alt="" width={30}/>
+                    <Image src={download} alt=""/>
                   </div>
                   <div className='recIcons'>
-                    <Image src={exportLink} alt="" width={30}/>
+                    <Image src={shareIcon} alt=""/>
                   </div>
                   <div className='recIcons'>
-                    <Image src={archive} alt="" width={30}/>
+                    <Image src={bookmarkIcon} alt=""/>
                   </div>
                </div>
               </div>

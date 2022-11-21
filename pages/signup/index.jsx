@@ -4,6 +4,8 @@ import { Overlay } from '@/styles/signup'
 import Image from 'next/image'
 import logo from '@/public/assets/newOnboardLogo.svg'
 import icon from '@/public/assets/hide-icon.svg'
+import eye from '@/public/assets/eye.svg'
+import eyeOff from '@/public/assets/eye-off.svg'
 import Button from '@/components/authBtn/index'
 import Link from 'next/link'
 import Close from '@/public/assets/close-icon'
@@ -15,6 +17,7 @@ import { useContext } from "react";
 import PreferenceContext from '@/context/preferenceContext'
 import PhoneInput,{ formatPhoneNumber, formatPhoneNumberIntl, isValidPhoneNumber,isPossiblePhoneNumber } from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
+import {BsEyeFill,BsEyeSlashFill} from 'react-icons/bs'
 const Index = () => {
   const [isPasswordShown,setIsPasswordShown] = useState(false)
   const [isConfirmPasswordShown,setIsConfirmPasswordShown] = useState(false)
@@ -121,7 +124,11 @@ const Index = () => {
                 <div className="label">
                   <label htmlFor="password">Your password</label>
                   <div className="hide" onClick={()=>setIsPasswordShown(!isPasswordShown)}>
-                    <Image src={icon} alt='password hide icon'/>
+                    {isPasswordShown ? (
+                      <BsEyeSlashFill style={{color: 'rgba(102,102,102,0.8)'}} />
+                      ):(
+                      <BsEyeFill style={{color: 'rgba(102,102,102,0.8)'}} />
+                    )}
                     {isPasswordShown ? (
                       <p>Hide</p>
                     ):(
@@ -131,7 +138,6 @@ const Index = () => {
                 </div>
                 <input
                   className='input'
-                  // type = 'text' 
                   type={isPasswordShown ? "text" : "password"} 
                   id="password"
                   name='password'
@@ -147,7 +153,11 @@ const Index = () => {
                 <div className="label">
                   <label htmlFor="confirmPassword">Confirm password</label>
                   <div className="hide" onClick={()=>setIsConfirmPasswordShown(!isConfirmPasswordShown)}>
-                    <Image src={icon} alt='password hide icon'/>
+                    {isConfirmPasswordShown ? (
+                      <BsEyeSlashFill style={{color: 'rgba(102,102,102,0.8)'}} />
+                      ):(
+                      <BsEyeFill style={{color: 'rgba(102,102,102,0.8)'}} />
+                    )}
                     {isConfirmPasswordShown ? (
                       <p>Hide</p>
                     ):(
