@@ -26,8 +26,32 @@ export const StyledTabBody = styled.div`
       }
 
       button:hover,
-      p:hover {
+      div:hover {
         cursor: pointer;
+      }
+      .dot {
+        cursor: pointer;
+        position: relative;
+        font-size: 1.4rem;
+        ul {
+          border-radius: 0.9rem;
+          box-shadow: var(--shadow-1);
+          background-color: var(--white);
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 20rem;
+          li {
+            padding: 1.2rem 2.4rem;
+            border-bottom: 1px solid #dbd8fc;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 18px;
+            color: var(--black-1);
+            /* padding: 0px 24px; */
+          }
+        }
       }
     }
 

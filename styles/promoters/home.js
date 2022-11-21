@@ -51,7 +51,7 @@ export const StyledHome = styled.div`
         }
       }
 
-      .user-status {
+      /* .user-status {
         background: linear-gradient(57.67deg, #0702fd 2.15%, #83f8e3 97.85%);
         opacity: 0.53;
         color: #fff;
@@ -61,14 +61,14 @@ export const StyledHome = styled.div`
         justify-content: center;
         align-items: center;
         border-radius: 8px;
-        /* flex: 2; */
+       
         p {
           font-weight: 700;
           font-size: 1.6rem;
           line-height: 150%;
           letter-spacing: -0.03em;
         }
-      }
+      } */
     }
 
     .dashboard-summary {
@@ -83,6 +83,7 @@ export const StyledHome = styled.div`
         display: flex;
         align-items: center;
         justify-content: space-between;
+        position: relative;
         h3 {
           font-weight: 600;
           font-size: 2.4rem;
@@ -106,6 +107,25 @@ export const StyledHome = styled.div`
             font-weight: 400;
             font-size: 16px;
             line-height: 24px;
+            color: #010101;
+          }
+        }
+        ul {
+          background-color: var(--white);
+          position: absolute;
+          top: 7rem;
+          right: 0rem;
+          border-radius: 1.2rem;
+          box-shadow: var(--shadow-1);
+          width: 28rem;
+          z-index: 10;
+          li {
+            padding: 1.2rem 2.4rem;
+            border-bottom: 0.1rem solid #dbd8fc;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1.4rem;
+            line-height: 2.1rem;
             color: #010101;
           }
         }
@@ -221,6 +241,25 @@ export const TabContainer = styled.div`
         font-size: 14px;
         line-height: 21px;
         color: #000000;
+      }
+    }
+    ul {
+      background-color: var(--white);
+      position: absolute;
+      top: 17rem;
+      right: 5rem;
+      border-radius: 1.2rem;
+      box-shadow: var(--shadow-1);
+      width: 18rem;
+      z-index: 10;
+      li {
+        padding: 1.2rem 2.4rem;
+        border-bottom: 0.1rem solid #dbd8fc;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 1.4rem;
+        line-height: 2.1rem;
+        color: #010101;
       }
     }
   }

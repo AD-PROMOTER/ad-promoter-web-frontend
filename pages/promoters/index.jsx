@@ -13,7 +13,9 @@ import sort from '@/public/assets/sort.svg'
 import Link from "next/link"
 import { withRouter } from "next/router"
 import ArrowDown from "@/public/assets/arrow-down"
-
+import ArrowUp from "@/public/assets/arrow-up"
+import { useEffect,useState } from "react"
+import userStatus from '@/public/assets/promoters-logo.svg'
 
 const Index = ({router}) => {
 
@@ -21,10 +23,12 @@ const Index = ({router}) => {
 
   const isTabOne = tab === "recent" || tab == null
   const isTabTwo = tab === "saved jobs"
+  const [showDropdown, setShowDropdown] = useState(false)
+  const [showSortDropdown, setShowSortDropdown] = useState(false)
 
-  useEffect(()=>{
-    console.log(isTabTwo);
-  })
+  // useEffect(()=>{
+  //   console.log(isTabTwo);
+  // })
 
   const summary = [
     {
@@ -95,7 +99,7 @@ const Index = ({router}) => {
           </div>
 
           <div className="user-status">
-            <p>Promoter</p>
+            <Image src={userStatus} alt='user-status'/>
           </div>
         </div>
 
@@ -103,12 +107,22 @@ const Index = ({router}) => {
           <div className="dashboard-summary-header">
             <h3>Dashboard Summary</h3>
             
-            <div className="filter">
+            <div className="filter" onClick={() => setShowDropdown(!showDropdown)}>
               <p>Filter</p>
               <div className="arrow-drop">
-                <ArrowDown />
+                {showDropdown ? 
+                  <ArrowDown /> : <ArrowUp />
+                }
               </div>
             </div>
+            {showDropdown && (
+              <ul>
+                <li>Recent</li>
+                <li>A week ago</li>
+                <li>Less than 2 weeks</li>
+                <li>Last 30 days</li>
+              </ul>
+            )}
           </div>
 
           <div className="dashboard-summary-info">
@@ -150,12 +164,23 @@ const Index = ({router}) => {
             </div>
           </div>
           
-          <div className="sort-btn">
+          <div className="sort-btn" onClick={() => setShowSortDropdown(!showSortDropdown)}>
             <p>Sort</p>
             <div className="arrow">
-              <ArrowDown />
+              {showSortDropdown ? 
+                <ArrowDown /> : <ArrowUp />
+              }
             </div>
           </div>
+          {showSortDropdown && (
+            <ul>
+              <li>Recent</li>
+              <li>Two days ago</li>
+              <li>A week ago</li>
+              <li>Less than 2 weeks</li>
+              <li>Last 30 days</li>
+            </ul>
+          )}
         </div>
         <div className="tab-body">
           {isTabOne && <Recent />}

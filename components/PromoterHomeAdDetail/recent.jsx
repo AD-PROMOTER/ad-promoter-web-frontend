@@ -8,10 +8,27 @@ import aimIcon from '@/public/assets/aimIcon.png'
 import achievedIcon from '@/public/assets/achievedIcon.png'
 import priceIcon from '@/public/assets/priceIcon.png'
 import Image from 'next/image'
+import { useState,useRef,useEffect } from "react"
 import { StyledTabBody } from "./styles"
 
-const Recent = () => {
+const Recent = ({click}) => {
+    const [showReport, setShowReport] = useState(false)
+    const ref = useRef(null)
+    const onClickOutside = () => {
+        setShowReport(false)
+    }
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (ref.current && !ref.current.contains(event.target)) {
+                onClickOutside && onClickOutside();
+            }
+        }
+        document.addEventListener('click', handleClickOutside, true);
+        return () => {
+            document.removeEventListener('click', handleClickOutside, true);
+        }
 
+    }, [onClickOutside])
     const adTabs = [
         {
         id: 1,
@@ -65,15 +82,17 @@ const Recent = () => {
         ]
         
     return ( 
-        <StyledTabBody>
-
-                
+        <StyledTabBody>   
             {adTabs.map(({adtype,name,poster,aim,aimRate,achieved,achievedRate,price,priceRate,description,more,time,notifIcon,posterImg,copyAd,exportAd,addAd,aimIcon,achievedIcon,priceIcon,bg,linkbg})=>(
                 <div className="notifBox" key={adTabs.id} style={{backgroundColor: bg}}>
                     <div className="link-box">
                         <button style={{background: linkbg}}>{adtype}</button>
-                        <p><Image src={notifIcon} alt='
-                        notification icon' className="notifIcon" style={{height: 20, width: 20}} /></p>
+                        <div className='dot' onClick={()=> setShowReport(true)}>
+                            {showReport ? (<ul ref={ref}>
+                                <li>Report this advert</li>
+                                <li>Remove from feed</li>
+                            </ul>) : <Image src={notifIcon} alt="more"/>}
+                        </div>
                     </div>
 
                     <div className="adPost">
