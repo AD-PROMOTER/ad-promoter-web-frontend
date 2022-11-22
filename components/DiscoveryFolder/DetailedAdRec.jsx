@@ -21,10 +21,10 @@ const DetailedAdRec = ({click}) => {
 
   const ref = useRef(null)
  
+  const onClickOutside = () => {
+    setShowReport(false)
+  }
   useEffect(() => {
-    const onClickOutside = () => {
-      setShowReport(false)
-    }
     const handleClickOutside = (event) => {
       if (ref.current && !ref.current.contains(event.target)) {
         onClickOutside && onClickOutside();
@@ -34,7 +34,7 @@ const DetailedAdRec = ({click}) => {
         return () => {
             document.removeEventListener('click', handleClickOutside, true);
         }
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onClickOutside])
 
   return (
@@ -103,7 +103,7 @@ const DetailedAdRec = ({click}) => {
               <div className='recTime'>
                 <div>
                   <div className='recUser'>
-                    <Image src={item.userImg} width={20}/>
+                    <Image src={item.userImg} width={20} alt='product'/>
                     <div>{item.userName}</div>
                   </div>
                   <p>Posted {item.timePosted}</p>

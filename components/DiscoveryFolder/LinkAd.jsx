@@ -19,10 +19,10 @@ const LinkAd = ({click}) => {
         setIsReadMore(!isReadMore);
     };
 
+    const onClickOutside = () => {
+        setShowReport(false)
+    }
     useEffect(() => {
-        const onClickOutside = () => {
-            setShowReport(false)
-        }
         const handleClickOutside = (event) => {
             if (ref.current && !ref.current.contains(event.target)) {
                 onClickOutside && onClickOutside();
@@ -32,7 +32,7 @@ const LinkAd = ({click}) => {
         return () => {
             document.removeEventListener('click', handleClickOutside, true);
         }
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onClickOutside])
 
   return (
@@ -98,7 +98,7 @@ const LinkAd = ({click}) => {
                 <div className='time'>
                     <div>
                         <div className='user'>
-                            <Image src={item.userImg} width={20}/>
+                            <Image src={item.userImg} width={20} alt='user'/>
                             <div>{item.userName}</div>
                         </div>
                         <p>Posted {item.timePosted}</p>
