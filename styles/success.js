@@ -1,9 +1,15 @@
 import styled from 'styled-components';
 
 export const Overlay = styled.div`
+<<<<<<< HEAD
+  width: 63.4rem;
+  height: 65.5rem;
+  padding-top: 4rem;
+=======
   /* width: 63.4rem;
   height: 65.5rem; */
   padding: 4rem 0;
+>>>>>>> 920e43a4171c7c5bc8f3a410a862eabcf800dfa4
   .content {
     display: flex;
     flex-direction: column;

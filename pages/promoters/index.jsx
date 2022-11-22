@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+const index = () => {
+=======
 import { StyledHome, TabContainer } from "@/styles/promoters/home"
 import profile from '@/public/assets/home-profile.svg'
 import wave from '@/public/assets/wave-hands.svg'
@@ -79,6 +82,7 @@ const Index = ({router}) => {
   
 
 
+>>>>>>> 920e43a4171c7c5bc8f3a410a862eabcf800dfa4
   return (
     
     <StyledHome>

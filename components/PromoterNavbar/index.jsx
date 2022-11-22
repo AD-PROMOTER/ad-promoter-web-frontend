@@ -10,7 +10,6 @@ import { motion } from 'framer-motion'
 import { useContext } from 'react'
 import NotificationContext from '@/context/notificationContext'
 import NotificationContainer from '@/components/Notification/index'
-
 const Index = () => {
     const router = useRouter();
     const { isNotifClicked,setIsNotifClicked } = useContext(NotificationContext)
@@ -18,8 +17,7 @@ const Index = () => {
         animate: { width: '60px', transition: { duration: .5 } },
         stop: { width: 0 }
     };
-  return (
-    <div>
+    return (
         <StyledNavBar>
             <div className="logo">
                 <Link href='/promoters'>
@@ -56,8 +54,7 @@ const Index = () => {
                 <Image src={profile} alt='profile picture'/>
             </div>
         </StyledNavBar>
-    </div>
-  )
+    )
 }
 
 export default Index;
