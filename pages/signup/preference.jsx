@@ -25,7 +25,7 @@ const Preference = () => {
     router.prefetch('/signup/visualReq')
     setIsInputWithValue(!isInputWithValue)
 
-  }, [router])
+  }, [router,setIsInputWithValue,isInputWithValue])
   const handleChange = event => {
     setUserPref(event.target.value);
     setIsPrefWithValue(true)

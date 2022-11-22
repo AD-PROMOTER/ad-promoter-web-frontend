@@ -19,10 +19,10 @@ const DetailedAd = ({click}) => {
         setIsReadMore(!isReadMore);
     };
 
-    const onClickOutside = () => {
-        setShowReport(false)
-    }
     useEffect(() => {
+        const onClickOutside = () => {
+            setShowReport(false)
+        }
         const handleClickOutside = (event) => {
             if (ref.current && !ref.current.contains(event.target)) {
                 onClickOutside && onClickOutside();
@@ -101,7 +101,7 @@ const DetailedAd = ({click}) => {
                 <div className='time'>
                     <div>
                         <div className='user'>
-                            <Image src={item.userImg} width={20}/>
+                            <Image src={item.userImg} width={20} alt='product'/>
                             <div>{item.userName}</div>
                         </div>
                         <p>Posted {item.timePosted}</p>

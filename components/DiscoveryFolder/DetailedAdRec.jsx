@@ -20,16 +20,16 @@ const DetailedAdRec = ({click}) => {
   };
 
   const ref = useRef(null)
-  const onClickOutside = () => {
-        setShowReport(false)
-  }
-
+ 
   useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (ref.current && !ref.current.contains(event.target)) {
-                onClickOutside && onClickOutside();
-            }
-        }
+    const onClickOutside = () => {
+      setShowReport(false)
+    }
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        onClickOutside && onClickOutside();
+      }
+    }
         document.addEventListener('click', handleClickOutside, true);
         return () => {
             document.removeEventListener('click', handleClickOutside, true);

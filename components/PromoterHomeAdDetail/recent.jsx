@@ -14,10 +14,12 @@ import { StyledTabBody } from "./styles"
 const Recent = ({click}) => {
     const [showReport, setShowReport] = useState(false)
     const ref = useRef(null)
-    const onClickOutside = () => {
-        setShowReport(false)
-    }
+    
     useEffect(() => {
+        const onClickOutside = () => {
+            setShowReport(false)
+        }
+        
         const handleClickOutside = (event) => {
             if (ref.current && !ref.current.contains(event.target)) {
                 onClickOutside && onClickOutside();

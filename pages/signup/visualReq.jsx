@@ -32,7 +32,7 @@ const VisualReq = () => {
     useEffect(() => {
     router.prefetch('/signup/verification')
     setIsPrefWithValue(!isPrefWithValue)
-  }, [router])
+  }, [router,setIsPrefWithValue,isPrefWithValue])
   return (
     <BgContainer image={bg}>
         <Overlay className='overlay'>

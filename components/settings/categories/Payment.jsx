@@ -44,7 +44,7 @@ const Payment = () => {
                 <div className="card" onClick={handleSelected} style={{ backgroundColor: selected && '#DCE4FF', border: selected ? '0.2rem solid var(--light-blue)' : '0.145rem solid #DCE4FF' }}>
                     <div className="holder">
                         <div className="image-wrapper">
-                            <Image style={{ borderRadius: '3px' }} src={visa} height={50} width={50} objectFit='contain' />
+                            <Image style={{ borderRadius: '3px' }} src={visa} height={50} width={50} objectFit='contain' alt="visa"/>
                         </div>
                         
                         <div className="info">
@@ -62,7 +62,7 @@ const Payment = () => {
                 <div className="card" onClick={handleClick} style={{ backgroundColor: clicked && '#DCE4FF', border: clicked ? '0.2rem solid var(--light-blue)' : '0.145rem solid #DCE4FF' }}>
                     <div className="holder">
                         <div className="image-wrapper">
-                            <Image src={mastercard} height={50} width={50} objectFit='contain' />
+                            <Image src={mastercard} height={50} width={50} objectFit='contain' alt="master card"/>
                         </div>
 
                         <div className="info">

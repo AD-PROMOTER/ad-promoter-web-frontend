@@ -28,11 +28,11 @@ const VisualAd = ({click}) => {
         setIsReadMore(!isReadMore);
     };
 
-    const onClickOutside = () => {
-        setShowReport(false)
-    }
 
     useEffect(() => {
+        const onClickOutside = () => {
+            setShowReport(false)
+        }
         const handleClickOutside = (event) => {
             if (ref.current && !ref.current.contains(event.target)) {
                 onClickOutside && onClickOutside();
