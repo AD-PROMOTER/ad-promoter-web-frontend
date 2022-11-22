@@ -1,3 +1,4 @@
+// eslint-disable-next-line react-hooks/exhaustive-deps
 import bg from '@/public/assets/onboard-bg.svg'
 import Close from '@/public/assets/close-icon'
 import Image from "next/image"
@@ -25,7 +26,7 @@ const Preference = () => {
     router.prefetch('/signup/visualReq')
     setIsInputWithValue(!isInputWithValue)
 
-  }, [router,setIsInputWithValue,isInputWithValue])
+  }, [router])
   const handleChange = event => {
     setUserPref(event.target.value);
     setIsPrefWithValue(true)

@@ -1,3 +1,4 @@
+// eslint-disable-next-line react-hooks/exhaustive-deps
 import { BgContainer } from '@/components/onboardingBg/styles'
 import { Overlay } from '@/styles/visualReq.styles'
 import Close from '@/public/assets/close-icon'
@@ -32,7 +33,7 @@ const VisualReq = () => {
     useEffect(() => {
     router.prefetch('/signup/verification')
     setIsPrefWithValue(!isPrefWithValue)
-  }, [router,setIsPrefWithValue,isPrefWithValue])
+  }, [router])
   return (
     <BgContainer image={bg}>
         <Overlay className='overlay'>
