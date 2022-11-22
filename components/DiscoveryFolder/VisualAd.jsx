@@ -29,10 +29,10 @@ const VisualAd = ({click}) => {
     };
 
 
-    const onClickOutside = () => {
-        setShowReport(false)
-    }
     useEffect(() => {
+        const onClickOutside = () => {
+            setShowReport(false)
+        }
         const handleClickOutside = (event) => {
             if (ref.current && !ref.current.contains(event.target)) {
                 onClickOutside && onClickOutside();
@@ -42,8 +42,7 @@ const VisualAd = ({click}) => {
         return () => {
             document.removeEventListener('click', handleClickOutside, true);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [onClickOutside])
+    }, [])
 
     const handleShowPaste = () => {
         setShowSubmit(false)
