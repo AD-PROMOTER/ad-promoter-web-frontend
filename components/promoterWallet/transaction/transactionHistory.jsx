@@ -9,6 +9,7 @@ import { TransactionHistoryStyles } from '../styles/transaction';
 import Transaction from './transaction';
 import { TransactionStyles } from '../styles/transaction';
 import TransactionDropdown from './transactionDropdown';
+import ScrollContainer from 'react-indiana-drag-scroll'
 
 const transactionsData = [
   {
@@ -71,7 +72,7 @@ const TransactionHistory = () => {
           </div>
         </button>
       </div>
-      <div className="transactionContainer">
+      <ScrollContainer className="transactionContainer">
         {/* <TransactionDropdown/> */}
         {transactionsData.map((transactionData, i) => (
           <>
@@ -132,7 +133,7 @@ const TransactionHistory = () => {
             )}
           </>
         ))}
-      </div>
+      </ScrollContainer>
     </TransactionHistoryStyles>
   );
 };

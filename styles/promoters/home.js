@@ -4,13 +4,14 @@ export const StyledHome = styled.div`
   padding: 4rem 5.3rem 1.2rem 3.7rem;
   display: flex;
   gap: 3.18rem;
-  height: 100%;
+  height: 100vh;
   .home-dashboard {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 3.6rem;
     width: 88.5rem;
+    cursor: grab;
     .welcome {
       background: #ffffff;
       border-radius: 10px;
@@ -265,5 +266,6 @@ export const TabContainer = styled.div`
   }
   .tab-body {
     width: 100%;
+    cursor: grab;
   }
 `;

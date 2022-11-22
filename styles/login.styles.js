@@ -84,10 +84,7 @@ export const Overlay = styled.div`
           outline: none;
           width: 52.8rem;
           height: 5.6rem;
-<<<<<<< HEAD
-=======
           padding-left: 2rem;
->>>>>>> 920e43a4171c7c5bc8f3a410a862eabcf800dfa4
         }
       }
       .password {
@@ -110,10 +107,7 @@ export const Overlay = styled.div`
               display: flex;
               align-items: center;
               gap: 0.6rem;
-<<<<<<< HEAD
-=======
               cursor: pointer;
->>>>>>> 920e43a4171c7c5bc8f3a410a862eabcf800dfa4
               p {
                 font-weight: 400;
                 font-size: 1.8rem;

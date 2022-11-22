@@ -5,11 +5,11 @@ import { useContext } from "react";
 import PreferenceContext from '@/context/preferenceContext'
 const Index = ({text,path}) => {
   const router = useRouter();
-  const {isInputWithValue} = useContext(PreferenceContext)
+  const {isInputWithValue,isPrefWithValue,isVisualVerificationWithValue,isLoginInputWithValue} = useContext(PreferenceContext)
   return (
     <StyledBtn>
       {router.pathname.startsWith('/signup') || router.pathname === '/login' ? (
-        <button className={isInputWithValue ? 'btn-lg' : 'btn-lg-inactive'} type="submit">
+        <button className={isInputWithValue || isPrefWithValue || isVisualVerificationWithValue || isLoginInputWithValue ? 'btn-lg' : 'btn-lg-inactive'} type="submit">
           {text}
         </button>
       ):(

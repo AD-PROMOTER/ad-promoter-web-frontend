@@ -50,6 +50,7 @@ export const TransactionHistoryStyles = styled.div`
     overflow-y: scroll;
     height: 30rem;
     background: #f4f4f4;
+    cursor: grab;
   }
 `;
 

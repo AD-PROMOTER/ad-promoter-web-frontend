@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Filterstyled = styled.div`
   background-color: var(--white);
   width: 100%;
-  position: sticky;
+  /* position: sticky; */
 
   .searchFilter {
     display: flex;
@@ -54,12 +54,13 @@ export const Filterstyled = styled.div`
       border-radius: 0.8rem;
       box-shadow: var(--shadow-1);
       width: 25rem;
-      z-index: 10;
+      z-index: 100;
 
       li {
         padding: 1.2rem 2.4rem;
         border-bottom: 0.1rem solid #d9d9d9;
         cursor: pointer;
+        /* z-index: 100; */
       }
     }
   }
@@ -438,7 +439,9 @@ export const Feed = styled.div`
 export const DiscoveryContainer = styled.div`
   .scroll-container {
     height: 100vh;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
+    cursor: grab;
+    overflow: auto;
     &::-webkit-scrollbar {
       display: none;
     }

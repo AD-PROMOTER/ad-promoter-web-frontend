@@ -16,6 +16,7 @@ import ArrowDown from "@/public/assets/arrow-down"
 import ArrowUp from "@/public/assets/arrow-up"
 import { useEffect,useState } from "react"
 import userStatus from '@/public/assets/promoters-logo.svg'
+import ScrollContainer from 'react-indiana-drag-scroll'
 
 const Index = ({router}) => {
 
@@ -83,8 +84,7 @@ const Index = ({router}) => {
     
     <StyledHome>
 
-      <div className="home-dashboard">
-
+      <ScrollContainer className="home-dashboard">
         <div className="welcome">
           <div className="profile-img">
             <Image src={profile} alt='profile picture'/>
@@ -140,7 +140,7 @@ const Index = ({router}) => {
           </div>
         </div>
 
-      </div>
+      </ScrollContainer>
 
       <TabContainer>
         <div className="tab-head">
@@ -182,10 +182,10 @@ const Index = ({router}) => {
             </ul>
           )}
         </div>
-        <div className="tab-body">
+        <ScrollContainer className="tab-body">
           {isTabOne && <Recent />}
           {isTabTwo && <SavedJobs />}
-        </div>
+        </ScrollContainer>
       </TabContainer>
 
 

@@ -1,6 +1,6 @@
 // import Head from 'next/head'
 import Link from 'next/link';
-import logo from '@/public/assets/ad-logo.svg';
+import logo from '@/public/assets/onboarding-logo.svg';
 import Image from 'next/image';
 import hero from '@/public/assets/onboarding-hero.svg';
 import SocialBtn from '@/components/socialMediaBtn/index';
