@@ -7,6 +7,7 @@ export const NotificationModalContainer = styled.div`
   width: 100vw;
   height: 1060px; //Would change it later
   background: rgba(0, 0, 0, 0.25);
+  z-index: 1000;
   .notification-modal {
     background: #f7f7f7;
     border-radius: 10px;
