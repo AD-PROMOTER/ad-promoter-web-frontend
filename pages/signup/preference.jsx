@@ -1,7 +1,7 @@
 import bg from '@/public/assets/onboard-bg.svg'
 import Close from '@/public/assets/close-icon'
 import Image from "next/image"
-import logo from '@/public/assets/onboard-logo.svg'
+import logo from '@/public/assets/newOnboardLogo.svg'
 import Button from '@/components/authBtn/index'
 import { useRouter } from "next/router"
 import { BgContainer } from '@/components/onboardingBg/styles'
@@ -11,7 +11,7 @@ import { useContext } from "react";
 import PreferenceContext from '@/context/preferenceContext'
 
 const Preference = () => {
-  const {userPref,setUserPref} = useContext(PreferenceContext)
+  const {userPref,setUserPref,setIsPrefWithValue,setIsInputWithValue,isInputWithValue} = useContext(PreferenceContext)
   const router = useRouter();
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -23,20 +23,15 @@ const Preference = () => {
   }
   useEffect(() => {
     router.prefetch('/signup/visualReq')
+    setIsInputWithValue(!isInputWithValue)
+
   }, [router])
   const handleChange = event => {
     setUserPref(event.target.value);
+    setIsPrefWithValue(true)
   };
   return (
     <BgContainer image={bg}>
-      {/* <Image 
-        src={bg}
-        alt='background image'
-        layout="fill"
-        objectFit="cover"
-        objectPosition="center"
-        className='landing-image'
-      /> */}
       <Overlay className="overlay">
         <div className="close" onClick={()=>router.back()}>
           <Close />
@@ -55,7 +50,7 @@ const Preference = () => {
                 id="place" 
                 value='place' 
                 name='pref'
-                checked={userPref === 'place'}
+                // checked={userPref === 'place'}
                 onChange={handleChange}
                 />
               <label htmlFor="place">Place ads</label>
@@ -66,7 +61,7 @@ const Preference = () => {
                 id="promote" 
                 value='promote' 
                 name='pref'
-                checked={userPref === 'promote'}
+                // checked={userPref === 'promote'}
                 onChange={handleChange}
                 />
               <label htmlFor='promote'>Promote ads</label>

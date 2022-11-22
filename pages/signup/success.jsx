@@ -1,9 +1,9 @@
 import { BgContainer } from "@/components/onboardingBg/styles"
 import bg from '@/public/assets/onboard-bg.svg'
 import { Overlay } from "@/styles/success"
-import logo from '@/public/assets/onboard-logo.svg'
+import logo from '@/public/assets/newOnboardLogo.svg'
 import Image from "next/image"
-import successMark from '@/public/assets/Rectangle.svg'
+import successMark from '@/public/assets/success-mark.gif'
 import { useContext } from "react";
 import PreferenceContext from "@/context/preferenceContext"
 import { useRouter } from "next/router"
@@ -21,14 +21,6 @@ const Success = () => {
   }
   return (
     <BgContainer image={bg}>
-        {/* <Image 
-          src={bg}
-          alt='background image'
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
-          className='landing-image'
-        /> */}
         <Overlay className="overlay">
             <Image src={logo} alt='ad-promoter'/>
             <div className="content">

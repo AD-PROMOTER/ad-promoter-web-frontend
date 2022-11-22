@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import {  StyledNavBar } from './style'
 import { links } from './links'
-import logo from '@/public/assets/logo.svg'
+import logo from '@/public/assets/newLogo.svg'
 import notif from '@/public/assets/notif.svg'
 import profile from '@/public/assets/Profil.svg'
 import { useRouter } from 'next/router'
@@ -17,44 +17,44 @@ const Index = () => {
         animate: { width: '60px', transition: { duration: .5 } },
         stop: { width: 0 }
     };
-  return (
-    <StyledNavBar>
-        <div className="logo">
-            <Link href='/promoters'>
-                <a>
-                    <Image src={logo} alt='ad-promoter'/>
-                </a>
-            </Link>
-        </div>
-
-        <div className="links">
-            {links.map(({name,link})=>(
-                <div className="link" key={link}>
-                    <Link href={link}>
-                        <a className={router.pathname === link ? "activeLink" : ""}>{name}</a>
-                    </Link>
-                    <motion.div 
-                        className={router.pathname === link ? "bottom-dash" : ""}
-                        variants={variants}
-                        animate={router.pathname === link ? 'animate' : 'stop'}
-                    ></motion.div>
-                </div>
-            ))}
-        </div>
-
-        <div className="profile">
-            <div className="notif" onClick={()=>setIsNotifClicked(!isNotifClicked)}>
-                <div className="notif-img">
-                    <Image src={notif} alt='notification bell'/>
-                </div>
-                {isNotifClicked &&(
-                    <NotificationContainer />
-                )}
+    return (
+        <StyledNavBar>
+            <div className="logo">
+                <Link href='/promoters'>
+                    <a>
+                        <Image src={logo} alt='ad-promoter'/>
+                    </a>
+                </Link>
             </div>
-            <Image src={profile} alt='profile picture'/>
-        </div>
-    </StyledNavBar>
-  )
+
+            <div className="links">
+                {links.map(({name,link})=>(
+                    <div className="link" key={link}>
+                        <Link href={link}>
+                            <a className={router.pathname === link ? "activeLink" : ""}>{name}</a>
+                        </Link>
+                        <motion.div 
+                            className={router.pathname === link ? "bottom-dash" : ""}
+                            variants={variants}
+                            animate={router.pathname === link ? 'animate' : 'stop'}
+                        ></motion.div>
+                    </div>
+                ))}
+            </div>
+
+            <div className="profile">
+                <div className="notif" onClick={()=>setIsNotifClicked(!isNotifClicked)}>
+                    <div className="notif-img">
+                        <Image src={notif} alt='notification bell'/>
+                    </div>
+                    {isNotifClicked &&(
+                        <NotificationContainer />
+                    )}
+                </div>
+                <Image src={profile} alt='profile picture'/>
+            </div>
+        </StyledNavBar>
+    )
 }
 
 export default Index;

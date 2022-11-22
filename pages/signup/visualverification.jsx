@@ -6,20 +6,21 @@ import Copy from '@/public/assets/copy-icon'
 import { useRouter } from 'next/router'
 import { StyledContent } from "@/styles/visualverification.styled"
 import Image from "next/image"
-import logo from '@/public/assets/onboard-logo.svg'
+import logo from '@/public/assets/newOnboardLogo.svg'
 import Button from '@/components/authBtn/index'
 import { useContext, useEffect, useState } from "react"
 import PreferenceContext from "@/context/preferenceContext"
 const Visualverification = () => {
-    const {setIsInputWithValue} = useContext(PreferenceContext)
+    const {setIsVisualVerificationWithValue,isPrefWithValue,setIsPrefWithValue} = useContext(PreferenceContext)
     const [inputValue,setInputValue] = useState('')
     const router = useRouter()
 
     useEffect(() =>{
+        setIsPrefWithValue(false)
         if(inputValue !== ''){
-            setIsInputWithValue(true)
+            setIsVisualVerificationWithValue(true)
         }else{
-            setIsInputWithValue(false)
+            setIsVisualVerificationWithValue(false)
         }
     })
     const handleClick = () =>{
