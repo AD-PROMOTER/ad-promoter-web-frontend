@@ -1,6 +1,6 @@
 import profile from '../../public/assets/Profil.svg';
-import rabbitImage from '../../public/assets/component-66.png';
-import spaceImage from '../../public/assets/component-69.png';
+import rabbitImage from '@/public/assets/Component-66.png';
+import spaceImage from '@/public/assets/Component-69.png';
 
 export const directlinkAd = [
   {
