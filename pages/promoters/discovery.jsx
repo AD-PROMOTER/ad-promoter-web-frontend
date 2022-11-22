@@ -1,8 +1,9 @@
-// import Sidebar from "@/components/PromoterSidebar/index"
+import DiscoveryPage from "@/components/DiscoveryFolder/DiscoveryPage"
+
 const discovery = () => {
   return (
-    <div className="dummy">
-      <p>Welcome to Discover</p>  
+    <div>
+      <DiscoveryPage />
     </div>
   )
 }
