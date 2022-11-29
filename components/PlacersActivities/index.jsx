@@ -23,7 +23,9 @@ const PlacersActivities = () => {
       const data = [...rowData]
       const rows = data.filter(item => !item.value)
       setRowData(rows)
-      setShowBackdrop(true)
+      if (rows.length !== data.length) {
+        setShowBackdrop(true)
+      }
     }
 
     
