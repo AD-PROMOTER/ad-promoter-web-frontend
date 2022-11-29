@@ -1,7 +1,8 @@
+import PlacersActivities from "@/components/PlacersActivities"
 
 const Activities = () => {
     return (
-      <div>activities</div>
+      <PlacersActivities />
     )
   }
   
