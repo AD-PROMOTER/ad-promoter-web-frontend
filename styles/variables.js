@@ -49,5 +49,8 @@ export const VariableStyle = createGlobalStyle`
         --shadow-6: 0px 1px 4px rgba(103, 127, 214, 0.15);
         
         --font-family: 'Poppins', sans-serif;
+        --font-family-1: 'Inter', sans-serif;
+        --font-family-2: 'Open Sans', sans-serif;
+
     }
 `;
