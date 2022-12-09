@@ -1,5 +1,5 @@
 import { BgContainer } from "@/components/onboardingBg/styles"
-import bg from '@/public/assets/onboard-bg.svg'
+import bg from '@/public/assets/onboard-bg.jpg'
 import { Overlay } from "@/styles/login.styles"
 import Close from '@/public/assets/close-icon'
 import Image from "next/image"
@@ -39,7 +39,7 @@ const Login = () => {
   return (
     <BgContainer image={bg}>
       <Overlay className='overlay'>
-        <div className="close" onClick={()=>router.back()}>
+        <div className="close" onClick={()=>router.push('/')}>
           <Close />
         </div>
         <div className="content">

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Overlay = styled.div`
   /* width: 79.5rem;
     height: 81.1rem; */
-  padding: 4rem 13rem;
+  padding: 3rem 13rem;
   .content {
     display: flex;
     flex-direction: column;

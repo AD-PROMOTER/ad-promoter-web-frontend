@@ -9,6 +9,13 @@ export const Overlay = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 4rem;
+    .img {
+      width: 19.3rem;
+      height: 19.4rem;
+      img {
+        width: 100%;
+      }
+    }
     h3 {
       font-weight: 600;
       font-size: 2.4rem;

@@ -1,4 +1,4 @@
-import { StyledHome, TabContainer } from "@/styles/promoters/home"
+import { StyledHome, StyledHomeContainer, TabContainer } from "@/styles/promoters/home"
 import profile from '@/public/assets/home-profile.svg'
 import wave from '@/public/assets/wave-hands.svg'
 import filter from '@/public/assets/filter-icon.svg'
@@ -27,9 +27,6 @@ const Index = ({router}) => {
   const [showDropdown, setShowDropdown] = useState(false)
   const [showSortDropdown, setShowSortDropdown] = useState(false)
 
-  // useEffect(()=>{
-  //   console.log(isTabTwo);
-  // })
 
   const summary = [
     {
@@ -81,116 +78,114 @@ const Index = ({router}) => {
 
 
   return (
-    
-    <StyledHome>
+    <StyledHomeContainer>
 
-      <ScrollContainer className="home-dashboard">
-        <div className="welcome">
-          <div className="profile-img">
-            <Image src={profile} alt='profile picture'/>
-          </div>
+      <StyledHome>
+        <ScrollContainer className="home-dashboard">
+          <div className="welcome">
+            <div className="profile-img">
+              <Image src={profile} alt='profile picture'/>
+            </div>
 
-          <div className="user-details">
-            <p>Hi, Skylar Dias</p>
-            <div className="sub-user-details">
-              <Image src={wave} alt='hands waving'/>
-              <p>Welcome back!</p>
+            <div className="user-details">
+              <p>Hi, Skylar Dias</p>
+              <div className="sub-user-details">
+                <Image src={wave} alt='hands waving'/>
+                <p>Welcome back!</p>
+              </div>
+            </div>
+
+            <div className="user-status">
+              <Image src={userStatus} alt='user-status'/>
             </div>
           </div>
 
-          <div className="user-status">
-            <Image src={userStatus} alt='user-status'/>
-          </div>
-        </div>
+          <div className="dashboard-summary">
+            <div className="dashboard-summary-header">
+              <h3>Dashboard Summary</h3>
+              
+              <div className="filter" onClick={() => setShowDropdown(!showDropdown)}>
+                <p>Filter</p>
+                <div className="arrow-drop">
+                  {showDropdown ? 
+                    <ArrowDown /> : <ArrowUp />
+                  }
+                </div>
+              </div>
+              {showDropdown && (
+                <ul>
+                  <li>Recent</li>
+                  <li>A week ago</li>
+                  <li>Less than 2 weeks</li>
+                  <li>Last 30 days</li>
+                </ul>
+              )}
+            </div>
 
-        <div className="dashboard-summary">
-          <div className="dashboard-summary-header">
-            <h3>Dashboard Summary</h3>
+            <div className="dashboard-summary-info">
+              {summary.map(({icon,name,price,bg})=>(
+                <div className="dashboard-summary-info-item" key={name} style={{backgroundColor: bg}} >
+                  <div className="dashboard-summary-info-item-child">
+                    <div className="title">
+                      <Image src={icon} alt={`${icon} icon`}/>
+                      <p>{name}</p>
+                    </div>
+                    <h3>{price}</h3>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </ScrollContainer>
+
+        <TabContainer>
+          <div className="tab-head">
+            <div className="tab-container">
+              <div className="tab">
+                <Link href={{ pathname: "/promoters", query: { tab: "recent" } }}>
+                  <a className={isTabOne ? 'active' : ''}>Recent</a>
+                </Link>
+                {isTabOne && (
+                  <div className="bottom-dash"></div>
+                )}
+              </div>
+
+              <div className="tab">
+                <Link href={{ pathname: "/promoters", query: { tab: "saved jobs" } }}>
+                  <a className={isTabTwo ? 'active' : ''}>Saved Jobs</a>
+                </Link>
+                {isTabTwo && (
+                  <div className="bottom-dash"></div>
+                )}
+              </div>
+            </div>
             
-            <div className="filter" onClick={() => setShowDropdown(!showDropdown)}>
-              <p>Filter</p>
-              <div className="arrow-drop">
-                {showDropdown ? 
+            <div className="sort-btn" onClick={() => setShowSortDropdown(!showSortDropdown)}>
+              <p>Sort</p>
+              <div className="arrow">
+                {showSortDropdown ? 
                   <ArrowDown /> : <ArrowUp />
                 }
               </div>
             </div>
-            {showDropdown && (
+            {showSortDropdown && (
               <ul>
                 <li>Recent</li>
+                <li>Two days ago</li>
                 <li>A week ago</li>
                 <li>Less than 2 weeks</li>
                 <li>Last 30 days</li>
               </ul>
             )}
           </div>
-
-          <div className="dashboard-summary-info">
-            {summary.map(({icon,name,price,bg})=>(
-              <div className="dashboard-summary-info-item" key={name} style={{backgroundColor: bg}} >
-                <div className="dashboard-summary-info-item-child">
-                  <div className="title">
-                    <Image src={icon} alt={`${icon} icon`}/>
-                    <p>{name}</p>
-                  </div>
-                  <h3>{price}</h3>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-      </ScrollContainer>
-
-      <TabContainer>
-        <div className="tab-head">
-          <div className="tab-container">
-            <div className="tab">
-              <Link href={{ pathname: "/promoters", query: { tab: "recent" } }}>
-                <a className={isTabOne ? 'active' : ''}>Recent</a>
-              </Link>
-              {isTabOne && (
-                <div className="bottom-dash"></div>
-              )}
-            </div>
-
-            <div className="tab">
-              <Link href={{ pathname: "/promoters", query: { tab: "saved jobs" } }}>
-                <a className={isTabTwo ? 'active' : ''}>Saved Jobs</a>
-              </Link>
-              {isTabTwo && (
-                <div className="bottom-dash"></div>
-              )}
-            </div>
-          </div>
-          
-          <div className="sort-btn" onClick={() => setShowSortDropdown(!showSortDropdown)}>
-            <p>Sort</p>
-            <div className="arrow">
-              {showSortDropdown ? 
-                <ArrowDown /> : <ArrowUp />
-              }
-            </div>
-          </div>
-          {showSortDropdown && (
-            <ul>
-              <li>Recent</li>
-              <li>Two days ago</li>
-              <li>A week ago</li>
-              <li>Less than 2 weeks</li>
-              <li>Last 30 days</li>
-            </ul>
-          )}
-        </div>
-        <ScrollContainer className="tab-body">
-          {isTabOne && <Recent />}
-          {isTabTwo && <SavedJobs />}
-        </ScrollContainer>
-      </TabContainer>
-
-
-      
-    </StyledHome>
+          <ScrollContainer className="tab-body">
+            {isTabOne && <Recent />}
+            {isTabTwo && <SavedJobs />}
+          </ScrollContainer>
+        </TabContainer>
+      </StyledHome>
+    </StyledHomeContainer>
   )
 }
 

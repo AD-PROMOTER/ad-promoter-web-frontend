@@ -7,9 +7,9 @@ export const BgContainer = styled.div`
     ),
     url(${(props) => props.image.src});
   width: 100%;
-  height: 102.4rem;
-  /* background-size: cover;
-    background-repeat: no-repeat; */
+  min-height: 102.4rem;
+  background-size: cover;
+  background-repeat: no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -39,6 +39,12 @@ export const BgContainer = styled.div`
     .close {
       position: absolute;
       right: 3.2rem;
+      top: 3.2rem;
+      cursor: pointer;
+    }
+    .back {
+      position: absolute;
+      left: 3.5rem;
       top: 3.2rem;
       cursor: pointer;
     }

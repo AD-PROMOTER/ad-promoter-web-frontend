@@ -34,8 +34,11 @@ const WalletStyles = styled.div`
   border-radius: 0.6rem;
   padding: 1.5rem;
   height: fit-content;
+  max-width: 42.8rem;
+  /* height: 486px; */
   position: relative;
   // z-index: -1;
+  /* display: flex; */
 
   .intro {
     display: flex;

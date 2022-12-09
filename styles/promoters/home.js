@@ -1,10 +1,16 @@
 import styled from 'styled-components';
 
+export const StyledHomeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 export const StyledHome = styled.div`
   padding: 4rem 5.3rem 1.2rem 3.7rem;
   display: flex;
   gap: 3.18rem;
   height: 100vh;
+  /* margin: auto; */
   .home-dashboard {
     display: flex;
     flex-direction: column;
@@ -120,6 +126,7 @@ export const StyledHome = styled.div`
           box-shadow: var(--shadow-1);
           width: 28rem;
           z-index: 10;
+
           li {
             padding: 1.2rem 2.4rem;
             border-bottom: 0.1rem solid #dbd8fc;
@@ -192,6 +199,7 @@ export const TabContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    position: relative;
     .tab-container {
       display: flex;
       flex-direction: row;
@@ -247,8 +255,8 @@ export const TabContainer = styled.div`
     ul {
       background-color: var(--white);
       position: absolute;
-      top: 17rem;
-      right: 5rem;
+      top: 5rem;
+      right: 0rem;
       border-radius: 1.2rem;
       box-shadow: var(--shadow-1);
       width: 18rem;
@@ -262,6 +270,9 @@ export const TabContainer = styled.div`
         line-height: 2.1rem;
         color: #010101;
       }
+      /* @media screen and (min-width: 1716px) {
+        right: 23%;
+      } */
     }
   }
   .tab-body {

@@ -1,5 +1,5 @@
 // eslint-disable-next-line react-hooks/exhaustive-deps
-import bg from '@/public/assets/onboard-bg.svg'
+import bg from '@/public/assets/onboard-bg.png'
 import Close from '@/public/assets/close-icon'
 import Image from "next/image"
 import logo from '@/public/assets/newOnboardLogo.svg'
@@ -34,7 +34,7 @@ const Preference = () => {
   return (
     <BgContainer image={bg}>
       <Overlay className="overlay">
-        <div className="close" onClick={()=>router.back()}>
+        <div className="close" onClick={()=>router.push('/')}>
           <Close />
         </div>
         <div className="content">
