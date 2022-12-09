@@ -3,6 +3,7 @@ import Image from 'next/image';
 import close from '@/public/assets/close-circle.svg';
 import { SuccessStyle } from './styles';
 import Link from 'next/link';
+import Success from '@/public/assets/success-mark.gif'
 
 const SuccessModal = (props) => {
   return (
@@ -16,6 +17,9 @@ const SuccessModal = (props) => {
         <div className="container">
           <h2>Success!</h2>
           <div className="container__home">
+            <div className='success'>
+              <Image src={Success} alt='success'/>
+            </div>
             <p>
               Congrats, You have just sucessfully saved a new payment detail.
             </p>

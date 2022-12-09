@@ -15,10 +15,8 @@ const WithdrawDetailsModal = (props) => {
     <ModalContainer>
       <WithdrawalDetailsStyles>
         <div className="header">
-          <div className="header__content">
             <h2>Withdrawal Details</h2>
             <button onClick={toggleModals}>Edit</button>
-          </div>
         </div>
         <div className="withdrawal">
           <hr />

@@ -1,5 +1,5 @@
 // import Container from '@/components/onBoardBg/index'
-import bg from '@/public/assets/onboard-bg.svg'
+import bg from '@/public/assets/onboard-bg.png'
 import { Overlay } from '@/styles/signup'
 import Image from 'next/image'
 import logo from '@/public/assets/newOnboardLogo.svg'
@@ -14,6 +14,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState, useRef } from 'react'
 import { BgContainer } from '@/components/onboardingBg/styles'
 import { useContext } from "react";
+// import PasswordStrengthMeter from '@/components/passwordStrengthMeter/passwordStrengthMeter'
 import PreferenceContext from '@/context/preferenceContext'
 import PhoneInput,{ formatPhoneNumber, formatPhoneNumberIntl, isValidPhoneNumber,isPossiblePhoneNumber } from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
@@ -69,7 +70,7 @@ const Index = () => {
   return (
     <BgContainer image={bg}>
       <Overlay className='overlay'>
-        <div className="close" onClick={()=>router.back()}>
+        <div className="close" onClick={()=>router.push('/')}>
           <Close />
         </div>
         <div className="content">
@@ -144,7 +145,8 @@ const Index = () => {
                   required
                   value={userFormValue.password}
                   onChange={handleChange}
-                  />
+                />
+                {/* <PasswordStrengthMeter /> */}
               </div>
             </div>
 

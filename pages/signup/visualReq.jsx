@@ -2,7 +2,7 @@
 import { BgContainer } from '@/components/onboardingBg/styles'
 import { Overlay } from '@/styles/visualReq.styles'
 import Close from '@/public/assets/close-icon'
-import bg from '@/public/assets/onboard-bg.svg'
+import bg from '@/public/assets/onboard-bg.png'
 import Image from 'next/image'
 import logo from '@/public/assets/newOnboardLogo.svg'
 import Link from 'next/link'
@@ -11,6 +11,7 @@ import { useRouter } from "next/router"
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useContext } from "react";
+import BackArrow from '@/public/assets/back-arrow'
 import PreferenceContext from '@/context/preferenceContext'
 const VisualReq = () => {
     const [userVisualReq,setUserVisualReq] = useState('yes')
@@ -37,7 +38,10 @@ const VisualReq = () => {
   return (
     <BgContainer image={bg}>
         <Overlay className='overlay'>
-            <div className="close" onClick={()=>router.back()}>
+            <div className='back' onClick={()=>router.back()}>
+                <BackArrow />
+            </div>
+            <div className="close" onClick={()=>router.push('/')}>
                 <Close />
             </div> 
             <div className="content">

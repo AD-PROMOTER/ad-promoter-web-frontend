@@ -5,6 +5,8 @@ import { VariableStyle } from '@/styles/variables';
 import { PreferenceProvider } from '@/context/preferenceContext';
 import { NotificationProvider } from '@/context/notificationContext';
 import { DiscoveryGlobalStyle } from '@/styles/discoveryGlobal';
+// import 'bootstrap/dist/css/bootstrap.min.css'
+
 function MyApp({ Component, pageProps, router }) {
   if (router.pathname.startsWith('/promoters/settings')) {
     return (

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import WalletSummary from '@/components/promoterWallet/summary/walletSummary';
 import TransactionHistory from '@/components/promoterWallet/transaction/transactionHistory';
 import Wallet from '@/components/promoterWallet/wallet/wallet';
-import PromoterWalletStyles from '@/styles/promoterWallet';
+import PromoterWalletStyles, { PromoterWalletContainer } from '@/styles/promoterWallet';
 import ProcessWithdrawModal from '@/components/promoterModal/walletModals/WithdrawProcess';
 import WithdrawDetailsModal from '@/components/promoterModal/walletModals/WithdrawDetails';
 import WithdrawFundsModal from '@/components/promoterModal/walletModals/WithdrawFundsModal';
@@ -23,15 +23,17 @@ const PromoterWallet = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   return (
-    <div>
+    <PromoterWalletContainer>
       <PromoterWalletStyles>
-        <WalletSummary />
+        <div className='container'>
+          <WalletSummary />
+          <TransactionHistory />
+        </div>
         <Wallet
           onOpenWithdrawProcess={() => setShowWithdrawProcessModal(true)}
           show={showModal}
           onOpenPaymentDetailsModal={() => setShowPaymentDetailsModal(true)}
         />
-        <TransactionHistory />
       </PromoterWalletStyles>
       {showWithdrawProcessModal ? (
         <ProcessWithdrawModal
@@ -62,7 +64,7 @@ const PromoterWallet = () => {
       {showSuccessModal ? (
         <SuccessModal onClose={() => setShowSuccessModal(false)} />
       ) : null}
-    </div>
+    </PromoterWalletContainer>
   );
 };
 
