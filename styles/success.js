@@ -40,16 +40,14 @@ export const Overlay = styled.div`
       gap: 0.881rem;
       box-shadow: 0px 1px 4px rgba(103, 127, 214, 0.15);
       border-radius: 10.5727px;
-      background: #d3bff3;
+      /* background: #d3bff3; */
       font-weight: 700;
       font-size: 1.6rem;
       line-height: 1.9rem;
       text-align: center;
       color: #ffffff;
       cursor: pointer;
-      &:hover {
-        background: var(--primary);
-      }
+      background: var(--primary);
       &:active {
         background: #3d019d;
       }
