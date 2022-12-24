@@ -11,9 +11,9 @@ import arrowDown from '@/public/assets/arrow-down.svg'
 const Profile = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('+2348191014589');
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [profileModal, setProfileModal] = useState(false);
-    const [listValue, setListValue] = useState('English ( Default )')
+    const [listValue, setListValue] = useState('None')
     const [showDropdown, setShowDropdown] = useState(false)
     const [isChangesMade, setIsChangesMade] = useState(false)
 
@@ -89,10 +89,9 @@ const Profile = () => {
                     </div>
                     {showDropdown && (
                         <ul className="">
-                            <li onClick={ClickedList}>English ( Default )</li>
-                            <li onClick={ClickedList}>Spanish</li>
-                            <li onClick={ClickedList}>Greek</li>
-                            <li onClick={ClickedList}>Yoruba</li>
+                            <li onClick={ClickedList}>Male</li>
+                            <li onClick={ClickedList}>Female</li>
+                            <li onClick={ClickedList}>Others</li>
                         </ul>
                     )}
                 </div>

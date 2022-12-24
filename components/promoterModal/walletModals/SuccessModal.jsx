@@ -18,7 +18,7 @@ const SuccessModal = (props) => {
           <h2>Success!</h2>
           <div className="container__home">
             <div className='success'>
-              <Image src={Success} alt='success'/>
+              <Image src={Success} alt='success' unoptimized={true}/>
             </div>
             <p>
               Congrats, You have just sucessfully saved a new payment detail.

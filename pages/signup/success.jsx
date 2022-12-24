@@ -26,7 +26,11 @@ const Success = () => {
             <div className="content">
               <h3>Success!</h3>
               <div className="img">
-                <Image src={successMark} alt='success'/>
+                <Image 
+                  src={successMark} 
+                  alt='success'
+                  unoptimized={true}
+                />
               </div>
               <p>Congratulations, You have successfully created an account. Click on the link below to go home.</p>
               <div className="btn" onClick={handleSubmit}>Take me home</div>

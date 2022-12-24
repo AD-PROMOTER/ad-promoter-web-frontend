@@ -5,13 +5,17 @@ const ButtonStyles = styled.div`
   text-align: center;
 
   button {
-    background: #4f00ce;
-    padding: 1rem 1.5rem;
-    border-radius: 1rem;
+    background: var(--primary);
+    /* padding: 14.0969px 110.132px; */
+    width: 166.52px;
+    height: 47.19px;
+    box-shadow: 0px 1px 4px rgba(103, 127, 214, 0.15);
+    border-radius: 0.8rem;
     color: #fff;
     font-weight: 700;
-    line-height: 1.5rem;
-    width: 15.3rem;
+    font-size: 1.6rem;
+    line-height: 1.9rem;
+    /* width: 15.3rem; */
     cursor: pointer;
   }
 `;

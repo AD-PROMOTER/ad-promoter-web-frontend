@@ -77,7 +77,7 @@ const WithdrawFundsModal = (props) => {
             </button>
           </div>
           <div className="loading">
-            <Image src={SuccessMark} alt='success'/>
+            <Image src={SuccessMark} alt='success' unoptimized={true}/>
           </div>
           <div className="funds">
             <div className="funds__header">
