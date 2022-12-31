@@ -4,7 +4,7 @@ import Image from 'next/image';
 import trash from '@/public/assets/trash.svg';
 import profile from '@/public/assets/Profil.svg';
 import documentDownload from '@/public/assets/document-download.svg';
-import rightArrow from '@/public/assets/arrow-right.svg';
+import rightArrow from '@/public/assets/arrow-right';
 import { TransactionHistoryStyles } from '../styles/transaction';
 import Transaction from './transaction';
 import { TransactionStyles } from '../styles/transaction';
