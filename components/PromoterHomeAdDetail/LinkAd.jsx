@@ -113,15 +113,15 @@ const LinkAd = () => {
                 <div className="bottom">
                     <div className="user-details">
                         <div className="user-details-text">
-                            <Image src={item.userImg}/>
+                            <Image src={item.userImg} alt='user'/>
                             <h5>{item.userName}</h5>
                         </div>
                         <p>{item.timePosted}</p>
                     </div>
                     <div className="share-container">
-                        <Image src={exportLink}/>
-                        <Image src={download}/>
-                        <Image src={archive}/>
+                        <Image src={exportLink} alt='export'/>
+                        <Image src={download} alt='download'/>
+                        <Image src={archive} alt='archive'/>
                     </div>
                 </div>
             </Feed>

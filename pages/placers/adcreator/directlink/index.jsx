@@ -86,8 +86,8 @@ const Directlink = () => {
                     <label htmlFor="poductTag">3. Project tags (Up to 5)</label>
                     <div className="tag-input">
                         <div className="tag-container">
-                            {tags.map(({tag})=>(
-                                <div className="tag">
+                            {tags.map(({tag,index})=>(
+                                <div className="tag" key={index}>
                                     <h4>{tag}</h4>
                                     <div>
                                         <CloseCircle />

@@ -16,17 +16,16 @@ const VerificationModal = (props) => {
   const [otp4, setOtp4] = useState('');
   const [isInputWithValue, setIsInputWithValue] = useState(false);
 
-  const handleInputWithValue = () =>{
-    if(otp1 !== '' && otp2!== '' && otp3!== '' && otp4!==''){
-      setIsInputWithValue(true)
-    }else{
-      setIsInputWithValue(false)
-    }
-  }
-
   useEffect(()=>{
+    const handleInputWithValue = () =>{
+      if(otp1 !== '' && otp2!== '' && otp3!== '' && otp4!==''){
+        setIsInputWithValue(true)
+      }else{
+        setIsInputWithValue(false)
+      }
+    }
     handleInputWithValue()
-  },[handleInputWithValue])
+  },[])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
