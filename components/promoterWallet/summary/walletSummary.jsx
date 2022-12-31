@@ -23,9 +23,9 @@ const WalletSummary = () => {
     <WalletSummaryStyles>
       <div className="intro">
         <h1>Wallet Summary</h1>
-        <div className='intro__filter'>
+        <div className='intro__filter' onClick={toggleDropdown}>
           <p>Filter</p>
-          <Image src={chevronDown} alt="" className={openFilter ? "arrow rotate" : "arrow"} onClick={toggleDropdown}/>
+          <Image src={chevronDown} alt="" className={openFilter ? "arrow rotate" : "arrow"} />
         </div>
       </div>
       <div className="cardContainer">

@@ -2,7 +2,7 @@ import { StyledDirectLinkPayment } from '@/styles/placersCreator.styles'
 import React from 'react'
 import ProgressCheck from '@/public/assets/progress-check-1'
 import { useRouter } from 'next/router'
-const payment = () => {
+const Payment = () => {
     const router = useRouter()
     const handlePush = () =>{
         router.push('summary')
@@ -57,4 +57,4 @@ const payment = () => {
   )
 }
 
-export default payment
+export default Payment

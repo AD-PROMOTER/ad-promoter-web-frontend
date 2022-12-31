@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import AdPlacerContext from '@/context/adPlacerContext'
 import { useContext } from 'react'
 import CloudPlus from '@/public/assets/cloud-plus'
-const detailsad = () => {
+const Detailsad = () => {
     const router = useRouter()
     const {directLinkFormValue, setDirectLinkFormValue} = useContext(AdPlacerContext)
     const tags = [
@@ -97,8 +97,8 @@ const detailsad = () => {
                     <label htmlFor="poductTag">3. Project tags (Up to 5)</label>
                     <div className="tag-input">
                         <div className="tag-container">
-                            {tags.map(({tag})=>(
-                                <div className="tag">
+                            {tags.map(({tag,i})=>(
+                                <div className="tag" key={i}>
                                     <h4>{tag}</h4>
                                     <div>
                                         <CloseCircle />
@@ -150,4 +150,4 @@ const detailsad = () => {
   )
 }
 
-export default detailsad
+export default Detailsad

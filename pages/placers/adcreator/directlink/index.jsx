@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import AdPlacerContext from '@/context/adPlacerContext'
 import { useContext } from 'react'
-const directlink = () => {
+const Directlink = () => {
     const router = useRouter()
     const {directLinkFormValue, setDirectLinkFormValue} = useContext(AdPlacerContext)
     const tags = [
@@ -139,4 +139,4 @@ const directlink = () => {
   )
 }
 
-export default directlink
+export default Directlink

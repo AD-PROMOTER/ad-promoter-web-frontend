@@ -56,7 +56,7 @@ const ProcessWithdrawModal = (props) => {
           </button>
         </div>
         <form>
-          <h2>Withdraw Process</h2>
+          <h2>Process Withdrawal</h2>
           <div className="acct">
             <div className={firstBank ? "acct__container acct__bank1 acct__clicked" :"acct__container acct__bank1"} onClick={selectFirstBank}>
               <div className="acctDetails">
@@ -88,10 +88,10 @@ const ProcessWithdrawModal = (props) => {
             </div>
           </div>
           <div className="amountInput">
-            <label htmlFor="amount">Amount</label>
-            <div>
+            <div className='input-container'>
+              <label htmlFor="amount">Amount</label>
               <input
-                type="text"
+                type="number"
                 id="amount"
                 name="amount"
                 value={amount}
@@ -99,7 +99,10 @@ const ProcessWithdrawModal = (props) => {
                 onChange={handleChange}
               />
             </div>
-            <p className='balance'><span style={{color: "#9e9e9e"}}>BALANCE:</span> &#8358;200,000.35</p>
+            <div className="balance-container">
+              <p className='balance'> BALANCE:</p>
+              <p className='balance-amount'>₦200,000.35</p>
+            </div>
           </div>
           {/* <Button text="Withdraw" onOpen={onOpenWithdrawDetails} onClose={onCloseWithdrawProcess}/> */}
         </form>

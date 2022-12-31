@@ -999,12 +999,15 @@ const StyledProfile = styled.div`
 
   .blurred {
     left: 0;
+    position: absolute;
+    z-index: 10;
   }
 
   .photo-modal {
     width: 370px;
     padding: 1rem;
     margin-left: 7rem;
+    /* z-index: 100; */
 
     span {
       color: black;
@@ -1012,37 +1015,48 @@ const StyledProfile = styled.div`
   }
 
   .profile-details {
-    margin-top: 3rem;
-    width: 462px;
+    margin-top: 5rem;
+    width: 46.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.6rem;
+    /* z-index: -1; */
 
     .form-field {
       display: flex;
       flex-direction: column;
-      /* gap: 16px; */
-      margin-bottom: 3rem;
       position: relative;
+      width: 100%;
+      background: #ffffff;
+      box-shadow: 1.65263px 3.30526px 26.4421px rgba(0, 0, 0, 0.05);
+      border-radius: 0.991579rem;
+      padding: 0.661053rem 1.32211rem;
 
       label {
         font-size: 1.35rem;
         font-weight: 600;
         color: var(--dark-gray);
-        z-index: 100;
-        /* margin-left: 2re m; */
-        /* margin-bottom: 2rem; */
+        width: 100%;
       }
 
       input {
-        background: #ffffff;
-        box-shadow: 1.65263px 3.30526px 26.4421px rgba(0, 0, 0, 0.05);
-        border-radius: 9.91579px;
         width: 100%;
-        max-height: 53.22px;
-        padding: 2rem;
+        background-color: transparent;
         outline: none;
-        border: 1px solid #fff;
-        /* position: absolute;
-        top: -40%;
-        left: ; */
+        border: none;
+        font-weight: 700;
+        font-size: 1.23947rem;
+        line-height: 2rem;
+        letter-spacing: -0.011em;
+        color: var(--dark-gray-2);
+        &::placeholder {
+          font-weight: 600;
+          font-size: 1.15684rem;
+          line-height: 20rem;
+          letter-spacing: -0.011em;
+          color: #e0e0e0;
+        }
       }
     }
     .account-birth {
@@ -1069,12 +1083,6 @@ const StyledProfile = styled.div`
       }
     }
     .dropdownContainer {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 0px;
-      gap: 16px;
-      max-width: 40rem;
       h3 {
         font-weight: 600;
         font-size: 1.4rem;
@@ -1083,30 +1091,14 @@ const StyledProfile = styled.div`
         color: var(--black-1);
       }
       .dropdown {
-        /* display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1.6rem 2rem;
-        gap: 1rem;
-        background: #FFFFFF;
-        border: 1px solid #F5F5F7;
-        border-radius: 10px;
-        width: 100%; */
-        background: #ffffff;
-        box-shadow: 1.65263px 3.30526px 26.4421px rgba(0, 0, 0, 0.05);
-        border-radius: 9.91579px;
-        width: 100%;
-        max-height: 53.22px;
-        padding: 2rem;
-        outline: none;
-        border: 1px solid #fff;
         cursor: pointer;
+        position: relative;
         .inputText {
-          font-weight: 500;
-          font-size: 1.2rem;
-          line-height: 1.8rem;
-          letter-spacing: -0.02em;
-          color: var(--dark-gray);
+          font-weight: 700;
+          font-size: 1.15684rem;
+          line-height: 2rem;
+          letter-spacing: -0.01em;
+          color: #404040;
         }
       }
       ul {
@@ -1118,6 +1110,8 @@ const StyledProfile = styled.div`
         border-radius: 12px;
         width: 100%;
         cursor: pointer;
+        position: absolute;
+        top: 100%;
         li {
           border-bottom: 0.5px solid #dbd8fc;
           font-weight: 500;

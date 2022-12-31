@@ -5,7 +5,7 @@ import Arrow from '@/public/assets/arrow-3'
 import NairaIcon from '@/public/assets/naira-icon'
 import UserIcon from '@/public/assets/user-icon'
 import { useRouter } from 'next/router'
-const conversion = () => {
+const Conversion = () => {
     const router = useRouter()
     const handlePush = () =>{
         router.push('payment')
@@ -71,4 +71,4 @@ const conversion = () => {
   )
 }
 
-export default conversion;
+export default Conversion;

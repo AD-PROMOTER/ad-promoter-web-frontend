@@ -82,8 +82,8 @@ const Adcreator = () => {
       </div>
 
       <div className="creator-body">
-        {data.map(({productName,adType,aim,achieved,price,status,bg})=>(
-          <div className="item">
+        {data.map(({productName,adType,aim,achieved,price,status,bg,index})=>(
+          <div className="item" key={index}>
             <div className="item-details">
 
               <div className="product-name">

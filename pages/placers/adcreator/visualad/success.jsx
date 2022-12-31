@@ -2,7 +2,7 @@ import { StyledDirectLinkSuccess } from "@/styles/placersCreator.styles"
 import Image from "next/image"
 import sucess from '@/public/assets/success-mark.gif'
 import { useRouter } from "next/router"
-const success = () => {
+const Success = () => {
     const router = useRouter()
   return (
     <StyledDirectLinkSuccess>
@@ -26,4 +26,4 @@ const success = () => {
   )
 }
 
-export default success
+export default Success
