@@ -13,8 +13,10 @@ import document from '@/public/assets/document-text.svg'
 import video from '@/public/assets/video.svg'
 import ArrowRight from "@/public/assets/arrow-right"
 import CloseCircle from "@/public/assets/close-circle"
+import { useRouter } from "next/router"
 const Adcreator = () => {
   const [toPlace,setToPlace] = useState(false)
+  const router = useRouter()
 
   const handlePlace = () =>{
     setToPlace(!toPlace)
@@ -150,7 +152,7 @@ const Adcreator = () => {
               <p>Select one to continue.</p>
             </div>
             <div className="modal-body">
-              <div className="ad-type">
+              <div className="ad-type" onClick={()=>router.push('/placers/adcreator/directlink')}>
                 <Image src={link} alt='link'/>
                 <div className="vertical"></div>
                 <div className="ad-type-name">

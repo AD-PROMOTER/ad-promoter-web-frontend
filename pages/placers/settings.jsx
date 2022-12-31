@@ -1,8 +1,11 @@
+import Settings from "@/components/settings/Settings"
 
-const Settings = () => {
-  return (
-    <div>settings</div>
-  )
+const settings = () => {
+    return (
+        <div style={{ position: 'relative'  }} className="dummy">
+            <Settings />
+        </div>
+    )
 }
 
-export default Settings
+export default settings

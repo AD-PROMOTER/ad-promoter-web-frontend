@@ -385,6 +385,7 @@ export const StyledDirectLink = styled.div`
       /* background-color: red; */
       .product-name,
       .product-description,
+      .upload,
       .product-tag,
       .product-link,
       .product-content {
@@ -421,6 +422,35 @@ export const StyledDirectLink = styled.div`
           box-shadow: none;
           width: auto;
           background-color: white;
+        }
+
+        .upload-container {
+          border: 1px dashed #b3b3b3;
+          border-radius: 0.9rem;
+          background: #ffffff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 10rem;
+          .text-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0.8rem;
+            p {
+              font-weight: 400;
+              font-size: 1.2rem;
+              line-height: 1.8rem;
+              color: var(--dark-gray-2);
+              letter-spacing: -0.011em;
+              span {
+                color: var(--light-blue-1);
+                cursor: pointer;
+              }
+            }
+          }
         }
 
         .tag-input {
@@ -576,31 +606,31 @@ export const StyledDirectLinkConversion = styled.div`
   .modal {
     background: #ffffff;
     box-shadow: 0px 1px 4px rgba(103, 127, 214, 0.15);
-    border-radius: 10px;
-    width: 742px;
+    border-radius: 1rem;
+    width: 74.2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 38px;
+    gap: 3.8rem;
     height: 67.7rem;
     &-head {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 16px 0px;
-      gap: 4px;
+      padding: 1.6rem 0rem;
+      gap: 0.4rem;
       h4 {
         font-weight: 600;
-        font-size: 20px;
+        font-size: 2rem;
         line-height: 150%;
         letter-spacing: -0.02em;
         color: #000000;
       }
       p {
         font-weight: 400;
-        font-size: 14px;
-        line-height: 20px;
+        font-size: 1.4rem;
+        line-height: 2rem;
         letter-spacing: -0.011em;
         color: #404040;
         font-family: var(--font-family-2);
@@ -612,12 +642,13 @@ export const StyledDirectLinkConversion = styled.div`
       border-top: 6px solid var(--primary);
       box-shadow: 1.65263px 3.30526px 26.4421px rgba(0, 0, 0, 0.05);
       border-radius: 8px;
-      // width: 47.9rem;
-      width: 80%;
-      display: flex;
-      align-items: center;
+      width: 47.9rem;
+      padding-top: 8.5rem;
+      /* width: 80%; */
+      /* display: flex;
+      align-items: center; */
       height: 46.4rem;
-      padding: 2rem;
+      /* padding: 2rem; */
       &-item-container {
         display: flex;
         flex-direction: column;
@@ -628,18 +659,18 @@ export const StyledDirectLinkConversion = styled.div`
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 0.8rem;
+          gap: 0.4rem;
           h4 {
             font-weight: 600;
-            font-size: 14px;
-            line-height: 20px;
-            color: #333333;
+            font-size: 1.4rem;
+            line-height: 2rem;
+            color: var(--dark-gray);
             font-family: var(--font-family-2);
           }
           h3 {
             font-weight: 700;
-            font-size: 20px;
-            line-height: 20px;
+            font-size: 2rem;
+            line-height: 2rem;
             letter-spacing: -0.011em;
             color: #1a1a1a;
             font-family: var(--font-family-2);
@@ -649,20 +680,20 @@ export const StyledDirectLinkConversion = styled.div`
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          gap: 16px;
-          // width: 416px;
+          gap: 1.6rem;
+          width: 41.6rem;
           .head {
             display: flex;
             flex-direction: row;
             align-items: flex-start;
             padding: 0px;
-            gap: 190px;
+            gap: 19rem;
             h4 {
               font-weight: 600;
-              font-size: 14px;
-              line-height: 20px;
+              font-size: 1.4rem;
+              line-height: 2rem;
               letter-spacing: -0.011em;
-              color: #333333;
+              color: var(--dark-gray);
             }
           }
           .conversions-body {
@@ -670,20 +701,20 @@ export const StyledDirectLinkConversion = styled.div`
             justify-content: center;
             align-items: center;
             padding: 0px;
-            gap: 24px;
+            gap: 2.4rem;
             // width: 172px;
             .amount-conversion,
             .visitor-conversion {
               display: flex;
               flex-direction: row;
               align-items: center;
-              gap: 16px;
+              gap: 1.6rem;
               input {
                 background: #ffffff;
                 box-shadow: 1.65263px 3.30526px 26.4421px rgba(0, 0, 0, 0.05);
                 border-radius: 9.91579px;
                 width: 100%;
-                padding: 8px;
+                padding: 0.8rem;
                 border: 1px solid var(--white);
                 padding-left: 7rem;
               }
@@ -1013,16 +1044,27 @@ export const StyledDirectLinkSummary = styled.div`
       flex-direction: column;
       align-items: flex-start;
       margin: auto;
-      width: 500px;
-      gap: 24px;
+      width: 50rem;
+      gap: 2.4rem;
       .description,
       .web-address,
+      .product-img,
       .amount {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         padding: 0px;
-        gap: 8px;
+        gap: 0.8rem;
+        .img-container {
+          display: flex;
+          width: 60.5rem;
+          /* flex-wrap: wrap; */
+          /* background-color: red; */
+          gap: 1rem;
+          img {
+            width: 100%;
+          }
+        }
         h4 {
           font-weight: 600;
           font-size: 14px;

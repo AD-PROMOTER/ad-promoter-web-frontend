@@ -6,7 +6,8 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import AdPlacerContext from '@/context/adPlacerContext'
 import { useContext } from 'react'
-const directlink = () => {
+import CloudPlus from '@/public/assets/cloud-plus'
+const detailsad = () => {
     const router = useRouter()
     const {directLinkFormValue, setDirectLinkFormValue} = useContext(AdPlacerContext)
     const tags = [
@@ -25,7 +26,7 @@ const directlink = () => {
     ]
 
     const handlePush = () =>{
-        router.push('directlink/conversion')
+        router.push('detailsad/conversion')
     }
     // 'Foody','Food','Cake','Chocolate'
   return (
@@ -57,7 +58,7 @@ const directlink = () => {
 
         <div className="modal">
             <div className="modal-head">
-                <h4>Creating a Directlink Advert</h4>
+                <h4>Creating a Details Advert</h4>
                 <p>Kindly supply the following information.</p>
             </div>
             <form action="">
@@ -80,6 +81,16 @@ const directlink = () => {
                         id="productDescription"
                         value={directLinkFormValue.productDescription}
                         />
+                </div>
+
+                <div className="upload">
+                    <label htmlFor="upload"> 3. Upload Product images (Up to 5)</label>
+                    <div className="upload-container">
+                        <div className="text-container">
+                            <CloudPlus />
+                            <p>Drop files to upload or <span>browse</span></p>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="product-tag">
@@ -139,4 +150,4 @@ const directlink = () => {
   )
 }
 
-export default directlink
+export default detailsad

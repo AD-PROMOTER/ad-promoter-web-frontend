@@ -25,20 +25,20 @@ const conversion = () => {
 
         <div className="modal">
             <div className="modal-head">
-                <h4>Creating a Directlink Advert</h4>
+                <h4>Creating a Details Advert</h4>
                 <p>Use the Ad-Converter to determine the pricing</p>
             </div>
 
             <div className="modal-body">
                 <div className="modal-body-item-container">
                     <div className="text">
-                        <h4>Directlink Advert Rate</h4>
-                        <h3>₦25/Visitor</h3>
+                        <h4>Details Advert Rate</h4>
+                        <h3>₦50/Conversion</h3>
                     </div>
                     <div className="conversions">
                         <div className="head">
                             <h4>Amount</h4>
-                            <h4>Visitors</h4>
+                            <h4>Conversion</h4>
                         </div>
                         <div className="conversions-body">
                             <div className="amount-conversion">

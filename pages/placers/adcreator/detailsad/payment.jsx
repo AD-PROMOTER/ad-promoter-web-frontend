@@ -22,7 +22,7 @@ const payment = () => {
 
         <div className="modal">
             <div className="modal-head">
-                <h4>Creating a Directlink Advert</h4>
+                <h4>Creating a Details Advert</h4>
                 <p>Kindly input your card details</p>
             </div>
             <form action="">
