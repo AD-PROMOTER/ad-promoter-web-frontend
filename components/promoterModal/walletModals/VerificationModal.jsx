@@ -25,7 +25,7 @@ const VerificationModal = (props) => {
       }
     }
     handleInputWithValue()
-  },[])
+  },[otp1,otp2,otp3,otp4])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
