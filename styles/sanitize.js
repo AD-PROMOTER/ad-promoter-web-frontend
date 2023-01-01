@@ -345,6 +345,10 @@ textarea {
   padding: 0;
 }
 
+[type="radio"] {
+  -webkit-appearance: radio;
+}
+
 /**
  * 1. Correct the odd appearance in Chrome, Edge, and Safari.
  * 2. Correct the outline style in Safari.
@@ -547,4 +551,4 @@ textarea,
   clip: rect(0, 0, 0, 0);
   position: absolute;
 }
-`
+`;
