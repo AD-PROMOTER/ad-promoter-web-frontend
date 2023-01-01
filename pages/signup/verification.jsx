@@ -2,7 +2,7 @@ import { BgContainer } from "@/components/onboardingBg/styles"
 import { Overlay } from "@/styles/verification.styles"
 import logo from '@/public/assets/newLogo.svg'
 import Image from "next/image"
-import bg from '@/public/assets/onboard-bg.svg'
+import bg from '@/public/assets/onboard-bg.png'
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect } from "react"

@@ -9,8 +9,8 @@ import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 
 const Profile = () => {
-    const [name, setName] = useState('Skylar Diaz');
-    const [email, setEmail] = useState('skylardiaz@gmail.com');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('+2348191014589');
     const [profileModal, setProfileModal] = useState(false);
     const [listValue, setListValue] = useState('English ( Default )')
@@ -20,6 +20,7 @@ const Profile = () => {
     const ClickedList = (e) =>{
         setListValue(e.target.innerText)
         setIsChangesMade(true)
+        setShowDropdown(false)
     }
 
     const handleSaveChanges = (e) =>{
@@ -38,23 +39,6 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
-
-            {/* <div className="help-center-container">
-                <div className="question-mark">
-                    <span> ? </span>
-                </div>
-                
-                <div className="help-center">
-                    <div className="contents">
-                        <p> Help Center </p>
-                        <span> Having Trouble in Learning. <br /> Please contact us for more questions. </span>
-                    </div>
-
-                    <button> Go to Help Center </button>
-                    <div className="overlay" />
-                    <div className="overlay-2" />
-                </div>
-            </div> */}
 
             { profileModal && <div className="blurred" onClick={() => setProfileModal(false)} />}
 
@@ -79,7 +63,7 @@ const Profile = () => {
 
             <div className='profile-details'>
                 <div className='form-field account-name'>
-                    <label htmlFor="name" > Account Name </label>
+                    <label htmlFor="name">Account Name </label>
                     <input type='text' name='name' value={name} id='name' onChange={(e) => {setName(e.target.value),setIsChangesMade(true)}} />
                 </div>
 
@@ -95,12 +79,12 @@ const Profile = () => {
 
                 <div className='form-field account-birth'>
                     <label htmlFor="date" > Date Of Birth </label>
-                    <input type='date' name='date'  />
+                    <input type='date' name='date' placeholder="DD/MM/YYYY" />
                 </div>
 
-                <div className="dropdownContainer">
+                <div className="dropdownContainer form-field">
                     <h3>Gender</h3>
-                    <div className='dropdown form-field ' onClick={() => setShowDropdown(!showDropdown)}>
+                    <div className='dropdown' onClick={() => setShowDropdown(!showDropdown)}>
                         <p className='inputText'>{listValue}</p>
                     </div>
                     {showDropdown && (

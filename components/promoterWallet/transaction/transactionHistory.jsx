@@ -4,7 +4,7 @@ import Image from 'next/image';
 import trash from '@/public/assets/trash.svg';
 import profile from '@/public/assets/Profil.svg';
 import documentDownload from '@/public/assets/document-download.svg';
-import rightArrow from '@/public/assets/arrow-right.svg';
+import rightArrow from '@/public/assets/arrow-right';
 import { TransactionHistoryStyles } from '../styles/transaction';
 import Transaction from './transaction';
 import { TransactionStyles } from '../styles/transaction';
@@ -13,36 +13,42 @@ import ScrollContainer from 'react-indiana-drag-scroll'
 
 const transactionsData = [
   {
+    name: 'Skylar Dias',
     image: profile,
     date: 'Today',
     amount: '21,000.98',
     status: 'FAILED',
   },
   {
+    name: 'Skylar Dias',
     image: profile,
     date: 'Today',
     amount: '21,000.98',
     status: 'IN PROGRESS',
   },
   {
+    name: 'Skylar Dias',
     image: profile,
     date: 'Yesterday',
     amount: '21,000.98',
     status: 'COMPLETE',
   },
   {
+    name: 'Skylar Dias',
     image: profile,
     date: '21, sept, 2019 7:30AM',
     amount: '21,000.98',
     status: 'COMPLETE',
   },
   {
+    name: 'Skylar Dias',
     image: profile,
     date: '21, sept, 2019 7:30AM',
     amount: '21,000.98',
     status: 'COMPLETE',
   },
   {
+    name: 'Skylar Dias',
     image: profile,
     date: '21, sept, 2019 7:30AM',
     amount: '21,000.98',
@@ -85,11 +91,11 @@ const TransactionHistory = () => {
                       src={transactionData.image}
                       alt="User's profile image"
                     />
-                    <p>Skylar Dias</p>
+                    <p>{transactionData.name}</p>
                   </div>
                   <div className="container__transaction">
-                    <div className="">{transactionData.date}</div>
-                    <div className="">-&#8358;{transactionData.amount}</div>
+                    <div className="transaction-date">{transactionData.date}</div>
+                    <div className="transaction-amount">-&#8358;{transactionData.amount}</div>
                   </div>
                   <div>
                     <button className="failed">{transactionData.status}</button>
@@ -119,11 +125,11 @@ const TransactionHistory = () => {
                       src={transactionData.image}
                       alt="User's profile image"
                     />
-                    <p>Skylar Dias</p>
+                    <p>{transactionData.name}</p>
                   </div>
                   <div className="container__transaction">
-                    <div className="">{transactionData.date}</div>
-                    <div className="">-&#8358;{transactionData.amount}</div>
+                    <div className="transaction-date">{transactionData.date}</div>
+                    <div className="transaction-amount">-&#8358;{transactionData.amount}</div>
                   </div>
                   <div>
                     <button className={transactionData.status === "IN PROGRESS" ? "progress" || transactionsData.status === "COMPLETE" : "complete"}>{transactionData.status}</button>

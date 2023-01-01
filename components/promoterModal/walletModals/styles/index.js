@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const WithdrawProcessStyles = styled.div`
-  margin-bottom: 3.5rem;
+  /* margin-bottom: 3.5rem; */
 
   .close {
     text-align: end;
@@ -24,36 +24,56 @@ export const WithdrawProcessStyles = styled.div`
 
     .acct {
       margin-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* gap: 1rem; */
 
       &__clicked {
         background: #dce4ff;
-        border: 1px solid var(--light-blue);
+        border: 1.275px solid var(--light-blue);
+        border-radius: 1.275rem;
       }
 
       &__container {
         display: flex;
         justify-content: space-between;
-        border: 1px solid #ebebed;
-        padding: 1.2rem 1.5rem;
-        border-radius: 0.8rem;
+        align-items: flex-start;
+        border: 1.275px solid #ebebed;
+        /* padding: 1.2rem 1.5rem; */
+        width: 37.8rem;
+        padding: 2.04rem 2.55rem;
+        border-radius: 1.275rem;
         cursor: pointer;
 
         .acctDetails {
           display: flex;
           justify-content: space-between;
-          width: 20rem;
+          align-items: flex-start;
+          /* width: 20rem; */
+          gap: 3.06rem;
 
-          .acctName {
-            font-size: 1rem;
-            line-height: 1.8rem;
-            color: var(--unknown-5);
-            margin-top: 0.5rem;
-          }
+          > div {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.255rem;
+            .acctName {
+              font-weight: 400;
+              font-size: 1.4rem;
+              line-height: 2.3rem;
+              letter-spacing: -0.02em;
+              color: var(--unknown-5);
+            }
 
-          .acctNum {
-            font-weight: 500;
-            line-height: 1.8rem;
-            margin-bottom: 0.5rem;
+            .acctNum {
+              font-weight: 500;
+              font-size: 1.6rem;
+              line-height: 2.3rem;
+              letter-spacing: -0.02em;
+              color: var(--black);
+            }
           }
         }
 
@@ -121,30 +141,68 @@ export const WithdrawProcessStyles = styled.div`
 
     .amountInput {
       margin-top: 2.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.2rem;
 
-      label {
-        font-size: 0.8rem;
-        margin-bottom: 0.2rem;
+      .input-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.4rem;
+        width: 53.9rem;
+        label {
+          font-weight: 400;
+          font-size: 1.4rem;
+          line-height: 150%;
+          letter-spacing: -0.02em;
+          color: var(--dark-gray);
+        }
+
+        input {
+          width: 100%;
+          border-radius: 0.6rem;
+          border: 1px solid #e1e1e1;
+          height: 5rem;
+          padding-left: 2rem;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        /* Firefox */
+        input[type='number'] {
+          -moz-appearance: textfield;
+        }
       }
 
-      input {
-        width: 100%;
-        border-radius: 0.6rem;
-        border: 1px solid #e1e1e1;
-        padding-left: 1rem;
-      }
-
-      .balance {
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: #404040;
-        text-align: end;
+      .balance-container {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.8rem;
+        .balance {
+          font-weight: 600;
+          font-size: 1.4rem;
+          line-height: 1.9rem;
+          color: #9e9e9e;
+        }
+        .balance-amount {
+          font-weight: 600;
+          font-size: 1.4rem;
+          line-height: 1.9rem;
+          letter-spacing: 0.03em;
+          color: #404040;
+        }
       }
     }
   }
 `;
 
 export const WithdrawalDetailsStyles = styled.div`
+  position: relative;
   .bold {
     font-weight: 600;
   }
@@ -152,28 +210,26 @@ export const WithdrawalDetailsStyles = styled.div`
   .header {
     display: flex;
     justify-content: center;
+    /* gap: 6rem; */
+    /* width: 539px; */
     padding-top: 2.1rem;
     margin-bottom: 1.8rem;
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--black-1);
+      /* margin-right: 6.4rem; */
+    }
 
-    &__content {
-      display: flex;
-      justify-content: end;
-      width: 100%;
-
-      h2 {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: var(--black-1);
-        margin-right: 6.4rem;
-      }
-
-      button {
-        color: #5c85ff;
-        font-size: 1.1rem;
-        font-weight: 600;
-        background: transparent;
-        cursor: pointer;
-      }
+    button {
+      color: #5c85ff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: transparent;
+      cursor: pointer;
+      /* text-align: end; */
+      position: absolute;
+      right: 0;
     }
   }
 
@@ -254,10 +310,12 @@ export const WithdrawalFundsStyles = styled.div`
   .loading {
     text-align: center;
     margin-top: 0.6rem;
+    width: 135.3px;
+    margin: auto;
   }
 
   .funds {
-    margin-top: 10.5rem;
+    /* margin-top: 10.5rem; */
 
     &__header {
       text-align: center;
@@ -362,6 +420,8 @@ export const WithdrawalFundsStyles = styled.div`
 `;
 
 export const PaymentDetailsStyles = styled.div`
+  width: 57.5rem;
+
   .close {
     text-align: end;
 
@@ -373,24 +433,31 @@ export const PaymentDetailsStyles = styled.div`
 
   .container {
     padding: 1.1rem 4.4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     h2 {
       text-align: center;
-      font-size: 1.5rem;
       font-weight: 600;
-      color: var(--black-1);
+      font-size: 2.4rem;
+      line-height: 3.6rem;
+      color: #2c2828;
     }
 
     form {
       margin-top: 4.1rem;
-
+      width: 37.6rem;
       .input {
-        width: 23.5rem;
+        width: 100%;
 
         label {
-          font-size: 1rem;
+          font-size: 1.4rem;
           font-weight: 600;
+          line-height: 1.8rem;
           color: var(--light-gray-1);
+          color: #616161;
         }
 
         &__element {
@@ -429,11 +496,14 @@ export const PaymentDetailsStyles = styled.div`
       button {
         background: #4f00cf;
         box-shadow: var(--shadow-6);
-        border-radius: 0.5rem;
+        border-radius: 0.8rem;
         color: var(--white);
-        font-size: 1rem;
+        font-size: 1.6rem;
+        line-height: 1.9rem;
         font-weight: 700;
-        padding: 0.8rem 3.5rem;
+        width: 20.5rem;
+        padding: 1.40969rem 0;
+        /* padding: 0.8rem 3.5rem; */
         cursor: pointer;
       }
     }
@@ -441,8 +511,13 @@ export const PaymentDetailsStyles = styled.div`
 `;
 
 export const VerificationStyles = styled.div`
+  /* width: 581px; */
+  /* background-color: red; */
+  position: relative;
+  padding: 2rem 1.5rem 1.5rem;
   .close {
     text-align: end;
+    /* position: absolute; */
 
     button {
       background: transparent;
@@ -451,26 +526,33 @@ export const VerificationStyles = styled.div`
   }
 
   .container {
-    padding: 1.1rem 4.4rem;
+    /* padding: 1.1rem 4.4rem; */
 
     h2 {
       text-align: center;
-      font-size: 1.5rem;
+      font-size: 2.4rem;
+      line-height: 2.1rem;
       font-weight: 600;
+      letter-spacing: -0.02em;
       color: var(--black-1);
     }
 
     &__info {
-      margin-top: 1rem;
-      font-size: 1rem;
-      color: var(--dark-gray);
+      margin-top: 1.3rem;
+      font-weight: 400;
+      font-size: 1.6rem;
+      line-height: 1.8rem;
+      letter-spacing: -0.02em;
+      width: 453px;
       text-align: center;
       color: var(--dark-gray);
     }
 
     &__number {
       margin-top: 1.4rem;
-      font-size: 1rem;
+      font-size: 1.4rem;
+      line-height: 1.8rem;
+      font-weight: 400;
       color: var(--dark-gray);
       text-align: center;
       letter-spacing: -0.02em;
@@ -485,9 +567,11 @@ export const VerificationStyles = styled.div`
       text-align: center;
 
       p {
-        font-size: 1rem;
+        font-size: 1.4rem;
+        line-height: 1.8rem;
         color: var(--dark-gray);
         letter-spacing: -0.02em;
+        margin-bottom: 1rem;
       }
 
       .codebox {
@@ -498,11 +582,13 @@ export const VerificationStyles = styled.div`
         padding: 0 0.5rem;
         margin-left: 6.5rem;
         margin-top: 0.7rem;
+        margin: auto;
 
         input {
-          width: 2.2rem;
-          height: 2.2rem;
+          width: 3.6rem;
+          height: 3.6rem;
           text-align: center;
+          border: 1px solid #cccccc;
         }
 
         input:focus {
@@ -512,12 +598,14 @@ export const VerificationStyles = styled.div`
     }
 
     &__submit {
-      margin-top: 3.7rem;
-      text-align: center;
-      font-size: 1rem;
-      color: var(--dark-gray);
-      letter-spacing: -0.02em;
-
+      display: flex;
+      flex-direction: column;
+      width: 25.7rem;
+      align-items: center;
+      margin: 4rem auto;
+      .active {
+        background-color: var(--primary);
+      }
       button {
         background: #d3b8ff;
         box-shadow: var(--shadow-6);
@@ -525,15 +613,27 @@ export const VerificationStyles = styled.div`
         color: var(--white);
         font-size: 1rem;
         font-weight: 600;
-        padding: 0.8rem 3.5rem;
+        padding: 1.2rem 3.6rem;
         cursor: pointer;
         margin-bottom: 0.5rem;
+        width: 162px;
+      }
+      p {
+        font-weight: 400;
+        font-size: 1.4rem;
+        line-height: 1.8rem;
+        letter-spacing: -0.02em;
+        color: var(--dark-gray);
+        width: 25.7rem;
+        text-align: center;
       }
     }
   }
 `;
 
 export const SuccessStyle = styled.div`
+  width: 57.4rem;
+  height: 45rem;
   .close {
     text-align: end;
 
@@ -546,30 +646,53 @@ export const SuccessStyle = styled.div`
   .container {
     h2 {
       text-align: center;
-      font-size: 1.5rem;
+      font-size: 2.4rem;
+      line-height: 3.6rem;
       font-weight: 600;
       color: var(--black-2);
     }
 
     &__home {
-      margin-top: 22.2rem;
-      font-size: 1rem;
-      text-align: center;
+      /* margin-top: 22.2rem; */
+      /* font-size: 1rem; */
+      /* text-align: center; */
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      .success {
+        width: 193px;
+        height: 194px;
+      }
+      img {
+      }
 
       p {
         color: var(--dark-gray);
+        font-weight: 400;
+        font-size: 1.4rem;
+        letter-spacing: -0.02em;
+        line-height: 150%;
         margin-bottom: 2.5rem;
+        width: 296px;
+        text-align: center;
       }
 
       a {
         background: #4f00cf;
         box-shadow: var(--shadow-6);
-        border-radius: 0.5rem;
+        border-radius: 1.05727rem;
         color: var(--white);
-        font-size: 1rem;
-        font-weight: 700;
-        padding: 0.8rem 3.5rem;
+        width: 16.652rem;
+        height: 4.719rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
         cursor: pointer;
+        font-weight: 700;
+        font-size: 1.6rem;
+        line-height: 1.9rem;
       }
     }
   }

@@ -2,11 +2,13 @@ import styled from 'styled-components';
 
 export const TransactionHistoryStyles = styled.div`
   background: var(--white);
-  grid-column-start: 1;
-  grid-column-end: 3;
+  /* grid-column-start: 1;
+  grid-column-end: 3; */
+  max-width: 88.7rem;
   box-shadow: var(--shadow-6);
   border-radius: 0.6rem;
   padding: 1.5rem;
+  margin-top: 4rem;
 
   .intro {
     display: flex;
@@ -82,6 +84,7 @@ export const TransactionStyles = styled.div`
         color: var(--deep-blue);
         font-weight: 500;
         line-height: 150%;
+        font-size: 1.6rem;
         letter-spacing: -0.03em;
         margin-left: 1rem;
         height: fit-content;
@@ -99,6 +102,20 @@ export const TransactionStyles = styled.div`
       height: fit-content;
       margin-top: 1rem;
       width: 35rem;
+      .transaction-date {
+        font-weight: 500;
+        font-size: 1.6rem;
+        line-height: 150%;
+        letter-spacing: -0.03em;
+        color: var(--black);
+      }
+      .transaction-amount {
+        font-weight: 700;
+        font-size: 1.6rem;
+        line-height: 150%;
+        letter-spacing: -0.03em;
+        color: var(--black);
+      }
     }
 
     &__rotate {
@@ -115,31 +132,58 @@ export const TransactionStyles = styled.div`
   .failed {
     background: #eb1e1e;
     color: #fff;
-    font-size: 0.7rem;
-    margin-top: 1.6rem;
+    width: 9.5rem;
+    /* width: 100%; */
+    height: 2.3rem;
+    /* height: 100%; */
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5rem;
+    margin-top: 1rem;
     border: 1px solid #dbd8fc;
-    border-radius: 6.2rem;
-    padding: 0.25rem 1rem;
+    border-radius: 10rem;
+    padding: 0.4rem 1.6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .complete {
     background: var(--green-2);
     color: #fff;
-    font-size: 0.7rem;
-    margin-top: 1.6rem;
+    width: 9.5rem;
+    /* width: 100%; */
+    height: 2.3rem;
+    /* height: 100%; */
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5rem;
+    margin-top: 1rem;
     border: 1px solid #dbd8fc;
-    border-radius: 6.2rem;
-    padding: 0.25rem 1rem;
+    border-radius: 10rem;
+    padding: 0.4rem 1.6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .progress {
     background: var(--light-blue-1);
     color: #fff;
-    font-size: 0.7rem;
-    margin-top: 1.6rem;
+    width: 9.9rem;
+    /* width: 100%; */
+    height: 2.3rem;
+    /* height: 100%; */
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5rem;
+    margin-top: 1rem;
     border: 1px solid #dbd8fc;
-    border-radius: 6.2rem;
-    padding: 0.25rem 1rem;
+    border-radius: 10rem;
+    padding: 0.4rem 1.6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
@@ -151,27 +195,34 @@ export const TransactionDropdownStyles = styled.div`
   gap: 5rem;
 
   h3 {
-    font-size: 0.8rem;
+    font-weight: 400;
+    font-size: 1.2rem;
+    line-height: 1.8rem;
     margin-bottom: 0.25rem;
     color: var(--black-1);
   }
 
   p {
-    font-size: 1rem;
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 2.1rem;
     margin-top: 0.25rem;
-    color: var(--gray);
+    color: var(--dark-gray);
   }
 
   button {
     background: var(--primary);
-    border-radius: 0.5rem;
+    border-radius: 0.8rem;
     display: flex;
     justify-content: center;
-    padding: 0.7rem 1.5rem;
-    width: 9rem;
+    padding: 1.2rem 2.4rem;
+    /* width: 9rem; */
     cursor: pointer;
 
     p {
+      font-weight: 600;
+      font-size: 1.2rem;
+      line-height: 1.8rem;
       color: var(--white);
       margin-left: 0.8rem;
     }

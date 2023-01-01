@@ -2,8 +2,9 @@ import styled from 'styled-components';
 
 export const WalletSummaryStyles = styled.div`
   background: var(--white);
-  grid-column-start: 1;
-  grid-column-end: 3;
+  /* grid-column-start: 1;
+  grid-column-end: 3; */
+  max-width: 88.5rem;
   box-shadow: var(--shadow-6);
   border-radius: 0.6rem;
   padding: 1.5rem;
@@ -27,6 +28,7 @@ export const WalletSummaryStyles = styled.div`
       border-radius: 0.6rem;
       padding: 0.8rem 1.5rem;
       width: 17.5rem;
+      cursor: pointer;
 
       p {
         color: var(--black-3);
@@ -37,10 +39,6 @@ export const WalletSummaryStyles = styled.div`
       .rotate {
         transform: rotate(-180deg);
         transition: all 0.5s ease;
-      }
-
-      .arrow {
-        cursor: pointer;
       }
     }
   }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ModalContainer from '../ModalContainer';
 import Image from 'next/image';
 import close from '@/public/assets/close-circle.svg';
@@ -14,6 +14,18 @@ const VerificationModal = (props) => {
   const [otp2, setOtp2] = useState('');
   const [otp3, setOtp3] = useState('');
   const [otp4, setOtp4] = useState('');
+  const [isInputWithValue, setIsInputWithValue] = useState(false);
+
+  useEffect(()=>{
+    const handleInputWithValue = () =>{
+      if(otp1 !== '' && otp2!== '' && otp3!== '' && otp4!==''){
+        setIsInputWithValue(true)
+      }else{
+        setIsInputWithValue(false)
+      }
+    }
+    handleInputWithValue()
+  },[otp1,otp2,otp3,otp4])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -121,7 +133,7 @@ const VerificationModal = (props) => {
             </form>
           </div>
           <div className="container__submit">
-            <button onClick={toggleModal}>Submit Code</button>
+            <button onClick={toggleModal} className={isInputWithValue ? 'active':''}>Submit Code</button>
             <p>
               If you did not recieve, Please click{' '}
               <span style={{ color: '#7194ff' }}>Verify By Sms</span> and try

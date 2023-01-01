@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-
 import ModalContainer from '../ModalContainer';
 import Button from '@/components/promoterButton/Button';
 import { WithdrawalFundsStyles } from './styles';
 import close from '@/public/assets/close-circle.svg';
-
+import SuccessMark from '@/public/assets/success-mark.gif'
 const WithdrawFundsModal = (props) => {
   const [withdrawConfirmed, setWithdrawConfirmed] = useState(false);
 
@@ -77,7 +76,9 @@ const WithdrawFundsModal = (props) => {
               <Image src={close} alt="Exit icon" />
             </button>
           </div>
-          {/* <div className="loading">Loading...</div> */}
+          <div className="loading">
+            <Image src={SuccessMark} alt='success'/>
+          </div>
           <div className="funds">
             <div className="funds__header">
               <h2>Withdraw Funds</h2>

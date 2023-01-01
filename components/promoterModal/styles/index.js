@@ -17,7 +17,8 @@ const ModalContainerStyles = styled.div`
     background: #fff;
     border-radius: 0.6rem;
     padding: 1.6rem 2.9rem;
-    width: 39.6rem;
+    /* width: 39.6rem; */
+    /* width: 63.4rem; */
   }
 `;
 

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const StyledOnboarding = styled.div`
-  /* height: 100vh; */
+  /* min-height: 102.4rem; */
   background-color: var(--white);
   /* overflow-y: hidden; */
 `;
@@ -52,13 +52,14 @@ export const StyledContent = styled.div`
   display: flex;
   /* justify-content: center; */
   align-items: center;
+  /* height: 100%; */
 
   .onboard-image {
-    /* height: 100vh; */
+    /* height: 100%; */
     img {
       /* height: 200%; */
-      /* width: 100%;
-            height: 100%; */
+      width: 100%;
+      /* height: 100%; */
     }
   }
   .onboard-text-container {
