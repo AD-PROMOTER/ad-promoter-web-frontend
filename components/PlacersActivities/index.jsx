@@ -70,7 +70,7 @@ const PlacersActivities = () => {
               <td>{data.id}</td>
               <td>{data.name.map((name, index) => (
                 <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}} key={index}>
-                  <Image src={name.profile}/>
+                  <Image src={name.profile} alt='profile'/>
                   <p>{name.user}</p>
                 </div>
               ))}</td>

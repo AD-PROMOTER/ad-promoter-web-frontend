@@ -212,8 +212,8 @@ const index = () => {
         </div>
 
         <div className="body">
-          {RecentBody.map(({adTag,businessName,tag1,tag2,details,conversionNo,priceVal,aimNo,timeStamp})=>(
-            <div className="body-item">
+          {RecentBody.map(({adTag,businessName,tag1,tag2,details,conversionNo,priceVal,aimNo,timeStamp,index})=>(
+            <div className="body-item" key={index}>
               <div className="head">
                 <div className="tag-container">
                   <div className="ad-tag">{adTag}</div>
