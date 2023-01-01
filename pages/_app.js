@@ -9,21 +9,6 @@ import { DiscoveryGlobalStyle } from '@/styles/discoveryGlobal';
 // import 'bootstrap/dist/css/bootstrap.min.css'
 
 function MyApp({ Component, pageProps, router }) {
-  if (
-    router.pathname.startsWith('/promoters') ||
-    router.pathname.startsWith('/placers')
-  ) {
-    return (
-      <AdPlacerProvider>
-        <PromoterLayout>
-          <VariableStyle />
-          <GlobalStyle />
-          <SanitizeStyle />
-          <Component {...pageProps} />
-        </PromoterLayout>
-      </AdPlacerProvider>
-    );
-  }
   if (router.pathname.startsWith('/promoters/settings')) {
     return (
       <NotificationProvider>
@@ -32,6 +17,23 @@ function MyApp({ Component, pageProps, router }) {
         <SanitizeStyle />
         <Component {...pageProps} />
       </NotificationProvider>
+    );
+  }
+  if (
+    router.pathname.startsWith('/promoters') ||
+    router.pathname.startsWith('/placers')
+  ) {
+    return (
+      <AdPlacerProvider>
+        <NotificationProvider>
+          <PromoterLayout>
+            <VariableStyle />
+            <GlobalStyle />
+            <SanitizeStyle />
+            <Component {...pageProps} />
+          </PromoterLayout>
+        </NotificationProvider>
+      </AdPlacerProvider>
     );
   }
 

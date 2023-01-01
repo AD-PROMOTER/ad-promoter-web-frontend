@@ -164,7 +164,7 @@ const Adcreator = () => {
                 </div>
               </div>
 
-              <div className="ad-type">
+              <div className="ad-type" onClick={()=>router.push('/placers/adcreator/detailsad')}>
                 <Image src={document} alt='link'/>
                 <div className="vertical"></div>
                 <div className="ad-type-name">
@@ -176,7 +176,7 @@ const Adcreator = () => {
                 </div>
               </div>
 
-              <div className="ad-type">
+              <div className="ad-type" onClick={()=>router.push('/placers/adcreator/visualad')}>
                 <Image src={video} alt='link'/>
                 <div className="vertical"></div>
                 <div className="ad-type-name">
