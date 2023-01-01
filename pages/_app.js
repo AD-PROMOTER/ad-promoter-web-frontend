@@ -24,13 +24,52 @@ function MyApp({ Component, pageProps, router }) {
       </AdPlacerProvider>
     );
   }
+  if (router.pathname.startsWith('/promoters/settings')) {
+    return (
+      <NotificationProvider>
+        <VariableStyle />
+        <GlobalStyle />
+        <SanitizeStyle />
+        <Component {...pageProps} />
+      </NotificationProvider>
+    );
+  }
+
+  if (
+    router.pathname.startsWith('/promoters/discovery') ||
+    router.pathname.startsWith('/promoters')
+  ) {
+    return (
+      <NotificationProvider>
+        <PromoterLayout>
+          <VariableStyle />
+          <DiscoveryGlobalStyle />
+          <SanitizeStyle />
+          <Component {...pageProps} />
+        </PromoterLayout>
+      </NotificationProvider>
+    );
+  }
+
+  if (router.pathname.startsWith('/promoters')) {
+    return (
+      <NotificationProvider>
+        <PromoterLayout>
+          <VariableStyle />
+          <GlobalStyle />
+          <SanitizeStyle />
+          <Component {...pageProps} />
+        </PromoterLayout>
+      </NotificationProvider>
+    );
+  }
   return (
-    <>
+    <PreferenceProvider>
       <VariableStyle />
       <GlobalStyle />
       <SanitizeStyle />
       <Component {...pageProps} />
-    </>
+    </PreferenceProvider>
   );
 }
 
