@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const StyledNavBar = styled.div`
   background: var(--white);
-  padding: 1.2rem 5.3rem 1.2rem 3.7rem;
+  padding: 1.2rem 5.3rem 1rem 3.7rem;
   display: flex;
   align-items: center;
   justify-content: space-between;

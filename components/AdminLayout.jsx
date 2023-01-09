@@ -1,12 +1,10 @@
-import Navbar from "./PromoterNavbar/index";
-import PlacersNavbar from '@/components/PlacersNavbar/index'
 import AdminNavbar from '@/components/AdminNavbar/index'
 import { useRouter } from "next/router";
 const PromoterLayout = ({ children }) => {
   const router = useRouter()
     return (
       <div>
-        {router.pathname.startsWith('/promoters') ? <Navbar /> :  <PlacersNavbar />}
+        <AdminNavbar />
         {children}
       </div>
     );

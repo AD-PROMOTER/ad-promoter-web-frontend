@@ -6,6 +6,7 @@ import { AdPlacerProvider } from '@/context/adPlacerContext';
 import { PreferenceProvider } from '@/context/preferenceContext';
 import { NotificationProvider } from '@/context/notificationContext';
 import { DiscoveryGlobalStyle } from '@/styles/discoveryGlobal';
+import AdminLayout from '@/components/AdminLayout'
 // import 'bootstrap/dist/css/bootstrap.min.css'
 
 function MyApp({ Component, pageProps, router }) {
@@ -63,6 +64,16 @@ function MyApp({ Component, pageProps, router }) {
           <Component {...pageProps} />
         </PromoterLayout>
       </NotificationProvider>
+    );
+  }
+  if (router.pathname.startsWith('/admin')) {
+    return (
+      <AdminLayout>
+        <VariableStyle />
+        <GlobalStyle />
+        <SanitizeStyle />
+        <Component {...pageProps} />
+      </AdminLayout>
     );
   }
   return (
