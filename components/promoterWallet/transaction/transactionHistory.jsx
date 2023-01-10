@@ -4,12 +4,13 @@ import Image from 'next/image';
 import trash from '@/public/assets/trash.svg';
 import profile from '@/public/assets/Profil.svg';
 import documentDownload from '@/public/assets/document-download.svg';
-import rightArrow from '@/public/assets/arrow-right';
+import Arrow from '@/public/assets/arrow-3';
 import { TransactionHistoryStyles } from '../styles/transaction';
 import Transaction from './transaction';
 import { TransactionStyles } from '../styles/transaction';
 import TransactionDropdown from './transactionDropdown';
-import ScrollContainer from 'react-indiana-drag-scroll'
+import ScrollContainer from 'react-indiana-drag-scroll';
+import RightArrowHead from '@/public/assets/right-arrowHead.svg';
 
 const transactionsData = [
   {
@@ -83,7 +84,7 @@ const TransactionHistory = () => {
         {transactionsData.map((transactionData, i) => (
           <>
             {transactionData.status === 'FAILED' ? (
-              <TransactionStyles show={openDropdown ? true : false} key={i}>
+              <TransactionStyles show={openDropdown ? true : false} key={i} onClick={toggleDropdown}>
                 <div className="container">
                   <div className="container__profile">
                     <Image
@@ -100,12 +101,11 @@ const TransactionHistory = () => {
                   <div>
                     <button className="failed">{transactionData.status}</button>
                   </div>
-                  <div style={{paddingTop: "1.5rem"}}>
+                  <div style={{paddingTop: "1rem"}}>
                     <Image
-                      src={rightArrow}
+                      src={RightArrowHead}
                       alt=""
                       width={24}
-                      onClick={toggleDropdown}
                       className={
                         openDropdown
                           ? 'container__rotate container__arrow'
