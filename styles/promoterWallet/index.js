@@ -20,6 +20,8 @@ export default PromoterWalletStyles;
 
 export const PromoterWalletContainer = styled.div`
   display: flex;
+  // flex-direction: ${(props) => (props.admin ? 'column' : 'row')};
   align-items: center;
   justify-content: center;
+  padding: ${(props) => (props.admin ? '3.3rem 0 1.3rem 0' : '0')};
 `;
