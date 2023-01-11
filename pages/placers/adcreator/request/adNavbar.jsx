@@ -8,7 +8,7 @@ const Adnavbar = () => {
     return ( 
         <Navbar>
             <nav className="adtype-navbar">
-                <Link href='/'>
+                <Link href='/placers/adcreator/request/visualAd'>
                     <a style={{color: '#808080'}}>
                         Visual Ad Request
                     </a>
@@ -20,7 +20,7 @@ const Adnavbar = () => {
                     </a>
                 </Link>
 
-                <Link href='/'>
+                <Link href='/placers/adcreator/request/withdraw'>
                     <a style={{color: '#808080'}}> 
                         Withdrawal Request
                     </a>

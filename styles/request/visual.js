@@ -27,6 +27,29 @@ export const Visual = styled.div`
             height: 30px;
             font-weight: 600;
         }
+
+        // withdrawal styles
+        #names {
+            margin-left: 64px;
+        }
+        #user-id {
+            margin-left: 171px;
+        }
+        #amount {
+            margin-left: 174px;
+        }
+        #balance {
+            margin-left: 136px;
+        }
+        #acts {
+            margin-left: 147px;
+        }
+        #trash {
+            margin-left: 100px;
+            width: 30px;
+            height: 30px;
+            font-weight: 600;
+        }
 `
 
 export const Showcase = styled.div`
@@ -84,7 +107,44 @@ export const Showcase = styled.div`
                 margin-left: 40px;
             }
             #check {
-                margin-left: 68px;
+                margin-left: 80px;
             }
         }
+
+        // withdrawal styles
+
+        #avatars {
+            height: 25px;
+            width: 25px;
+            border-radius: 100px;
+            border: 1px  #000;
+            font-weight: bold;
+            margin-left: 70px;
+        }
+        #names{
+            margin-left: 8px;
+            width: 122px;
+        }
+        #user {
+            margin-left: 60px;
+            width: 100px;
+        }
+        #amount {
+            margin-left: 132px;
+            width: 100px;
+        }
+        #balance {
+            margin-left: 170px;
+            width: 100px;
+        }
+        #dels {
+            margin-left: 103px;
+        }
+        #marks {
+            margin-left: 40px;
+        }
+        #checks {
+            margin-left: 67px;
+        }
+    }
 `
