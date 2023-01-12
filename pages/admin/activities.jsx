@@ -11,7 +11,7 @@ import { UndoContainer, Container } from '@/styles/adminActivities.style';
 import Backdrop from '@/components/DiscoveryFolder/ReportModal/Backdrop';
 
 
-const activities = () => {
+const Activities = () => {
   const gridData = [
     {
       id: 1,
@@ -157,4 +157,4 @@ const activities = () => {
   )
 }
 
-export default activities
+export default Activities
