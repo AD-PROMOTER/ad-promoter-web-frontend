@@ -1,9 +1,13 @@
-import React from 'react'
+import React from 'react';
 
-const settings = () => {
+import Settings from '@/components/settings/Settings';
+
+const AdminSettings = () => {
   return (
-    <div>settings</div>
-  )
-}
+    <div style={{ position: 'relative' }} className="dummy">
+      <Settings admin={true} />
+    </div>
+  );
+};
 
-export default settings
+export default AdminSettings;

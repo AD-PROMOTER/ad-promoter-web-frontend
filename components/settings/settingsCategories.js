@@ -6,3 +6,10 @@ export const categories = [
   { id: 4, category: 'Payment' },
   { id: 5, category: 'Privacy policy' },
 ];
+
+export const adminSettingCategories = [
+  { id: 0, category: 'Profile' },
+  { id: 1, category: 'General' },
+  { id: 3, category: 'Secuirity' },
+  { id: 3, category: 'Administrator' },
+];
