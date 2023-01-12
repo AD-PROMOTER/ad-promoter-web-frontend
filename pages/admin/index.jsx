@@ -42,7 +42,7 @@ ChartJS.register(
   Legend
 );
 
-const index = () => {
+const Index = () => {
   const [showDropdown, setShowDropdown] = useState(false)
   const options = {
     responsive: true,
@@ -297,4 +297,4 @@ const index = () => {
   )
 }
 
-export default index
+export default Index
