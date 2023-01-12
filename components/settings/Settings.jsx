@@ -8,13 +8,14 @@ import {
   Payment,
   Profile,
   Policy,
-  Administrator
+  Administrator,
 } from './categories';
 import { TbLogout } from 'react-icons/tb';
 import { VscClose } from 'react-icons/vsc';
 import { useRouter } from 'next/router';
 import Navbar from '@/components/PromoterNavbar/index';
 import { adminSettingCategories } from './settingsCategories';
+import AdminNavbar from '@/components/AdminNavbar/index';
 
 const Settings = (props) => {
   const router = useRouter();
@@ -27,7 +28,7 @@ const Settings = (props) => {
 
   return (
     <Container>
-      <Navbar />
+      {router.pathname === '/promoters/settings' ? <Navbar /> : ''}
       <StyledSettings>
         <main>
           <ul className="categories">
@@ -88,7 +89,7 @@ const Settings = (props) => {
             ) : selected == 'Privacy policy' ? (
               <Policy />
             ) : selected == 'Adminstrator' ? (
-                <Administrator/>
+              <Administrator />
             ) : (
               ''
             )}

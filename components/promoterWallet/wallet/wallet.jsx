@@ -7,6 +7,9 @@ import fcmb from '@/public/assets/fcmb.svg';
 import emptyWallet from '@/public/assets/empty-wallet-add.svg';
 import WalletStyles from '../styles/wallet';
 import EditWalletDropdown from './Dropdown';
+import Card from '../summary/card';
+import money from '@/public/assets/money-2.svg';
+import AdminWalletStyles from '@/styles/adminWallet';
 
 const Wallet = (props) => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -14,48 +17,66 @@ const Wallet = (props) => {
   const [secondBank, setSecondBank] = useState(false);
 
   const toggleDropdown = () => {
-    if(showDropdown) {
+    if (showDropdown) {
       setShowDropdown(false);
     } else {
-      setShowDropdown(true)
+      setShowDropdown(true);
     }
-  }
+  };
 
   const toggleFirstBank = () => {
-    if(firstBank) {
+    if (firstBank) {
       setFirstBank(false);
     }
     return;
-  }
+  };
 
   const toggleSecondBank = () => {
-    if(secondBank) {
+    if (secondBank) {
       setSecondBank(false);
     }
     return;
-  }
+  };
 
   const selectFirstBank = () => {
     setFirstBank(true);
     toggleSecondBank();
-  }
+  };
 
   const selectSecondBank = () => {
     setSecondBank(true);
     toggleFirstBank();
-  }
+  };
 
   return (
     <WalletStyles>
       <div className="intro">
         <h1>Wallet</h1>
-        <button className="intro__add" onClick={props.onOpenPaymentDetailsModal}>
+        <button
+          className="intro__add"
+          onClick={props.onOpenPaymentDetailsModal}
+        >
           <Image src={plus} alt="Add banck account icon" />
         </button>
       </div>
 
+      {props.admin ? (
+        <AdminWalletStyles>
+          <Card
+            img={money}
+            text="Total Amount Made (20%)"
+            amount="15,000.35"
+            bg="--unknown-2"
+            shadow="--shadow-3"
+          />
+        </AdminWalletStyles>
+      ) : null}
+
       <div>
-        <div className={firstBank ? "container bank1 clicked" : "container bank1"} onClick={selectFirstBank}>
+        <div
+          className={firstBank ? 'container bank1 clicked' : 'container bank1'}
+          onClick={selectFirstBank}
+        >
           <div className="container__acctdetails">
             <Image src={gtb} alt="Guarantee trust bank logo" />
             <div>
@@ -64,12 +85,19 @@ const Wallet = (props) => {
             </div>
           </div>
           <div className="container__select">
-          {firstBank ? <input type="checkbox" id="bank-2" name="" checked /> : <input type="checkbox" id="bank-2" name="" />}
+            {firstBank ? (
+              <input type="checkbox" id="bank-2" name="" checked />
+            ) : (
+              <input type="checkbox" id="bank-2" name="" />
+            )}
             <span className="checkmark"></span>
           </div>
         </div>
 
-        <div className={secondBank ? "container bank1 clicked" : "container bank1"} onClick={selectSecondBank}>
+        <div
+          className={secondBank ? 'container bank1 clicked' : 'container bank1'}
+          onClick={selectSecondBank}
+        >
           <div className="container__acctdetails">
             <Image src={fcmb} alt="FCMB logo" />
             <div>
@@ -78,7 +106,11 @@ const Wallet = (props) => {
             </div>
           </div>
           <div className="container__select">
-            {secondBank ? <input type="checkbox" id="bank-2" name="" checked /> : <input type="checkbox" id="bank-2" name="" />}            
+            {secondBank ? (
+              <input type="checkbox" id="bank-2" name="" checked />
+            ) : (
+              <input type="checkbox" id="bank-2" name="" />
+            )}
             <span className="checkmark"></span>
           </div>
         </div>

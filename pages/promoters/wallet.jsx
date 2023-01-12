@@ -26,7 +26,7 @@ const PromoterWallet = () => {
     <PromoterWalletContainer>
       <PromoterWalletStyles>
         <div className='container'>
-          <WalletSummary />
+          <WalletSummary admin={false} />
           <TransactionHistory />
         </div>
         <Wallet
