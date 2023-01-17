@@ -88,7 +88,7 @@ const Settings = (props) => {
               <Profile />
             ) : selected == 'Privacy policy' ? (
               <Policy />
-            ) : selected == 'Adminstrator' ? (
+            ) : selected == 'Administrator' ? (
               <Administrator />
             ) : (
               ''

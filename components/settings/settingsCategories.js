@@ -10,6 +10,6 @@ export const categories = [
 export const adminSettingCategories = [
   { id: 0, category: 'Profile' },
   { id: 1, category: 'General' },
-  { id: 3, category: 'Secuirity' },
+  { id: 2, category: 'Secuirity' },
   { id: 3, category: 'Administrator' },
 ];
