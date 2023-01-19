@@ -4,13 +4,14 @@ const PreferenceContext = createContext();
 
 export function PreferenceProvider({ children }) {
   const [userPref, setUserPref] = useState('place');
-  const [userFormValue, setUserFormValue] = useState({
+  const [signUpDetails, setSignUpDetails] = useState({
+    reference_id: '',
+    otp: '',
     name: '',
     email: '',
     password: '',
-    confirmPassword: '',
   });
-  const [userTel, setUserTel] = useState('');
+  // const [userTel, setUserTel] = useState('');
   const [isInputWithValue, setIsInputWithValue] = useState(false);
   const [isPrefWithValue, setIsPrefWithValue] = useState(false);
   const [isVisualVerificationWithValue, setIsVisualVerificationWithValue] =
@@ -21,12 +22,12 @@ export function PreferenceProvider({ children }) {
       value={{
         userPref,
         setUserPref,
-        userFormValue,
-        setUserFormValue,
+        // userFormValue,
+        // setUserFormValue,
         isInputWithValue,
         setIsInputWithValue,
-        userTel,
-        setUserTel,
+        // userTel,
+        // setUserTel,
         isPrefWithValue,
         setIsPrefWithValue,
         isVisualVerificationWithValue,

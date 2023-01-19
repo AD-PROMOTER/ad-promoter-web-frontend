@@ -30,6 +30,9 @@ export const DiscoveryGlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    @media screen and (max-width: 425px) {
+      overflow-x: hidden;
+    }
   }
 
   a {

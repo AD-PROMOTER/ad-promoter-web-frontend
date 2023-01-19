@@ -24,12 +24,12 @@ const Preference = () => {
   }
   useEffect(() => {
     router.prefetch('/signup/visualReq')
-    setIsInputWithValue(!isInputWithValue)
+    setIsInputWithValue(false)
 
-  }, [router,isInputWithValue,setIsInputWithValue])
+  }, [router,setIsInputWithValue])
   const handleChange = event => {
     setUserPref(event.target.value);
-    setIsPrefWithValue(true)
+    setIsInputWithValue(true)
   };
   return (
     <BgContainer image={bg}>
