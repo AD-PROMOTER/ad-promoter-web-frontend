@@ -23,7 +23,7 @@ const SuccessModal = (props) => {
             <p>
               Congrats, You have just sucessfully saved a new payment detail.
             </p>
-            <Link href="/promoters">
+            <Link href={props.admin ? "/admin" : "/promoters"}>
               <a>Go back home</a>
             </Link>
           </div>

@@ -7,9 +7,13 @@ import profile from '@/public/assets/Profil.svg'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { useContext } from 'react'
+import NotificationContext from '@/context/notificationContext'
+import NotificationContainer from '@/components/Notification/index'
 
 const Index = () => {
     const router = useRouter();
+    const { isNotifClicked,setIsNotifClicked } = useContext(NotificationContext)
     const variants = {
         animate: { width: '60px', transition: { duration: .5 } },
         stop: { width: 0 }
@@ -40,9 +44,16 @@ const Index = () => {
         </div>
 
         <div className="profile">
-            <Image src={notif} alt='notification bell'/>
-            <Image src={profile} alt='profile picture'/>
-        </div>
+            <div className="notif" onClick={()=>setIsNotifClicked(!isNotifClicked)}>
+                <div className="notif-img">
+                    <Image src={notif} alt='notification bell'/>
+                </div>
+                {isNotifClicked &&(
+                    <NotificationContainer />
+                )}
+            </div>
+             <Image src={profile} alt='profile picture'/>
+         </div>
     </StyledNavBar>
   )
 }
