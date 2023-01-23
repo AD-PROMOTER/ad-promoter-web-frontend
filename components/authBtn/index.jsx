@@ -8,11 +8,11 @@ import { useSignup } from '@/hooks/useSignup'
 const Index = ({text,path}) => {
   const router = useRouter();
   const {isLoading} = useSignup()
-  const {isInputWithValue,isPrefWithValue,isVisualVerificationWithValue,isLoginInputWithValue} = useContext(PreferenceContext)
+  const {isInputWithValue} = useContext(PreferenceContext)
   return (
     <StyledBtn>
       {router.pathname.startsWith('/signup') || router.pathname === '/login' ? (
-        <button disabled={isLoading} className={isInputWithValue || isPrefWithValue || isVisualVerificationWithValue ?'btn-lg' : 'btn-lg-inactive'} type="submit">
+        <button disabled={isLoading} className={isInputWithValue ? 'btn-lg' : 'btn-lg-inactive'} type="submit">
           {text}
         </button>
       ):(
