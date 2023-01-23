@@ -36,7 +36,7 @@ const VisualReq = () => {
     router.prefetch('/signup/verification')
     // setIsPrefWithValue(!isPrefWithValue)
     setIsInputWithValue(false)
-  }, [router,isPrefWithValue,setIsPrefWithValue])
+  }, [router,setIsInputWithValue])
   return (
     <BgContainer image={bg}>
         <Overlay className='overlay'>
