@@ -6,7 +6,7 @@ import { links } from './links'
 import { motion } from 'framer-motion'
 import { StyledMobileNav } from './style'
 
-const index = () => {
+const Index = () => {
     const router = useRouter();
     const variants = {
         animate: { width: '60px', transition: { duration: .5 } },
@@ -36,4 +36,4 @@ const index = () => {
   )
 }
 
-export default index
+export default Index

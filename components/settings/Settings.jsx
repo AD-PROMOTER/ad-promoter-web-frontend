@@ -19,7 +19,6 @@ const Settings = () => {
     
     return (
         <Container>
-            {router.pathname === '/promoters/settings' ? <Navbar />: ''}
             <StyledSettings>
                 <main>
                     <ul className='categories'>

@@ -199,7 +199,7 @@ const Index = () => {
                   </div>
                 </div>
                 <div className="dashboard-info-activity-chart">
-                <Line
+                {/* <Line
                   data={{
                     labels: ['S', 'M', 'T', 'W', 'T', 'F','S'],
                     datasets: [
@@ -240,7 +240,7 @@ const Index = () => {
                       },
                     },
                   }}
-                />
+                /> */}
                 </div>
               </div>
             </div>

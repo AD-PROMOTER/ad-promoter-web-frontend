@@ -9,22 +9,8 @@ import { DiscoveryGlobalStyle } from '@/styles/discoveryGlobal';
 import AdminLayout from '@/components/AdminLayout';
 import { AuthContextProvider } from '@/context/authContext';
 import PlacersLayout from '@/components/PlacersLayout';
-// import 'bootstrap/dist/css/bootstrap.min.css'
 
 function MyApp({ Component, pageProps, router }) {
-  if (router.pathname.startsWith('/promoters/settings')) {
-    return (
-      <AuthContextProvider>
-        <NotificationProvider>
-          <VariableStyle />
-          <GlobalStyle />
-          <SanitizeStyle />
-          <Component {...pageProps} />
-        </NotificationProvider>
-      </AuthContextProvider>
-    );
-  }
-
   if (router.pathname.startsWith('/admin')) {
     return (
       <AuthContextProvider>
