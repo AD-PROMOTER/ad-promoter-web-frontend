@@ -239,13 +239,16 @@ export const Feed = styled.div`
             right: 0;
             width: 20rem;
             li {
-              padding: 1.2rem 2.4rem;
+              padding: 1.2rem 1.4rem;
               border-bottom: 1px solid #dbd8fc;
               cursor: pointer;
               font-weight: 500;
               font-size: 14px;
               line-height: 18px;
               color: var(--black-1);
+              display: flex;
+              align-items: center;
+              gap: 1rem;
               /* padding: 0px 24px; */
             }
           }
@@ -335,8 +338,8 @@ export const Feed = styled.div`
       gap: 0.6rem;
       p {
         font-weight: 400;
-        font-size: 1.4rem;
-        line-height: 2.1rem;
+        font-size: 1.2rem;
+        line-height: 1.6rem;
         color: var(--dark-gray);
       }
       .head {
@@ -346,8 +349,8 @@ export const Feed = styled.div`
         gap: 0.8rem;
         h4 {
           font-weight: 600;
-          font-size: 1.6rem;
-          line-height: 2.4rem;
+          font-size: 1.3rem;
+          line-height: 1.8rem;
         }
       }
     }
@@ -460,13 +463,13 @@ export const ModalContainer = styled.div`
   position: fixed;
   z-index: 500;
   background-color: var(--white);
-  width: 62.3rem;
+  width: 38.8rem;
   min-height: 42.6rem;
   border-radius: 1rem;
   box-shadow: var(--shadow-2);
-  padding: 4.8rem;
-  left: 30%;
-  top: 30%;
+  padding: 2.4rem 1.6rem;
+  left: 3%;
+  top: 20%;
 
   .report {
     text-align: center;
@@ -491,7 +494,7 @@ export const ModalContainer = styled.div`
     /* display: flex; */
     position: relative;
     .inputArea {
-      width: 52.7rem;
+      width: 35.6rem;
       padding: 1.6rem 2rem;
       border-radius: 1rem;
       display: flex;
@@ -511,8 +514,9 @@ export const ModalContainer = styled.div`
       background-color: var(--white);
       border: 1px solid #dbd8fc;
       border-radius: 1rem;
-      margin-top: 2rem;
-      width: 52.7rem;
+      top: 6rem;
+      left: 0.2rem;
+      width: 35.6rem;
       position: absolute;
 
       li {
@@ -533,7 +537,7 @@ export const ModalContainer = styled.div`
   .reportButton {
     display: flex;
     justify-content: flex-end;
-    margin-top: 5rem;
+    margin-top: 18rem;
 
     button {
       padding: 1.2rem 3.6rem;

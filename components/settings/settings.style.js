@@ -4,6 +4,9 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  @media screen and (max-width: 425px) {
+    display: none;
+  }
 `;
 
 const StyledSettings = styled.div`
@@ -402,7 +405,7 @@ const StyledGeneral = styled.form`
   }
 
   .modal-bg {
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 120%;
     top: 0;
@@ -413,6 +416,7 @@ const StyledGeneral = styled.form`
     backdrop-filter: blur(25px);
     display: flex;
     justify-content: center;
+    z-index: 100;
     align-items: center;
     .deactivate-modal {
       display: flex;
@@ -423,6 +427,7 @@ const StyledGeneral = styled.form`
       padding: 4.8rem;
       gap: 4.8rem;
       background: #ffffff;
+      z-index: 500;
       box-shadow: 1.65263px 3.30526px 26.4421px rgba(0, 0, 0, 0.05);
       border-radius: 10px;
       &-text {
@@ -1003,8 +1008,11 @@ const StyledProfile = styled.div`
 
   .blurred {
     left: 0;
-    position: absolute;
+    position: fixed;
     z-index: 10;
+    width: 100%;
+    height: 100%;
+    top: 0;
   }
 
   .photo-modal {
@@ -1038,10 +1046,11 @@ const StyledProfile = styled.div`
       padding: 0.661053rem 1.32211rem;
 
       label {
-        font-size: 1.35rem;
+        font-size: 0.992rem;
         font-weight: 600;
-        color: var(--dark-gray);
+        color: #333333;
         width: 100%;
+        line-height: 1.983rem;
       }
 
       input {
@@ -1050,10 +1059,10 @@ const StyledProfile = styled.div`
         outline: none;
         border: none;
         font-weight: 700;
-        font-size: 1.23947rem;
+        font-size: 1.23974rem;
         line-height: 2rem;
         letter-spacing: -0.011em;
-        color: var(--dark-gray-2);
+        color: #404040;
         &::placeholder {
           font-weight: 600;
           font-size: 1.15684rem;
@@ -1067,6 +1076,10 @@ const StyledProfile = styled.div`
       input {
         cursor: pointer;
         font-family: 'Poppins';
+        font-size: 600;
+        font-weight: 1.5684rem;
+        line-height: 2rem;
+        color: #e0e0e0;
       }
     }
     .gender {
@@ -1089,10 +1102,10 @@ const StyledProfile = styled.div`
     .dropdownContainer {
       h3 {
         font-weight: 600;
-        font-size: 1.4rem;
-        line-height: 150%;
-        letter-spacing: -0.02em;
-        color: var(--black-1);
+        font-size: 0.991579rem;
+        line-height: 2rem;
+        letter-spacing: -0.011em;
+        color: #333333;
       }
       .dropdown {
         cursor: pointer;
@@ -1116,6 +1129,7 @@ const StyledProfile = styled.div`
         cursor: pointer;
         position: absolute;
         top: 100%;
+        left: 0.2rem;
         li {
           border-bottom: 0.5px solid #dbd8fc;
           font-weight: 500;
@@ -1358,3 +1372,154 @@ export {
   StyledPolicy,
   StyledAdmin,
 };
+export const MobileSettings = styled.div`
+  display: none;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  @media screen and (max-width: 425px) {
+    display: block;
+  }
+  .user-profile {
+    padding-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    h2 {
+      font-weight: 600;
+      font-size: 1.7rem;
+      line-height: 2.2rem;
+      letter-spacing: -0.41px;
+    }
+  }
+  .welcome {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    p {
+      font-size: 1.3rem;
+      line-height: 1.8rem;
+      letter-spacing: -0.08px;
+    }
+  }
+  .column {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+  .row {
+    background-color: white;
+    padding: 0.8rem 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0.8rem;
+  }
+  .name-column {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+
+    p {
+      font-size: 1.6rem;
+      font-weight: 600;
+      line-height: 2.1rem;
+      letter-spacing: -0.32px;
+    }
+  }
+  .logout {
+    background-color: white;
+    width: 100%;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    padding-left: 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+
+    p {
+      font-size: 1.6rem;
+      font-weight: 600;
+      line-height: 2.1rem;
+      letter-spacing: -0.32px;
+    }
+  }
+  .logout-modal {
+    width: 38.8rem;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2.4rem;
+    border-radius: 1.6rem;
+    position: fixed;
+    top: 20%;
+    left: 3%;
+    z-index: 500;
+
+    h3 {
+      text-align: center;
+      font-size: 2.4rem;
+      line-height: 3.6rem;
+      font-weight: 600;
+      color: #262626;
+    }
+    p {
+      text-align: center;
+      font-size: 1.4rem;
+      line-height: 2.1rem;
+      color: #333333;
+    }
+  }
+  .logout-icon {
+    background: #ffffff;
+    border: 1px solid #e9e9e9;
+    box-shadow: 0px 1px 4px rgba(103, 127, 214, 0.15);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 7.2rem;
+    height: 7.2rem;
+    margin: 0 auto;
+  }
+  .button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .cancel {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 15.8rem;
+      height: 4.8rem;
+      border: 1px solid #b3b3b3;
+      box-shadow: 1px 4px rgba(103, 127, 214, 0.15);
+      border-radius: 10.5727px;
+      font-weight: 700;
+      font-size: 1.6rem;
+      line-height: 1.9rem;
+      color: #333333;
+    }
+
+    .proceed {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 15.8rem;
+      height: 4.8rem;
+      background: #cf0000;
+      box-shadow: 0px 1px 4px rgba(103, 127, 214, 0.15);
+      border-radius: 10.5727px;
+      font-weight: 700;
+      font-size: 1.6rem;
+      line-height: 1.9rem;
+      color: white;
+    }
+  }
+`;

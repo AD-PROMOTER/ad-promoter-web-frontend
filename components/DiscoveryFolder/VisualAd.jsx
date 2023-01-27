@@ -44,6 +44,25 @@ const VisualAd = ({click}) => {
         }
     }, [])
 
+    useEffect(() => {
+        const onClickOutside = () => {
+            setShowSubmit(true)
+            setShowPaste(false)
+        }
+        const handleClickOutside = (event) => {
+            if (ref.current && !ref.current.contains(event.target)) {
+                onClickOutside && onClickOutside();
+            }
+        }
+        document.addEventListener('click', handleClickOutside, true);
+        return () => {
+            document.removeEventListener('click', handleClickOutside, true);
+        }
+    }, [])
+
+    
+    
+
     const handleShowPaste = () => {
         setShowSubmit(false)
         setShowPaste(true)
@@ -112,7 +131,7 @@ const VisualAd = ({click}) => {
                     <Image src={item.productImg} alt=""/>
                     <Image src={item.productImg1} alt=""/>
                 </Carousel> */}
-                <div className='submit'>
+                <div className='submit' ref={ref}>
                     {showSubmit && <button onClick={handleShowPaste}>Submit</button>}
                     {showPaste && (
                         <form className='paste'>

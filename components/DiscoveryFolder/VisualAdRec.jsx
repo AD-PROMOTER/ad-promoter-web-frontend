@@ -38,6 +38,22 @@ const VisualAdRec = ({click}) => {
       }
   }, [])
 
+  useEffect(() => {
+    const onClickOutside = () => {
+        setShowSubmit(true)
+        setShowPaste(false)
+    }
+    const handleClickOutside = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+            onClickOutside && onClickOutside();
+        }
+    }
+    document.addEventListener('click', handleClickOutside, true);
+    return () => {
+        document.removeEventListener('click', handleClickOutside, true);
+    }
+  }, [])
+
     const handleShowPaste = () => {
         setShowSubmit(false)
         setShowPaste(true)
@@ -105,11 +121,10 @@ const VisualAdRec = ({click}) => {
               <div className='adImage'>
                 <Image src={item.productImg} alt=""/>
               </div>
-              <div className='recSubmit'>
+              <div className='recSubmit' ref={ref}>
                 {showSubmit && <button onClick={handleShowPaste}>Submit</button>}
                 {showPaste && (
                   <div>
-                    <p style={{fontSize: '16px', fontWeight: 'bold', marginBottom: '10px'}}>Paste Social Promotion link:</p>
                     <div className='recPaste'>
                       <div className='recPasteLink'>
                         <Image src={linkFrame} alt=""/>
