@@ -176,6 +176,7 @@ const StyledGeneral = styled.form`
     padding: 0px;
     gap: 16px;
     max-width: 40rem;
+    position: relative;
     h3 {
       font-weight: 600;
       font-size: 1.4rem;
@@ -194,6 +195,7 @@ const StyledGeneral = styled.form`
       border-radius: 10px;
       width: 100%;
       cursor: pointer;
+      position: relative;
       .inputText {
         font-weight: 500;
         font-size: 1.2rem;
@@ -211,6 +213,8 @@ const StyledGeneral = styled.form`
       border-radius: 12px;
       width: 100%;
       cursor: pointer;
+      position: absolute;
+      top: 110%;
       li {
         border-bottom: 0.5px solid #dbd8fc;
         font-weight: 500;
