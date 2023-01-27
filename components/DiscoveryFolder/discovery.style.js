@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 
+export const Desktop = styled.div`
+  display: block;
+  @media screen and (max-width: 425px) {
+    display: none;
+  }
+`;
 export const Filterstyled = styled.div`
   background-color: var(--white);
   width: 100%;
@@ -45,22 +51,24 @@ export const Filterstyled = styled.div`
       display: flex;
       align-items: center;
       justify-content: space-between;
-    }
-    ul {
-      background-color: var(--white);
-      position: absolute;
-      top: 9.5rem;
-      right: 26.2rem;
-      border-radius: 0.8rem;
-      box-shadow: var(--shadow-1);
-      width: 25rem;
-      z-index: 100;
+      position: relative;
 
-      li {
-        padding: 1.2rem 2.4rem;
-        border-bottom: 0.1rem solid #d9d9d9;
-        cursor: pointer;
-        /* z-index: 100; */
+      ul {
+        background-color: var(--white);
+        position: absolute;
+        top: 7.5rem;
+        right: 0rem;
+        border-radius: 0.8rem;
+        box-shadow: var(--shadow-1);
+        width: 25rem;
+        z-index: 100;
+
+        li {
+          padding: 1.2rem 2.4rem;
+          border-bottom: 0.1rem solid #d9d9d9;
+          cursor: pointer;
+          /* z-index: 100; */
+        }
       }
     }
   }
@@ -415,13 +423,12 @@ export const Feed = styled.div`
           padding-left: 6rem;
           padding-right: 10rem;
           border-radius: 0.8rem;
-          background: #ffffff;
+          background: var(--light-gray-3);
           border: 2px solid #ffffff;
           width: 47.376rem;
           /* width: 100%; */
           height: 5.6rem;
           /* height: 100%; */
-          box-shadow: var(--shadow-1);
         }
       }
 
@@ -448,5 +455,114 @@ export const DiscoveryContainer = styled.div`
     /* @media screen and (min-width: 425px) {
       height: auto;
     } */
+  }
+`;
+
+export const MobileDiscovery = styled.div`
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 2rem;
+  display: none;
+  @media screen and (max-width: 425px) {
+    display: block;
+  }
+
+  .back-disc {
+    display: flex;
+    align-items: center;
+    gap: 10rem;
+    margin-bottom: 2rem;
+
+    h3 {
+      font-weight: 600;
+      font-size: 2rem;
+      line-height: 2.4rem;
+      letter-spacing: 0.38px;
+    }
+  }
+
+  .search-filter {
+    position: relative;
+    display: block;
+
+    .search-icon {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      padding-left: 1.2rem;
+    }
+
+    input {
+      padding: 1.2rem;
+      padding-left: 5rem;
+      border-radius: 0.8rem;
+      border: 1px solid #dbd8fc;
+      width: 39rem;
+      font-size: 1.2rem;
+      line-height: 1.6rem;
+    }
+
+    .filter {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      p {
+        font-size: 1.1rem;
+        line-height: 1.3rem;
+        letter-spacing: 0.07px;
+      }
+    }
+  }
+  .feed-tab {
+    margin-top: 1.5rem;
+    margin-bottom: 5rem;
+    a {
+      padding: 1rem;
+      border-radius: 3.2rem;
+      background-color: #f7f2ff;
+      border: 1px solid #4f00cf;
+      font-size: 1.1rem;
+      font-weight: 1.3rem;
+      letter-spacing: 0.66px;
+      color: #0d0d0d;
+    }
+  }
+
+  .tab-para {
+    margin-bottom: 2rem;
+    font-weight: 600;
+    font-size: 1.7rem;
+    line-height: 2.2rem;
+    letter-spacing: -0.408px;
+  }
+
+  ul {
+    background-color: var(--white);
+    position: absolute;
+    top: 14rem;
+    right: 2rem;
+    border-radius: 1.2rem;
+    box-shadow: var(--shadow-1);
+    width: 18.2rem;
+    z-index: 100;
+
+    li {
+      padding-top: 1.2rem;
+      padding-bottom: 1.2rem;
+      padding-left: 2.4rem;
+      border-bottom: 0.1rem solid #d9d9d9;
+      cursor: pointer;
+      font-size: 1.4rem;
+      line-height: 2.1rem;
+      font-weight: 600;
+    }
   }
 `;
