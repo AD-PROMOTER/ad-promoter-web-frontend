@@ -21,6 +21,7 @@ import ArrowDown from "@/public/assets/arrow-down"
 import ArrowUp from "@/public/assets/arrow-up"
 import { useEffect,useState } from "react"
 import userStatus from '@/public/assets/promoters-logo.svg'
+import MobileNotif from '@/components/MobileNotification/index'
 import ScrollContainer from 'react-indiana-drag-scroll'
 
 const Index = ({router}) => {
@@ -31,17 +32,15 @@ const Index = ({router}) => {
   const isTabTwo = tab === "saved jobs"
   const [showDropdown, setShowDropdown] = useState(false)
   const [showSortDropdown, setShowSortDropdown] = useState(false)
-
-  const balance = [
+  const [showNotif, setShowNotif] = useState(false)
+  const mobileSummary = [
     {
       icon: money,
       name: 'Total Balance',
       price: '₦200,000.35',
-      bg: '#D2EFFF'
-    }
-  ]
-
-  const mobileSummary = [
+      bg: '#D2EFFF',
+      nameClass: 'balance'
+    },
     {
       icon: wallet,
       name: 'Pending Withdrawal',
@@ -240,7 +239,8 @@ const Index = ({router}) => {
         </StyledHome>
       </StyledHomeContainer>
       <MobileCotainer>
-          <div className="welcome">
+        {showNotif?<MobileNotif goBack={() => setShowNotif(false)}/>:(<>
+        <div className="welcome">
             <div className="userProfile">
               <Image src={profil} alt='profile picture'/>
               <div className="username">
@@ -253,26 +253,21 @@ const Index = ({router}) => {
             </div>
             <div className="promo">
               <Image src={promo} alt='promoter'/>
-              <Image src={notif} alt='notification'/>
+              <Image src={notif} alt='notification' onClick={() => setShowNotif(true)}/>
             </div>            
           </div>
           <div className="dashboard">Dashboard Summary</div>
-          {balance.map((item, index) => (
-            <div className="balance" key={index} style={{backgroundColor: item.bg}}>
-              <Image src={item.icon} alt="balance icon"/>
-              <p className="item-name">{item.name}</p>
-              <p className="item-price">{item.price}</p>
-            </div>
-          ))}
           <div className="summary-info">
-            {mobileSummary.map(({icon,name,price,bg})=>(
-              <div className="item-summary" key={name} style={{backgroundColor: bg}} >
-                <div className="item-icon">
-                  <Image src={icon} alt={`${icon} icon`}/>
-                  <p>{name}</p>
+            {mobileSummary.map((item, index)=>(
+              <div key={index} className={item.nameClass ? 'balance' : 'card'} style={{backgroundColor: item.bg}}>
+              <div className='amount'>
+                <div className='icon'>
+                  <Image src={item.icon} alt='icon'/>
+                  <p>{item.name}</p>
                 </div>
-                <h3>{price}</h3>
+                <h3>{item.price}</h3>
               </div>
+            </div>
             ))}
           </div>
           <div className="sort">
@@ -298,18 +293,19 @@ const Index = ({router}) => {
                 <ArrowUp /> : <ArrowDown />
               }
             </div>
+            {showSortDropdown && (
+              <ul className="list">
+                <li>Recent</li>
+                <li>Two days ago</li>
+                <li>A week ago</li>
+                <li>Less than 2 weeks</li>
+                <li>Last 30 days</li>
+              </ul>
+            )}
           </div>
-          {showSortDropdown && (
-            <ul className="list">
-              <li>Recent</li>
-              <li>Two days ago</li>
-              <li>A week ago</li>
-              <li>Less than 2 weeks</li>
-              <li>Last 30 days</li>
-            </ul>
-          )}
           {isTabOne && <RecentMobile />}
-          {isTabTwo && <SavedJobsMobile />}          
+          {isTabTwo && <SavedJobsMobile />} 
+        </>)}         
         </MobileCotainer>
     </>
   )

@@ -347,65 +347,48 @@ export const MobileCotainer = styled.div`
     letter-spacing: 0.38px;
     margin-bottom: 1rem;
   }
-  .balance {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding-top: 2.4rem;
-    padding-bottom: 2.4rem;
-    border-radius: 1.2rem;
-    gap: 0.8rem;
-  }
-  .item-name {
-    font-size: 1.5rem;
-    line-height: 2rem;
-    letter-spacing: 0.24px;
-  }
-  .item-price {
-    font-weight: 600;
-    font-size: 2rem;
-    line-height: 2.4rem;
-    letter-spacing: 0.38px;
-  }
-
   .summary-info {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1.7rem;
-    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
   }
-  .item-summary {
-    display: flex;
-    flex-direction: column;
-    gap: 1.7rem;
-    align-items: center;
-    justify-content: center;
+  .balance {
+    grid-column: 1 / -1;
     padding-top: 2.4rem;
     padding-bottom: 2.4rem;
-    width: 18.5rem;
     border-radius: 1.2rem;
+  }
+  .card {
+    padding-top: 2.4rem;
+    padding-bottom: 2.4rem;
+    border-radius: 1.2rem;
+    width: 18.4rem;
+  }
+  .amount {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
 
     h3 {
       font-weight: 600;
-      font-size: 2.2rem;
-      line-height: 2.8rem;
-      letter-spacing: 0.35px;
+      font-size: 2rem;
+      line-height: 2.4rem;
+      letter-spacing: 0.38px;
+      color: #333333;
     }
   }
-  .item-icon {
+  .icon {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    align-items: center;
-    justify-content: center;
+    gap: 1.5rem;
 
     p {
       font-size: 1.5rem;
       line-height: 2rem;
       letter-spacing: -0.24px;
+      color: #333333;
     }
   }
   .sort {
@@ -417,6 +400,7 @@ export const MobileCotainer = styled.div`
     justify-content: space-between;
     margin-top: 2rem;
     margin-bottom: 1rem;
+    position: relative;
   }
   .tab-sort {
     display: flex;
@@ -473,8 +457,8 @@ export const MobileCotainer = styled.div`
   .list {
     background-color: var(--white);
     position: absolute;
-    top: 87rem;
-    right: 2.3rem;
+    top: 8rem;
+    right: 0;
     border-radius: 1.2rem;
     box-shadow: var(--shadow-1);
     width: 18.2rem;
