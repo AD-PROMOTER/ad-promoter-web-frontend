@@ -1,10 +1,18 @@
 import styled from 'styled-components';
+import { size } from './breakpoints';
 
 export const StyledHome = styled.div`
   padding: 4rem 3.7rem 1.2rem 3.7rem;
   display: flex;
   gap: 3.18rem;
   height: 100vh;
+
+  @media screen and (max-width: ${size.mobileL}) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+  }
 `;
 export const DashboardContainer = styled.div`
   width: 88.5rem;
@@ -12,6 +20,12 @@ export const DashboardContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 3.6rem;
+
+  // mobile view
+  @media screen and (max-width: ${size.mobileL}) {
+    display: block;
+  }
+
   .welcome {
     display: flex;
     flex-direction: row;
@@ -22,6 +36,14 @@ export const DashboardContainer = styled.div`
     width: 100%;
     background: #ffffff;
     border-radius: 10px;
+
+    @media screen and (max-width: ${size.mobileL}) {
+      gap: 8px;
+
+      > .profile-img {
+        border-radius: 200px;
+      }
+    }
     &-text {
       display: flex;
       flex-direction: column;
@@ -53,6 +75,10 @@ export const DashboardContainer = styled.div`
       flex: 2;
       display: flex;
       justify-content: flex-end;
+
+      @media screen and (max-width: ${size.mobileL}) {
+        display: none;
+      }
     }
   }
 `;
@@ -70,6 +96,10 @@ export const DashboardSummaryContainer = styled.div`
   /* width: 885px; */
   /* height: 640px; */
   /* width: 885px; */
+
+  @media screen and (max-width: ${size.mobileL}) {
+    padding: 1rem;
+  }
   .header-text {
     display: flex;
     flex-direction: column;
@@ -82,12 +112,14 @@ export const DashboardSummaryContainer = styled.div`
       color: var(--black-1);
     }
   }
+
   .dashboard-info {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 2.4rem;
     /* width: 837px; */
+
     &-board {
       display: flex;
       justify-content: space-between;
@@ -96,6 +128,11 @@ export const DashboardSummaryContainer = styled.div`
       gap: 2.4rem;
       /* width: 837px;
             height: 156px; */
+
+      @media screen and (max-width: ${size.mobileL}) {
+        padding: 0;
+        margin: 0;
+      }
       &-item {
         display: flex;
         flex-direction: column;
@@ -107,6 +144,14 @@ export const DashboardSummaryContainer = styled.div`
         border-radius: 12px;
         width: 27rem;
         height: 15.6rem;
+
+        @media screen and (max-width: ${size.mobileL}) {
+          display: block;
+          width: 126.67px;
+          height: 104px;
+          font-size: 14px;
+        }
+
         &-text {
           display: flex;
           flex-direction: column;
@@ -119,6 +164,11 @@ export const DashboardSummaryContainer = styled.div`
             align-items: center;
             gap: 0.8rem;
             width: 18rem;
+
+            @media screen and (max-width: ${size.mobileL}) {
+              display: block;
+              text-align: center;
+            }
             h3 {
               font-weight: 500;
               font-size: 1.4rem;
@@ -208,6 +258,7 @@ export const RecentAdsContainer = styled.div`
   align-items: flex-start;
   gap: 1.6rem;
   width: 41.1rem;
+
   .header {
     display: flex;
     align-items: flex-start;
@@ -256,6 +307,7 @@ export const RecentAdsContainer = styled.div`
     flex-direction: column;
     align-items: flex-start;
     gap: 2.4rem;
+
     &-item {
       display: flex;
       flex-direction: column;

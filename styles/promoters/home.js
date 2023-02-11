@@ -1,10 +1,12 @@
 import styled from 'styled-components';
+import { size } from '../breakpoints';
 
 export const StyledHomeContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   /* height: 100vh; */
+  background: #ffffff;
 `;
 export const StyledHome = styled.div`
   padding: 4rem 3.7rem 1.2rem 3.7rem;
@@ -12,6 +14,11 @@ export const StyledHome = styled.div`
   gap: 3.18rem;
   height: 100vh;
   /* margin: auto; */
+
+  // @media screen and (max-width:${size.mobileL}) {
+  //   padding: 1rem;
+  // }
+
   .home-dashboard {
     display: flex;
     flex-direction: column;

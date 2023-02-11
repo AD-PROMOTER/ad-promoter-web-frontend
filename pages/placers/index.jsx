@@ -153,7 +153,9 @@ const Index = () => {
             <div className="welcome-text">
               <h3>Hi, Leilani Angel</h3>
               <div className="welcome-text-sub">
-                <Image src={hands} alt='waving hands'/>
+                <div className="profile-img">
+                  <Image src={hands} alt='waving hands'/>
+                </div>
                 <p>Welcome back!</p>
               </div>
             </div>
