@@ -1,13 +1,10 @@
 import styled from 'styled-components';
 
 export const StyledHome = styled.div`
-  width: 144rem;
+  padding: 4rem 3.7rem 1.2rem 3.7rem;
   display: flex;
-  align-items: flex-start;
-  /* gap: 2 rem; */
-  justify-content: space-between;
-  padding: 4rem 5.3rem 1.2rem 3.7rem;
-  box-sizing: border-box;
+  gap: 3.18rem;
+  height: 100vh;
 `;
 export const DashboardContainer = styled.div`
   width: 88.5rem;

@@ -18,6 +18,7 @@ const General = () => {
     const ClickedList = (e) =>{
         setListValue(e.target.innerText)
         setIsChangesMade(true)
+        setShowDropdown(false)
     }
 
     const ClickedDeactivationList = (e) =>{

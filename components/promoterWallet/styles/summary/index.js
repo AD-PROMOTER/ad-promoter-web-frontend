@@ -11,7 +11,7 @@ export const WalletSummaryStyles = styled.div`
   position: relative;
 
   .intro {
-    display: flex;
+    display: ${(props) => (props.admin ? 'block' : 'flex')};
     justify-content: space-between;
     margin-bottom: 2.25rem;
 
@@ -55,7 +55,7 @@ export const CardStyles = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 2.5rem 0;
-  width: 20rem;
+  width: 23rem;
   border-radius: 0.75rem;
   background: var(${(props) => props.bg});
   box-shadow: var(${(props) => props.shadow});
