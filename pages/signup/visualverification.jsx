@@ -12,16 +12,16 @@ import Button from '@/components/authBtn/index'
 import { useContext, useEffect, useState } from "react"
 import PreferenceContext from "@/context/preferenceContext"
 const Visualverification = () => {
-    const {setIsVisualVerificationWithValue,isPrefWithValue,setIsPrefWithValue} = useContext(PreferenceContext)
+    const {setIsVisualVerificationWithValue,isPrefWithValue,setIsPrefWithValue,setIsInputWithValue} = useContext(PreferenceContext)
     const [inputValue,setInputValue] = useState('')
     const router = useRouter()
 
     useEffect(() =>{
-        setIsPrefWithValue(false)
+        setIsInputWithValue(false)
         if(inputValue !== ''){
-            setIsVisualVerificationWithValue(true)
+            setIsInputWithValue(true)
         }else{
-            setIsVisualVerificationWithValue(false)
+            setIsInputWithValue(false)
         }
     })
     const handleClick = () =>{

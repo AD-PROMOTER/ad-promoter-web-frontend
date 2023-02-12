@@ -10,8 +10,8 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "chart.js": "^4.0.1",
     "bootstrap": "^5.2.3",
+    "chart.js": "^4.0.1",
     "framer-motion": "^7.3.6",
     "next": "12.3.0",
     "react": "18.2.0",
@@ -21,6 +21,7 @@
     "react-icons": "^4.6.0",
     "react-indiana-drag-scroll": "^2.2.0",
     "react-phone-number-input": "^3.2.12",
+    "sharp": "^0.31.3",
     "styled-components": "^5.3.5",
     "yarn": "^1.22.19"
   },

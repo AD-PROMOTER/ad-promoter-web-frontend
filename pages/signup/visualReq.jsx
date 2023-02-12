@@ -14,8 +14,8 @@ import { useContext } from "react";
 import BackArrow from '@/public/assets/back-arrow'
 import PreferenceContext from '@/context/preferenceContext'
 const VisualReq = () => {
-    const [userVisualReq,setUserVisualReq] = useState('yes')
-    const {setIsPrefWithValue,isPrefWithValue} = useContext(PreferenceContext)
+    const [userVisualReq,setUserVisualReq] = useState('')
+    const {setIsPrefWithValue,isPrefWithValue,setIsInputWithValue} = useContext(PreferenceContext)
 
     const router = useRouter();
     const handleSubmit = (e) => {
@@ -29,12 +29,14 @@ const VisualReq = () => {
     }
     const handleChange = event => {
         setUserVisualReq(event.target.value);
-        setIsPrefWithValue(true)
+        setIsInputWithValue(true)
+        // setIsPrefWithValue(true)
     };
     useEffect(() => {
     router.prefetch('/signup/verification')
-    setIsPrefWithValue(!isPrefWithValue)
-  }, [router,isPrefWithValue,setIsPrefWithValue])
+    // setIsPrefWithValue(!isPrefWithValue)
+    setIsInputWithValue(false)
+  }, [router,setIsInputWithValue])
   return (
     <BgContainer image={bg}>
         <Overlay className='overlay'>

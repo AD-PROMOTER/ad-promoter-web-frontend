@@ -4,9 +4,10 @@ export const StyledHomeContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  /* height: 100vh; */
 `;
 export const StyledHome = styled.div`
-  padding: 4rem 5.3rem 1.2rem 3.7rem;
+  padding: 4rem 3.7rem 1.2rem 3.7rem;
   display: flex;
   gap: 3.18rem;
   height: 100vh;
@@ -191,9 +192,9 @@ export const TabContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 0px;
-  gap: 16px;
-  width: 411px;
+  gap: 1.6rem;
+  width: 41.1rem;
+  height: 150%;
   .tab-head {
     display: flex;
     justify-content: space-between;
@@ -205,7 +206,7 @@ export const TabContainer = styled.div`
       flex-direction: row;
       align-items: flex-start;
       padding: 0px;
-      gap: 38px;
+      gap: 3.8rem;
       .tab {
         display: flex;
         flex-direction: column;
@@ -213,23 +214,23 @@ export const TabContainer = styled.div`
         align-items: center;
         a {
           font-weight: 400;
-          font-size: 14px;
-          line-height: 21px;
+          font-size: 1.4rem;
+          line-height: 2.1rem;
           color: #4d4d4d;
           /* border-bottom: ${({ selected }) =>
             selected ? '1px solid black' : ''}; */
         }
         .active {
           font-weight: 600;
-          font-size: 14px;
-          line-height: 21px;
+          font-size: 1.4rem;
+          line-height: 2.1rem;
           color: #4d4d4d;
         }
         .bottom-dash {
-          width: 60px;
-          height: 3px;
+          width: 6rem;
+          height: 0.3rem;
           background: #4f00cf;
-          border-radius: 100px;
+          border-radius: 10rem;
         }
       }
     }
@@ -238,17 +239,17 @@ export const TabContainer = styled.div`
       flex-direction: row;
       justify-content: center;
       align-items: center;
-      padding: 8px 12px;
-      gap: 8px;
-      width: 77px;
-      height: 37px;
+      padding: 0.8rem 1.2rem;
+      gap: 0.8rem;
+      width: 7.7rem;
+      height: 3.7rem;
       background: #ffffff;
-      border-radius: 4px;
+      border-radius: 0.4rem;
       cursor: pointer;
       p {
         font-weight: 600;
-        font-size: 14px;
-        line-height: 21px;
+        font-size: 1.4rem;
+        line-height: 2.1rem;
         color: #000000;
       }
     }
@@ -276,7 +277,11 @@ export const TabContainer = styled.div`
     }
   }
   .tab-body {
-    width: 100%;
+    width: 105%;
     cursor: grab;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2.4rem;
   }
 `;

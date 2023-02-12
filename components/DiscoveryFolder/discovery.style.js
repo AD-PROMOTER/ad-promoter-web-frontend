@@ -445,5 +445,8 @@ export const DiscoveryContainer = styled.div`
     &::-webkit-scrollbar {
       display: none;
     }
+    /* @media screen and (min-width: 425px) {
+      height: auto;
+    } */
   }
 `;

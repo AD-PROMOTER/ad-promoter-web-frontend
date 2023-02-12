@@ -1,14 +1,17 @@
+import { StyledLayout } from "@/styles/promoterLayout.styles";
 import Navbar from "./PromoterNavbar/index";
-import PlacersNavbar from '@/components/PlacersNavbar/index'
-import AdminNavbar from '@/components/AdminNavbar/index'
-import { useRouter } from "next/router";
+import MobileNavbar from '@/components/MobilePromoterNavbar/index'
 const PromoterLayout = ({ children }) => {
-  const router = useRouter()
     return (
-      <div>
-        {router.pathname.startsWith('/promoters') ? <Navbar /> :  <PlacersNavbar />}
+      <StyledLayout>
+        <div className="desktop-nav">
+          <Navbar />
+        </div>
         {children}
-      </div>
+        <div className="mobile-nav">
+          <MobileNavbar />
+        </div>
+      </StyledLayout>
     );
   };
   
