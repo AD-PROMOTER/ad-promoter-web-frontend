@@ -27,8 +27,8 @@ export const StyledNavBar = styled.div`
         color: var(--dark-gray-2);
       }
       .bottom-dash {
-        width: 60px;
-        height: 3px;
+        width: 6rem;
+        height: 0.3rem;
         background: #4f00cf;
         border-radius: 100px;
       }

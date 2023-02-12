@@ -19,7 +19,14 @@ import PreferenceContext from '@/context/preferenceContext'
 import PhoneInput,{ formatPhoneNumber, formatPhoneNumberIntl, isValidPhoneNumber,isPossiblePhoneNumber } from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 import {BsEyeFill,BsEyeSlashFill} from 'react-icons/bs'
+import { useSignup } from '@/hooks/useSignup'
+
 const Index = () => {
+  const [email,setEmail] = useState('')
+  const [password,setPassword] = useState('')
+  const [confirmPassword,setConfirmPassword] = useState('')
+  const [accountName,setAccountName] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [isPasswordShown,setIsPasswordShown] = useState(false)
   const [isConfirmPasswordShown,setIsConfirmPasswordShown] = useState(false)
   const phoneRef = useRef(true)
@@ -27,21 +34,25 @@ const Index = () => {
   const [passwordState,setPasswordState] = useState(true)
   const passwordRef = useRef(true)
   const [inputValidation, setInputValidation] = useState()
-  const {userFormValue,setUserFormValue,setIsInputWithValue,IsInputWithValue,userTel,setUserTel} = useContext(PreferenceContext)
+  const {setIsInputWithValue,IsInputWithValue} = useContext(PreferenceContext)
+  const {signup,error,isLoading} = useSignup()
   const router = useRouter()
   
   useEffect(() => {
     router.prefetch('/signup/preference')
-    if(userFormValue.name !== '' && userFormValue.email !== '' && userFormValue.password !== '' && userFormValue.confirmPassword !=='' && userTel !==''){
+    if(accountName !== '' && email !== '' && password !== '' && confirmPassword !=='' && phoneNumber !==''){
       setIsInputWithValue(true)
     }else{
       setIsInputWithValue(false)
     }
-  }, [inputValidation, router, setIsInputWithValue, userFormValue, userTel])
+  }, [inputValidation, router, setIsInputWithValue,accountName,email,password,confirmPassword,phoneNumber])
 
-  const handleSubmit = (e) => {
-    e.preventDefault()    
-    if(userTel && isPossiblePhoneNumber(userTel) && userTel && isValidPhoneNumber(userTel) && userTel && formatPhoneNumber(userTel) && formatPhoneNumberIntl(userTel)){
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    
+    // await signup(email,password,accountName,phoneNumber)
+
+    if(phoneNumber && isPossiblePhoneNumber(phoneNumber) && phoneNumber && isValidPhoneNumber(phoneNumber) && phoneNumber && formatPhoneNumber(phoneNumber) && formatPhoneNumberIntl(phoneNumber)){
       phoneRef.current = true
       setPhoneState(true)
     }
@@ -49,7 +60,7 @@ const Index = () => {
       phoneRef.current = false
       setPhoneState(false)
     }
-    if(userFormValue.confirmPassword === userFormValue.password){
+    if(confirmPassword === password){
       passwordRef.current = true
       setPasswordState(true)
     }else{
@@ -61,12 +72,12 @@ const Index = () => {
     }
   }
 
-  const handleChange = (e) =>{
-    const value = e.target.value;
-    setUserFormValue({
-      ...userFormValue,[e.target.name]: value
-    })
-  }
+  // const handleChange = (e) =>{
+  //   const value = e.target.value;
+  //   setUserFormValue({
+  //     ...userFormValue,[e.target.name]: value
+  //   })
+  // }
   return (
     <BgContainer image={bg}>
       <Overlay className='overlay'>
@@ -89,9 +100,9 @@ const Index = () => {
                 type="text" 
                 id="name"
                 name='name'
-                value={userFormValue.name} 
+                value={accountName} 
                 required
-                onChange={handleChange}
+                onChange={(e)=> setAccountName(e.target.value)}
                 className= 'input'
               />
             </div>
@@ -102,8 +113,8 @@ const Index = () => {
                 id="email"
                 name='email'
                 required
-                value={userFormValue.email}
-                onChange={handleChange}
+                value={email}
+                onChange={(e)=> setEmail(e.target.value)}
                 className= 'input'
               />
             </div>
@@ -113,8 +124,8 @@ const Index = () => {
                 <PhoneInput
                   defaultCountry="NG"
                   international
-                  value={userTel}
-                  onChange={userTel => setUserTel(userTel)}
+                  value={phoneNumber}
+                  onChange={phoneNumber => setPhoneNumber(phoneNumber)}
                   className={phoneState ? 'input' : 'invalid'}
                 />
               </div>
@@ -143,8 +154,8 @@ const Index = () => {
                   id="password"
                   name='password'
                   required
-                  value={userFormValue.password}
-                  onChange={handleChange}
+                  value={password}
+                  onChange={(e)=> setPassword(e.target.value)}
                 />
                 {/* <PasswordStrengthMeter /> */}
               </div>
@@ -175,13 +186,14 @@ const Index = () => {
                   id="confirmPassword"
                   name='confirmPassword'
                   required
-                  value={userFormValue.confirmPassword}
-                  onChange={handleChange}
+                  value={confirmPassword}
+                  onChange={(e)=> setConfirmPassword(e.target.value)}
                 />
               </div>
             </div>
             
             <Button text='Next' />
+            {error && <div>{error}</div>}
           </form>
         </div>
         <div className="login">
