@@ -6,6 +6,7 @@ import { TbLogout } from 'react-icons/tb';
 import { VscClose } from 'react-icons/vsc';
 import { useRouter } from "next/router";
 import Navbar from '@/components/PromoterNavbar/index'
+import AdminNavbar from '@/components/AdminNavbar/index'
 
 const Settings = () => {
     const router = useRouter()
@@ -18,7 +19,6 @@ const Settings = () => {
     
     return (
         <Container>
-            <Navbar />
             <StyledSettings>
                 <main>
                     <ul className='categories'>
