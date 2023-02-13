@@ -12,6 +12,7 @@ const ModalContainerStyles = styled.div`
   right: 0;
   bottom: 0;
   backdrop-filter: blur(1.5rem);
+  z-index: 1000;
 
   .content {
     background: #fff;

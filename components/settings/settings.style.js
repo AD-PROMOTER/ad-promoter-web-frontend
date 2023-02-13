@@ -1206,6 +1206,115 @@ const StyledPolicy = styled.div`
   }
 `;
 
+const StyledAdmin = styled.section`
+  // background: red;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    padding: 2.3rem 1.5rem;
+    border: 1px solid #f2f2f2;
+    border-radius: 0.63rem;
+    margin-bottom: 48px;
+    box-shadow: 0px 1px 4px rgba(103, 127, 214, 0.15);
+
+    &__title {
+      font-weight: 600;
+      font-size: 20px;
+      color: var(--black-1);
+    }
+
+    button {
+      background: var(--green-2);
+      color: #fff;
+      font-size: 14px;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.63rem;
+      cursor: pointer;
+    }
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 8% 92%;
+
+    .titles {
+      display: grid;
+      grid-template-columns: 50% 25% 25%;
+      gap: 10px;
+    }
+
+    h2 {
+      font-size: 14px;
+      font-weight: 600;
+    }
+  }
+
+  li:nth-child(1) {
+    width: 95%;
+    padding: 0 17px;
+  }
+
+  li:nth-child(2) {
+    margin-top: 27px;
+  }
+
+  .item {
+    position: relative;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border: 1px solid #f2f2f2;
+    padding: 30px 17px;
+    box-shadow: 0px 1px 4px rgba(103, 127, 214, 0.15);
+
+    &__content {
+      display: flex;
+      justify-content: space-between;
+
+      div {
+        font-size: 14px;
+      }
+
+      .details {
+        display: flex;
+        justify-content: space-between;
+        width: 225px;
+
+        &__email {
+          font-size: 12px;
+          color: #8f9bb3;
+        }
+      }
+    }
+  }
+
+  .options {
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .active {
+    background: var(--white);
+  }
+
+  .inactive {
+    background: #f4f4f4;
+  }
+
+  .save {
+    margin-top: 32px;
+    background: var(--primary);
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    width: 216px;
+    border-radius: 10px;
+    padding: 12px 0;
+    cursor: pointer;
+  }
+`;
+
 const PlainButton = styled.button`
   background-color: transparent;
   color: var(--dark-gray);
@@ -1280,6 +1389,7 @@ export {
   StyledPayment,
   StyledProfile,
   StyledPolicy,
+  StyledAdmin,
 };
 export const MobileSettings = styled.div`
   display: none;
