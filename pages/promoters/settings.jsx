@@ -20,7 +20,7 @@ import Payment from "@/components/MobileSettings/Payment"
 import Privacy from "@/components/MobileSettings/Privacy"
 import { BackdropContainer } from "@/components/DiscoveryFolder/ReportModal/ModalStyle"
 
-const Settings = () => {
+const PromoterSettings = () => {
   const [selected, setSelected] = useState("Settings")
   const [showlogout, setShowlogout] = useState(false)
 
@@ -105,5 +105,5 @@ const Settings = () => {
     )
 }
 
-export default Settings
+export default PromoterSettings
 
