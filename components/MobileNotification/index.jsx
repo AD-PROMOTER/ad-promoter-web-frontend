@@ -4,7 +4,7 @@ import back from '@/public/assets/back-icon.svg'
 import image from '@/public/assets/Ellipse 3.svg'
 import { NotificationStyle } from './style'
 
-const index = ({goBack}) => {
+const Index = ({goBack}) => {
     const notifications = [
         {
           img: image,
@@ -139,4 +139,4 @@ const index = ({goBack}) => {
   )
 }
 
-export default index
+export default Index
