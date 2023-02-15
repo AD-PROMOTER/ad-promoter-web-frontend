@@ -1,11 +1,11 @@
-import Home from '@/public/assets/MobileHome.svg';
-import Discovery from '@/public/assets/MobileDiscovery.svg';
-import Wallet from '@/public/assets/MobileWallet.svg';
-import Profile from '@/public/assets/MobileProfile.svg';
-import ActiveHome from '@/public/assets/ActiveMobileHome.svg';
-import ActiveDiscovery from '@/public/assets/ActiveMobileDiscovery.svg';
-import ActiveWallet from '@/public/assets/ActiveMobileWallet.svg';
-import ActiveProfile from '@/public/assets/ActiveMobileProfile.svg';
+import Home from '@/public/assets/inactive-home.svg';
+import Discovery from '@/public/assets/inactive-discovery.svg';
+import Wallet from '@/public/assets/inactive-wallet.svg';
+import Profile from '@/public/assets/inactive-setting.svg';
+import ActiveHome from '@/public/assets/Active-Home.svg';
+import ActiveDiscovery from '@/public/assets/Active-discover.svg';
+import ActiveWallet from '@/public/assets/Active-Wallet.svg';
+import ActiveProfile from '@/public/assets/Active-setting.svg';
 export const links = [
   {
     icon: Home,

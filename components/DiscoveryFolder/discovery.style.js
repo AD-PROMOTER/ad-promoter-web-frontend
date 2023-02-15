@@ -470,7 +470,7 @@ export const MobileDiscovery = styled.div`
   .back-disc {
     display: flex;
     align-items: center;
-    gap: 10rem;
+    justify-content: center;
     margin-bottom: 2rem;
 
     h3 {
