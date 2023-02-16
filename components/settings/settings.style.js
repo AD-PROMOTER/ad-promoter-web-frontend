@@ -685,15 +685,24 @@ const StyledSecuirity = styled.div`
   form {
     margin-top: 3rem;
     margin-bottom: 6rem;
+    width: 46.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.6rem;
 
     .pwd {
       display: flex;
       flex-direction: column;
-      margin: 2.5rem 0;
-      color: var(--dark-gray);
+      position: relative;
+      width: 100%;
+      background: #ffffff;
+      box-shadow: 1.65263px 3.30526px 26.4421px rgba(0, 0, 0, 0.05);
+      border-radius: 0.991579rem;
+      padding: 0.661053rem 1.32211rem;
 
       .input-error {
-        width: fit-content;
+        width: 100%;
         padding: 0.25rem 0.75rem;
         font-size: 1.75rem;
         border: 0.145rem solid var(--red);
@@ -702,19 +711,29 @@ const StyledSecuirity = styled.div`
       }
 
       label {
-        font-size: 1.375rem;
-        font-weight: 500;
+        font-size: 0.992rem;
+        font-weight: 600;
+        color: #333333;
+        width: 100%;
+        line-height: 1.983rem;
       }
       input {
-        width: fit-content;
-        padding: 0.25rem 0.75rem;
-        font-size: 1.75rem;
-        border: 0.145rem solid #e1e1e1;
-        border-radius: 4px;
-        margin-top: 1.2rem;
-      }
-      input:hover {
-        border: 0.145rem solid #ccc;
+        width: 100%;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        font-weight: 700;
+        font-size: 1.23974rem;
+        line-height: 2rem;
+        letter-spacing: -0.011em;
+        color: #404040;
+        &::placeholder {
+          font-weight: 600;
+          font-size: 1.15684rem;
+          line-height: 20rem;
+          letter-spacing: -0.011em;
+          color: #e0e0e0;
+        }
       }
     }
   }
@@ -761,7 +780,7 @@ const StyledSecuirity = styled.div`
     }
   }
   .controls {
-    margin-top: 10rem;
+    margin-top: 45rem;
     .inactive {
       background-color: var(--primary);
       opacity: 0.25;
@@ -1187,6 +1206,115 @@ const StyledPolicy = styled.div`
   }
 `;
 
+const StyledAdmin = styled.section`
+  // background: red;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    padding: 2.3rem 1.5rem;
+    border: 1px solid #f2f2f2;
+    border-radius: 0.63rem;
+    margin-bottom: 48px;
+    box-shadow: 0px 1px 4px rgba(103, 127, 214, 0.15);
+
+    &__title {
+      font-weight: 600;
+      font-size: 20px;
+      color: var(--black-1);
+    }
+
+    button {
+      background: var(--green-2);
+      color: #fff;
+      font-size: 14px;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.63rem;
+      cursor: pointer;
+    }
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 8% 92%;
+
+    .titles {
+      display: grid;
+      grid-template-columns: 50% 25% 25%;
+      gap: 10px;
+    }
+
+    h2 {
+      font-size: 14px;
+      font-weight: 600;
+    }
+  }
+
+  li:nth-child(1) {
+    width: 95%;
+    padding: 0 17px;
+  }
+
+  li:nth-child(2) {
+    margin-top: 27px;
+  }
+
+  .item {
+    position: relative;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border: 1px solid #f2f2f2;
+    padding: 30px 17px;
+    box-shadow: 0px 1px 4px rgba(103, 127, 214, 0.15);
+
+    &__content {
+      display: flex;
+      justify-content: space-between;
+
+      div {
+        font-size: 14px;
+      }
+
+      .details {
+        display: flex;
+        justify-content: space-between;
+        width: 225px;
+
+        &__email {
+          font-size: 12px;
+          color: #8f9bb3;
+        }
+      }
+    }
+  }
+
+  .options {
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .active {
+    background: var(--white);
+  }
+
+  .inactive {
+    background: #f4f4f4;
+  }
+
+  .save {
+    margin-top: 32px;
+    background: var(--primary);
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    width: 216px;
+    border-radius: 10px;
+    padding: 12px 0;
+    cursor: pointer;
+  }
+`;
+
 const PlainButton = styled.button`
   background-color: transparent;
   color: var(--dark-gray);
@@ -1261,6 +1389,7 @@ export {
   StyledPayment,
   StyledProfile,
   StyledPolicy,
+  StyledAdmin,
 };
 export const MobileSettings = styled.div`
   display: none;

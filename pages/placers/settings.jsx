@@ -1,6 +1,6 @@
 import Settings from "@/components/settings/Settings"
 
-const settings = () => {
+const PlacersSettings = () => {
     return (
         <div style={{ position: 'relative'  }} className="dummy">
             <Settings />
@@ -8,5 +8,5 @@ const settings = () => {
     )
 }
 
-export default settings
+export default PlacersSettings
 

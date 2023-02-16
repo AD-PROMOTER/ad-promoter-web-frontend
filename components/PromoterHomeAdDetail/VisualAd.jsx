@@ -24,7 +24,7 @@ const VisualAd = () => {
     const [showReportModal,setShowReportModal] = useState(false)
     const [showDropdown, setShowDropdown] = useState(false)
     const [listValue, setListValue] = useState('It has gory images')
-    
+
     const ClickedList = (e) =>{
       setListValue(e.target.innerText)
       setShowDropdown(false)
@@ -36,7 +36,7 @@ const VisualAd = () => {
     const handleChange = event => {
         setInputValue(event.target.value);
     };
-
+    
     useEffect(() => {
         const onClickOutside = () => {
             setShowReport(false)
