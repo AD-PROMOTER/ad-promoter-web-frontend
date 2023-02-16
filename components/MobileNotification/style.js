@@ -6,6 +6,9 @@ export const NotificationStyle = styled.div`
     display: flex;
     align-items: center;
     gap: 10rem;
+    @media screen and (max-width: 400px) {
+      gap: 6rem;
+    }
 
     p {
       font-weight: 600;

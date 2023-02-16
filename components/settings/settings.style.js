@@ -1398,6 +1398,9 @@ export const MobileSettings = styled.div`
   @media screen and (max-width: 425px) {
     display: block;
   }
+  @media screen and (max-width: 380px) {
+    padding-bottom: 20rem;
+  }
   .user-profile {
     padding-top: 5rem;
     display: flex;
@@ -1479,6 +1482,13 @@ export const MobileSettings = styled.div`
     top: 20%;
     left: 3%;
     z-index: 500;
+    @media screen and (max-width: 400px) {
+      width: 35rem;
+      left: 5%;
+    }
+    @media screen and (max-width: 376px) {
+      width: 33.5rem;
+    }
 
     h3 {
       text-align: center;
@@ -1524,6 +1534,9 @@ export const MobileSettings = styled.div`
       font-size: 1.6rem;
       line-height: 1.9rem;
       color: #333333;
+      @media screen and (max-width: 400px) {
+        width: 14rem;
+      }
     }
 
     .proceed {
@@ -1539,6 +1552,9 @@ export const MobileSettings = styled.div`
       font-size: 1.6rem;
       line-height: 1.9rem;
       color: white;
+      @media screen and (max-width: 400px) {
+        width: 14rem;
+      }
     }
   }
 `;

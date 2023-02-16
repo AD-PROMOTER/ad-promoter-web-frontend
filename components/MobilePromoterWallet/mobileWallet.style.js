@@ -124,6 +124,15 @@ export const PaymentModalContainer = styled.div`
   width: 38.8rem;
   padding: 2.4rem;
   border-radius: 1.6rem;
+  @media screen and (max-width: 390px) {
+    width: 35rem;
+    top: 20%;
+    left: 5%;
+  }
+  @media screen and (max-width: 375px) {
+    width: 35rem;
+    left: 2%;
+  }
 
   .details {
     text-align: center;
@@ -185,7 +194,15 @@ export const VerificationContainer = styled.div`
   width: 38.8rem;
   padding: 2.4rem;
   border-radius: 1.6rem;
-
+  @media screen and (max-width: 400px) {
+    width: 35rem;
+    left: 5%;
+  }
+  @media screen and (max-width: 376px) {
+    width: 35rem;
+    left: 2%;
+    top: 18%;
+  }
   .verification {
     text-align: center;
     font-weight: 600;
@@ -279,6 +296,15 @@ export const SuccessContainer = styled.div`
   width: 38.8rem;
   padding: 2.4rem;
   border-radius: 1.6rem;
+  @media screen and (max-width: 400px) {
+    width: 35rem;
+    left: 5%;
+  }
+  @media screen and (max-width: 376px) {
+    width: 35rem;
+    left: 2%;
+    top: 18%;
+  }
   .success {
     margin-top: 4rem;
     display: flex;
@@ -332,6 +358,16 @@ export const WithdrawContainer = styled.div`
   width: 38.8rem;
   padding: 1.6rem 2.4rem;
   border-radius: 1.6rem;
+  @media screen and (max-width: 400px) {
+    width: 35rem;
+    left: 5%;
+    top: 15%;
+  }
+  @media screen and (max-width: 376px) {
+    width: 35rem;
+    left: 2%;
+    top: 5%;
+  }
 
   .withdraw {
     text-align: center;
@@ -546,6 +582,16 @@ export const DetailsContainer = styled.div`
   width: 38.8rem;
   padding: 1.6rem 2.4rem;
   border-radius: 1.6rem;
+  @media screen and (max-width: 400px) {
+    width: 35rem;
+    left: 5%;
+    top: 10%;
+  }
+  @media screen and (max-width: 376px) {
+    width: 35rem;
+    left: 2%;
+    top: 2%;
+  }
 
   .details {
     display: flex;
@@ -693,16 +739,36 @@ export const FundsContainer = styled.div`
   width: 38.8rem;
   padding: 1.6rem 2.4rem;
   border-radius: 1.6rem;
+  @media screen and (max-width: 400px) {
+    width: 35rem;
+    left: 5%;
+    top: 8%;
+  }
+  @media screen and (max-width: 376px) {
+    width: 35rem;
+    left: 2%;
+    top: 2%;
+    padding: 0.5rem 2.4rem;
+  }
   .funds {
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
+    @media screen and (max-width: 400px) {
+      gap: 0.7rem;
+    }
 
     .sucess-mark {
       width: 19.2rem;
       height: 19rem;
+      @media screen and (max-width: 400px) {
+        height: 15rem;
+      }
+      @media screen and (max-width: 376px) {
+        height: 14rem;
+      }
     }
     p {
       font-weight: 600;
@@ -727,6 +793,9 @@ export const FundsContainer = styled.div`
     color: #333333;
     padding-bottom: 2rem;
     border-bottom: 1px solid #b3b3b3;
+    @media screen and (max-width: 400px) {
+      margin-top: 1rem;
+    }
   }
   .to {
     display: flex;
@@ -735,6 +804,10 @@ export const FundsContainer = styled.div`
     padding-bottom: 2rem;
     margin-top: 2rem;
     border-bottom: 1px solid #b3b3b3;
+    @media screen and (max-width: 400px) {
+      gap: 1rem;
+      margin-top: 1rem;
+    }
   }
   .destination {
     display: flex;
@@ -807,6 +880,9 @@ export const FundsContainer = styled.div`
     line-height: 150%;
     letter-spacing: -0.02em;
     color: #333333;
+    @media screen and (max-width: 400px) {
+      margin-top: 1rem;
+    }
   }
   a {
     display: flex;
@@ -823,10 +899,16 @@ export const FundsContainer = styled.div`
     line-height: 150%;
     letter-spacing: -0.02em;
     margin: 5rem auto 2rem auto;
+    @media screen and (max-width: 400px) {
+      margin: 2rem auto 1rem auto;
+    }
   }
 `;
 export const FailedContainer = styled.div`
   margin-top: 10rem;
+  @media screen and (max-width: 400px) {
+    margin-top: 0.5rem;
+  }
   .funds {
     font-weight: 600;
     font-size: 2.4rem;
@@ -842,6 +924,9 @@ export const FailedContainer = styled.div`
     line-height: 150%;
     letter-spacing: -0.02em;
     color: #333333;
+    @media screen and (max-width: 400px) {
+      margin-top: 0.5rem;
+    }
   }
   .complete {
     text-align: center;
@@ -852,6 +937,12 @@ export const FailedContainer = styled.div`
     color: #333333;
     padding-bottom: 2rem;
     border-bottom: 1px solid #b3b3b3;
+    @media screen and (max-width: 400px) {
+      margin-top: 1.5rem;
+    }
+    @media screen and (max-width: 376px) {
+      margin-top: 0.7rem;
+    }
   }
   .to {
     display: flex;
@@ -860,6 +951,14 @@ export const FailedContainer = styled.div`
     padding-bottom: 2rem;
     margin-top: 2rem;
     border-bottom: 1px solid #b3b3b3;
+    @media screen and (max-width: 400px) {
+      margin-top: 1rem;
+      gap: 1rem;
+      padding-bottom: 1rem;
+    }
+    @media screen and (max-width: 376px) {
+      margin-top: 0.5rem;
+    }
   }
   .destination {
     display: flex;
@@ -932,6 +1031,9 @@ export const FailedContainer = styled.div`
     line-height: 150%;
     letter-spacing: -0.02em;
     color: #333333;
+    @media screen and (max-width: 400px) {
+      margin-top: 1rem;
+    }
   }
   .confirm {
     display: flex;
@@ -939,6 +1041,9 @@ export const FailedContainer = styled.div`
     align-items: center;
     gap: 2rem;
     margin-top: 3.5rem;
+    @media screen and (max-width: 400px) {
+      margin-top: 1.5rem;
+    }
 
     p {
       font-size: 1.4rem;
@@ -954,6 +1059,9 @@ export const FailedContainer = styled.div`
     margin-top: 5rem;
     padding-bottom: 2.5rem;
     border-bottom: 1px solid #b3b3b3;
+    @media screen and (max-width: 400px) {
+      margin-top: 2rem;
+    }
 
     .cancel-button {
       display: flex;
@@ -985,6 +1093,9 @@ export const FailedContainer = styled.div`
       line-height: 150%;
       letter-spacing: -0.02em;
       color: white;
+      @media screen and (max-width: 400px) {
+        width: 16rem;
+      }
     }
   }
   .process {

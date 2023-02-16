@@ -4,16 +4,16 @@ export const StyledHomeContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100vh;
   @media screen and (max-width: 425px) {
     display: none;
   }
-  /* height: 100vh; */
 `;
 export const StyledHome = styled.div`
-  padding: 4rem 3.7rem 1.2rem 3.7rem;
+  padding: 4rem 3.7rem 0rem 3.7rem;
   display: flex;
   gap: 3.18rem;
-  height: 100vh;
+  height: 100%;
   /* margin: auto; */
   .home-dashboard {
     display: flex;
@@ -22,6 +22,7 @@ export const StyledHome = styled.div`
     gap: 3.6rem;
     width: 88.5rem;
     cursor: grab;
+    height: 100%;
     .welcome {
       background: #ffffff;
       border-radius: 10px;
@@ -197,7 +198,7 @@ export const TabContainer = styled.div`
   align-items: flex-start;
   gap: 1.6rem;
   width: 41.1rem;
-  height: 150%;
+  height: 100%;
   .tab-head {
     display: flex;
     justify-content: space-between;
@@ -293,6 +294,7 @@ export const MobileCotainer = styled.div`
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 2rem;
+  padding-bottom: 10rem;
   display: none;
   @media screen and (max-width: 425px) {
     display: block;
@@ -305,6 +307,9 @@ export const MobileCotainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @media screen and (max-width: 400px) {
+      width: 38.5rem;
+    }
   }
   .userProfile {
     display: flex;
@@ -401,6 +406,9 @@ export const MobileCotainer = styled.div`
     margin-top: 2rem;
     margin-bottom: 1rem;
     position: relative;
+    @media screen and (max-width: 400px) {
+      width: 38.5rem;
+    }
   }
   .tab-sort {
     display: flex;

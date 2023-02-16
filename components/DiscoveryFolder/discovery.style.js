@@ -462,6 +462,7 @@ export const MobileDiscovery = styled.div`
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 2rem;
+  padding-bottom: 10rem;
   display: none;
   @media screen and (max-width: 425px) {
     display: block;
@@ -470,7 +471,7 @@ export const MobileDiscovery = styled.div`
   .back-disc {
     display: flex;
     align-items: center;
-    gap: 10rem;
+    justify-content: center;
     margin-bottom: 2rem;
 
     h3 {
@@ -513,6 +514,9 @@ export const MobileDiscovery = styled.div`
       display: flex;
       align-items: center;
       gap: 1rem;
+      @media screen and (max-width: 378px) {
+        right: 0rem;
+      }
 
       p {
         font-size: 1.1rem;
@@ -553,6 +557,9 @@ export const MobileDiscovery = styled.div`
     box-shadow: var(--shadow-1);
     width: 18.2rem;
     z-index: 100;
+    @media screen and (max-width: 376px) {
+      right: 0;
+    }
 
     li {
       padding-top: 1.2rem;

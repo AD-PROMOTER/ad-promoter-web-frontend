@@ -23,9 +23,9 @@ const Discovery = ({router}) => {
         <DiscoveryPage />
         <MobileDiscovery>
           <div className="back-disc">
-            <div>
+            {/* <div>
               <Image src={back} alt='back'/>
-            </div>
+            </div> */}
             <h3>Discovery</h3>
           </div>
           <div className="search-filter">

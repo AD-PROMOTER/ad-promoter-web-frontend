@@ -19,7 +19,7 @@ import notif from '@/public/assets/notif.svg'
 import { withRouter } from "next/router"
 import ArrowDown from "@/public/assets/arrow-down"
 import ArrowUp from "@/public/assets/arrow-up"
-import { useEffect,useState } from "react"
+import { useEffect,useRef,useState } from "react"
 import userStatus from '@/public/assets/promoters-logo.svg'
 import MobileNotif from '@/components/MobileNotification/index'
 import ScrollContainer from 'react-indiana-drag-scroll'
@@ -27,6 +27,16 @@ import ScrollContainer from 'react-indiana-drag-scroll'
 const Index = ({router}) => {
 
   const {query: {tab}} = router
+
+  const divRef = useRef(null);
+
+  const scrollToView = () => {
+    divRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // useEffect(() => {
+  //   scrollToView;
+  // });
 
   const isTabOne = tab === "recent" || tab == null
   const isTabTwo = tab === "saved jobs"
@@ -270,9 +280,9 @@ const Index = ({router}) => {
             </div>
             ))}
           </div>
-          <div className="sort">
+          <div className="sort" ref={divRef}>
             <div className="tab-sort">
-              <Link href={{ pathname: "/promoters", query: { tab: "recent" } }}>
+              <Link onClick={() => {scrollToView()}} href={{ pathname: "/promoters", query: { tab: "recent" } }}>
                 <a className={isTabOne ? 'active-job' : ''}>Recent</a>
               </Link>
               {isTabOne && (
@@ -280,7 +290,7 @@ const Index = ({router}) => {
               )}
             </div>
             <div className="tab-sort">
-              <Link href={{ pathname: "/promoters", query: { tab: "saved jobs" } }}>
+              <Link onClick={() => {scrollToView()}} href={{ pathname: "/promoters", query: { tab: "saved jobs" } }}>
                 <a className={isTabTwo ? 'active-job' : ''}>Saved Jobs</a>
               </Link>
               {isTabTwo && (
@@ -303,8 +313,10 @@ const Index = ({router}) => {
               </ul>
             )}
           </div>
-          {isTabOne && <RecentMobile />}
-          {isTabTwo && <SavedJobsMobile />} 
+          <div>
+            {isTabOne && <RecentMobile />}
+            {isTabTwo && <SavedJobsMobile />} 
+          </div>
         </>)}         
         </MobileCotainer>
     </>
