@@ -23,16 +23,17 @@ import { useEffect,useRef,useState } from "react"
 import userStatus from '@/public/assets/promoters-logo.svg'
 import MobileNotif from '@/components/MobileNotification/index'
 import ScrollContainer from 'react-indiana-drag-scroll'
+import ScrollIntoView from 'react-scroll-into-view'
 
 const Index = ({router}) => {
 
   const {query: {tab}} = router
 
-  const divRef = useRef(null);
+  // const scollToRef = useRef();
 
-  const scrollToView = () => {
-    divRef.current.scrollIntoView({ behavior: 'smooth' });
-  };
+  // const scrollToView = () => {
+  //   divRef.current.scrollIntoView({ behavior: 'smooth' });
+  // };
 
   // useEffect(() => {
   //   scrollToView;
@@ -40,6 +41,7 @@ const Index = ({router}) => {
 
   const isTabOne = tab === "recent" || tab == null
   const isTabTwo = tab === "saved jobs"
+  const [showRecentJobs, setShowRecentJobs] = useState(true)
   const [showDropdown, setShowDropdown] = useState(false)
   const [showSortDropdown, setShowSortDropdown] = useState(false)
   const [showNotif, setShowNotif] = useState(false)
@@ -280,23 +282,23 @@ const Index = ({router}) => {
             </div>
             ))}
           </div>
-          <div className="sort" ref={divRef}>
-            <div className="tab-sort">
-              <Link onClick={() => {scrollToView()}} href={{ pathname: "/promoters", query: { tab: "recent" } }}>
-                <a className={isTabOne ? 'active-job' : ''}>Recent</a>
-              </Link>
-              {isTabOne && (
+          <div className="sort">
+            <ScrollIntoView selector="#inView" className="tab-sort">
+              <div onClick={()=> setShowRecentJobs(true)}>
+                <p className={showRecentJobs ? 'active-job' : ''}>Recent</p>
+              </div>
+              {showRecentJobs && (
                 <div className="dash-bottom"></div>
               )}
-            </div>
-            <div className="tab-sort">
-              <Link onClick={() => {scrollToView()}} href={{ pathname: "/promoters", query: { tab: "saved jobs" } }}>
-                <a className={isTabTwo ? 'active-job' : ''}>Saved Jobs</a>
-              </Link>
-              {isTabTwo && (
+            </ScrollIntoView>
+            <ScrollIntoView selector="#inView" className="tab-sort">
+              <div onClick={()=> setShowRecentJobs(!showRecentJobs)}>
+                <p className={showRecentJobs !== true ? 'active-job' : ''}>Saved Jobs</p>
+              </div>
+              {showRecentJobs !== true && (
                 <div className="dash-bottom"></div>
               )}
-            </div>
+            </ScrollIntoView>
             <div className={showSortDropdown ? 'arrow-sort' : 'no-sort'} onClick={() => setShowSortDropdown(!showSortDropdown)}>
               <p>Sort</p>
               {showSortDropdown ? 
@@ -313,9 +315,8 @@ const Index = ({router}) => {
               </ul>
             )}
           </div>
-          <div>
-            {isTabOne && <RecentMobile />}
-            {isTabTwo && <SavedJobsMobile />} 
+          <div id="inView">
+            {showRecentJobs ? <RecentMobile /> : <SavedJobsMobile />}
           </div>
         </>)}         
         </MobileCotainer>

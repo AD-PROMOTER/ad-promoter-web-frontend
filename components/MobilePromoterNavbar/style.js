@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const StyledMobileNav = styled.div`
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   width: 100%;
   > div {
@@ -22,7 +22,7 @@ export const StyledMobileNav = styled.div`
       align-items: center;
       justify-content: center;
       gap: 0.8rem;
-      width: 36.46px;
+      width: 3.646rem;
 
       .bottom-dash {
         width: 3.646rem;

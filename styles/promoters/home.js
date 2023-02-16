@@ -401,7 +401,10 @@ export const MobileCotainer = styled.div`
     justify-content: space-between;
     margin-top: 2rem;
     margin-bottom: 1rem;
-    position: relative;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
   }
   .tab-sort {
     display: flex;

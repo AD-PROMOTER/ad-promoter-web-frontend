@@ -524,6 +524,9 @@ export const MobileDiscovery = styled.div`
   .feed-tab {
     margin-top: 1.5rem;
     margin-bottom: 5rem;
+    /* position: -webkit-sticky;
+    position: sticky;
+    top: 0; */
     a {
       padding: 1rem;
       border-radius: 3.2rem;
@@ -542,6 +545,9 @@ export const MobileDiscovery = styled.div`
     font-size: 1.7rem;
     line-height: 2.2rem;
     letter-spacing: -0.408px;
+    /* position: -webkit-sticky;
+    position: sticky;
+    top: 0; */
   }
 
   ul {
