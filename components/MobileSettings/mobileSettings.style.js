@@ -2,12 +2,21 @@ import styled from 'styled-components';
 
 export const ProfileContainer = styled.div`
   padding-top: 2rem;
+  @media screen and (max-width: 400px) {
+    padding-bottom: 10rem;
+  }
+  @media screen and (max-width: 376px) {
+    padding-bottom: 0;
+  }
 
   .profile {
     display: flex;
     align-items: center;
     gap: 12rem;
     margin-bottom: 2rem;
+    @media screen and (max-width: 400px) {
+      gap: 9.5rem;
+    }
 
     h3 {
       font-weight: 600;
@@ -45,6 +54,10 @@ export const ProfileContainer = styled.div`
     gap: 2rem;
     padding-top: 3.6rem;
     padding-bottom: 3.6rem;
+    @media screen and (max-width: 400px) {
+      left: 10%;
+      top: 30%;
+    }
 
     h3 {
       letter-spacing: -0.41px;
@@ -191,6 +204,9 @@ export const ProfileContainer = styled.div`
       letter-spacing: -0.02em;
       border-radius: 0.8rem;
       height: 5.2rem;
+      @media screen and (max-width: 400px) {
+        width: 15rem;
+      }
     }
 
     .save {
@@ -206,6 +222,9 @@ export const ProfileContainer = styled.div`
       width: 18.65rem;
       background-color: #4f00cf;
       height: 5.2rem;
+      @media screen and (max-width: 400px) {
+        width: 15rem;
+      }
     }
 
     .inactive {
@@ -222,6 +241,9 @@ export const ProfileContainer = styled.div`
       align-items: center;
       width: 18.65rem;
       height: 5.2rem;
+      @media screen and (max-width: 400px) {
+        width: 15rem;
+      }
     }
   }
 `;
@@ -233,6 +255,9 @@ export const GeneralContainer = styled.div`
     align-items: center;
     gap: 12rem;
     margin-bottom: 2rem;
+    @media screen and (max-width: 400px) {
+      gap: 9.5rem;
+    }
 
     h3 {
       font-weight: 600;
@@ -314,6 +339,9 @@ export const GeneralContainer = styled.div`
         border-radius: 1rem;
         cursor: pointer;
         transition: all 100ms ease-in-out;
+        @media screen and (max-width: 376px) {
+          width: 16rem;
+        }
 
         label {
           font-size: 1.2rem;
@@ -365,6 +393,16 @@ export const GeneralContainer = styled.div`
     padding: 3.2rem 2.4rem;
     box-shadow: 1.65263px 3.30526px 26.4421px rgba(0, 0, 0, 0.05);
     border-radius: 16px;
+    @media screen and (max-width: 400px) {
+      width: 35rem;
+      left: 5%;
+      top: 5%;
+    }
+    @media screen and (max-width: 376px) {
+      width: 33rem;
+      left: 5%;
+      top: 5%;
+    }
   }
 
   .unordered-list {
@@ -408,6 +446,9 @@ export const GeneralContainer = styled.div`
     flex-direction: column;
     gap: 1.5rem;
     align-items: flex-start;
+    @media screen and (max-width: 376px) {
+      gap: 0.8rem;
+    }
 
     h3 {
       font-weight: 600;
@@ -459,6 +500,9 @@ export const GeneralContainer = styled.div`
     flex-direction: column;
     align-items: flex-start;
     gap: 1.5rem;
+    @media screen and (max-width: 376px) {
+      margin-top: 1.5rem;
+    }
 
     h3 {
       font-weight: 600;
@@ -473,6 +517,9 @@ export const GeneralContainer = styled.div`
       border-radius: 1rem;
       width: 100%;
       height: 16.5rem;
+      @media screen and (max-width: 376px) {
+        height: 14rem;
+      }
       &::placeholder {
         font-weight: 500;
         font-size: 1.2rem;
@@ -496,6 +543,9 @@ export const GeneralContainer = styled.div`
     padding-top: 1.2rem;
     padding-bottom: 1.2rem;
     margin: 3rem auto;
+    @media screen and (max-width: 376px) {
+      margin: 1.5rem auto;
+    }
   }
 `;
 export const NotifContainer = styled.div`
@@ -506,6 +556,9 @@ export const NotifContainer = styled.div`
     align-items: center;
     gap: 12rem;
     margin-bottom: 2rem;
+    @media screen and (max-width: 400px) {
+      gap: 9.5rem;
+    }
 
     h3 {
       font-weight: 600;
@@ -614,6 +667,9 @@ export const SecurityContainer = styled.div`
     align-items: center;
     gap: 12rem;
     margin-bottom: 2rem;
+    @media screen and (max-width: 400px) {
+      gap: 9.5rem;
+    }
 
     h3 {
       font-weight: 600;
@@ -744,6 +800,9 @@ export const PaymentContainer = styled.div`
     align-items: center;
     gap: 12rem;
     margin-bottom: 2rem;
+    @media screen and (max-width: 400px) {
+      gap: 9.5rem;
+    }
 
     h3 {
       font-weight: 600;
@@ -842,6 +901,9 @@ export const PrivacyContainer = styled.div`
     display: flex;
     align-items: center;
     gap: 8rem;
+    @media screen and (max-width: 400px) {
+      gap: 6rem;
+    }
 
     h3 {
       font-weight: 600;

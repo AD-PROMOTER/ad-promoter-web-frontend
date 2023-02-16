@@ -32,6 +32,7 @@ export const MobileWallet = styled.div`
   display: none;
   padding-left: 1rem;
   padding-right: 1rem;
+  padding-bottom: 10rem;
   @media screen and (max-width: 425px) {
     display: block;
   }
@@ -62,6 +63,9 @@ export const MobileWallet = styled.div`
     padding-bottom: 2.4rem;
     border-radius: 1.2rem;
     width: 18.4rem;
+    @media screen and (max-width: 400px) {
+      width: 16rem;
+    }
   }
   .amount {
     display: flex;

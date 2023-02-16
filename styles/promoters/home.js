@@ -294,6 +294,7 @@ export const MobileCotainer = styled.div`
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 2rem;
+  padding-bottom: 10rem;
   display: none;
   @media screen and (max-width: 425px) {
     display: block;
@@ -306,6 +307,9 @@ export const MobileCotainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @media screen and (max-width: 400px) {
+      width: 38.5rem;
+    }
   }
   .userProfile {
     display: flex;
@@ -405,6 +409,10 @@ export const MobileCotainer = styled.div`
     position: sticky;
     top: 0;
     z-index: 1000;
+    position: relative;
+    @media screen and (max-width: 400px) {
+      width: 38.5rem;
+    }
   }
   .tab-sort {
     display: flex;
