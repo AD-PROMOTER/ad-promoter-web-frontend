@@ -25,6 +25,7 @@ const MobileVisual = () => {
     const [inputValue,setInputValue] = useState('')
     const [showReportModal,setShowReportModal] = useState(false)
     const [showDropdown, setShowDropdown] = useState(false)
+    const [currentIndex,setCurrentIndex] = useState(0)
     const [listValue, setListValue] = useState('It has gory images')
     
     const ClickedList = (e) =>{
@@ -34,6 +35,18 @@ const MobileVisual = () => {
     const toggleReadMore = () => {
         setIsReadMore(!isReadMore);
     };
+
+    const goToPrevious = () =>{
+        visualAd.map(({productImg})=>{
+            currentIndex > 0 ? setCurrentIndex(currentIndex - 1) : setCurrentIndex(productImg.length -1)
+        })
+    }
+
+    const goToNext = () =>{
+        visualAd.map(({productImg})=>{
+            currentIndex <  productImg.length -1 ? setCurrentIndex(currentIndex + 1) : setCurrentIndex(0) 
+        })
+    }
 
     const handleChange = event => {
         setInputValue(event.target.value);
@@ -127,8 +140,16 @@ const MobileVisual = () => {
                 </div>
 
                 <div className="product-img-container">
-                    <div>
-                        <Image src={item.productImg} alt='product'/>
+                    <div className='carousel-container'>
+                        <div onClick={goToPrevious} className='left-arrow'>
+                            ❮
+                        </div>
+                        <div className='img-container'>
+                            <Image src={item.productImg[currentIndex].url} alt='product'/>
+                        </div>
+                        <div onClick={goToNext} className='right-arrow'>
+                            ❯
+                        </div>
                     </div>
                     {isToSubmit ? (
                         <div className="paste-input" ref={ref}>
