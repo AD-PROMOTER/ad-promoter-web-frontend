@@ -400,6 +400,38 @@ export const Feed = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 3rem;
+
+    .carousel-container {
+      position: relative;
+      .img-container {
+        border-radius: 3.6rem;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .right-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+        right: 0.5rem;
+        font-size: 4.5rem;
+        color: var(--white);
+        z-index: 1;
+        cursor: pointer;
+      }
+      .left-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+        left: 0.5rem;
+        font-size: 4.5rem;
+        color: var(--white);
+        z-index: 1;
+        cursor: pointer;
+      }
+    }
     .paste-input {
       display: flex;
       align-items: center;

@@ -29,8 +29,16 @@ export const visualAd = [
     userImg: profile,
     userName: 'Sharon Banjo',
     timePosted: '1 hour ago',
-    productImg: rabbitImage,
-    productImg1: spaceImage,
+    productImg: [
+      {
+        url: rabbitImage,
+        title: 'rabbit',
+      },
+      {
+        url: spaceImage,
+        title: 'space',
+      },
+    ],
   },
 ];
 
@@ -46,7 +54,15 @@ export const detailsAd = [
     userImg: profile,
     userName: 'Sharon Banjo',
     timePosted: '1 hour ago',
-    productImg: spaceImage,
-    productImg1: rabbitImage,
+    productImg: [
+      {
+        url: spaceImage,
+        title: 'space',
+      },
+      {
+        url: rabbitImage,
+        title: 'rabbit',
+      },
+    ],
   },
 ];

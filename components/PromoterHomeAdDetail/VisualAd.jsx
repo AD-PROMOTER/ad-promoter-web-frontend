@@ -14,6 +14,8 @@ import { BackdropContainer, Feed, ModalContainer } from './styles'
 import { directlinkAd, visualAd } from './data'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
+import TfiArrowCircleLeft from 'react-icons/tfi'
+import TfiArrowCircleRight from 'react-icons/tfi'
 
 const VisualAd = () => {
     const [showReport, setShowReport] = useState(false)
@@ -23,8 +25,21 @@ const VisualAd = () => {
     const [inputValue,setInputValue] = useState('')
     const [showReportModal,setShowReportModal] = useState(false)
     const [showDropdown, setShowDropdown] = useState(false)
+    const [currentIndex,setCurrentIndex] = useState(0)
     const [listValue, setListValue] = useState('It has gory images')
 
+    const goToPrevious = () =>{
+        visualAd.map(({productImg})=>{
+            currentIndex > 0 ? setCurrentIndex(currentIndex - 1) : setCurrentIndex(productImg.length -1)
+        })
+    }
+
+    const goToNext = () =>{
+        visualAd.map(({productImg})=>{
+            currentIndex <  productImg.length -1 ? setCurrentIndex(currentIndex + 1) : setCurrentIndex(0) 
+        })
+    }
+    
     const ClickedList = (e) =>{
       setListValue(e.target.innerText)
       setShowDropdown(false)
@@ -119,8 +134,16 @@ const VisualAd = () => {
                 </div>
 
                 <div className="product-img-container">
-                    <div>
-                        <Image src={item.productImg} alt='product'/>
+                    <div className='carousel-container'>
+                        <div onClick={goToPrevious} className='left-arrow'>
+                            ❮
+                        </div>
+                        <div className='img-container'>
+                            <Image src={item.productImg[currentIndex].url} alt='product'/>
+                        </div>
+                        <div onClick={goToNext} className='right-arrow'>
+                            ❯
+                        </div>
                     </div>
                     {isToSubmit ? (
                         <div className="paste-input" ref={ref}>
