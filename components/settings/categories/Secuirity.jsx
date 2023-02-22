@@ -49,5 +49,5 @@ const Secuirity = () => {
     )
 }
 
-export default Secuirity
+export default Secuirity;
 

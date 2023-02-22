@@ -27,6 +27,7 @@ import currency from '@/public/assets/money-send.svg'
 import vector from '@/public/assets/Vector.svg'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
+import bell from '@/public/assets/notif.svg'
 
 
 const Index = () => {
@@ -137,7 +138,7 @@ const Index = () => {
     },
     {
       Icon: Trend,
-      name: 'Overall Conv. growth',
+      name: 'Growth Rate',
       num: '70%',
       bg: '#FFE2E4'
     } 
@@ -147,17 +148,24 @@ const Index = () => {
       <StyledHome>
         <DashboardContainer>
           <div className="welcome">
-            <div className="profile-img">
-              <Image src={profile} alt='user profile picture'/>
-            </div>
-            <div className="welcome-text">
-              <h3>Hi, Leilani Angel</h3>
-              <div className="welcome-text-sub">
-                <div className="profile-img">
-                  <Image src={hands} alt='waving hands'/>
-                </div>
-                <p>Welcome back!</p>
+            <div className="box-welcome">
+              <div className="profile-img">
+                <Image src={profile} alt='user profile picture'/>
               </div>
+              <div className="welcome-text">
+                <h3>Hi, Leilani Angel</h3>
+                <div className="welcome-text-sub">
+                  <div className="profile-img">
+                    <Image src={hands} alt='waving hands'/>
+                  </div>
+                  <p>Welcome back!</p>
+                </div>
+            </div>
+
+            <div className="bell">
+              <Image src={bell} alt="notification bell"/>
+            </div>
+           
             </div>
             <div className="placers-frame">
               <Placers />
@@ -338,6 +346,8 @@ const Index = () => {
                     <p>{conversionNo}</p>
                   </div>
                 </div>
+
+                <hr style={{width: 350}}/>
 
                 <div className="bottom">
                   <div className="user-details">

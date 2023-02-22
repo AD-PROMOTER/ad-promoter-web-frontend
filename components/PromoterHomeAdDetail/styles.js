@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { size } from '../../styles/breakpoints';
 
 export const StyledTabBody = styled.div`
   .notifBox {
@@ -211,11 +212,25 @@ export const Feed = styled.div`
   gap: 1.6rem;
   background-color: var(--white);
   border-radius: 1rem;
+
+  @media screen and (max-width: ${size.tablet}) {
+    box-shadow: 1.65263px 3.30526px 26.4421px rgba(0, 0, 0, 0.05);
+    border-radius: 24px;
+    width: 100%;
+  }
+
+  @media screen and (max-width: ${size.mobileL}) {
+    width: 426px;
+  }
   .product-summary {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 2.2rem;
+    @media screen and (max-width: ${size.tablet}) {
+      width: 100%;
+      // background: red;
+    }
     &-head {
       display: flex;
       flex-direction: column;
@@ -227,9 +242,18 @@ export const Feed = styled.div`
         justify-content: space-between;
         align-items: flex-start;
         width: 36.3rem;
+
+        @media screen and (max-width: ${size.tablet}) {
+          width: 82rem;
+        }
         .dot {
           cursor: pointer;
           position: relative;
+
+          @media screen and (max-width: ${size.mobileL}) {
+            display: none;
+          }
+
           ul {
             border-radius: 0.9rem;
             box-shadow: var(--shadow-1);
@@ -262,6 +286,10 @@ export const Feed = styled.div`
         font-size: 1.4rem;
         line-height: 2.1rem;
         color: var(--white);
+
+        @media screen and (max-width: ${size.mobileL}) {
+          margin-left: 242px;
+        }
       }
     }
 
@@ -270,11 +298,21 @@ export const Feed = styled.div`
       flex-direction: column;
       align-items: flex-start;
       gap: 0.2rem;
+
+      @media screen and (max-width: ${size.mobileL}) {
+        position: relative;
+        top: -50px;
+      }
+
       h3 {
         font-weight: 600;
         font-size: 1.6rem;
         line-height: 2.4rem;
         color: var(--black-2);
+
+        @media screen and (max-width: ${size.mobileL}) {
+          font-size: 15px;
+        }
       }
       .tag-container {
         display: flex;
@@ -286,11 +324,21 @@ export const Feed = styled.div`
           font-size: 1.2rem;
           line-height: 1.8rem;
           color: var(--black-2);
+
+          @media screen and (max-width: ${size.mobileL}) {
+            display: none;
+          }
         }
         .tag {
           display: flex;
           align-items: flex-start;
           gap: 0.4rem;
+
+          @media screen and (max-width: ${size.mobileL}) {
+            margin-left: -10px;
+            margin-top: 7px;
+          }
+
           > div {
             display: flex;
             align-items: flex-start;
@@ -301,6 +349,10 @@ export const Feed = styled.div`
             font-size: 1.2rem;
             line-height: 1.8rem;
             color: var(--black-2);
+
+            @media screen and (max-width: ${size.mobileL}) {
+              font-size: 10px;
+            }
           }
         }
       }
@@ -308,6 +360,14 @@ export const Feed = styled.div`
   }
   .product-summary-text {
     width: 33.9rem;
+
+    @media screen and (max-width: ${size.tablet}) {
+      width: 100%;
+    }
+
+    @media screen and (max-width: ${size.mobileL}) {
+      margin-top: -25px;
+    }
     p {
       font-weight: 400;
       font-size: 1.6rem;
@@ -326,6 +386,18 @@ export const Feed = styled.div`
     align-items: center;
     padding: 4rem 0px;
     gap: 6rem;
+
+    @media screen and (max-width: ${size.tablet}) {
+      width: 100%;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    @media screen and (max-width: ${size.mobileL}) {
+      // width: 100%;
+      // padding: 10px;
+      gap: 4rem;
+    }
     .price,
     .aim,
     .achieved {
@@ -353,6 +425,14 @@ export const Feed = styled.div`
     }
   }
 
+  hr {
+    display: none;
+
+    @media screen and (max-width: ${size.mobileL}) {
+      display: block;
+    }
+  }
+
   .bottom {
     display: flex;
     justify-content: space-between;
@@ -365,6 +445,11 @@ export const Feed = styled.div`
       align-items: flex-start;
       padding: 0px;
       gap: 0.4rem;
+
+      @media screen and (max-width: ${size.mobileL}) {
+        margin-left: 250px;
+      }
+
       &-text {
         display: flex;
         justify-content: center;

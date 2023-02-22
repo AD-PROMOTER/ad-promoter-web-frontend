@@ -7,17 +7,19 @@ export const StyledHomeContainer = styled.div`
   justify-content: center;
   /* height: 100vh; */
   background: #ffffff;
+  height: 100%;
+  width: 100%;
+
+  @media screen and (max-width: ${size.tablet}) {
+    padding-left: 25%;
+  }
 `;
 export const StyledHome = styled.div`
   padding: 4rem 3.7rem 1.2rem 3.7rem;
   display: flex;
   gap: 3.18rem;
-  height: 100vh;
+  height: 100%;
   /* margin: auto; */
-
-  // @media screen and (max-width:${size.mobileL}) {
-  //   padding: 1rem;
-  // }
 
   .home-dashboard {
     display: flex;
@@ -90,6 +92,7 @@ export const StyledHome = styled.div`
       background: #ffffff;
       border-radius: 10px;
       width: 100%;
+      heighr: 100%;
       padding: 2.4rem;
       display: flex;
       flex-direction: column;
@@ -202,12 +205,27 @@ export const TabContainer = styled.div`
   gap: 1.6rem;
   width: 41.1rem;
   height: 150%;
+
+  @media screen and (max-width: ${size.mobileL}) {
+    width: 426px;
+    background: #f2f2f7;
+    margin-left: 1rem;
+    padding: 1rem;
+    border-radius: 12px;
+  }
   .tab-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
     position: relative;
+
+    @media screen and (max-width: ${size.tablet}) {
+      width: 215%;
+      // background: #ffffff;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
     .tab-container {
       display: flex;
       flex-direction: row;
@@ -219,6 +237,7 @@ export const TabContainer = styled.div`
         flex-direction: column;
         /* justify-content: center; */
         align-items: center;
+
         a {
           font-weight: 400;
           font-size: 1.4rem;
@@ -285,10 +304,20 @@ export const TabContainer = styled.div`
   }
   .tab-body {
     width: 105%;
+    height: 100%;
     cursor: grab;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 2.4rem;
+
+    @media screen and (max-width: ${size.tablet}) {
+      width: 215%;
+    }
+
+    @media screen and (max-width: ${size.mobileL}) {
+      width: 396px;
+      border-radius: 12px;
+    }
   }
 `;
