@@ -54,8 +54,11 @@ export const CardStyles = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 2.5rem 0;
-  width: 23rem;
+  padding-top: 3rem;
+  padding-bottom: 3.5rem;
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
+  width: 27rem;
   border-radius: 0.75rem;
   background: var(${(props) => props.bg});
   box-shadow: var(${(props) => props.shadow});
