@@ -1,9 +1,8 @@
 import { useState } from 'react';
-
 import WalletSummary from '@/components/promoterWallet/summary/walletSummary';
 import TransactionHistory from '@/components/promoterWallet/transaction/transactionHistory';
 import Wallet from '@/components/promoterWallet/wallet/wallet';
-import PromoterWalletStyles, { MobileWallet, PromoterWalletContainer } from '@/styles/promoterWallet';
+import PromoterWalletStyles, { MobileWallet, PromoterWalletContainer, TabWallet } from '@/styles/promoterWallet';
 import ProcessWithdrawModal from '@/components/promoterModal/walletModals/WithdrawProcess';
 import WithdrawDetailsModal from '@/components/promoterModal/walletModals/WithdrawDetails';
 import WithdrawFundsModal from '@/components/promoterModal/walletModals/WithdrawFundsModal';
@@ -27,6 +26,8 @@ import Success from '@/components/MobilePromoterWallet/Success';
 import WithdrawProcess from '@/components/MobilePromoterWallet/WithdrawProcess';
 import WithdrawDetails from '@/components/MobilePromoterWallet/WithdrawDetails';
 import WithdrawFunds from '@/components/MobilePromoterWallet/WithdrawFunds';
+import arrowUp from '@/public/assets/arrow-up.svg'
+import arrowDown from '@/public/assets/arrow-down.svg'
 
 const PromoterWallet = () => {
   const [showModal, setShowModal] = useState(false);
@@ -41,6 +42,7 @@ const PromoterWallet = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [firstBank, setFirstBank] = useState(false);
   const [secondBank, setSecondBank] = useState(false);
+  const [showSummary, setShowSummary] = useState(true)
 
   const toggleDropdown = () => {
     if (showDropdown) {
@@ -213,6 +215,98 @@ const PromoterWallet = () => {
       {showWithdrawFundsModal && <BackdropContainer></BackdropContainer>}
       {showWithdrawFundsModal && <WithdrawFunds onClose={() => setShowWithdrawFundsModal(false)}/>}
     </MobileWallet>
+    <TabWallet>
+      <div className='filter'>
+        <div className='choose'>
+          <div className={showSummary ? 'active' : 'non-active'} onClick={()=> setShowSummary(true)}>
+            Wallet Summary
+          </div>
+          <div className={showSummary != true ? 'active' : 'non-active'} onClick={()=> setShowSummary(!showSummary)}>
+            Wallet
+          </div>
+        </div>
+        <div className='select' onClick={() => setShowDropdown(!showDropdown)}>
+          <p>Filter</p>
+          {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
+          {showDropdown && (
+            <ul>
+              <li>Recent</li>
+              <li>A week ago</li>
+              <li>Less than 2 weeks</li>
+              <li>Last 30 days</li>
+            </ul>
+          )}
+        </div>
+      </div>
+      {showSummary ? (
+        <>
+          <div className='summary'>
+            <h3>Wallet Summary</h3>
+            <div className='cards'>
+              {walletData.map((item, index) => (
+                <div className='each' key={index} style={{background: item.bg}}>
+                  <div className='icon'>
+                    <Image src={item.icon} alt="icon"/>
+                    <p>{item.name}</p>
+                  </div>
+                  <h2>{item.price}</h2>
+                </div>
+              ))}
+            </div>
+          </div>
+          <TransactionHistory />
+        </>
+      ): (
+      <>
+        <div className='summary'>
+          <div className='cards'>
+            {walletData.map((item, index) => (
+              <div className='each' key={index} style={{background: item.bg}}>
+                <div className='icon'>
+                  <Image src={item.icon} alt="icon"/>
+                  <p>{item.name}</p>
+                </div>
+                <h2>{item.price}</h2>
+              </div>
+            ))}
+          </div>
+        </div>
+        <Wallet
+          onOpenWithdrawProcess={() => setShowWithdrawProcessModal(true)}
+          show={showModal}
+          onOpenPaymentDetailsModal={() => setShowPaymentDetailsModal(true)}
+        />
+        {showWithdrawProcessModal ? (
+          <ProcessWithdrawModal
+            onCloseWithdrawProcess={() => setShowWithdrawProcessModal(false)}
+            onOpenWithdrawDetails={() => setShowWithdrawDetailsModal(true)}
+            show={{ showWithdrawProcessModal, showWithdrawDetailsModal }}
+          />
+        ) : null}
+        {showWithdrawDetailsModal ? (
+          <WithdrawDetailsModal
+            onCloseModal={() => setShowWithdrawDetailsModal(false)}
+            onOpenModal={() => setShowWithdrawProcessModal(true)}
+            onOpenWithdrawModal={() => setShowWithdrawFundsModal(true)}
+          />
+        ) : null}
+        {showWithdrawFundsModal ? (
+          <WithdrawFundsModal onClose={() => setShowWithdrawFundsModal(false)} />
+        ) : null}
+        {showPaymentDetailsModal ? (
+          <PaymentDetailsModal
+            onOpen={() => setShowVerificationModal(true)}
+            onClose={() => setShowPaymentDetailsModal(false)}
+          />
+        ) : null}
+        {showVerificationModal ? (
+          <VerificationModal onOpen={() => setShowSuccessModal(true)} onClose={() => setShowVerificationModal(false)} />
+        ) : null}
+        {showSuccessModal ? (
+          <SuccessModal onClose={() => setShowSuccessModal(false)} />
+        ) : null}
+      </>)}
+    </TabWallet>
     </>
   );
 };

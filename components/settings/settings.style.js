@@ -23,6 +23,10 @@ const StyledSettings = styled.div`
     min-height: 70vh;
     padding: 3rem 0.75rem;
     box-shadow: var(--shadow-6);
+    @media (min-width: 768px) and (max-width: 1024px) {
+      min-height: fit-content;
+      position: relative;
+    }
 
     .categories {
       width: 100%;
@@ -30,6 +34,10 @@ const StyledSettings = styled.div`
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
+      @media (min-width: 768px) and (max-width: 1024px) {
+        justify-content: space-between;
+        align-items: center;
+      }
 
       li {
         margin: 0 2.25rem;
@@ -40,6 +48,9 @@ const StyledSettings = styled.div`
         padding: 0 0.75rem;
         padding-bottom: 0.8rem;
         transition: 150ms ease-out;
+        @media (min-width: 768px) and (max-width: 1024px) {
+          margin: 0 1rem;
+        }
       }
     }
 
@@ -155,6 +166,9 @@ const StyledSettings = styled.div`
     cursor: pointer;
     bottom: 6%;
     right: 7%;
+    @media (min-width: 768px) and (max-width: 1024px) {
+      position: absolute;
+    }
 
     p {
       color: red;
@@ -168,6 +182,12 @@ const StyledGeneral = styled.form`
   color: var(--black);
   display: flex;
   flex-direction: column;
+  @media (min-width: 768px) and (max-width: 1024px) {
+    justify-content: center;
+    align-items: center;
+    margin-top: 10rem;
+    margin-bottom: 8rem;
+  }
 
   .dropdownContainer {
     display: flex;
@@ -196,6 +216,9 @@ const StyledGeneral = styled.form`
       width: 100%;
       cursor: pointer;
       position: relative;
+      @media (min-width: 768px) and (max-width: 1024px) {
+        width: 40rem;
+      }
       .inputText {
         font-weight: 500;
         font-size: 1.2rem;
@@ -265,6 +288,10 @@ const StyledGeneral = styled.form`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media (min-width: 768px) and (max-width: 1024px) {
+      margin-top: 5rem;
+      width: 65%;
+    }
     .inactive {
       background-color: var(--primary);
       opacity: 0.25;
@@ -659,6 +686,11 @@ const StyledNotification = styled.div`
   }
   .controls {
     margin-top: 10rem;
+    @media (min-width: 768px) and (max-width: 1024px) {
+      float: right;
+      margin-top: 2rem;
+      margin-bottom: 8rem;
+    }
     .inactive {
       background-color: var(--primary);
       opacity: 0.25;
@@ -781,6 +813,11 @@ const StyledSecuirity = styled.div`
   }
   .controls {
     margin-top: 45rem;
+    @media (min-width: 768px) and (max-width: 1024px) {
+      float: right;
+      margin-top: 2rem;
+      margin-bottom: 8rem;
+    }
     .inactive {
       background-color: var(--primary);
       opacity: 0.25;
@@ -812,6 +849,9 @@ const StyledPayment = styled.div`
       flex-direction: row;
       justify-content: space-between;
       width: 85%;
+      @media (min-width: 768px) and (max-width: 1024px) {
+        width: 58%;
+      }
 
       p {
         font-size: 1.45rem;
@@ -874,6 +914,11 @@ const StyledPayment = styled.div`
   }
   .controls {
     margin-top: 10rem;
+    @media (min-width: 768px) and (max-width: 1024px) {
+      float: right;
+      margin-top: 2rem;
+      margin-bottom: 8rem;
+    }
     .inactive {
       background-color: var(--primary);
       opacity: 0.25;
@@ -1181,6 +1226,9 @@ const StyledPolicy = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  @media (min-width: 768px) and (max-width: 1024px) {
+    align-items: flex-start;
+  }
 
   .policies {
     width: 70%;
@@ -1191,6 +1239,9 @@ const StyledPolicy = styled.div`
 
     .policy {
       margin: 2rem 0;
+      @media (min-width: 768px) and (max-width: 1024px) {
+        margin-bottom: 4rem;
+      }
 
       h2 {
         font-weight: 600;
