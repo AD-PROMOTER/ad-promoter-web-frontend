@@ -8,6 +8,9 @@ export const StyledHomeContainer = styled.div`
   @media screen and (max-width: 425px) {
     display: none;
   }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    display: none;
+  }
 `;
 export const StyledHome = styled.div`
   padding: 4rem 3.7rem 0rem 3.7rem;
@@ -460,6 +463,208 @@ export const MobileCotainer = styled.div`
     align-items: center;
     gap: 1.3rem;
 
+    p {
+      font-size: 1.4rem;
+      font-weight: 600;
+      line-height: 2.1rem;
+    }
+  }
+  .list {
+    background-color: var(--white);
+    position: absolute;
+    top: 8rem;
+    right: 0;
+    border-radius: 1.2rem;
+    box-shadow: var(--shadow-1);
+    width: 18.2rem;
+    z-index: 100;
+
+    li {
+      padding-top: 1.2rem;
+      padding-bottom: 1.2rem;
+      padding-left: 2.4rem;
+      border-bottom: 0.1rem solid #d9d9d9;
+      cursor: pointer;
+      font-size: 1.4rem;
+      line-height: 2.1rem;
+      font-weight: 600;
+    }
+  }
+`;
+export const TabletContainer = styled.div`
+  padding-top: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  display: none;
+  @media (min-width: 768px) and (max-width: 1024px) {
+    display: block;
+  }
+  .welcome {
+    background-color: white;
+    padding: 2.4rem;
+    border-radius: 1.6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .userProfile {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+  }
+
+  .username {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    p {
+      font-weight: 700;
+      font-size: 2.4rem;
+      line-height: 150%;
+      letter-spacing: -0.03em;
+      color: #0d0d0d;
+    }
+  }
+  .wave {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    p {
+      font-weight: 500;
+      font-size: 1.6rem;
+      line-height: 150%;
+      letter-spacing: -0.03em;
+      color: #0d0d0d;
+    }
+  }
+  .dashboard-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+    h3 {
+      font-weight: 600;
+      font-size: 2.4rem;
+      line-height: 3.6rem;
+    }
+    ul {
+      background-color: var(--white);
+      position: absolute;
+      top: 36rem;
+      right: 2rem;
+      border-radius: 1.2rem;
+      box-shadow: var(--shadow-1);
+      width: 28rem;
+      z-index: 10;
+
+      li {
+        padding: 1.2rem 2.4rem;
+        border-bottom: 0.1rem solid #dbd8fc;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 1.4rem;
+        line-height: 2.1rem;
+        color: #010101;
+      }
+    }
+  }
+  .filter {
+    width: 28.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.4rem 2.4rem;
+    border: 1px solid #dbd8fc;
+    border-radius: 10px;
+  }
+  .summary-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  .balance {
+    grid-column: 1 / -1;
+    padding-top: 2.4rem;
+    padding-bottom: 2.4rem;
+    border-radius: 1.2rem;
+  }
+  .card {
+    padding-top: 2.4rem;
+    padding-bottom: 2.4rem;
+    border-radius: 1.2rem;
+  }
+  .amount {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+
+    h3 {
+      font-weight: 700;
+      font-size: 2.4rem;
+      line-height: 3.6rem;
+      letter-spacing: 0.38px;
+      color: #0d0d0d;
+    }
+  }
+  .icon {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+
+    p {
+      font-size: 1.5rem;
+      line-height: 2.1rem;
+      color: #000000;
+      font-weight: 500;
+    }
+  }
+  .sort {
+    background-color: white;
+    padding: 1rem 2rem 1rem 1.5rem;
+    border-radius: 1.6px;
+    display: flex;
+    margin-top: 2rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    position: relative;
+  }
+  .tabs {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+  }
+  .active-job {
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 4.8rem;
+    color: white;
+    background: #4f00cf;
+    border-radius: 32px;
+    padding: 0 2.4rem;
+  }
+  .non-active {
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 4.8rem;
+    border: 1.5px solid #d3b8ff;
+    padding: 0 2.4rem;
+    border-radius: 32px;
+    color: #333333;
+  }
+  .arrow-sort {
+    display: flex;
+    align-items: center;
+    gap: 1.3rem;
     p {
       font-size: 1.4rem;
       font-weight: 600;
