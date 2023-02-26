@@ -67,3 +67,57 @@ export const Overlay = styled.div`
     }
   }
 `;
+export const ReqMobile = styled.div`
+  display: none;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 2rem;
+  @media screen and (max-width: 425px) {
+    display: block;
+  }
+  .logo {
+    text-align: center;
+  }
+  h3 {
+    font-weight: 600;
+    font-size: 2.2rem;
+    line-height: 2.8rem;
+    color: #333333;
+    text-align: center;
+    margin-top: 2rem;
+  }
+  p {
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: center;
+    letter-spacing: -0.078px;
+    color: #333333;
+    margin-top: 1.5rem;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2.4rem;
+    margin-top: 3rem;
+    .yes,
+    .no,
+    .remind {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 1rem 1.6rem;
+      gap: 1rem;
+      border: 2px solid #f2f2f2;
+      border-radius: 8px;
+      width: 93vw;
+      height: 6.2rem;
+      input {
+        width: 2.4rem;
+        height: 2.4rem;
+        border: 5px solid #f2f2f2;
+      }
+    }
+  }
+`;
