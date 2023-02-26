@@ -272,6 +272,10 @@ export const TabContainer = styled.div`
       background: #ffffff;
       border-radius: 0.4rem;
       cursor: pointer;
+
+      @media screen and (max-width: ${size.mobileL}) {
+        margin-right: 450px;
+      }
       p {
         font-weight: 600;
         font-size: 1.4rem;

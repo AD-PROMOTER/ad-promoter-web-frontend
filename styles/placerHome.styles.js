@@ -50,7 +50,7 @@ export const DashboardContainer = styled.div`
 
       @media screen and (max-width: ${size.mobileL}) {
         display: flex;
-        margin-left: 190px;
+        margin-left: 100px;
       }
     }
 
@@ -70,8 +70,8 @@ export const DashboardContainer = styled.div`
         padding: 1rem;
       }
         > .profile-img {
-          height: 65px;
-          width: 63px;
+          height: 165px;
+          width: 163px;
 
           @media screen and (max-width: ${size.tablet}) {
             height: 134px;
@@ -120,6 +120,7 @@ export const DashboardContainer = styled.div`
         flex: 2;
         display: flex;
         justify-content: flex-end;
+        margin-top: -50px;
 
         @media screen and (max-width: ${size.tablet}) {
           height: 134px;
