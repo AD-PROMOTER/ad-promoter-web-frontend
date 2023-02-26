@@ -1,6 +1,6 @@
 import { BgContainer } from "@/components/onboardingBg/styles"
 import bg from '@/public/assets/onboard-bg.png'
-import { Overlay } from "@/styles/login.styles"
+import { MobileLogin, Overlay } from "@/styles/login.styles"
 import Close from '@/public/assets/close-icon'
 import Image from "next/image"
 import logo from '@/public/assets/newOnboardLogo.svg'
@@ -37,6 +37,7 @@ const Login = () => {
     router.push("/")
   }
   return (
+    <>
     <BgContainer image={bg}>
       <Overlay className='overlay'>
         <div className="close" onClick={()=>router.push('/')}>
@@ -103,6 +104,66 @@ const Login = () => {
         </div>
       </Overlay>
     </BgContainer>
+    <MobileLogin>
+      <div className="logo">
+        <Image src={logo} alt='ad-promoter logo'/>
+        <div className="login">
+          <h3>Log in</h3>
+          <p>Don’t have an account? <Link href='/signup'><a>Sign up</a></Link></p>
+        </div>
+      </div>
+      <div className="content-socials">
+        <SocialBtn icon={google} text="Google" />
+        <SocialBtn icon={fb} text="Facebook" />
+      </div>
+      <div className="divider">
+        <div></div>
+        <p>or</p>
+        <div></div>
+      </div>
+      <form action="" onSubmit={handleSubmit}>
+        <div className="email">
+          <label htmlFor="email">Your email</label>
+          <input 
+            type="email" 
+            id="email" 
+            required
+            value={userEmail}
+            onChange={e => setUserEmail(e.target.value)}
+            />
+        </div>
+        <div className="password">
+          <div className="input-container">
+            <div className="label">
+              <label htmlFor="password">Your password</label>
+              <div className="hide" onClick={()=>setIsPasswordShown(!isPasswordShown)}>
+                {isPasswordShown ? (
+                  <BsEyeSlashFill style={{color: 'rgba(102,102,102,0.8)'}} />
+                  ):(
+                  <BsEyeFill style={{color: 'rgba(102,102,102,0.8)'}} />
+                )}
+                {isPasswordShown ? (
+                  <p>Hide</p>
+                ):(
+                  <p>Show</p>
+                )}
+              </div>
+            </div>
+            <input  
+              id="password"
+              name='password'
+              required
+              type={isPasswordShown ? "text" : "password"}
+              value={userPassword}
+              onChange={e => setUserPassword(e.target.value)}
+            />
+          </div>
+          <p>Forgot your password</p>
+        </div>
+        <Button text='Log in' />
+      </form>
+    </MobileLogin>
+    </>
   )
 }
 

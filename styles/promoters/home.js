@@ -586,7 +586,6 @@ export const TabletContainer = styled.div`
     margin-top: 2rem;
   }
   .balance {
-    grid-column: 1 / -1;
     padding-top: 2.4rem;
     padding-bottom: 2.4rem;
     border-radius: 1.2rem;

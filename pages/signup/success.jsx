@@ -1,6 +1,6 @@
 import { BgContainer } from "@/components/onboardingBg/styles"
 import bg from '@/public/assets/onboard-bg.png'
-import { Overlay } from "@/styles/success"
+import { Overlay, SuccessMobile } from "@/styles/success"
 import logo from '@/public/assets/newOnboardLogo.svg'
 import Image from "next/image"
 import successMark from '@/public/assets/success-mark.gif'
@@ -20,22 +20,38 @@ const Success = () => {
     }
   }
   return (
+    <>
     <BgContainer image={bg}>
-        <Overlay className="overlay">
-            <Image src={logo} alt='ad-promoter'/>
-            <div className="content">
-              <h3>Success!</h3>
-              <div className="img">
-                <Image 
-                  src={successMark} 
-                  unoptimized={true}
-                  alt='success'/>
-              </div>
-              <p>Congratulations, You have successfully created an account. Click on the link below to go home.</p>
-              <div className="btn" onClick={handleSubmit}>Take me home</div>
+      <Overlay className="overlay">
+          <Image src={logo} alt='ad-promoter'/>
+          <div className="content">
+            <h3>Success!</h3>
+            <div className="img">
+              <Image 
+                src={successMark} 
+                unoptimized={true}
+                alt='success'/>
             </div>
-        </Overlay>
+            <p>Congratulations, You have successfully created an account. Click on the link below to go home.</p>
+            <div className="btn" onClick={handleSubmit}>Take me home</div>
+          </div>
+      </Overlay>
     </BgContainer>
+    <SuccessMobile>
+      <div className="logo">
+        <Image src={logo} alt='ad-promoter'/>
+        <h3>Success!</h3>
+        <div className="img">
+          <Image 
+            src={successMark} 
+            unoptimized={true}
+            alt='success'/>
+        </div>
+        <p>Congratulations, You have successfully created an account. Click on the link below to go home.</p>
+        <div className="btn" onClick={handleSubmit}>Take me home</div>
+      </div>
+    </SuccessMobile>
+    </>
   )
 }
 

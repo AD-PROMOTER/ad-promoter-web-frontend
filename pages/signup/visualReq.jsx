@@ -1,6 +1,6 @@
 // eslint-disable-next-line react-hooks/exhaustive-deps
 import { BgContainer } from '@/components/onboardingBg/styles'
-import { Overlay } from '@/styles/visualReq.styles'
+import { Overlay, ReqMobile } from '@/styles/visualReq.styles'
 import Close from '@/public/assets/close-icon'
 import bg from '@/public/assets/onboard-bg.png'
 import Image from 'next/image'
@@ -38,6 +38,7 @@ const VisualReq = () => {
     setIsInputWithValue(false)
   }, [router,setIsInputWithValue])
   return (
+    <>
     <BgContainer image={bg}>
         <Overlay className='overlay'>
             <div className='back' onClick={()=>router.back()}>
@@ -93,6 +94,52 @@ const VisualReq = () => {
             </div>
         </Overlay>
     </BgContainer>
+    <ReqMobile>
+      <div className='logo'>
+        <Image src={logo} alt='ad-promoter logo'/>
+      </div>
+      <h3>Do you want to receive <br /> visual ads?</h3>
+      <p>
+        What are visual ads? Learn more
+      </p>
+      <form action="" onSubmit={handleSubmit}>
+        <div className="yes">
+            <input 
+                type="radio" 
+                id="yes" 
+                value='yes' 
+                name='visual'
+                // checked={userVisualReq === 'yes'}
+                onChange={handleChange}
+            />
+            <label htmlFor="yes">Yes, I do</label>
+        </div>
+        <div className="no">
+            <input 
+                type="radio" 
+                id="no" 
+                value='no' 
+                name='visual' 
+                // checked={userVisualReq === 'no'}
+                onChange={handleChange}
+                />
+            <label htmlFor='no'>No, I don&apos;t</label>
+        </div>
+        <div className="remind">
+            <input 
+                type="radio" 
+                id="remind" 
+                value='remind' 
+                name='visual' 
+                // checked={userVisualReq === 'remind'}
+                onChange={handleChange}
+                />
+            <label htmlFor='remind'>Remind me later</label>
+        </div>
+        <Button text='Sign me in' />
+    </form>
+    </ReqMobile>
+    </>
   )
 }
 
