@@ -28,6 +28,7 @@ import vector from '@/public/assets/Vector.svg'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import bell from '@/public/assets/notif.svg'
+import adpic from '@/public/assets/adpics.png'
 
 
 const Index = () => {
@@ -72,6 +73,7 @@ const Index = () => {
       tag1: 'confectionery',
       tag2: 'Food',
       details: 'At our store, you can get the best chocolate cakes at a super affordable price and with a customization on all our cakes. You also get a 50% discount on all cakespurchased in the next 48hrs.',
+      adpic: adpic,
       aimNo: '1000 Visitors',
       conversionNo: '10 Visitors',
       priceVal: '₦25/Visitor',
@@ -83,6 +85,7 @@ const Index = () => {
       tag1: 'confectionery',
       tag2: 'Food',
       details: 'At our store, you can get the best chocolate cakes at a super affordable price and with a customization on all our cakes. You also get a 50% discount on all cakespurchased in the next 48hrs.',
+      adpic: adpic,
       aimNo: '1000 Visitors',
       conversionNo: '10 Visitors',
       priceVal: '₦25/Visitor',
@@ -94,6 +97,7 @@ const Index = () => {
       tag1: 'confectionery',
       tag2: 'Food',
       details: 'At our store, you can get the best chocolate cakes at a super affordable price and with a customization on all our cakes. You also get a 50% discount on all cakespurchased in the next 48hrs.',
+      adpic: adpic,
       aimNo: '1000 Visitors',
       conversionNo: '10 Visitors',
       priceVal: '₦25/Visitor',
@@ -105,6 +109,7 @@ const Index = () => {
       tag1: 'confectionery',
       tag2: 'Food',
       details: 'At our store, you can get the best chocolate cakes at a super affordable price and with a customization on all our cakes. You also get a 50% discount on all cakespurchased in the next 48hrs.',
+      adpic: adpic,
       aimNo: '1000 Visitors',
       conversionNo: '10 Visitors',
       priceVal: '₦25/Visitor',
@@ -116,6 +121,7 @@ const Index = () => {
       tag1: 'confectionery',
       tag2: 'Food',
       details: 'At our store, you can get the best chocolate cakes at a super affordable price and with a customization on all our cakes. You also get a 50% discount on all cakespurchased in the next 48hrs.',
+      adpic: adpic,
       aimNo: '1000 Visitors',
       conversionNo: '10 Visitors',
       priceVal: '₦25/Visitor',
@@ -347,6 +353,7 @@ const Index = () => {
                   </div>
                 </div>
 
+                
                 <hr style={{width: 350}}/>
 
                 <div className="bottom">
