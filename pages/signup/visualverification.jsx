@@ -82,7 +82,7 @@ const Visualverification = () => {
       </div>
       <h3>Kindly submit a link to your social media account</h3>
       <p>
-        We just want to verify if you're fit to receive visual adverts from AD-PROMOTER 
+        We just want to verify if you’re fit to recieve visual adverts from AD-PROMOTER. 
       </p>
       <div className="submitform">
         <div className="paste-input-container">

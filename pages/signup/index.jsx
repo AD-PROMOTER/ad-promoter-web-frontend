@@ -209,7 +209,7 @@ const Index = () => {
       <div className='note'>
         <h3>Welcome to Ad-promoter!</h3>
         <p>
-         Let's help you get started
+          Let’s help you get started
         </p>
       </div>
       <form action="" onSubmit={handleSubmit}>
