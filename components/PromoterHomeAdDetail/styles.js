@@ -485,6 +485,38 @@ export const Feed = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 3rem;
+
+    .carousel-container {
+      position: relative;
+      .img-container {
+        border-radius: 3.6rem;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .right-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+        right: 0.5rem;
+        font-size: 4.5rem;
+        color: var(--white);
+        z-index: 1;
+        cursor: pointer;
+      }
+      .left-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+        left: 0.5rem;
+        font-size: 4.5rem;
+        color: var(--white);
+        z-index: 1;
+        cursor: pointer;
+      }
+    }
     .paste-input {
       display: flex;
       align-items: center;
@@ -551,7 +583,7 @@ export const ModalContainer = styled.div`
   box-shadow: var(--shadow-2);
   padding: 4.8rem;
   left: 30%;
-  top: 20%;
+  top: 30%;
 
   .report {
     text-align: center;
@@ -643,4 +675,5 @@ export const BackdropContainer = styled.div`
   left: 0;
   top: 0;
   cursor: default;
+  backdrop-filter: blur(12px);
 `;

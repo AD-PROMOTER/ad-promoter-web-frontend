@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
-import { Filterstyled, Container, DiscoveryPageContainer } from './discovery.style'
+import { Filterstyled, Container, DiscoveryPageContainer, Desktop } from './discovery.style'
 import DiscoveryFeed from './DiscoveryFeed'
 import DiscoveryJob from './DiscoveryJob'
 import Modal from './ReportModal/Modal'
@@ -17,7 +17,7 @@ const DiscoveryPage = () => {
     }
 
   return (
-    <>
+    <Desktop>
         {showReport && <Backdrop onCancel={() => setShowReport(false)}/>}
         {showReport && <Modal />}
         <Filterstyled>
@@ -35,8 +35,7 @@ const DiscoveryPage = () => {
                 <div className='select' onClick={() => setShowDropdown(!showDropdown)}>
                     <div>Filter</div>
                     {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
-                </div>
-                {showDropdown && (
+                    {showDropdown && (
                     <ul>
                         <li>Recent</li>
                         <li>Popular</li>
@@ -48,6 +47,7 @@ const DiscoveryPage = () => {
                         <li>Last 30 days</li>
                     </ul>
                 )}
+                </div>
             </div>
         </Filterstyled>
         <Container>
@@ -60,7 +60,7 @@ const DiscoveryPage = () => {
                 </div>
             </div>
         </Container>
-    </>
+    </Desktop>
     
   )
 }

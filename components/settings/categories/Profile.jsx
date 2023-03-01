@@ -8,12 +8,13 @@ import { AiOutlineCloudUpload } from 'react-icons/ai'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 
+
 const Profile = () => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    const [name, setName] = useState('Skylar Diaz');
+    const [email, setEmail] = useState('Skylar@gmail.com');
     const [phoneNumber, setPhoneNumber] = useState('+2348191014589');
     const [profileModal, setProfileModal] = useState(false);
-    const [listValue, setListValue] = useState('English ( Default )')
+    const [listValue, setListValue] = useState('None')
     const [showDropdown, setShowDropdown] = useState(false)
     const [isChangesMade, setIsChangesMade] = useState(false)
 
@@ -64,7 +65,7 @@ const Profile = () => {
             <div className='profile-details'>
                 <div className='form-field account-name'>
                     <label htmlFor="name">Account Name </label>
-                    <input type='text' name='name' value={name} id='name' onChange={(e) => {setName(e.target.value),setIsChangesMade(true)}} />
+                    <input type='text' name='name' value={name} id='name' onChange={(e) => {setName(e.target.value),setIsChangesMade(true)}}/>
                 </div>
 
                 <div className='form-field account-address'>
@@ -89,10 +90,8 @@ const Profile = () => {
                     </div>
                     {showDropdown && (
                         <ul className="">
-                            <li onClick={ClickedList}>English ( Default )</li>
-                            <li onClick={ClickedList}>Spanish</li>
-                            <li onClick={ClickedList}>Greek</li>
-                            <li onClick={ClickedList}>Yoruba</li>
+                            <li onClick={ClickedList}>Male</li>
+                            <li onClick={ClickedList}>Female</li>
                         </ul>
                     )}
                 </div>

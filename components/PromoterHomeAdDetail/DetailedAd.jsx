@@ -22,10 +22,23 @@ const DetailedAd = () => {
     const [showReportModal,setShowReportModal] = useState(false)
     const [showDropdown, setShowDropdown] = useState(false)
     const [listValue, setListValue] = useState('It has gory images')
-    
+    const [currentIndex,setCurrentIndex] = useState(0)
+
     const ClickedList = (e) =>{
       setListValue(e.target.innerText)
       setShowDropdown(false)
+    }
+
+    const goToPrevious = () =>{
+        visualAd.map(({productImg})=>{
+            currentIndex > 0 ? setCurrentIndex(currentIndex - 1) : setCurrentIndex(productImg.length -1)
+        })
+    }
+
+    const goToNext = () =>{
+        visualAd.map(({productImg})=>{
+            currentIndex <  productImg.length -1 ? setCurrentIndex(currentIndex + 1) : setCurrentIndex(0) 
+        })
     }
 
     const toggleReadMore = () => {
@@ -113,8 +126,16 @@ const DetailedAd = () => {
                 </div>
 
                 <div className="product-img-container">
-                    <div>
-                        <Image src={item.productImg} alt='product'/>
+                    <div className='carousel-container'>
+                        <div onClick={goToPrevious} className='left-arrow'>
+                            ❮
+                        </div>
+                        <div className='img-container'>
+                            <Image src={item.productImg[currentIndex].url} alt='product'/>
+                        </div>
+                        <div onClick={goToNext} className='right-arrow'>
+                            ❯
+                        </div>
                     </div>
                 </div>
 

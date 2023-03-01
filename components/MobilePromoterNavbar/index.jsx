@@ -14,24 +14,29 @@ const Index = () => {
     };
   return (
     <StyledMobileNav>
-        {links.map(({icon,link,activeIcon})=>(
-            <div className="link" key={link}>
-                <Link href={link}>
-                    <a>
-                        {router.pathname === link ? 
-                            <Image src={activeIcon} alt={activeIcon}/>
-                        : 
-                            <Image src={icon} alt={icon}/>
-                        }
-                    </a>
-                </Link>
-                <motion.div 
-                    className={router.pathname === link ? "bottom-dash" : ""}
-                    variants={variants}
-                    animate={router.pathname === link ? 'animate' : 'stop'}
-                ></motion.div>
-            </div>
-        ))}
+        <div>
+            {links.map(({icon,link,activeIcon})=>(
+                <div className="link" key={link}>
+                    <Link href={link}>
+                        <a>
+                            {router.pathname === link ? 
+                                <Image src={activeIcon} alt={activeIcon}/>
+                            : 
+                                <Image src={icon} alt={icon}/>
+                            }
+                        </a>
+                    </Link>
+                    <div className={router.pathname === link ? "bottom-dash" : ""}>
+
+                    </div>
+                    {/* <motion.div 
+                        className={router.pathname === link ? "bottom-dash" : ""}
+                        variants={variants}
+                        animate={router.pathname === link ? 'animate' : 'stop'}
+                    ></motion.div> */}
+                </div>
+            ))}
+        </div>
     </StyledMobileNav>
   )
 }
