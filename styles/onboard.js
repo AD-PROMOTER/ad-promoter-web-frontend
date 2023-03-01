@@ -202,7 +202,7 @@ export const StyledMobile = styled.div`
       color: #666666;
     }
     > div {
-      width: 16.4rem;
+      width: 14rem;
       height: 0.2rem;
       background: rgba(102, 102, 102, 0.25);
     }
