@@ -14,6 +14,9 @@ export const StyledBtn = styled.div`
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    @media screen and (max-width: 425px) {
+      width: 100%;
+    }
     &:hover {
       /* opacity: none; */
       background: #3d019d;
@@ -42,6 +45,10 @@ export const StyledBtn = styled.div`
     font-weight: 400;
     font-size: 1.8rem;
     line-height: 27px;
+    @media screen and (max-width: 425px) {
+      width: 93vw;
+      height: 4.8rem;
+    }
     &:hover {
       background: #3d019d;
       /* opacity: 0; */
@@ -65,5 +72,9 @@ export const StyledBtn = styled.div`
     font-weight: 400;
     font-size: 1.8rem;
     line-height: 27px;
+    @media screen and (max-width: 425px) {
+      width: 93vw;
+      height: 4.8rem;
+    }
   }
 `;

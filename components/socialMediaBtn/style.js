@@ -11,6 +11,9 @@ export const StyledBtn = styled.div`
   gap: 1.6rem;
   cursor: pointer;
   outline: none;
+  @media screen and (max-width: 425px) {
+    width: 100%;
+  }
 `;
 export const StyledBtn1 = styled.div`
   border: 1px solid #333333;
@@ -23,4 +26,7 @@ export const StyledBtn1 = styled.div`
   gap: 1.6rem;
   cursor: pointer;
   outline: none;
+  @media screen and (max-width: 425px) {
+    width: 100%;
+  }
 `;

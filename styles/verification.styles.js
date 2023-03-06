@@ -116,3 +116,68 @@ export const Overlay = styled.div`
     }
   }
 `;
+export const VerificationMobile = styled.div`
+  display: none;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 5rem;
+  @media screen and (max-width: 425px) {
+    display: block;
+  }
+  .logo {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+  }
+  h3 {
+    text-align: center;
+    font-weight: 600;
+    font-size: 2.2rem;
+    line-height: 2.8rem;
+    letter-spacing: 0.35px;
+    margin-top: 2rem;
+  }
+  .verify {
+    text-align: center;
+    font-size: 1.3rem;
+    line-height: 1.8rem;
+    letter-spacing: -0.078px;
+    margin-top: 2.5rem;
+  }
+  .btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 17.2rem;
+    height: 4.5rem;
+    background: #4f00cf;
+    box-shadow: 2px 6px 16px rgba(25, 55, 215, 0.25);
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.4rem;
+    line-height: 150%;
+    align-items: center;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    cursor: pointer;
+    margin: 5rem auto 2rem auto;
+  }
+  .cta {
+    border-top: 1px solid #b3b3b3;
+    padding: 1rem;
+    p {
+      font-weight: 400;
+      font-size: 1.3rem;
+      line-height: 1.8rem;
+      letter-spacing: -0.02em;
+      color: var(--dark-gray);
+      a {
+        font-weight: 600;
+        color: var(--blue);
+      }
+    }
+  }
+`;

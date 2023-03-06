@@ -39,6 +39,10 @@ const WalletStyles = styled.div`
   position: relative;
   // z-index: -1;
   /* display: flex; */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    max-width: 100%;
+    margin-top: 2rem;
+  }
 
   .intro {
     display: flex;

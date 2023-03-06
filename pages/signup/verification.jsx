@@ -1,6 +1,11 @@
 import { BgContainer } from "@/components/onboardingBg/styles"
+<<<<<<< HEAD
 import { Overlay } from "@/styles/verification.styles"
 import logo from '@/public/assets/logo-rounded.svg'
+=======
+import { Overlay, VerificationMobile } from "@/styles/verification.styles"
+import logo from '@/public/assets/newLogo.svg'
+>>>>>>> da1ba3a405b748effe65c9b56a6c629b8e67e0fb
 import Image from "next/image"
 import bg from '@/public/assets/onboard-bg.png'
 import { useRouter } from "next/router"
@@ -55,6 +60,7 @@ const Verification = () => {
     }
     
   return (
+    <>
     <BgContainer image={bg}>
         <Overlay className="overlay">
             <div onClick={()=> router.push('/')} className="close">
@@ -113,6 +119,23 @@ const Verification = () => {
             </div>
         </Overlay>
     </BgContainer>
+    <VerificationMobile>
+        <div className="logo">
+            <Image src={logo} alt='ad-promoter' />
+            <Image src={messagesIllustration} alt='messages illustration'/>
+        </div>
+        <h3>Verify your email address</h3>
+        <div className="verify">
+            We have sent an email to skylardiaz@gmail.com to confirm the validity of your email address. After recieveing the email, follow the link provided to complete your registration.
+        </div>
+        <div className="btn" onClick={handleSubmit}>
+            Verify my mail
+        </div>
+        <div className="cta">
+            <p>If you’ve not gotten any mail <Link href='#'><a>Resend confirmation mail</a></Link></p>
+        </div>
+    </VerificationMobile>
+    </>
   )
 }
 

@@ -4,7 +4,7 @@ import { Overlay } from "@/styles/visualReq.styles"
 import Close from '@/public/assets/close-icon'
 import Copy from '@/public/assets/copy-icon'
 import { useRouter } from 'next/router'
-import { StyledContent } from "@/styles/visualverification.styled"
+import { StyledContent, VerifyVisual } from "@/styles/visualverification.styled"
 import Image from "next/image"
 import BackArrow from "@/public/assets/back-arrow"
 import logo from '@/public/assets/newOnboardLogo.svg'
@@ -37,6 +37,7 @@ const Visualverification = () => {
         setLinkValue(event.target.value);
     };
   return (
+    <>
     <BgContainer image={bg}>
         <Overlay className="overlay">
             <div className='back' onClick={()=>router.back()}>
@@ -68,7 +69,7 @@ const Visualverification = () => {
                                 />
                             </div>
                             <div className="button">
-                                <p>paste</p>
+                                <p>Paste</p>
                             </div>
                         </div>
                     </div>
@@ -79,6 +80,39 @@ const Visualverification = () => {
             </StyledContent>
         </Overlay>
     </BgContainer>
+    <VerifyVisual>
+      <div className='logo'>
+        <Image src={logo} alt='ad-promoter logo'/>
+      </div>
+      <h3>Kindly submit a link to your social media account</h3>
+      <p>
+        We just want to verify if you’re fit to recieve visual adverts from AD-PROMOTER. 
+      </p>
+      <div className="submitform">
+        <div className="paste-input-container">
+            <div className="paste-input">
+                <div className="copy-icon">
+                    <Copy />
+                </div>
+                <div className="input">
+                    <input 
+                        type="text" 
+                        onChange={handleChange}
+                        value = {inputValue}
+                        required    
+                    />
+                </div>
+                <div className="button">
+                    <p>Paste</p>
+                </div>
+            </div>
+        </div>
+        <div onClick={handleClick}>
+            <Button text="Submit"/>
+        </div>
+      </div>
+    </VerifyVisual>
+    </>
   )
 }
 

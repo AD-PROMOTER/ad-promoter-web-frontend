@@ -6,12 +6,18 @@ export const StyledNavBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  @media (min-width: 768px) and (max-width: 1024px) {
+    padding-right: 3rem;
+    padding-left: 2rem;
+  }
   .links {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 8rem;
+    @media (min-width: 768px) and (max-width: 1024px) {
+      gap: 4rem;
+    }
 
     .link {
       display: flex;

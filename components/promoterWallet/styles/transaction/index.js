@@ -9,6 +9,9 @@ export const TransactionHistoryStyles = styled.div`
   border-radius: 0.6rem;
   padding: 1.5rem;
   margin-top: 4rem;
+  @media (min-width: 768px) and (max-width: 1024px) {
+    max-width: 100%;
+  }
 
   .intro {
     display: flex;
@@ -102,6 +105,9 @@ export const TransactionStyles = styled.div`
       height: fit-content;
       margin-top: 1rem;
       width: 35rem;
+      @media (min-width: 768px) and (max-width: 1024px) {
+        width: 30rem;
+      }
       .transaction-date {
         font-weight: 500;
         font-size: 1.6rem;
@@ -215,9 +221,13 @@ export const TransactionDropdownStyles = styled.div`
     border-radius: 0.8rem;
     display: flex;
     justify-content: center;
+    align-items: center;
     padding: 1.2rem 2.4rem;
     /* width: 9rem; */
     cursor: pointer;
+    @media (min-width: 768px) and (max-width: 1024px) {
+      padding: 1rem;
+    }
 
     p {
       font-weight: 600;
