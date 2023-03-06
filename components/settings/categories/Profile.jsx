@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { StyledProfile, Button, PlainButton, Danger } from "../settings.style"
 import Image from "next/image"
 import profileImg from '../../../public/assets/profile.jpg'
@@ -10,13 +10,22 @@ import arrowDown from '@/public/assets/arrow-down.svg'
 
 
 const Profile = () => {
-    const [name, setName] = useState('Skylar Diaz');
-    const [email, setEmail] = useState('Skylar@gmail.com');
-    const [phoneNumber, setPhoneNumber] = useState('+2348191014589');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [profileModal, setProfileModal] = useState(false);
     const [listValue, setListValue] = useState('None')
     const [showDropdown, setShowDropdown] = useState(false)
     const [isChangesMade, setIsChangesMade] = useState(false)
+
+    useEffect(()=>{
+        const userRole = JSON.parse(localStorage.getItem("token"));
+        if (userRole) {
+        setName(userRole.user.accountName);
+        setEmail(userRole.user.email)
+        setPhoneNumber(userRole.user.phoneNumber)
+        }
+    })
 
     const ClickedList = (e) =>{
         setListValue(e.target.innerText)

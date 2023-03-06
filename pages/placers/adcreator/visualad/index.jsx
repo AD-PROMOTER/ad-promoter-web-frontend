@@ -10,20 +10,6 @@ import CloudPlus from '@/public/assets/cloud-plus'
 const Visualad = () => {
     const router = useRouter()
     const {directLinkFormValue, setDirectLinkFormValue} = useContext(AdPlacerContext)
-    const tags = [
-        {
-            tag: 'Foody'
-        },
-        {
-            tag: 'Food'
-        },
-        {
-            tag: 'Cake'
-        },
-        {
-            tag: 'Chocolate'
-        },
-    ]
 
     const handlePush = () =>{
         router.push('visualad/conversion')

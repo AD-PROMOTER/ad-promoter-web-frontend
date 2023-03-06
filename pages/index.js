@@ -1,6 +1,6 @@
 // import Head from 'next/head'
 import Link from 'next/link';
-import logo from '@/public/assets/onboarding-logo.svg';
+import logo from '@/public/assets/newest-logo.png';
 import Image from 'next/image';
 import hero from '@/public/assets/onboarding-hero.jpg';
 import SocialBtn from '@/components/socialMediaBtn/index';
@@ -23,7 +23,7 @@ export default function Home() {
         <div className="logo">
           <Link href="/">
             <a>
-              <Image src={logo} alt="ad-promoter" />
+              <Image src={logo} alt="ad-promoter" width={184} height={19} />
             </a>
           </Link>
         </div>

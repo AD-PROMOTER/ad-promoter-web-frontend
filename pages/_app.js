@@ -3,12 +3,13 @@ import { GlobalStyle } from '@/styles/global';
 import { SanitizeStyle } from '@/styles/sanitize';
 import { VariableStyle } from '@/styles/variables';
 import { AdPlacerProvider } from '@/context/adPlacerContext';
-import { PreferenceProvider } from '@/context/preferenceContext';
+import { SignupProvider } from '@/context/signupContext';
 import { NotificationProvider } from '@/context/notificationContext';
 import { DiscoveryGlobalStyle } from '@/styles/discoveryGlobal';
 import AdminLayout from '@/components/AdminLayout';
 import { AuthContextProvider } from '@/context/authContext';
 import PlacersLayout from '@/components/PlacersLayout';
+import { TokenContextProvider } from '@/context/tokenContext';
 
 function MyApp({ Component, pageProps, router }) {
   if (router.pathname.startsWith('/admin')) {
@@ -29,16 +30,18 @@ function MyApp({ Component, pageProps, router }) {
   if (router.pathname.startsWith('/placers')) {
     return (
       <AuthContextProvider>
-        <AdPlacerProvider>
-          <NotificationProvider>
-            <PlacersLayout>
-              <VariableStyle />
-              <GlobalStyle />
-              <SanitizeStyle />
-              <Component {...pageProps} />
-            </PlacersLayout>
-          </NotificationProvider>
-        </AdPlacerProvider>
+        <TokenContextProvider>
+          <AdPlacerProvider>
+            <NotificationProvider>
+              <PlacersLayout>
+                <VariableStyle />
+                <GlobalStyle />
+                <SanitizeStyle />
+                <Component {...pageProps} />
+              </PlacersLayout>
+            </NotificationProvider>
+          </AdPlacerProvider>
+        </TokenContextProvider>
       </AuthContextProvider>
     );
   }
@@ -63,25 +66,29 @@ function MyApp({ Component, pageProps, router }) {
   if (router.pathname.startsWith('/promoters')) {
     return (
       <AuthContextProvider>
-        <NotificationProvider>
-          <PromoterLayout>
-            <VariableStyle />
-            <GlobalStyle />
-            <SanitizeStyle />
-            <Component {...pageProps} />
-          </PromoterLayout>
-        </NotificationProvider>
+        <TokenContextProvider>
+          <NotificationProvider>
+            <PromoterLayout>
+              <VariableStyle />
+              <GlobalStyle />
+              <SanitizeStyle />
+              <Component {...pageProps} />
+            </PromoterLayout>
+          </NotificationProvider>
+        </TokenContextProvider>
       </AuthContextProvider>
     );
   }
   return (
     <AuthContextProvider>
-      <PreferenceProvider>
-        <VariableStyle />
-        <GlobalStyle />
-        <SanitizeStyle />
-        <Component {...pageProps} />
-      </PreferenceProvider>
+      <TokenContextProvider>
+        <SignupProvider>
+          <VariableStyle />
+          <GlobalStyle />
+          <SanitizeStyle />
+          <Component {...pageProps} />
+        </SignupProvider>
+      </TokenContextProvider>
     </AuthContextProvider>
   );
 }

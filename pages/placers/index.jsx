@@ -36,7 +36,15 @@ const Index = () => {
   const [showReportModal,setShowReportModal] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
   const [listValue, setListValue] = useState('It has gory images')
+  const [userName, setUserName] = useState('')
   const ref = useRef(null)
+
+  useEffect(() => {
+    const userName = JSON.parse(localStorage.getItem("user"));
+    if (userName) {
+      setUserName(userName.data.accountName);
+    }
+  });
 
   const toggleReadMore = () => {
     setIsReadMore(!isReadMore);
@@ -151,7 +159,7 @@ const Index = () => {
               <Image src={profile} alt='user profile picture'/>
             </div>
             <div className="welcome-text">
-              <h3>Hi, Leilani Angel</h3>
+              <h3>Hi, {userName}</h3>
               <div className="welcome-text-sub">
                 <Image src={hands} alt='waving hands'/>
                 <p>Welcome back!</p>

@@ -1,14 +1,29 @@
 import UserTagBlue from '@/public/assets/user-tag-blue'
 import { StyledDirectLinkSummary } from '@/styles/placersCreator.styles'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Img1 from '@/public/assets/Component 20.jpg'
 import Img2 from '@/public/assets/Component 21.jpg'
 import Image from 'next/image'
+import { useCreateAds } from '@/hooks/useCreateAds'
+import AdPlacerContext from '@/context/adPlacerContext'
 const Summary = () => {
     const router = useRouter()
+    const [token ,setToken] = useState('')
+    const {productName,redirectUrl,cta,visitors,productDescription,webAddress,amount,advertType,tags,containAdultContent,images} = useContext(AdPlacerContext)
+    const {createAd} = useCreateAds()
+
+    useEffect(()=>{
+        const userToken = JSON.parse(localStorage.getItem('token'));
+        if (userToken) {
+        setToken(userToken.token);
+        }
+        
+    })
+
     const handlePush = () =>{
-        router.push('success')
+        createAd(token,productName,redirectUrl,productDescription,tags,advertType,cta,images,webAddress,amount,containAdultContent)
+        // router.push('/placers/adcreator/success')
     }
   return (
     <StyledDirectLinkSummary>
@@ -23,7 +38,7 @@ const Summary = () => {
                         <UserTagBlue />
                         <h3>Product Name</h3>
                     </div>
-                    <p>Maxim cakes and pastery </p>
+                    <p>{productName}</p>
                 </div>
 
                 <div className="aim">
@@ -31,7 +46,7 @@ const Summary = () => {
                         <UserTagBlue />
                         <h3>Aim</h3>
                     </div>
-                    <p>1000 Conversions </p>
+                    <p>{visitors} Conversions </p>
                 </div>
 
                 <div className="price">
@@ -46,7 +61,7 @@ const Summary = () => {
             <div className="desc">
                 <div className='description'>
                     <h4>Product Description</h4>
-                    <p>At our store, you can get the best chocolate cakes at a super affordable price and with a customization on all our cakes. You also get a 50% discount on all cakespurchased in the next 48hrs.</p>
+                    <p>{productDescription}</p>
                 </div>
 
                 <div className="product-img">
@@ -60,11 +75,11 @@ const Summary = () => {
                 
                 <div className='web-address'>
                     <h4>Company web address</h4>
-                    <p>www.idon’tknow.com</p>
+                    <p>{webAddress}</p>
                 </div>
                 <div className='amount'>
                     <h4>Ad amount</h4>
-                    <p>₦1000</p>
+                    <p>{amount}</p>
                 </div>
             </div>
         </div>

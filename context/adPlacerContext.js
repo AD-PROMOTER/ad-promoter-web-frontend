@@ -3,16 +3,45 @@ import { createContext, useState } from 'react';
 const AdPlacerContext = createContext();
 
 export function AdPlacerProvider({ children }) {
-  const [directLinkFormValue, setDirectLinkFormValue] = useState({
-    productName: '',
-    productDescription: '',
-    webAddress: '',
-  });
+  const [advertType, setAdvertType] = useState('');
+  const [productName, setProductName] = useState('');
+  const [productDescription, setProductDescription] = useState('');
+  const [tags, setTags] = useState([]);
+  const [webAddress, setWebAddress] = useState('');
+  const [containAdultContent, setContainAdultContent] = useState(false);
+  const [amount, setAmount] = useState();
+  const [visitors, setVisitors] = useState();
+  const [images, setImages] = useState([]);
+  const [imageURLs, setImageURLs] = useState([]);
+  const [cta, setCta] = useState('Buy now');
+  const [redirectUrl, setRedirectUrl] = useState('/placers/adcreator/success');
   return (
     <AdPlacerContext.Provider
       value={{
-        directLinkFormValue,
-        setDirectLinkFormValue,
+        advertType,
+        setAdvertType,
+        productName,
+        setProductName,
+        productDescription,
+        setProductDescription,
+        tags,
+        setTags,
+        webAddress,
+        setWebAddress,
+        containAdultContent,
+        setContainAdultContent,
+        amount,
+        setAmount,
+        visitors,
+        setVisitors,
+        images,
+        setImages,
+        redirectUrl,
+        setRedirectUrl,
+        cta,
+        setCta,
+        imageURLs,
+        setImageURLs,
       }}
     >
       {children}

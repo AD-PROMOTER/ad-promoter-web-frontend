@@ -155,6 +155,23 @@ export const ModalBackground = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  .file-modal {
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    gap: 4rem;
+    background: var(--white);
+    border-radius: 1.4rem;
+    width: 30%;
+    height: 40%;
+    position: relative;
+    input {
+      border: none;
+    }
+  }
   .modal {
     display: flex;
     flex-direction: column;
@@ -379,14 +396,72 @@ export const StyledDirectLink = styled.div`
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      /* justify-content: center  ; */
       gap: 48px;
       width: 474px;
-      /* background-color: red; */
+
+      .product-tag {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        width: 100%;
+        label {
+          font-weight: 600;
+          font-size: 14px;
+          line-height: 20px;
+          letter-spacing: -0.011em;
+          color: #333333;
+        }
+        .tag-input {
+          padding: 1.6rem;
+          background-color: var(--white);
+          box-shadow: 1.65263px 3.30526px 26.4421px rgba(0, 0, 0, 0.05);
+          border-radius: 9.91579px;
+          width: 100%;
+          height: 76px;
+          display: flex;
+          align-items: center;
+          /* gap: 1rem; */
+          input {
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            padding: 16px;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+            letter-spacing: -0.011em;
+            color: #404040;
+            font-family: var(--font-family-2);
+            resize: none;
+          }
+          .tag-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            .tag {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              padding: 1.2rem 1.6rem;
+              width: 9.3rem;
+              gap: 0.4rem;
+              background-color: var(--black-1);
+              border-radius: 1.6rem;
+              h4 {
+                font-weight: 600;
+                font-size: 1.2rem;
+                line-height: 1.8rem;
+                letter-spacing: -0.011em;
+                color: #ffffff;
+              }
+            }
+          }
+        }
+      }
       .product-name,
       .product-description,
       .upload,
-      .product-tag,
       .product-link,
       .product-content {
         display: flex;
@@ -403,7 +478,7 @@ export const StyledDirectLink = styled.div`
         }
         input,
         textarea {
-          // background: #FFFFFF;
+          background: #ffffff;
           box-shadow: 1.65263px 3.30526px 26.4421px rgba(0, 0, 0, 0.05);
           border-radius: 9.91579px;
           border: 1px solid var(--white);
@@ -448,37 +523,6 @@ export const StyledDirectLink = styled.div`
               span {
                 color: var(--light-blue-1);
                 cursor: pointer;
-              }
-            }
-          }
-        }
-
-        .tag-input {
-          padding: 1.6rem;
-          background-color: var(--white);
-          box-shadow: 1.65263px 3.30526px 26.4421px rgba(0, 0, 0, 0.05);
-          border-radius: 9.91579px;
-          width: 100%;
-          /* height: 50%; */
-          .tag-container {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            /* background-color: red; */
-            .tag {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              padding: 1.2rem 1.6rem;
-              gap: 0.4rem;
-              background-color: var(--black-1);
-              border-radius: 16px;
-              h4 {
-                font-weight: 600;
-                font-size: 1.2rem;
-                line-height: 1.8rem;
-                letter-spacing: -0.011em;
-                color: #ffffff;
               }
             }
           }

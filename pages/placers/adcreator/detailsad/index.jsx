@@ -1,5 +1,5 @@
-import { StyledDirectLink } from '@/styles/placersCreator.styles'
-import React from 'react'
+import { ModalBackground, StyledDirectLink } from '@/styles/placersCreator.styles'
+import React, { useEffect, useState } from 'react'
 import CloseCircle from '@/public/assets/close-circle-2'
 import LinkIcon from '@/public/assets/link-icon.svg'
 import Image from 'next/image'
@@ -9,26 +9,43 @@ import { useContext } from 'react'
 import CloudPlus from '@/public/assets/cloud-plus'
 const Detailsad = () => {
     const router = useRouter()
-    const {directLinkFormValue, setDirectLinkFormValue} = useContext(AdPlacerContext)
-    const tags = [
-        {
-            tag: 'Foody'
-        },
-        {
-            tag: 'Food'
-        },
-        {
-            tag: 'Cake'
-        },
-        {
-            tag: 'Chocolate'
-        },
-    ]
+    const {productName,setProductName,productDescription,setProductDescription,tags,setTags,webAddress,setWebAddress,setContainAdultContent,images,setImages,imageURLs,setImageURLs} = useContext(AdPlacerContext)
+    const [tagValue,setTagValue] = useState('');
+    const [showModal,setShowModal] = useState(false)
+    
+    // useEffect(()=>{
+    //     if(images.length < 1 ) return;
+    //     const newImageURLs = []
+    //     // images.forEach(image => newImageURLs.push(URL.createObjectURL(image)))
+    //     newImageURLs.push(URL.createObjectURL(images))
+    //     setImageURLs(newImageURLs)
+    // },[images])
+    
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            if(tagValue){
+                setTags(prevTags => [...prevTags, tagValue]);
+                setTagValue('')
+            }
+        }
+    };
+
+    const deleteTag = index => {
+        setTags(oldValues => {
+          return oldValues.filter((_, i) => i !== index)
+        })
+    }
 
     const handlePush = () =>{
-        router.push('detailsad/conversion')
+        if(productName&&productDescription&&webAddress !== ''){
+            router.push('detailsad/conversion')
+        }
     }
-    // 'Foody','Food','Cake','Chocolate'
+
+    const onImageChange = (e) =>{
+       setImages([e.target.files]) 
+    }
+    
   return (
     <StyledDirectLink>
         <div className="header">
@@ -69,9 +86,8 @@ const Detailsad = () => {
                         id="productName"
                         name='productName'
                         required
-                        value={directLinkFormValue.productName}
-                        // onChange={handleChange}
-                        // className= 'input'
+                        value={productName}
+                        onChange={(e)=>setProductName(e.target.value)}
                     />
                 </div>
                 <div className="product-description">
@@ -79,7 +95,8 @@ const Detailsad = () => {
                     <textarea 
                         name="productDescription" 
                         id="productDescription"
-                        value={directLinkFormValue.productDescription}
+                        value={productDescription}
+                        onChange={(e) => setProductDescription(e.target.value)}
                         />
                 </div>
 
@@ -88,7 +105,11 @@ const Detailsad = () => {
                     <div className="upload-container">
                         <div className="text-container">
                             <CloudPlus />
-                            <p>Drop files to upload or <span>browse</span></p>
+                            <p>Drop files to upload or <span onClick={()=>setShowModal(true)}>browse</span></p>  
+                        </div>
+                        <div>
+                            {imageURLs.map(imageSrc => <Image src={imageSrc} width={20} height={20}/>)}
+                            {/* <span>&times;</span> */}
                         </div>
                     </div>
                 </div>
@@ -97,15 +118,21 @@ const Detailsad = () => {
                     <label htmlFor="poductTag">3. Project tags (Up to 5)</label>
                     <div className="tag-input">
                         <div className="tag-container">
-                            {tags.map(({tag,i})=>(
-                                <div className="tag" key={i}>
+                            {tags.map((tag,index)=>(
+                                <div className="tag" key={index}>
                                     <h4>{tag}</h4>
-                                    <div>
+                                    <div onClick={()=> deleteTag(index)}>
                                         <CloseCircle />
                                     </div>
                                 </div>
                             ))}
                         </div>
+                        <input 
+                            type="text"
+                            value={tagValue}
+                            onChange={(e)=>setTagValue(e.target.value)}
+                            onKeyDown={handleKeyDown} 
+                        />
                     </div>
                 </div>
 
@@ -121,9 +148,8 @@ const Detailsad = () => {
                                 id="productLink"
                                 name='productLink'
                                 required
-                                // value={userFormValue.email}
-                                // onChange={handleChange}
-                                // className= 'input'
+                                value={webAddress}
+                                onChange={(e)=>setWebAddress(e.target.value)}
                             />
                         </div>
                         <div className="button">
@@ -135,7 +161,11 @@ const Detailsad = () => {
                 <div className="product-content">
                     <label htmlFor="productContent">5. Content</label>
                     <div className="checkbox">
-                        <input type="checkbox" name="productContent" id="productContent" />
+                        <input 
+                            type="checkbox" 
+                            name="productContent" 
+                            id="productContent" 
+                            onChange={(e) =>setContainAdultContent(e.target.checked)}/>
                         <p>This advert contains adult content</p>
                     </div>
                 </div>
@@ -146,6 +176,14 @@ const Detailsad = () => {
             <div className="prev">Prev</div>
             <div className="next" onClick={handlePush}>Next</div>
         </div>
+
+        {showModal&&(
+            <ModalBackground onClick={() => setShowModal(false)}>
+                <div onClick={(e)=> e.stopPropagation()} className='file-modal'>
+                    <input type="file" multiple accept="image/*" onChange={onImageChange} />
+                </div>
+            </ModalBackground>
+        )}
     </StyledDirectLink>
   )
 }

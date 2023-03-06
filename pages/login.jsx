@@ -14,27 +14,74 @@ import Link from "next/link"
 import { useContext, useState,useEffect } from "react"
 import { BsEyeFill,BsEyeSlashFill } from "react-icons/bs"
 // import Container from '@/components/onBoardBg/index'
-import PreferenceContext from "@/context/preferenceContext"
+import PreferenceContext from "@/context/signupContext"
+import { useLogin } from "@/hooks/useLogin"
+import { useAuthContext } from "@/hooks/useAuthContext"
+import SignupContext from "@/context/signupContext"
 
 const Login = () => {
   const router = useRouter();
+  const { dispatch } = useAuthContext();
+  const [isLoading, setIsLoading] = useState(null);
   const [isPasswordShown,setIsPasswordShown] = useState(false)
   const [userEmail,setUserEmail] = useState('')
   const [userPassword,setUserPassword] = useState('')
+  const [token, setToken] = useState("");
+  const [userRole, setUserRole] = useState("");
+  const {setIsInputWithValue} = useContext(SignupContext)
   const {isLoginInputWithValue,setIsLoginInputWithValue} = useContext(PreferenceContext)
-
+  const {login} = useLogin()
   useEffect(() => {
+    // const userToken = JSON.parse(localStorage.getItem("token"));
+    // if (userToken) {
+    //   setToken(userToken.token);
+    // }
+    const userRole = JSON.parse(localStorage.getItem("token"));
+    if (userRole) {
+      setUserRole(userRole.user.role);
+    }
     if(userEmail !== '' && userPassword !== '' ){
-      setIsLoginInputWithValue(true)
+      setIsInputWithValue(true)
     }else{
-      setIsLoginInputWithValue(false)
+      setIsInputWithValue(false)
     }
   }, [router, setIsLoginInputWithValue, userEmail, userPassword])
 
+  const fetchUser = async () =>{
+    setIsLoading(true);
 
+    const response = await fetch('http://35.153.52.116/api/v1/user',
+      {
+        headers: {
+          'Authorization' : `Bearer ${token}`
+        }
+      }
+    );
+    const json = await response.json();
+
+    if (!response.ok) {
+      console.log(json);
+      console.log('user not fetch');
+    }
+    if (response.ok) {
+      console.log(json);
+      setUserRole(json.data.role)
+      console.log(userRole);
+      console.log('user fetch');
+      localStorage.setItem("user", JSON.stringify(json));
+      dispatch({ type: "LOGIN", payload: json });
+    }
+  }
   const handleSubmit = (e) => {
     e.preventDefault()
-    router.push("/")
+   if(userEmail && userPassword !== ''){
+    login(userEmail,userPassword)
+      if(userRole === 'placer'){
+        router.push('/placers')
+      }else{
+        router.push('/promoters')
+      }
+   }
   }
   return (
     <BgContainer image={bg}>
@@ -63,7 +110,7 @@ const Login = () => {
             <div className="email">
               <label htmlFor="email">Your email</label>
               <input 
-                type="email" 
+                type="text" 
                 id="email" 
                 required
                 value={userEmail}

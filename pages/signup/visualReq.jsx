@@ -9,14 +9,14 @@ import Link from 'next/link'
 import Button from '@/components/authBtn/index'
 import { useRouter } from "next/router"
 import { useEffect } from 'react'
-import { useState } from 'react'
 import { useContext } from "react";
 import BackArrow from '@/public/assets/back-arrow'
-import PreferenceContext from '@/context/preferenceContext'
+import SignupContext from '@/context/signupContext'
+import { useSendOtp } from '@/hooks/useSendOtp'
 const VisualReq = () => {
-    const [userVisualReq,setUserVisualReq] = useState('')
-    const {setIsPrefWithValue,isPrefWithValue,setIsInputWithValue} = useContext(PreferenceContext)
-
+    const {sendOtp} = useSendOtp()
+    const {phoneNumber} = useContext(SignupContext)
+    const {setIsInputWithValue,userVisualReq,setUserVisualReq,seeVisualAd,setSeeVisualAd} = useContext(SignupContext)
     const router = useRouter();
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -24,19 +24,25 @@ const VisualReq = () => {
             router.push("/signup/visualverification")
         }
         else{
+            sendOtp(phoneNumber)
             router.push("/signup/verification")
         }
     }
     const handleChange = event => {
         setUserVisualReq(event.target.value);
+        console.log(userVisualReq);
         setIsInputWithValue(true)
-        // setIsPrefWithValue(true)
     };
+
     useEffect(() => {
     router.prefetch('/signup/verification')
-    // setIsPrefWithValue(!isPrefWithValue)
     setIsInputWithValue(false)
-  }, [router,setIsInputWithValue])
+    if(userVisualReq === 'yes'){
+        setSeeVisualAd(true)
+    }else{
+        setSeeVisualAd(false)
+    }
+  }, [router,setIsInputWithValue,seeVisualAd,])
   return (
     <BgContainer image={bg}>
         <Overlay className='overlay'>
@@ -61,7 +67,6 @@ const VisualReq = () => {
                             id="yes" 
                             value='yes' 
                             name='visual'
-                            // checked={userVisualReq === 'yes'}
                             onChange={handleChange}
                         />
                         <label htmlFor="yes">Yes, I do</label>
@@ -72,7 +77,6 @@ const VisualReq = () => {
                             id="no" 
                             value='no' 
                             name='visual' 
-                            // checked={userVisualReq === 'no'}
                             onChange={handleChange}
                             />
                         <label htmlFor='no'>No, I don&apos;t</label>
@@ -83,7 +87,6 @@ const VisualReq = () => {
                             id="remind" 
                             value='remind' 
                             name='visual' 
-                            // checked={userVisualReq === 'remind'}
                             onChange={handleChange}
                             />
                         <label htmlFor='remind'>Remind me later</label>

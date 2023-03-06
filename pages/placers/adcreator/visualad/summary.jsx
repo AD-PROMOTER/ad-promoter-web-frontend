@@ -8,7 +8,7 @@ import Image from 'next/image'
 const Summary = () => {
     const router = useRouter()
     const handlePush = () =>{
-        router.push('success')
+        router.push('/placers/adcreator/success')
     }
   return (
     <StyledDirectLinkSummary>
