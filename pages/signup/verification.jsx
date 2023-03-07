@@ -1,11 +1,6 @@
 import { BgContainer } from "@/components/onboardingBg/styles"
-<<<<<<< HEAD
 import { Overlay } from "@/styles/verification.styles"
 import logo from '@/public/assets/logo-rounded.svg'
-=======
-import { Overlay, VerificationMobile } from "@/styles/verification.styles"
-import logo from '@/public/assets/newLogo.svg'
->>>>>>> da1ba3a405b748effe65c9b56a6c629b8e67e0fb
 import Image from "next/image"
 import bg from '@/public/assets/onboard-bg.png'
 import { useRouter } from "next/router"
@@ -119,7 +114,7 @@ const Verification = () => {
             </div>
         </Overlay>
     </BgContainer>
-    <VerificationMobile>
+    {/* <VerificationMobile>
         <div className="logo">
             <Image src={logo} alt='ad-promoter' />
             <Image src={messagesIllustration} alt='messages illustration'/>
@@ -134,7 +129,7 @@ const Verification = () => {
         <div className="cta">
             <p>If you’ve not gotten any mail <Link href='#'><a>Resend confirmation mail</a></Link></p>
         </div>
-    </VerificationMobile>
+    </VerificationMobile> */}
     </>
   )
 }

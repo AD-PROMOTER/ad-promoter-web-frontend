@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import logo from '@/public/assets/newest-logo.png';
 import bg from '@/public/assets/onboard-bg.png';
-import logo from '@/public/assets/onboarding-logo.svg';
+// import logo from '@/public/assets/onboarding-logo.svg';
 import adlogo from '@/public/assets/newOnboardLogo.svg';
 import Image from 'next/image';
 import hero from '@/public/assets/onboarding-hero.jpg';
@@ -35,7 +35,7 @@ export default function Home() {
           <div className="logo">
             <Link href="/">
               <a>
-                <Image src={logo} alt="ad-promoter" />
+                <Image src={logo} width={184} height={19} alt="ad-promoter" />
               </a>
             </Link>
           </div>

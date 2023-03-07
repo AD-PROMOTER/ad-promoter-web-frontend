@@ -42,7 +42,7 @@ const Index = () => {
   useEffect(() => {
     const userName = JSON.parse(localStorage.getItem("user"));
     if (userName) {
-      setUserName(userName.data.accountName);
+      setUserName(userName.user.accountName);
     }
   });
 
