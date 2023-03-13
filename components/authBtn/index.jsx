@@ -11,7 +11,7 @@ const Index = ({text,path}) => {
   const {isInputWithValue} = useContext(SignupContext)
   return (
     <StyledBtn>
-      {router.pathname.startsWith('/signup') || router.pathname === '/login' ? (
+      {(router.pathname.startsWith('/signup') && !(router.pathname === '/signup/onboarding')) || router.pathname === '/login' ? (
         <button disabled={isLoading} className={isInputWithValue ? 'btn-lg' : 'btn-lg-inactive'} type="submit">
           {text}
         </button>
