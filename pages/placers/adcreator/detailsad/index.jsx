@@ -25,7 +25,7 @@ const Detailsad = () => {
         setToken(userRole.token);
         }
         setCta('Select a conversion button')
-    })
+    },[setToken,setCta])
 
     const ClickedList = (e) =>{
         setCta(e.target.innerText)
