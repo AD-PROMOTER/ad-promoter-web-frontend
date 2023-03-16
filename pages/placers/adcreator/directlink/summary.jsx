@@ -7,20 +7,12 @@ import { formatCurrencyWithoutStyle } from '@/utils/formatCurrency'
 import { useCreateAds } from '@/hooks/useCreateAds'
 const Summary = () => {
     const router = useRouter()
-    const [token ,setToken] = useState('')
-    const [redirect,setRedirect] = useState('')
     const {productName,redirectUrl,cta,visitors,productDescription,webAddress,amount,advertType,tags,containAdultContent,images} = useContext(AdPlacerContext)
-    const {createAd} = useCreateAds()
+    const {createAd,redirect} = useCreateAds()
 
-    useEffect(()=>{
-        const userToken = JSON.parse(localStorage.getItem('token'));
-        if (userToken) {
-        setToken(userToken.token);
-        }
-        
-    })
+    
     const handlePush = () =>{
-        createAd(token,productName,redirectUrl,productDescription,tags,advertType,cta,images,webAddress,amount,containAdultContent)
+        createAd(productName,redirectUrl,productDescription,tags,advertType,cta,images,webAddress,amount,containAdultContent)
     }
   return (
     <StyledDirectLinkSummary>

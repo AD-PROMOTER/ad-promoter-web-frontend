@@ -19,7 +19,7 @@ const Profile = () => {
     const [isChangesMade, setIsChangesMade] = useState(false)
 
     useEffect(()=>{
-        const userRole = JSON.parse(localStorage.getItem("user"));
+        const userRole = JSON.parse(localStorage.getItem("token"));
         if (userRole) {
         setName(userRole.user.accountName);
         setEmail(userRole.user.email)

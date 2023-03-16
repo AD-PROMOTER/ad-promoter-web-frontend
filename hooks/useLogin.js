@@ -4,7 +4,7 @@ import { useAuthContext } from './useAuthContext';
 export const useLogin = () => {
   const [error, setError] = useState(null);
   const [msg, setMsg] = useState('');
-  const [isLoading, setIsLoading] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { dispatch, user } = useAuthContext();
 
   const login = async (phoneNumber, password) => {
@@ -27,14 +27,15 @@ export const useLogin = () => {
     if (!response.ok) {
       console.log(json);
       console.log('user not logged in');
+      setIsLoading(false);
       setError(json.msg);
-      console.log(phoneNumber);
-      console.log(password);
+      setIsLoading(false);
     }
     if (response.ok) {
       console.log(json);
       console.log('user logged in');
       setError(json.success);
+      setIsLoading(false);
 
       //save user to local storage
       localStorage.setItem('token', JSON.stringify(json));
@@ -43,5 +44,6 @@ export const useLogin = () => {
       dispatch({ type: 'TOKEN_VALUE', payload: json });
     }
   };
+  // console.log(isLoading);
   return { login, isLoading, error, msg };
 };

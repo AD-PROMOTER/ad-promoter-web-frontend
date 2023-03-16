@@ -22,22 +22,20 @@ import SignupContext from "@/context/signupContext"
 const Login = () => {
   const router = useRouter();
   const { dispatch } = useAuthContext();
-  const [isLoading, setIsLoading] = useState(null);
   const [isPasswordShown,setIsPasswordShown] = useState(false)
   const [userEmail,setUserEmail] = useState('')
   const [userPassword,setUserPassword] = useState('')
   const [token, setToken] = useState("");
   const [userRole, setUserRole] = useState("");
+  const [user,setUser] = useState([])
   const {setIsInputWithValue} = useContext(SignupContext)
   const {isLoginInputWithValue,setIsLoginInputWithValue} = useContext(PreferenceContext)
-  const {login} = useLogin()
+  const {login,error,isLoading} = useLogin()
   useEffect(() => {
-    // const userToken = JSON.parse(localStorage.getItem("token"));
-    // if (userToken) {
-    //   setToken(userToken.token);
-    // }
+    
     const userRole = JSON.parse(localStorage.getItem("token"));
     if (userRole) {
+      setUser(userRole.user)
       setUserRole(userRole.user.role);
     }
     if(userEmail !== '' && userPassword !== '' ){
@@ -45,42 +43,21 @@ const Login = () => {
     }else{
       setIsInputWithValue(false)
     }
-  }, [router, setIsLoginInputWithValue, userEmail, userPassword])
 
-  const fetchUser = async () =>{
-    setIsLoading(true);
+   
+  }, [router, setIsLoginInputWithValue, userEmail, userPassword,userRole])
 
-    const response = await fetch('http://35.153.52.116/api/v1/user',
-      {
-        headers: {
-          'Authorization' : `Bearer ${token}`
-        }
-      }
-    );
-    const json = await response.json();
-
-    if (!response.ok) {
-      console.log(json);
-      console.log('user not fetch');
-    }
-    if (response.ok) {
-      console.log(json);
-      setUserRole(json.data.role)
-      console.log(userRole);
-      console.log('user fetch');
-      localStorage.setItem("user", JSON.stringify(json));
-      dispatch({ type: "LOGIN", payload: json });
-    }
-  }
   const handleSubmit = (e) => {
     e.preventDefault()
    if(userEmail && userPassword !== ''){
     login(userEmail,userPassword)
+    if(user){
       if(userRole === 'placer'){
         router.push('/placers')
-      }else{
+      }else if(userRole === 'promoter'){
         router.push('/promoters')
       }
+    }
    }
   }
   return (
@@ -144,9 +121,12 @@ const Login = () => {
                   onChange={e => setUserPassword(e.target.value)}
                 />
               </div>
-              <p>Forgot your password</p>
+              <div className="error-container">
+                <p>Forgot your password</p>
+                <p className="error">{error}</p>
+              </div>
             </div>
-            <Button text='Log in' />
+            <Button text={isLoading ? 'Loading...' : 'Log in'} />
           </form>
         </div>
       </Overlay>
@@ -173,7 +153,7 @@ const Login = () => {
           <label htmlFor="email">Your email</label>
           <input 
             type="email" 
-            id="email" 
+            id="memail" 
             required
             value={userEmail}
             onChange={e => setUserEmail(e.target.value)}
@@ -197,7 +177,7 @@ const Login = () => {
               </div>
             </div>
             <input  
-              id="password"
+              id="mpassword"
               name='password'
               required
               type={isPasswordShown ? "text" : "password"}

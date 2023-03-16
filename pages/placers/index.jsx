@@ -37,14 +37,38 @@ const Index = () => {
   const [showDropdown, setShowDropdown] = useState(false)
   const [listValue, setListValue] = useState('It has gory images')
   const [userName, setUserName] = useState('')
+  const token = useRef('')
   const ref = useRef(null)
+  const [runningAds,setRunningAds] = useState('')
+  const [completeAds,setCompleteAds] = useState('')
+  const [conversionGrowth,setConversionGrowth] = useState('')
+  // const [newUserScreen,setNewUserScreen] = useState
 
   useEffect(() => {
-    const userName = JSON.parse(localStorage.getItem("user"));
+    const userName = JSON.parse(localStorage.getItem("token"));
     if (userName) {
       setUserName(userName.user.accountName);
+      token.current = userName.token
     }
-  });
+
+      Promise.all([
+        fetch('http://35.153.52.116/api/v1/user/dashboard',{
+          headers:{
+            Authorization: `Bearer ${token.current}`,
+          }
+        }),
+      ])
+        .then(([resDashboardData]) => 
+          Promise.all([resDashboardData.json()])
+        )
+        .then(([dataDashboardData]) => {
+          // console.log(dataDashboardData.data);
+          setRunningAds(dataDashboardData.data.adCount.runningAds);
+          setCompleteAds(dataDashboardData.data.adCount.completedAds);
+          setConversionGrowth(dataDashboardData.data.conversionRate)
+        })
+
+  },[token]);
 
   const toggleReadMore = () => {
     setIsReadMore(!isReadMore);
@@ -54,23 +78,6 @@ const Index = () => {
     setListValue(e.target.innerText)
     setShowDropdown(false)
   }
-
-  
-
-  // useEffect(() => {
-  //   const onClickOutside = () => {
-  //       setShowReport(false)
-  //   }
-  //   const handleClickOutside = (event) => {
-  //       if (ref.current && !ref.current.contains(event.target)) {
-  //           onClickOutside && onClickOutside();
-  //       }
-  //   }
-  //   document.addEventListener('click', handleClickOutside, true);
-  //   return () => {
-  //       document.removeEventListener('click', handleClickOutside, true);
-  //   }
-  // }, [])
 
   const RecentBody = [
     {
@@ -134,19 +141,19 @@ const Index = () => {
     {
       Icon: Flash,
       name: 'Running Ads',
-      num: '5',
+      num: runningAds,
       bg: '#D2EFFF'
     },
     {
       Icon: Cup,
       name: 'Complete',
-      num: '3',
+      num: completeAds,
       bg: '#FFE2C7'
     },
     {
       Icon: Trend,
       name: 'Overall Conv. growth',
-      num: '70%',
+      num: conversionGrowth,
       bg: '#FFE2E4'
     } 
   ]

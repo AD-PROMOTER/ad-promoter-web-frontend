@@ -49,7 +49,7 @@ const Index = ({router}) => {
   const [showNotif, setShowNotif] = useState(false)
   const [userName,setUserName] = useState('')
   useEffect(() => {
-    const userName = JSON.parse(localStorage.getItem("user"));
+    const userName = JSON.parse(localStorage.getItem("token"));
     if (userName) {
       setUserName(userName.user.accountName);
     }

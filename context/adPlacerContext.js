@@ -42,6 +42,8 @@ export function AdPlacerProvider({ children }) {
         setCta,
         imageURLs,
         setImageURLs,
+        imageURLs,
+        setImageURLs,
       }}
     >
       {children}

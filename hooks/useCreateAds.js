@@ -1,12 +1,26 @@
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 export const useCreateAds = () => {
   const [error, setError] = useState(null);
   const [msg, setMsg] = useState('');
   const [isLoading, setIsLoading] = useState(null);
+  const [token, setToken] = useState('');
+  const [redirect, setRedirect] = useState('');
+  const router = useRouter();
+
+  useEffect(() => {
+    const userToken = JSON.parse(localStorage.getItem('token'));
+    if (userToken) {
+      setToken(userToken.token);
+    }
+  });
+
+  useEffect(() => {
+    router.push(redirect);
+  }, [redirect]);
 
   const createAd = async (
-    token,
     productName,
     redirectUrl,
     productDescription,
@@ -52,10 +66,8 @@ export const useCreateAds = () => {
     if (response.ok) {
       console.log(json);
       console.log('ad created');
-
-      //   //update the auth context
-      //   dispatch({ type: "LOGIN", payload: json });
+      setRedirect(json.data.paymentDetails.url);
     }
   };
-  return { createAd, isLoading, error, msg };
+  return { createAd, isLoading, error, msg, redirect };
 };

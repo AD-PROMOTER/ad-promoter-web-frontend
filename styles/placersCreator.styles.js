@@ -463,12 +463,14 @@ export const StyledDirectLink = styled.div`
       .product-description,
       .upload,
       .product-link,
-      .product-content {
+      .product-content,
+      .product-cta {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         gap: 16px;
         width: 100%;
+        position: relative;
         label {
           font-weight: 600;
           font-size: 14px;
@@ -483,14 +485,64 @@ export const StyledDirectLink = styled.div`
           border-radius: 9.91579px;
           border: 1px solid var(--white);
           width: 100%;
-          padding: 16px;
+          padding: 1.6rem;
           font-weight: 400;
-          font-size: 14px;
-          line-height: 20px;
+          font-size: 1.4rem;
+          line-height: 2rem;
           letter-spacing: -0.011em;
           color: #404040;
           font-family: var(--font-family-2);
           resize: none;
+          outline: none;
+        }
+        .cta {
+          background: #ffffff;
+          box-shadow: 1.65263px 3.30526px 26.4421px rgba(0, 0, 0, 0.05);
+          border-radius: 9.91579px;
+          border: 1px solid var(--white);
+          width: 100%;
+          padding: 1.6rem;
+          font-weight: 400;
+          font-size: 1.4rem;
+          line-height: 2rem;
+          letter-spacing: -0.011em;
+          color: #404040;
+          font-family: var(--font-family-2);
+          resize: none;
+          outline: none;
+          display: flex;
+          justify-content: space-between;
+          cursor: pointer;
+        }
+
+        ul {
+          margin: auto;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.4rem;
+          width: 31.5rem;
+          li {
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.6rem;
+            gap: 17.435rem;
+            background: #ffffff;
+            border: 1px solid #4f00cf;
+            box-shadow: 1.65263px 3.30526px 26.4421px rgba(0, 0, 0, 0.05);
+            border-radius: 0.991579rem;
+            font-family: 'Open Sans';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 1.4rem;
+            line-height: 2rem;
+            letter-spacing: -0.011em;
+            color: #4f00cf;
+            cursor: pointer;
+          }
         }
 
         input[type='checkbox'] {
