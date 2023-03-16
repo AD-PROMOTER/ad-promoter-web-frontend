@@ -25,7 +25,7 @@ const Profile = () => {
         setEmail(userRole.user.email)
         setPhoneNumber(userRole.user.phoneNumber)
         }
-    })
+    },[])
 
     const ClickedList = (e) =>{
         setListValue(e.target.innerText)

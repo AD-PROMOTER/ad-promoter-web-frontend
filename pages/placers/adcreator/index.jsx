@@ -51,7 +51,7 @@ const Adcreator = () => {
           setActiveAds(dataActiveAds.data);
         });
     }
-  })
+  },[id,token])
   
   const data = [
     {

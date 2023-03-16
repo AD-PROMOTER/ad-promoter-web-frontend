@@ -53,7 +53,7 @@ const Index = ({router}) => {
     if (userName) {
       setUserName(userName.user.accountName);
     }
-  });
+  },[]);
   
   const mobileSummary = [
     {
