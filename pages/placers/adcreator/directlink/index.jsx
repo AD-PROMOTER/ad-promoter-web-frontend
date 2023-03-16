@@ -1,5 +1,5 @@
 import { StyledDirectLink } from '@/styles/placersCreator.styles'
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import CloseCircle from '@/public/assets/close-circle-2'
 import LinkIcon from '@/public/assets/link-icon.svg'
 import Image from 'next/image'
@@ -8,26 +8,30 @@ import AdPlacerContext from '@/context/adPlacerContext'
 import { useContext } from 'react'
 const Directlink = () => {
     const router = useRouter()
-    const {directLinkFormValue, setDirectLinkFormValue} = useContext(AdPlacerContext)
-    const tags = [
-        {
-            tag: 'Foody'
-        },
-        {
-            tag: 'Food'
-        },
-        {
-            tag: 'Cake'
-        },
-        {
-            tag: 'Chocolate'
-        },
-    ]
+    const {productName,setProductName,productDescription,setProductDescription,tags,setTags,webAddress,setWebAddress,setContainAdultContent} = useContext(AdPlacerContext)
+    const [tagValue,setTagValue] = useState('');
 
-    const handlePush = () =>{
-        router.push('directlink/conversion')
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            if(tagValue){
+                setTags(prevTags => [...prevTags, tagValue]);
+                setTagValue('')
+            }
+        }
+    };
+
+    const deleteTag = index => {
+        setTags(oldValues => {
+          return oldValues.filter((_, i) => i !== index)
+        })
     }
-    // 'Foody','Food','Cake','Chocolate'
+    
+    const handlePush = () =>{
+        if(productName&&productDescription&&webAddress !== ''){
+            router.push('directlink/conversion')
+        }
+    }
+
   return (
     <StyledDirectLink>
         <div className="header">
@@ -68,9 +72,8 @@ const Directlink = () => {
                         id="productName"
                         name='productName'
                         required
-                        value={directLinkFormValue.productName}
-                        // onChange={handleChange}
-                        // className= 'input'
+                        value={productName}
+                        onChange={(e)=>setProductName(e.target.value)}
                     />
                 </div>
                 <div className="product-description">
@@ -78,7 +81,8 @@ const Directlink = () => {
                     <textarea 
                         name="productDescription" 
                         id="productDescription"
-                        value={directLinkFormValue.productDescription}
+                        value={productDescription}
+                        onChange={(e) => setProductDescription(e.target.value)}
                         />
                 </div>
 
@@ -86,15 +90,21 @@ const Directlink = () => {
                     <label htmlFor="poductTag">3. Project tags (Up to 5)</label>
                     <div className="tag-input">
                         <div className="tag-container">
-                            {tags.map(({tag,index})=>(
+                            {tags.map((tag,index)=>(
                                 <div className="tag" key={index}>
                                     <h4>{tag}</h4>
-                                    <div>
+                                    <div onClick={()=> deleteTag(index)}>
                                         <CloseCircle />
                                     </div>
                                 </div>
                             ))}
                         </div>
+                        <input 
+                            type="text"
+                            value={tagValue}
+                            onChange={(e)=>setTagValue(e.target.value)}
+                            onKeyDown={handleKeyDown} 
+                        />
                     </div>
                 </div>
 
@@ -110,9 +120,8 @@ const Directlink = () => {
                                 id="productLink"
                                 name='productLink'
                                 required
-                                // value={userFormValue.email}
-                                // onChange={handleChange}
-                                // className= 'input'
+                                value={webAddress}
+                                onChange={(e)=>setWebAddress(e.target.value)}
                             />
                         </div>
                         <div className="button">
@@ -124,7 +133,11 @@ const Directlink = () => {
                 <div className="product-content">
                     <label htmlFor="productContent">5. Content</label>
                     <div className="checkbox">
-                        <input type="checkbox" name="productContent" id="productContent" />
+                        <input 
+                            type="checkbox" 
+                            name="productContent" 
+                            id="productContent" 
+                            onChange={(e) =>setContainAdultContent(e.target.checked)}/>
                         <p>This advert contains adult content</p>
                     </div>
                 </div>
@@ -132,8 +145,8 @@ const Directlink = () => {
         </div>
 
         <div className="btns">
-            <div className="prev">Prev</div>
-            <div className="next" onClick={handlePush}>Next</div>
+            <button className="prev">Prev</button>
+            <button className="next" onClick={handlePush}>Next</button>
         </div>
     </StyledDirectLink>
   )

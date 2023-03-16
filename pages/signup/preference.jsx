@@ -6,19 +6,24 @@ import logo from '@/public/assets/newOnboardLogo.svg'
 import Button from '@/components/authBtn/index'
 import { useRouter } from "next/router"
 import { BgContainer } from '@/components/onboardingBg/styles'
-import { Overlay } from '@/styles/signupPreference'
+import { MobilePref, Overlay } from '@/styles/signupPreference'
 import { useEffect } from 'react'
 import { useContext } from "react";
-import PreferenceContext from '@/context/preferenceContext'
+import SignupContext from '@/context/signupContext'
+import { useSendOtp } from '@/hooks/useSendOtp'
 
 const Preference = () => {
-  const {userPref,setUserPref,setIsPrefWithValue,setIsInputWithValue,isInputWithValue} = useContext(PreferenceContext)
+  const {userPref,setUserPref,setIsInputWithValue} = useContext(SignupContext)
   const router = useRouter();
+  const {sendOtp} = useSendOtp()
+  const {phoneNumber} = useContext(SignupContext)
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    if(userPref === 'promote'){
+    if(userPref === 'promoter'){
       router.push("/signup/visualReq")
     }else{
+      sendOtp(phoneNumber)
       router.push("/signup/verification")
     }
   }
@@ -32,6 +37,7 @@ const Preference = () => {
     setIsInputWithValue(true)
   };
   return (
+    <>
     <BgContainer image={bg}>
       <Overlay className="overlay">
         <div className="close" onClick={()=>router.push('/')}>
@@ -49,7 +55,7 @@ const Preference = () => {
               <input 
                 type="radio" 
                 id="place" 
-                value='place' 
+                value='placer' 
                 name='pref'
                 // checked={userPref === 'place'}
                 onChange={handleChange}
@@ -60,7 +66,7 @@ const Preference = () => {
               <input 
                 type="radio" 
                 id="promote" 
-                value='promote' 
+                value='promoter' 
                 name='pref'
                 // checked={userPref === 'promote'}
                 onChange={handleChange}
@@ -72,6 +78,38 @@ const Preference = () => {
         </div>
       </Overlay>
     </BgContainer>
+    <MobilePref>
+      <div className='logo'>
+        <Image src={logo} alt='ad-promoter logo'/>
+      </div>
+      <h3>What do you want use <br/> Ad-promoter for?</h3>
+      <form action="" onSubmit={handleSubmit}>
+        <div className="placers">
+          <input 
+            type="radio" 
+            id="place" 
+            value='place' 
+            name='pref'
+            // checked={userPref === 'place'}
+            onChange={handleChange}
+            />
+          <label htmlFor="place">Place ads</label>
+        </div>
+        <div className="promoters">
+          <input 
+            type="radio" 
+            id="promote" 
+            value='promote' 
+            name='pref'
+            // checked={userPref === 'promote'}
+            onChange={handleChange}
+            />
+          <label htmlFor='promote'>Promote ads</label>
+        </div>
+        <Button text='Next' />
+      </form>
+    </MobilePref>
+    </>
   )
 }
 

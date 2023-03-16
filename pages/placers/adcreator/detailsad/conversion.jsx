@@ -1,14 +1,21 @@
 import { StyledDirectLinkConversion } from '@/styles/placersCreator.styles'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import ProgressCheck from '@/public/assets/progress-check'
 import Arrow from '@/public/assets/arrow-3'
 import NairaIcon from '@/public/assets/naira-icon'
 import UserIcon from '@/public/assets/user-icon'
 import { useRouter } from 'next/router'
+import AdPlacerContext from '@/context/adPlacerContext'
 const Conversion = () => {
     const router = useRouter()
+    const {amount,setAmount,visitors,setVisitors} = useContext(AdPlacerContext)
+
+    useEffect(()=>{
+        setVisitors(amount/50)
+    })
+
     const handlePush = () =>{
-        router.push('payment')
+        router.push('summary')
     }
   return (
     <StyledDirectLinkConversion>
@@ -45,7 +52,10 @@ const Conversion = () => {
                                 <div className="icon">
                                     <NairaIcon />
                                 </div>
-                                <input type="number" />
+                                <input 
+                                    type="number" 
+                                    value={amount}
+                                    onChange={(e)=>setAmount(e.target.value)}/>
                             </div>
                             <div className='arrow'>
                                 <Arrow />
@@ -54,7 +64,7 @@ const Conversion = () => {
                                 <div className="icon">
                                     <UserIcon />
                                 </div>
-                                <input type="number" />
+                                <input type="number" value={visitors}/>
                             </div>
                         </div>
                     </div>

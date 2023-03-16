@@ -1,4 +1,4 @@
-import { MobileCotainer, StyledHome, StyledHomeContainer, TabContainer } from "@/styles/promoters/home"
+import { MobileCotainer, StyledHome, StyledHomeContainer, TabContainer, TabletContainer } from "@/styles/promoters/home"
 import profile from '@/public/assets/home-profile.svg'
 import wave from '@/public/assets/wave-hands.svg'
 import filter from '@/public/assets/filter-icon.svg'
@@ -39,12 +39,22 @@ const Index = ({router}) => {
   //   scrollToView;
   // });
 
+  
+
   const isTabOne = tab === "recent" || tab == null
   const isTabTwo = tab === "saved jobs"
   const [showRecentJobs, setShowRecentJobs] = useState(true)
   const [showDropdown, setShowDropdown] = useState(false)
   const [showSortDropdown, setShowSortDropdown] = useState(false)
   const [showNotif, setShowNotif] = useState(false)
+  const [userName,setUserName] = useState('')
+  useEffect(() => {
+    const userName = JSON.parse(localStorage.getItem("token"));
+    if (userName) {
+      setUserName(userName.user.accountName);
+    }
+  });
+  
   const mobileSummary = [
     {
       icon: money,
@@ -89,6 +99,51 @@ const Index = ({router}) => {
       price: '3',
       bg: '#F4D5FF'
     }
+  ]
+  const tabSummary = [
+    {
+      icon: money,
+      name: 'Total Balance',
+      price: '₦200,000.35',
+      bg: '#D2EFFF',
+    },
+    {
+      icon: wallet,
+      name: 'Pending Withdrawal',
+      price: '₦15,000.35',
+      bg: '#FFE2C7'
+    },
+    {
+      icon: money,
+      name: 'No of jobs recieved',
+      price: '200',
+      bg: 'rgba(87, 159, 190, 0.2)'
+    },
+    {
+      icon: card,
+      name: 'No. of Ads Promoted',
+      price: '162',
+      bg: '#C8C7FF'
+    },
+    {
+      icon: chart,
+      name: 'No. of Videos accepted',
+      price: '3',
+      bg: '#F4D5FF',
+    },
+    {
+      icon: chart,
+      name: 'No. of Visitors',
+      price: '102',
+      bg: '#FFE2E4'
+    },
+    {
+      icon: chart,
+      name: 'No. of Ads Converted',
+      price: '102',
+      bg: '#C7FFDD',
+      nameClass: 'balance'
+    },
   ]
 
   const summary = [
@@ -152,7 +207,7 @@ const Index = ({router}) => {
               </div>
   
               <div className="user-details">
-                <p>Hi, Skylar Dias</p>
+                <p>Hi, {userName}</p>
                 <div className="sub-user-details">
                   <Image src={wave} alt='hands waving'/>
                   <p>Welcome back!</p>
@@ -320,6 +375,86 @@ const Index = ({router}) => {
           </div>
         </>)}         
         </MobileCotainer>
+        <TabletContainer>
+          <div className="welcome">
+            <div className="userProfile">
+              <Image src={profile} alt='profile picture'/>
+              <div className="username">
+                <p>Hi, Skylar Dias</p>
+                <div className="wave">
+                  <Image src={wave} alt='hands waving'/>
+                  <p className="greeting">Welcome back!</p>                  
+                </div>
+              </div>             
+            </div>
+            <Image src={userStatus} alt='user-status'/>           
+          </div>
+          <div className="dashboard-summary">
+            <h3>Dashboard Summary</h3>
+                
+            <div className="filter" onClick={() => setShowDropdown(!showDropdown)}>
+              <p>Filter</p>
+              <div className="arrow-drop">
+                {showDropdown ? 
+                  <ArrowUp /> : <ArrowDown />
+                }
+              </div>
+            </div>
+            {showDropdown && (
+              <ul>
+                <li>Recent</li>
+                <li>A week ago</li>
+                <li>Less than 2 weeks</li>
+                <li>Last 30 days</li>
+              </ul>
+            )}
+          </div>
+          <div className="summary-info">
+            {tabSummary.map((item, index)=>(
+              <div key={index} className={item.nameClass ? 'balance' : 'card'} style={{backgroundColor: item.bg}}>
+              <div className='amount'>
+                <div className='icon'>
+                  <Image src={item.icon} alt='icon'/>
+                  <p>{item.name}</p>
+                </div>
+                <h3>{item.price}</h3>
+              </div>
+            </div>
+            ))}
+          </div>
+          <div className="sort">
+            <div className="tabs">
+              <ScrollIntoView selector="#inView" className="tab-sort">
+                <div className={showRecentJobs ? 'active-job' : 'non-active'} onClick={()=> setShowRecentJobs(true)}>
+                  Recent
+                </div>
+              </ScrollIntoView>
+              <ScrollIntoView selector="#inView" className="tab-sort">
+                <div className={showRecentJobs !== true ? 'active-job' : 'non-active'} onClick={()=> setShowRecentJobs(!showRecentJobs)}>
+                  Saved Jobs
+                </div>
+              </ScrollIntoView>
+            </div>
+            <div className='arrow-sort' onClick={() => setShowSortDropdown(!showSortDropdown)}>
+              <p>Sort</p>
+              {showSortDropdown ? 
+                <ArrowUp /> : <ArrowDown />
+              }
+            </div>
+            {showSortDropdown && (
+              <ul className="list">
+                <li>Recent</li>
+                <li>Two days ago</li>
+                <li>A week ago</li>
+                <li>Less than 2 weeks</li>
+                <li>Last 30 days</li>
+              </ul>
+            )}
+          </div>
+          <div id="inView">
+            {showRecentJobs ? <RecentMobile /> : <SavedJobsMobile />}
+          </div>
+        </TabletContainer>
     </>
   )
 }

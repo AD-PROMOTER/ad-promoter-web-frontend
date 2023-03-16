@@ -27,6 +27,9 @@ export const PromoterWalletContainer = styled.div`
   @media screen and (max-width: 425px) {
     display: none;
   }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    display: none;
+  }
 `;
 export const MobileWallet = styled.div`
   display: none;
@@ -181,6 +184,118 @@ export const MobileWallet = styled.div`
       line-height: 2.2rem;
       letter-spacing: -0.408px;
       color: #0d0d0d;
+    }
+  }
+`;
+
+export const TabWallet = styled.div`
+  display: none;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  @media (min-width: 768px) and (max-width: 1024px) {
+    display: block;
+  }
+  .filter {
+    display: flex;
+    margin-top: 2rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .choose {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .active {
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 4.8rem;
+    color: white;
+    background: #4f00cf;
+    border-radius: 32px;
+    padding: 0 2.4rem;
+  }
+  .non-active {
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 4.8rem;
+    border: 1.5px solid #d3b8ff;
+    border-radius: 32px;
+    color: #333333;
+    padding: 0 2.4rem;
+  }
+  .select {
+    width: 28.1rem;
+    padding: 1.2rem 2rem;
+    border: 0.1rem solid var(--light-primary);
+    border-radius: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+
+    ul {
+      background-color: var(--white);
+      position: absolute;
+      top: 7.5rem;
+      right: 0rem;
+      border-radius: 0.8rem;
+      box-shadow: var(--shadow-1);
+      width: 25rem;
+      z-index: 100;
+
+      li {
+        padding: 1.2rem 2.4rem;
+        border-bottom: 0.1rem solid #d9d9d9;
+        cursor: pointer;
+        /* z-index: 100; */
+      }
+    }
+  }
+  .summary {
+    background-color: white;
+    box-shadow: 1.65263px 3.30526px 26.4421px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    padding: 2.4rem;
+    margin-top: 2rem;
+
+    h3 {
+      font-weight: 600;
+      font-size: 2.4rem;
+      line-height: 3.6rem;
+    }
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+  .each {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 3rem 0;
+    box-shadow: 1px 2px 4px rgba(33, 76, 95, 0.2);
+    border-radius: 12px;
+
+    h2 {
+      font-weight: 700;
+      font-size: 2.4rem;
+      line-height: 3.6rem;
+    }
+  }
+  .icon {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    p {
+      font-weight: 500;
+      font-size: 1.4rem;
+      line-height: 2.1rem;
     }
   }
 `;

@@ -1,6 +1,6 @@
 import { BgContainer } from "@/components/onboardingBg/styles"
 import bg from '@/public/assets/onboard-bg.png'
-import { Overlay } from "@/styles/login.styles"
+import { MobileLogin, Overlay } from "@/styles/login.styles"
 import Close from '@/public/assets/close-icon'
 import Image from "next/image"
 import logo from '@/public/assets/newOnboardLogo.svg'
@@ -14,29 +14,54 @@ import Link from "next/link"
 import { useContext, useState,useEffect } from "react"
 import { BsEyeFill,BsEyeSlashFill } from "react-icons/bs"
 // import Container from '@/components/onBoardBg/index'
-import PreferenceContext from "@/context/preferenceContext"
+import PreferenceContext from "@/context/signupContext"
+import { useLogin } from "@/hooks/useLogin"
+import { useAuthContext } from "@/hooks/useAuthContext"
+import SignupContext from "@/context/signupContext"
 
 const Login = () => {
   const router = useRouter();
+  const { dispatch } = useAuthContext();
   const [isPasswordShown,setIsPasswordShown] = useState(false)
   const [userEmail,setUserEmail] = useState('')
   const [userPassword,setUserPassword] = useState('')
+  const [token, setToken] = useState("");
+  const [userRole, setUserRole] = useState("");
+  const [user,setUser] = useState([])
+  const {setIsInputWithValue} = useContext(SignupContext)
   const {isLoginInputWithValue,setIsLoginInputWithValue} = useContext(PreferenceContext)
-
+  const {login,error,isLoading} = useLogin()
   useEffect(() => {
-    if(userEmail !== '' && userPassword !== '' ){
-      setIsLoginInputWithValue(true)
-    }else{
-      setIsLoginInputWithValue(false)
+    
+    const userRole = JSON.parse(localStorage.getItem("token"));
+    if (userRole) {
+      setUser(userRole.user)
+      setUserRole(userRole.user.role);
     }
-  }, [router, setIsLoginInputWithValue, userEmail, userPassword])
+    if(userEmail !== '' && userPassword !== '' ){
+      setIsInputWithValue(true)
+    }else{
+      setIsInputWithValue(false)
+    }
 
+   
+  }, [router, setIsLoginInputWithValue, userEmail, userPassword,userRole])
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    router.push("/")
+   if(userEmail && userPassword !== ''){
+    login(userEmail,userPassword)
+    if(user){
+      if(userRole === 'placer'){
+        router.push('/placers')
+      }else if(userRole === 'promoter'){
+        router.push('/promoters')
+      }
+    }
+   }
   }
   return (
+    <>
     <BgContainer image={bg}>
       <Overlay className='overlay'>
         <div className="close" onClick={()=>router.push('/')}>
@@ -63,7 +88,7 @@ const Login = () => {
             <div className="email">
               <label htmlFor="email">Your email</label>
               <input 
-                type="email" 
+                type="text" 
                 id="email" 
                 required
                 value={userEmail}
@@ -96,13 +121,76 @@ const Login = () => {
                   onChange={e => setUserPassword(e.target.value)}
                 />
               </div>
-              <p>Forgot your password</p>
+              <div className="error-container">
+                <p>Forgot your password</p>
+                <p className="error">{error}</p>
+              </div>
             </div>
-            <Button text='Log in' />
+            <Button text={isLoading ? 'Loading...' : 'Log in'} />
           </form>
         </div>
       </Overlay>
     </BgContainer>
+    <MobileLogin>
+      <div className="logo">
+        <Image src={logo} alt='ad-promoter logo'/>
+        <div className="login">
+          <h3>Log in</h3>
+          <p>Don’t have an account? <Link href='/signup'><a>Sign up</a></Link></p>
+        </div>
+      </div>
+      <div className="content-socials">
+        <SocialBtn icon={google} text="Google" />
+        <SocialBtn icon={fb} text="Facebook" />
+      </div>
+      <div className="divider">
+        <div></div>
+        <p>or</p>
+        <div></div>
+      </div>
+      <form action="" onSubmit={handleSubmit}>
+        <div className="email">
+          <label htmlFor="email">Your email</label>
+          <input 
+            type="email" 
+            id="memail" 
+            required
+            value={userEmail}
+            onChange={e => setUserEmail(e.target.value)}
+            />
+        </div>
+        <div className="password">
+          <div className="input-container">
+            <div className="label">
+              <label htmlFor="password">Your password</label>
+              <div className="hide" onClick={()=>setIsPasswordShown(!isPasswordShown)}>
+                {isPasswordShown ? (
+                  <BsEyeSlashFill style={{color: 'rgba(102,102,102,0.8)'}} />
+                  ):(
+                  <BsEyeFill style={{color: 'rgba(102,102,102,0.8)'}} />
+                )}
+                {isPasswordShown ? (
+                  <p>Hide</p>
+                ):(
+                  <p>Show</p>
+                )}
+              </div>
+            </div>
+            <input  
+              id="mpassword"
+              name='password'
+              required
+              type={isPasswordShown ? "text" : "password"}
+              value={userPassword}
+              onChange={e => setUserPassword(e.target.value)}
+            />
+          </div>
+          <p>Forgot your password</p>
+        </div>
+        <Button text='Log in' />
+      </form>
+    </MobileLogin>
+    </>
   )
 }
 

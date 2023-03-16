@@ -15,6 +15,12 @@ export const BgContainer = styled.div`
   align-items: center;
   position: relative;
   background: linear-gradient(rgba(17, 17, 17, 0.5));
+  @media screen and (max-width: 425px) {
+    display: none;
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    min-height: 100vh;
+  }
   .landing-image {
     height: 102.4rem;
     width: 100%;
@@ -36,6 +42,9 @@ export const BgContainer = styled.div`
     gap: 6rem;
     /* padding: 4rem 13rem; */
     position: relative;
+    @media (min-width: 768px) and (max-width: 1024px) {
+      width: 80%;
+    }
     .close {
       position: absolute;
       right: 3.2rem;

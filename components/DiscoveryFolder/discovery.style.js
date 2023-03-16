@@ -5,6 +5,9 @@ export const Desktop = styled.div`
   @media screen and (max-width: 425px) {
     display: none;
   }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    display: none;
+  }
 `;
 export const Filterstyled = styled.div`
   background-color: var(--white);
@@ -577,5 +580,145 @@ export const MobileDiscovery = styled.div`
       line-height: 2.1rem;
       font-weight: 600;
     }
+  }
+`;
+export const TabDiscovery = styled.div`
+  display: none;
+  @media (min-width: 768px) and (max-width: 1024px) {
+    display: block;
+  }
+  .style-filter {
+    background-color: var(--white);
+    width: 100%;
+    .searchFilter {
+      display: flex;
+      position: relative;
+      justify-content: center;
+      align-items: center;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+      gap: 1.2rem;
+      font-size: 1.6rem;
+
+      .search {
+        position: relative;
+        display: block;
+
+        span {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          display: flex;
+          align-items: center;
+          padding-left: 1.2rem;
+        }
+        input {
+          padding: 1.2rem;
+          border-radius: 0.8rem;
+          padding-left: 6rem;
+          border-width: 0.1rem;
+          border-color: var(--light-primary);
+          width: 46.5rem;
+        }
+      }
+      .select {
+        width: 28.1rem;
+        padding: 1.2rem 2rem;
+        border: 0.1rem solid var(--light-primary);
+        border-radius: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+
+        ul {
+          background-color: var(--white);
+          position: absolute;
+          top: 7.5rem;
+          right: 0rem;
+          border-radius: 0.8rem;
+          box-shadow: var(--shadow-1);
+          width: 25rem;
+          z-index: 100;
+
+          li {
+            padding: 1.2rem 2.4rem;
+            border-bottom: 0.1rem solid #d9d9d9;
+            cursor: pointer;
+            /* z-index: 100; */
+          }
+        }
+      }
+    }
+  }
+  .sort {
+    background-color: white;
+    padding: 3rem 5rem 1rem 5rem;
+    border-radius: 1.6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    top: 0;
+    position: relative;
+  }
+  .tabs {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+  }
+  .active-job {
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 4.8rem;
+    color: white;
+    background: #4f00cf;
+    border-radius: 32px;
+    padding: 0 2.4rem;
+  }
+  .non-active {
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 4.8rem;
+    padding: 0 2.4rem;
+    border: 1.5px solid #d3b8ff;
+    border-radius: 32px;
+    color: #333333;
+  }
+  .arrow-sort {
+    display: flex;
+    align-items: center;
+    gap: 1.3rem;
+    p {
+      font-size: 1.4rem;
+      font-weight: 600;
+      line-height: 2.1rem;
+    }
+  }
+  .list {
+    background-color: var(--white);
+    position: absolute;
+    top: 8rem;
+    right: 3rem;
+    border-radius: 1.2rem;
+    box-shadow: var(--shadow-1);
+    width: 18.2rem;
+    z-index: 100;
+
+    li {
+      padding-top: 1.2rem;
+      padding-bottom: 1.2rem;
+      padding-left: 2.4rem;
+      border-bottom: 0.1rem solid #d9d9d9;
+      cursor: pointer;
+      font-size: 1.4rem;
+      line-height: 2.1rem;
+      font-weight: 600;
+    }
+  }
+  .show-recent {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 `;

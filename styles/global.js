@@ -137,4 +137,15 @@ export const GlobalStyle = createGlobalStyle`
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(25px);
   }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 `;

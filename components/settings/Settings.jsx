@@ -16,12 +16,13 @@ import { useRouter } from 'next/router';
 import Navbar from '@/components/PromoterNavbar/index';
 import { adminSettingCategories } from './settingsCategories';
 import AdminNavbar from '@/components/AdminNavbar/index';
+import { useLogout } from '@/hooks/useLogout';
 
 const Settings = (props) => {
   const router = useRouter();
   const [selected, setSelected] = useState('General');
   const [logoutModal, setLogoutModal] = useState(false);
-
+  const {logout} = useLogout()
   const displayLogoutModal = () => {
     setLogoutModal(true);
   };
@@ -93,6 +94,14 @@ const Settings = (props) => {
               ''
             )}
           </div>
+          <div
+            className="logout"
+            style={{ display: logoutModal && 'none' }}
+            onClick={displayLogoutModal}
+          >
+            <TbLogout style={{ height: '27px', width: '27px', color: 'red' }} />
+            <p> Log Out </p>
+          </div>
         </main>
         {logoutModal && (
           <div className="blurred" onClick={() => setLogoutModal(false)} />
@@ -125,7 +134,8 @@ const Settings = (props) => {
                 <Plain onClick={() => setLogoutModal(false)}> Cancel </Plain>
                 <Danger
                   onClick={() => {
-                    router.push('/login');
+                    logout(),
+                    router.push('/')
                   }}
                 >
                   {' '}

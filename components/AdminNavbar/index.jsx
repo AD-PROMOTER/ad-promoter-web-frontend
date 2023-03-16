@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { StyledNavBar } from '@/components/PromoterNavbar/style'
 import { links } from './links'
-import logo from '@/public/assets/newLogo.svg'
+import logo from '@/public/assets/newest-logo.png'
 import notif from '@/public/assets/notif.svg'
 import profile from '@/public/assets/Profil.svg'
 import { useRouter } from 'next/router'
@@ -23,7 +23,11 @@ const Index = () => {
         <div className="logo">
             <Link href='/placers'>
                 <a>
-                    <Image src={logo} alt='ad-promoter'/>
+                    <Image 
+                        src={logo}
+                        alt='ad-promoter'
+                        width={184}
+                        height={19}/>
                 </a>
             </Link>
         </div>

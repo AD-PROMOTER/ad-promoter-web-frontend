@@ -211,22 +211,39 @@ export const Feed = styled.div`
   gap: 1.6rem;
   background-color: var(--white);
   border-radius: 1rem;
+  @media (min-width: 768px) and (max-width: 1024px) {
+    display: block;
+    width: 100%;
+  }
+
   .product-summary {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 2.2rem;
+    @media (min-width: 768px) and (max-width: 1024px) {
+      display: block;
+      width: 100%;
+    }
+
     &-head {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       gap: 2.4rem;
+      @media (min-width: 768px) and (max-width: 1024px) {
+        display: block;
+        width: 100%;
+      }
       .ad-type-container {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: flex-start;
         width: 36.3rem;
+        @media (min-width: 768px) and (max-width: 1024px) {
+          width: 100%;
+        }
         .dot {
           cursor: pointer;
           position: relative;
@@ -273,6 +290,9 @@ export const Feed = styled.div`
       flex-direction: column;
       align-items: flex-start;
       gap: 0.2rem;
+      @media (min-width: 768px) and (max-width: 1024px) {
+        margin-top: 2rem;
+      }
       h3 {
         font-weight: 600;
         font-size: 1.6rem;
@@ -311,6 +331,10 @@ export const Feed = styled.div`
   }
   .product-summary-text {
     width: 33.9rem;
+    @media (min-width: 768px) and (max-width: 1024px) {
+      width: 100%;
+      margin-top: 2rem;
+    }
     p {
       font-weight: 400;
       font-size: 1.6rem;
@@ -362,6 +386,9 @@ export const Feed = styled.div`
     align-items: center;
     /* gap: 2.4rem; */
     width: 36.3rem;
+    @media (min-width: 768px) and (max-width: 1024px) {
+      width: 100%;
+    }
     .user-details {
       display: flex;
       flex-direction: column;
@@ -501,6 +528,10 @@ export const ModalContainer = styled.div`
   padding: 2.4rem 1.6rem;
   left: 3%;
   top: 20%;
+  @media (min-width: 768px) and (max-width: 1024px) {
+    width: 57.4rem;
+    left: 15%;
+  }
 
   .report {
     text-align: center;
