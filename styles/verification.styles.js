@@ -1,102 +1,118 @@
 import styled from 'styled-components';
 
 export const Overlay = styled.div`
-  padding: 12rem;
-  width: 70.6rem;
-  height: 85.7rem;
-  @media (min-width: 768px) and (max-width: 1024px) {
-    padding: 5rem;
-    height: fit-content;
-  }
-  .content {
+  padding: 4rem;
+  width: 60%;
+  position: relative;
+
+  .content-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 4rem;
-    @media (min-width: 768px) and (max-width: 1024px) {
-      gap: 2rem;
-    }
-    &-info {
+    gap: 15rem;
+    .content {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2.4rem;
-      @media (min-width: 768px) and (max-width: 1024px) {
-        gap: 1rem;
-      }
-      &-text {
+      justify-content: flex-start;
+      gap: 4rem;
+
+      &-header {
         display: flex;
         flex-direction: column;
+        justify-content: center;
         align-items: center;
-        gap: 4rem;
-        &-child {
+        gap: 2.4rem;
+        &-text {
           display: flex;
           flex-direction: column;
+          justify-content: center;
           align-items: center;
-          &_text {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2.4rem 0rem;
-            gap: 6rem;
-            @media (min-width: 768px) and (max-width: 1024px) {
-              gap: 2rem;
-            }
-            h3 {
+          padding: 0px;
+          gap: 0.2rem;
+          h2 {
+            font-weight: 700;
+            font-size: 2.4rem;
+            line-height: 3.6rem;
+            color: var(--dark-gray);
+          }
+          p {
+            width: 40.2rem;
+            text-align: center;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 24px;
+            color: var(--dark-gray);
+            span {
               font-weight: 600;
-              font-size: 2.4rem;
-              line-height: 2.1rem;
-              align-items: center;
-              letter-spacing: -0.02em;
-              color: var(--black-1);
-            }
-            p {
-              font-weight: 400;
-              font-size: 1.6rem;
-              line-height: 1.8rem;
-              text-align: center;
-              letter-spacing: -0.02em;
-              color: var(--dark-gray);
             }
           }
         }
       }
-      &-btn {
+      &-input {
         display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        padding: 1.2rem 3.6rem;
-        background: #4f00cf;
-        box-shadow: 2px 6px 16px rgba(25, 55, 215, 0.25);
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 1.4rem;
-        line-height: 150%;
-        align-items: center;
-        letter-spacing: -0.02em;
-        color: #ffffff;
-        cursor: pointer;
-        @media (min-width: 768px) and (max-width: 1024px) {
-          margin-bottom: 3rem;
+        flex-direction: column;
+        gap: 2rem;
+        align-items: flex-start;
+        .input-container {
+          display: flex;
+          flex-direction: row;
+          align-items: flex-start;
+          gap: 0.939rem;
+          input {
+            width: 6.511rem;
+            height: 6.687rem;
+            background: #ffffff;
+            border: 1.17318px solid #808080;
+            border-radius: 0.703909rem;
+            text-align: center;
+            font-weight: 500;
+            font-size: 2.40436rem;
+            line-height: 3.6rem;
+            color: var(--dark-gray);
+          }
+        }
+        p {
+          font-weight: 600;
+          font-size: 1.8rem;
+          line-height: 2.7rem;
+          color: var(--dark-gray);
+          span {
+            color: var(--primary);
+          }
         }
       }
     }
-    .cta {
-      border-top: 1px solid #b3b3b3;
-      padding: 10px;
-      p {
-        font-weight: 400;
-        font-size: 1.6rem;
-        line-height: 1.8rem;
-        letter-spacing: -0.02em;
-        color: var(--dark-gray);
-        a {
-          font-weight: 600;
-          color: var(--blue);
-        }
-      }
+    .content-btn {
+      width: 52.8rem;
+      height: 6.4rem;
+      background: var(--primary);
+      box-shadow: 2px 6px 16px rgba(25, 55, 215, 0.25);
+      border-radius: 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-weight: 500;
+      font-size: 2.2rem;
+      line-height: 3.3rem;
+      cursor: pointer;
+      /* margin-top: 12rem; */
+    }
+    .inactive {
+      width: 52.8rem;
+      height: 6.4rem;
+      background: var(--primary);
+      opacity: 0.5;
+      box-shadow: 2px 6px 16px rgba(25, 55, 215, 0.25);
+      border-radius: 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-weight: 500;
+      font-size: 2.2rem;
+      line-height: 3.3rem;
+      cursor: pointer;
     }
   }
 `;

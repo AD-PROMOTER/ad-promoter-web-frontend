@@ -9,16 +9,21 @@ import { BgContainer } from '@/components/onboardingBg/styles'
 import { MobilePref, Overlay } from '@/styles/signupPreference'
 import { useEffect } from 'react'
 import { useContext } from "react";
-import PreferenceContext from '@/context/preferenceContext'
+import SignupContext from '@/context/signupContext'
+import { useSendOtp } from '@/hooks/useSendOtp'
 
 const Preference = () => {
-  const {userPref,setUserPref,setIsPrefWithValue,setIsInputWithValue,isInputWithValue} = useContext(PreferenceContext)
+  const {userPref,setUserPref,setIsInputWithValue} = useContext(SignupContext)
   const router = useRouter();
+  const {sendOtp} = useSendOtp()
+  const {phoneNumber} = useContext(SignupContext)
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    if(userPref === 'promote'){
+    if(userPref === 'promoter'){
       router.push("/signup/visualReq")
     }else{
+      sendOtp(phoneNumber)
       router.push("/signup/verification")
     }
   }
@@ -50,7 +55,7 @@ const Preference = () => {
               <input 
                 type="radio" 
                 id="place" 
-                value='place' 
+                value='placer' 
                 name='pref'
                 // checked={userPref === 'place'}
                 onChange={handleChange}
@@ -61,7 +66,7 @@ const Preference = () => {
               <input 
                 type="radio" 
                 id="promote" 
-                value='promote' 
+                value='promoter' 
                 name='pref'
                 // checked={userPref === 'promote'}
                 onChange={handleChange}

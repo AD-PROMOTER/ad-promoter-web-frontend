@@ -90,7 +90,7 @@ export const Overlay = styled.div`
       .password {
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
+        /* align-items: flex-end; */
         padding: 0px;
         gap: 8px;
         .input-container {
@@ -117,12 +117,21 @@ export const Overlay = styled.div`
             }
           }
         }
-        p {
-          font-weight: 600;
-          font-size: 1.6rem;
-          line-height: 2.4rem;
-          text-align: right;
-          color: var(--light-blue-1);
+        .error-container {
+          display: flex;
+          flex-direction: row-reverse;
+          width: 100%;
+          justify-content: space-between;
+          p {
+            font-weight: 600;
+            font-size: 1.6rem;
+            line-height: 2.4rem;
+            /* text-align: right; */
+            color: var(--light-blue-1);
+          }
+          .error {
+            color: var(--red);
+          }
         }
       }
     }

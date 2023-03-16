@@ -14,27 +14,51 @@ import Link from "next/link"
 import { useContext, useState,useEffect } from "react"
 import { BsEyeFill,BsEyeSlashFill } from "react-icons/bs"
 // import Container from '@/components/onBoardBg/index'
-import PreferenceContext from "@/context/preferenceContext"
+import PreferenceContext from "@/context/signupContext"
+import { useLogin } from "@/hooks/useLogin"
+import { useAuthContext } from "@/hooks/useAuthContext"
+import SignupContext from "@/context/signupContext"
 
 const Login = () => {
   const router = useRouter();
+  const { dispatch } = useAuthContext();
   const [isPasswordShown,setIsPasswordShown] = useState(false)
   const [userEmail,setUserEmail] = useState('')
   const [userPassword,setUserPassword] = useState('')
+  const [token, setToken] = useState("");
+  const [userRole, setUserRole] = useState("");
+  const [user,setUser] = useState([])
+  const {setIsInputWithValue} = useContext(SignupContext)
   const {isLoginInputWithValue,setIsLoginInputWithValue} = useContext(PreferenceContext)
-
+  const {login,error,isLoading} = useLogin()
   useEffect(() => {
-    if(userEmail !== '' && userPassword !== '' ){
-      setIsLoginInputWithValue(true)
-    }else{
-      setIsLoginInputWithValue(false)
+    
+    const userRole = JSON.parse(localStorage.getItem("token"));
+    if (userRole) {
+      setUser(userRole.user)
+      setUserRole(userRole.user.role);
     }
-  }, [router, setIsLoginInputWithValue, userEmail, userPassword])
+    if(userEmail !== '' && userPassword !== '' ){
+      setIsInputWithValue(true)
+    }else{
+      setIsInputWithValue(false)
+    }
 
+   
+  }, [router, setIsLoginInputWithValue, userEmail, userPassword,userRole])
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    router.push("/")
+   if(userEmail && userPassword !== ''){
+    login(userEmail,userPassword)
+    if(user){
+      if(userRole === 'placer'){
+        router.push('/placers')
+      }else if(userRole === 'promoter'){
+        router.push('/promoters')
+      }
+    }
+   }
   }
   return (
     <>
@@ -64,7 +88,7 @@ const Login = () => {
             <div className="email">
               <label htmlFor="email">Your email</label>
               <input 
-                type="email" 
+                type="text" 
                 id="email" 
                 required
                 value={userEmail}
@@ -97,9 +121,12 @@ const Login = () => {
                   onChange={e => setUserPassword(e.target.value)}
                 />
               </div>
-              <p>Forgot your password</p>
+              <div className="error-container">
+                <p>Forgot your password</p>
+                <p className="error">{error}</p>
+              </div>
             </div>
-            <Button text='Log in' />
+            <Button text={isLoading ? 'Loading...' : 'Log in'} />
           </form>
         </div>
       </Overlay>
@@ -126,7 +153,7 @@ const Login = () => {
           <label htmlFor="email">Your email</label>
           <input 
             type="email" 
-            id="email" 
+            id="memail" 
             required
             value={userEmail}
             onChange={e => setUserEmail(e.target.value)}
@@ -150,7 +177,7 @@ const Login = () => {
               </div>
             </div>
             <input  
-              id="password"
+              id="mpassword"
               name='password'
               required
               type={isPasswordShown ? "text" : "password"}

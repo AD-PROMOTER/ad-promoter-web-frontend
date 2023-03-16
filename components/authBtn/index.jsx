@@ -2,13 +2,13 @@ import Link from "next/link"
 import { StyledBtn } from "./styles"
 import { useRouter } from "next/router"
 import { useContext } from "react";
-import PreferenceContext from '@/context/preferenceContext'
 import { useSignup } from '@/hooks/useSignup'
+import SignupContext from "@/context/signupContext";
 
 const Index = ({text,path}) => {
   const router = useRouter();
   const {isLoading} = useSignup()
-  const {isInputWithValue} = useContext(PreferenceContext)
+  const {isInputWithValue} = useContext(SignupContext)
   return (
     <StyledBtn>
       {router.pathname.startsWith('/signup') || router.pathname === '/login' ? (

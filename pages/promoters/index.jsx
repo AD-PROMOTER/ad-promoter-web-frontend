@@ -39,12 +39,22 @@ const Index = ({router}) => {
   //   scrollToView;
   // });
 
+  
+
   const isTabOne = tab === "recent" || tab == null
   const isTabTwo = tab === "saved jobs"
   const [showRecentJobs, setShowRecentJobs] = useState(true)
   const [showDropdown, setShowDropdown] = useState(false)
   const [showSortDropdown, setShowSortDropdown] = useState(false)
   const [showNotif, setShowNotif] = useState(false)
+  const [userName,setUserName] = useState('')
+  useEffect(() => {
+    const userName = JSON.parse(localStorage.getItem("token"));
+    if (userName) {
+      setUserName(userName.user.accountName);
+    }
+  });
+  
   const mobileSummary = [
     {
       icon: money,
@@ -197,7 +207,7 @@ const Index = ({router}) => {
               </div>
   
               <div className="user-details">
-                <p>Hi, Skylar Dias</p>
+                <p>Hi, {userName}</p>
                 <div className="sub-user-details">
                   <Image src={wave} alt='hands waving'/>
                   <p>Welcome back!</p>

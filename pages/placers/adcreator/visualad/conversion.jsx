@@ -1,14 +1,21 @@
 import { StyledDirectLinkConversion } from '@/styles/placersCreator.styles'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import ProgressCheck from '@/public/assets/progress-check'
 import Arrow from '@/public/assets/arrow-3'
 import NairaIcon from '@/public/assets/naira-icon'
 import UserIcon from '@/public/assets/user-icon'
 import { useRouter } from 'next/router'
+import AdPlacerContext from '@/context/adPlacerContext'
 const Conversion = () => {
     const router = useRouter()
+    const {amount,setAmount,visitors,setVisitors} = useContext(AdPlacerContext)
+
+    useEffect(()=>{
+        setVisitors(amount/50)
+    })
+
     const handlePush = () =>{
-        router.push('payment')
+        router.push('summary')
     }
   return (
     <StyledDirectLinkConversion>
@@ -25,27 +32,30 @@ const Conversion = () => {
 
         <div className="modal">
             <div className="modal-head">
-                <h4>Creating a Visual Advert</h4>
+                <h4>Creating a Details Advert</h4>
                 <p>Use the Ad-Converter to determine the pricing</p>
             </div>
 
             <div className="modal-body">
                 <div className="modal-body-item-container">
                     <div className="text">
-                        <h4>Visual Advert Rate</h4>
-                        <h3>₦50/Video</h3>
+                        <h4>Details Advert Rate</h4>
+                        <h3>₦50/Conversion</h3>
                     </div>
                     <div className="conversions">
                         <div className="head">
                             <h4>Amount</h4>
-                            <h4>Video</h4>
+                            <h4>Conversion</h4>
                         </div>
                         <div className="conversions-body">
                             <div className="amount-conversion">
                                 <div className="icon">
                                     <NairaIcon />
                                 </div>
-                                <input type="number" />
+                                <input 
+                                    type="number" 
+                                    value={amount}
+                                    onChange={(e)=>setAmount(e.target.value)}/>
                             </div>
                             <div className='arrow'>
                                 <Arrow />
@@ -54,7 +64,7 @@ const Conversion = () => {
                                 <div className="icon">
                                     <UserIcon />
                                 </div>
-                                <input type="number" />
+                                <input type="number" value={visitors}/>
                             </div>
                         </div>
                     </div>

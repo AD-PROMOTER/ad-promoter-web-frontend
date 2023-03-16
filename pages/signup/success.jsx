@@ -5,14 +5,14 @@ import logo from '@/public/assets/newOnboardLogo.svg'
 import Image from "next/image"
 import successMark from '@/public/assets/success-mark.gif'
 import { useContext } from "react";
-import PreferenceContext from "@/context/preferenceContext"
 import { useRouter } from "next/router"
+import SignupContext from "@/context/signupContext"
 const Success = () => {
-  const {userPref} = useContext(PreferenceContext)
+  const {userPref} = useContext(SignupContext)
   const router = useRouter();
  
   const handleSubmit = ()=>{
-    if(userPref === 'promote'){
+    if(userPref === 'promoter'){
       router.push('/promoters')
     }
     else{

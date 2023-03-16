@@ -10,27 +10,31 @@ import BackArrow from "@/public/assets/back-arrow"
 import logo from '@/public/assets/newOnboardLogo.svg'
 import Button from '@/components/authBtn/index'
 import { useContext, useEffect, useState } from "react"
-import PreferenceContext from "@/context/preferenceContext"
-const Visualverification = () => {
-    const {setIsVisualVerificationWithValue,isPrefWithValue,setIsPrefWithValue,setIsInputWithValue} = useContext(PreferenceContext)
-    const [inputValue,setInputValue] = useState('')
-    const router = useRouter()
+import SignupContext from "@/context/signupContext"
+import { useSendOtp } from "@/hooks/useSendOtp"
 
+const Visualverification = () => {
+    const {setIsInputWithValue,linkValue,setLinkValue} = useContext(SignupContext)
+    const router = useRouter()
+    const {sendOtp} = useSendOtp()
+    const {phoneNumber} = useContext(SignupContext)
     useEffect(() =>{
         setIsInputWithValue(false)
-        if(inputValue !== ''){
+        if(linkValue !== ''){
             setIsInputWithValue(true)
         }else{
             setIsInputWithValue(false)
         }
     })
     const handleClick = () =>{
-        if(inputValue !== ''){
+        if(linkValue !== ''){
+            sendOtp(phoneNumber)
             router.push("/signup/verification")
         }
+        
     }
     const handleChange = event => {
-        setInputValue(event.target.value);
+        setLinkValue(event.target.value);
     };
   return (
     <>
@@ -60,7 +64,7 @@ const Visualverification = () => {
                                 <input 
                                     type="text" 
                                     onChange={handleChange}
-                                    value = {inputValue}
+                                    value = {linkValue}
                                     required    
                                 />
                             </div>
