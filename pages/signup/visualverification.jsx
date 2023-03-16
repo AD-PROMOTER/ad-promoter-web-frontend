@@ -98,7 +98,7 @@ const Visualverification = () => {
                     <input 
                         type="text" 
                         onChange={handleChange}
-                        value = {inputValue}
+                        value = {linkValue}
                         required    
                     />
                 </div>
