@@ -19,11 +19,7 @@ const Summary = () => {
         setToken(userToken.token);
         }
         
-<<<<<<< HEAD
-    },[])
-=======
     },[setToken])
->>>>>>> 65f0c3bd54f5aa8f64f6d418b024eef868632ab1
 
     const handlePush = () =>{
         createAd(token,productName,redirectUrl,productDescription,tags,advertType,cta,images,webAddress,amount,containAdultContent)
