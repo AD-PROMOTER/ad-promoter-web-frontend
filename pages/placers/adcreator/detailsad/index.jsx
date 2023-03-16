@@ -25,7 +25,7 @@ const Detailsad = () => {
         setToken(userRole.token);
         }
         setCta('Select a conversion button')
-    },[])
+    })
 
     const ClickedList = (e) =>{
         setCta(e.target.innerText)
@@ -131,7 +131,7 @@ const Detailsad = () => {
                             <p>Drop files to upload or <span onClick={() => setShowModal(true)}>browse</span></p>  
                         </div>
                         <div>
-                            {imageURLs.map(imageSrc => <Image src={imageSrc} width={20} height={20}/>)}
+                            {imageURLs.map(imageSrc => <Image key={imageSrc} src={imageSrc} alt='imageSrc' width={20} height={20}/>)}
                             {/* <span>&times;</span> */}
                         </div>
                     </div>

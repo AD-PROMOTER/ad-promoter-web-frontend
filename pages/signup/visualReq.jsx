@@ -42,7 +42,7 @@ const VisualReq = () => {
     }else{
         setSeeVisualAd(false)
     }
-  }, [router,setIsInputWithValue,seeVisualAd,])
+  }, [router,setIsInputWithValue,seeVisualAd,setSeeVisualAd,userVisualReq])
   return (
     <>
     <BgContainer image={bg}>

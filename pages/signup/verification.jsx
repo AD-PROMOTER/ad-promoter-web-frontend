@@ -37,7 +37,7 @@ const Verification = () => {
         }
         setOtp(input1+input2+input3+input4)
         // console.log(isOtpWithValue);
-    }, [router,input1,input2,input3,input4,otp,isOtpWithValue])
+    }, [router,input1,input2,input3,input4,otp,isOtpWithValue,setOtp,setRefId])
 
 
 

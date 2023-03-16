@@ -45,7 +45,7 @@ const Login = () => {
     }
 
    
-  }, [router, setIsLoginInputWithValue, userEmail, userPassword,userRole])
+  }, [router, setIsLoginInputWithValue, userEmail, userPassword,userRole,setIsInputWithValue])
 
   const handleSubmit = (e) => {
     e.preventDefault()
