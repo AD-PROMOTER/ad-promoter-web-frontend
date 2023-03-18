@@ -145,15 +145,6 @@ const Settings = (props) => {
             </div>
           </div>
         )}
-
-        <div
-          className="logout"
-          style={{ display: logoutModal && 'none' }}
-          onClick={displayLogoutModal}
-        >
-          <TbLogout style={{ height: '27px', width: '27px', color: 'red' }} />
-          <p> Log Out </p>
-        </div>
       </StyledSettings>
     </Container>
   );

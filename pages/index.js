@@ -148,7 +148,7 @@ export default function Home() {
           <div className="logo">
             <Link href="/">
               <a>
-                <Image src={logo} alt="ad-promoter" />
+                <Image src={logo} width={184} height={19} alt="ad-promoter" />
               </a>
             </Link>
           </div>

@@ -8,6 +8,9 @@ export const NotificationModalContainer = styled.div`
   height: 1060px; //Would change it later
   background: rgba(0, 0, 0, 0.25);
   z-index: 1000;
+  @media (min-width: 768px) and (max-width: 1024px) {
+    height: 100%;
+  }
   .notification-modal {
     background: #f7f7f7;
     border-radius: 10px;
@@ -16,6 +19,9 @@ export const NotificationModalContainer = styled.div`
     top: 10rem;
     height: 74.5rem;
     right: calc(10% - 100px);
+    @media (min-width: 768px) and (max-width: 1024px) {
+      right: 0;
+    }
     &-head {
       background: #ffffff;
       width: 100%;
