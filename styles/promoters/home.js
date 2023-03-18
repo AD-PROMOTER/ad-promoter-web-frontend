@@ -6,7 +6,7 @@ export const StyledHomeContainer = styled.div`
   align-items: center;
   justify-content: center;
   /* height: 100vh; */
-  background: #ffffff;
+  /* background: #ffffff; */
   height: 100%;
   width: 100%;
 
@@ -36,7 +36,11 @@ export const StyledHome = styled.div`
     gap: 3.6rem;
     width: 88.5rem;
     cursor: grab;
-    height: 100%;
+    height: 100vh;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
     .welcome {
       background: #ffffff;
       border-radius: 10px;
@@ -320,12 +324,16 @@ export const TabContainer = styled.div`
   }
   .tab-body {
     width: 105%;
-    height: 100%;
     cursor: grab;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 2.4rem;
+    height: 100vh;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
     @media screen and (max-width: ${size.tablet}) {
       width: 215%;
