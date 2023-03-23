@@ -28,11 +28,11 @@ const Verification = () => {
         if (otpInfo) {
             setRefId(otpInfo.data.reference_id);
         }
-        if(input1 || input2 || input3 || input4 === ''){
-            setIsOtpWithValue(false)
-            // console.log('it is false');
-        }else if(input1 && input2 && input3 && input4 !== ''){
+        if(input1 !== '' && input2 !== '' && input3 !== '' && input4 !== ''){
             setIsOtpWithValue(true)
+            // console.log('it is false');
+        }else {
+            setIsOtpWithValue(false)
             // console.log('it is true');
         }
         setOtp(input1+input2+input3+input4)
@@ -49,6 +49,42 @@ const Verification = () => {
             console.log(refId,otp,phoneNumber,accountName,linkValue,seeVisualAd,email,password,userPref);
         }
     }
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+    
+        switch (name) {
+          case 'otp1':
+            setInput1(value);
+            break;
+          case 'otp2':
+            setInput2(value);
+            break;
+          case 'otp3':
+            setInput3(value);
+            break;
+          case 'otp4':
+            setInput4(value);
+            break;
+        }
+      };
+
+    const inputFocus = (e) => {
+        if (e.key === 'Delete' || e.key === 'Backspace') {
+          const next = e.target.tabIndex - 2;
+    
+          console.log(e);
+    
+          if (next > -1) {
+            e.target.form.elements[next].focus();
+          }
+        } else {
+          const next = e.target.tabIndex;
+          if (next < 4) {
+            e.target.form.elements[next].focus();
+          }
+        }
+    };
 
     const handleResend = () =>{
         sendOtp(phoneNumber)
@@ -74,62 +110,125 @@ const Verification = () => {
                         </div>
                     </div>
 
-                    <div className="content-input">
+                    <form className="content-input">
                         <div className="input-container">
                             <input 
                                 type="number" 
-                                name="otp" 
+                                name="otp1" 
                                 id="otp" 
                                 value={input1}
-                                onChange={e => setInput1(e.target.value)}
+                                autoComplete="off"
+                                tabIndex="1"
+                                maxLength="1"
+                                onChange={handleChange}
+                                onKeyUp={inputFocus}
                             />
                             <input 
                                 type="number" 
-                                name="otp" 
+                                name="otp2" 
                                 id="otp" 
                                 value={input2}
-                                onChange={e => setInput2(e.target.value)}
+                                autoComplete="off"
+                                tabIndex="2"
+                                maxLength="1"
+                                onChange={handleChange}
+                                onKeyUp={inputFocus}
                             />
                             <input 
                                 type="number" 
-                                name="otp" 
+                                name="otp3" 
                                 id="otp" 
+                                autoComplete="off"
+                                tabIndex="3"
+                                maxLength="1"
                                 value={input3}
-                                onChange={e => setInput3(e.target.value)}
+                                onChange={handleChange}
+                                onKeyUp={inputFocus}
                             />
                             <input 
                                 type="number" 
-                                name="otp" 
+                                name="otp4" 
                                 id="otp" 
                                 value={input4}
-                                onChange={e => setInput4(e.target.value)}
+                                autoComplete="off"
+                                tabIndex="4"
+                                maxLength="1"
+                                onChange={handleChange}
+                                onKeyUp={inputFocus}
                             />
                            
                         </div>
                         <p>Didn’t get anything? <span onClick={handleResend}>Resend OTP</span></p>
-                    </div>
+                    </form>
                 </div>
-
                 <button onClick={handleSubmit} className={isOtpWithValue ? 'content-btn' : 'inactive'}>Submit</button>
             </div>
         </Overlay>
     </BgContainer>
-    {/* <VerificationMobile>
-        <div className="logo">
-            <Image src={logo} alt='ad-promoter' />
-            <Image src={messagesIllustration} alt='messages illustration'/>
+    <VerificationMobile>
+        <div>
+            <div onClick={()=> router.back()} className="back">
+                <Arrow />
+            </div>
+            <div className="logo">
+                <Image src={logo} alt='ad-promoter' />
+            </div>
         </div>
-        <h3>Verify your email address</h3>
+        <h3>OTP Verification</h3>
         <div className="verify">
-            We have sent an email to skylardiaz@gmail.com to confirm the validity of your email address. After recieveing the email, follow the link provided to complete your registration.
+            Enter the OTP you received to
         </div>
-        <div className="btn" onClick={handleSubmit}>
-            Verify my mail
-        </div>
-        <div className="cta">
-            <p>If you’ve not gotten any mail <Link href='#'><a>Resend confirmation mail</a></Link></p>
-        </div>
-    </VerificationMobile> */}
+        <form className="content-input">
+            <div className="input-container">
+                <input 
+                    type="number" 
+                    name="otp1" 
+                    id="otp" 
+                    value={input1}
+                    autoComplete="off"
+                    tabIndex="1"
+                    maxLength="1"
+                    onChange={handleChange}
+                    onKeyUp={inputFocus}
+                />
+                <input 
+                    type="number" 
+                    name="otp2" 
+                    id="otp" 
+                    value={input2}
+                    autoComplete="off"
+                    tabIndex="2"
+                    maxLength="1"
+                    onChange={handleChange}
+                    onKeyUp={inputFocus}
+                />
+                <input 
+                    type="number" 
+                    name="otp3" 
+                    id="otp" 
+                    autoComplete="off"
+                    tabIndex="3"
+                    maxLength="1"
+                    value={input3}
+                    onChange={handleChange}
+                    onKeyUp={inputFocus}
+                />
+                <input 
+                    type="number" 
+                    name="otp4" 
+                    id="otp" 
+                    value={input4}
+                    autoComplete="off"
+                    tabIndex="4"
+                    maxLength="1"
+                    onChange={handleChange}
+                    onKeyUp={inputFocus}
+                />     
+            </div>
+            <p>Didn’t get anything? <span onClick={handleResend}>Resend OTP</span></p>
+        </form>
+        <button onClick={handleSubmit} className={isOtpWithValue ? 'content-btn' : 'inactive'}>Submit</button>
+    </VerificationMobile>
     </>
   )
 }

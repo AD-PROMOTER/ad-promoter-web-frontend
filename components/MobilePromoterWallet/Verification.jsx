@@ -53,7 +53,7 @@ const Verification = ({onOpen, onClose}) => {
       console.log(e);
 
       if (next > -1) {
-        e.target.elements[next].focus();
+        e.target.form.elements[next].focus();
       }
     } else {
       const next = e.target.tabIndex;

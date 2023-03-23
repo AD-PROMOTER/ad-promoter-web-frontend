@@ -7,7 +7,7 @@ import Button from '@/components/authBtn/index'
 import { useRouter } from "next/router"
 import { BgContainer } from '@/components/onboardingBg/styles'
 import { MobilePref, Overlay } from '@/styles/signupPreference'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useContext } from "react";
 import SignupContext from '@/context/signupContext'
 import { useSendOtp } from '@/hooks/useSendOtp'
@@ -17,6 +17,8 @@ const Preference = () => {
   const router = useRouter();
   const {sendOtp} = useSendOtp()
   const {phoneNumber} = useContext(SignupContext)
+  const [placeAds, setPlaceAds] = useState(false)
+  const [promoteAds, setPromoteAds] = useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -32,10 +34,32 @@ const Preference = () => {
     setIsInputWithValue(false)
 
   }, [router,setIsInputWithValue])
-  const handleChange = event => {
+
+  const togglePlaceAds = () => {
+    if(placeAds) {
+      setPlaceAds(false)
+    }
+    return;
+  }
+  const togglePromoterAds = () => {
+    if(promoteAds) {
+      setPromoteAds(false)
+    }
+    return;
+  }
+  const selectPlaceAds = (event) => {
     setUserPref(event.target.value);
     setIsInputWithValue(true)
-  };
+    setPlaceAds(true)
+    togglePromoterAds()
+  }
+  const selectPromoteAds = (event) => {
+    setUserPref(event.target.value);
+    setIsInputWithValue(true)
+    setPromoteAds(true)
+    togglePlaceAds()
+  }
+
   return (
     <>
     <BgContainer image={bg}>
@@ -51,25 +75,23 @@ const Preference = () => {
             </div>
           </div>
           <form action="" onSubmit={handleSubmit}>
-            <div className="placers">
+            <div className="placers" onClick={selectPlaceAds}>
               <input 
                 type="radio" 
                 id="place" 
                 value='placer' 
                 name='pref'
-                // checked={userPref === 'place'}
-                onChange={handleChange}
+                checked={placeAds}
                 />
               <label htmlFor="place">Place ads</label>
             </div>
-            <div className="promoters">
+            <div className="promoters" onClick={selectPromoteAds}>
               <input 
                 type="radio" 
                 id="promote" 
                 value='promoter' 
                 name='pref'
-                // checked={userPref === 'promote'}
-                onChange={handleChange}
+                checked={promoteAds}
                 />
               <label htmlFor='promote'>Promote ads</label>
             </div>
@@ -84,25 +106,23 @@ const Preference = () => {
       </div>
       <h3>What do you want use <br/> Ad-promoter for?</h3>
       <form action="" onSubmit={handleSubmit}>
-        <div className="placers">
+        <div className="placers" onClick={selectPlaceAds}>
           <input 
             type="radio" 
             id="place" 
             value='place' 
             name='pref'
-            // checked={userPref === 'place'}
-            onChange={handleChange}
+            checked={placeAds}
             />
           <label htmlFor="place">Place ads</label>
         </div>
-        <div className="promoters">
+        <div className="promoters" onClick={selectPromoteAds}>
           <input 
             type="radio" 
             id="promote" 
             value='promote' 
             name='pref'
-            // checked={userPref === 'promote'}
-            onChange={handleChange}
+            checked={promoteAds}
             />
           <label htmlFor='promote'>Promote ads</label>
         </div>

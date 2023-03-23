@@ -8,7 +8,7 @@ import logo from '@/public/assets/newOnboardLogo.svg'
 import Link from 'next/link'
 import Button from '@/components/authBtn/index'
 import { useRouter } from "next/router"
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useContext } from "react";
 import BackArrow from '@/public/assets/back-arrow'
 import SignupContext from '@/context/signupContext'
@@ -18,6 +18,9 @@ const VisualReq = () => {
     const {phoneNumber} = useContext(SignupContext)
     const {setIsInputWithValue,userVisualReq,setUserVisualReq,seeVisualAd,setSeeVisualAd} = useContext(SignupContext)
     const router = useRouter();
+    const [yes, setYes] = useState(false)
+    const [no, setNo] = useState(false)
+    const [remind, setRemind] = useState(false)
     const handleSubmit = (e) => {
         e.preventDefault()
         if(userVisualReq === 'yes'){
@@ -28,11 +31,6 @@ const VisualReq = () => {
             router.push("/signup/verification")
         }
     }
-    const handleChange = event => {
-        setUserVisualReq(event.target.value);
-        console.log(userVisualReq);
-        setIsInputWithValue(true)
-    };
 
     useEffect(() => {
     router.prefetch('/signup/verification')
@@ -43,6 +41,50 @@ const VisualReq = () => {
         setSeeVisualAd(false)
     }
   }, [router,setIsInputWithValue,seeVisualAd,setSeeVisualAd,userVisualReq])
+
+  const toggleYes = () => {
+    if(yes) {
+        setYes(false)
+    }
+    return;
+  }
+  const toggleNo = () => {
+    if(no) {
+        setNo(false)
+    }
+    return;
+  }
+  const toggleRemind = () => {
+    if(remind) {
+        setRemind(false)
+    }
+    return;
+  }
+  const selectYes = (event) => {
+    setUserVisualReq(event.target.value);
+    console.log(userVisualReq);
+    setIsInputWithValue(true)
+    setYes(true)
+    toggleNo()
+    toggleRemind()
+  }
+  const selectNo = (event) => {
+    setUserVisualReq(event.target.value);
+    console.log(userVisualReq);
+    setIsInputWithValue(true)
+    setNo(true)
+    toggleYes()
+    toggleRemind()
+  }
+  const selectRemind = (event) => {
+    setUserVisualReq(event.target.value);
+    console.log(userVisualReq);
+    setIsInputWithValue(true)
+    setRemind(true)
+    toggleYes()
+    toggleNo()
+  }
+
   return (
     <>
     <BgContainer image={bg}>
@@ -62,33 +104,33 @@ const VisualReq = () => {
                     </div>
                 </div>
                 <form action="" onSubmit={handleSubmit}>
-                    <div className="yes">
+                    <div className="yes" onClick={selectYes}>
                         <input 
                             type="radio" 
                             id="yes" 
                             value='yes' 
                             name='visual'
-                            onChange={handleChange}
+                            checked={yes}
                         />
                         <label htmlFor="yes">Yes, I do</label>
                     </div>
-                    <div className="no">
+                    <div className="no" onClick={selectNo}>
                         <input 
                             type="radio" 
                             id="no" 
                             value='no' 
                             name='visual' 
-                            onChange={handleChange}
+                            checked={no}
                             />
                         <label htmlFor='no'>No, I don&apos;t</label>
                     </div>
-                    <div className="remind">
+                    <div className="remind" onClick={selectRemind}>
                         <input 
                             type="radio" 
                             id="remind" 
                             value='remind' 
                             name='visual' 
-                            onChange={handleChange}
+                            checked={remind}
                             />
                         <label htmlFor='remind'>Remind me later</label>
                     </div>
@@ -98,44 +140,47 @@ const VisualReq = () => {
         </Overlay>
     </BgContainer>
     <ReqMobile>
-      <div className='logo'>
-        <Image src={logo} alt='ad-promoter logo'/>
+      <div>
+        <div className='back' onClick={()=>router.back()}>
+            <BackArrow />
+        </div>
+        <div className='logo'>
+            <Image src={logo} alt='ad-promoter logo'/>
+        </div>
       </div>
       <h3>Do you want to receive <br /> visual ads?</h3>
       <p>
         What are visual ads? Learn more
       </p>
       <form action="" onSubmit={handleSubmit}>
-        <div className="yes">
+        <div className="yes" onClick={selectYes}>
             <input 
                 type="radio" 
                 id="yes" 
                 value='yes' 
                 name='visual'
-                // checked={userVisualReq === 'yes'}
-                onChange={handleChange}
+                checked={yes}
+                
             />
             <label htmlFor="yes">Yes, I do</label>
         </div>
-        <div className="no">
+        <div className="no" onClick={selectNo}>
             <input 
                 type="radio" 
                 id="no" 
                 value='no' 
                 name='visual' 
-                // checked={userVisualReq === 'no'}
-                onChange={handleChange}
+                checked={no}
                 />
             <label htmlFor='no'>No, I don&apos;t</label>
         </div>
-        <div className="remind">
+        <div className="remind" onClick={selectRemind}>
             <input 
                 type="radio" 
                 id="remind" 
                 value='remind' 
                 name='visual' 
-                // checked={userVisualReq === 'remind'}
-                onChange={handleChange}
+                checked={remind}
                 />
             <label htmlFor='remind'>Remind me later</label>
         </div>

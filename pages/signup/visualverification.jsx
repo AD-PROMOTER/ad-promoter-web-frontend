@@ -81,9 +81,14 @@ const Visualverification = () => {
         </Overlay>
     </BgContainer>
     <VerifyVisual>
-      <div className='logo'>
-        <Image src={logo} alt='ad-promoter logo'/>
-      </div>
+      <div>
+        <div className='back' onClick={()=>router.back()}>
+            <BackArrow />
+        </div>
+        <div className='logo'>
+            <Image src={logo} alt='ad-promoter logo'/>
+        </div>
+      </div> 
       <h3>Kindly submit a link to your social media account</h3>
       <p>
         We just want to verify if you’re fit to recieve visual adverts from AD-PROMOTER. 

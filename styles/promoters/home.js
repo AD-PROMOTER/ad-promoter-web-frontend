@@ -2,12 +2,9 @@ import styled from 'styled-components';
 import { size } from '../breakpoints';
 
 export const StyledHomeContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   /* height: 100vh; */
   /* background: #ffffff; */
-  height: 100%;
+  height: 100vh;
   width: 100%;
 
   @media screen and (max-width: ${size.tablet}) {
