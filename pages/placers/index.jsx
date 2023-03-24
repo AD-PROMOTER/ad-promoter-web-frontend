@@ -18,7 +18,7 @@ import refresh from '@/public/assets/refresh-2.svg'
 import money from '@/public/assets/money-send.svg'
 import { StyledHomeContainer, TabContainer } from "@/styles/promoters/home"
 import Link from "next/link"
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import ArrowUp from "@/public/assets/arrow-up"
 import ScrollContainer from 'react-indiana-drag-scroll'
 import more from '@/public/assets/ellipsis.svg'
@@ -29,6 +29,7 @@ import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import bell from '@/public/assets/notif.svg'
 import adpic from '@/public/assets/adpics.png'
+import UserContext from "@/context/userContext"
 
 
 const Index = () => {
@@ -38,18 +39,16 @@ const Index = () => {
   const [showReportModal,setShowReportModal] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
   const [listValue, setListValue] = useState('It has gory images')
-  const [userName, setUserName] = useState('')
   const token = useRef('')
   const ref = useRef(null)
   const [runningAds,setRunningAds] = useState('')
   const [completeAds,setCompleteAds] = useState('')
   const [conversionGrowth,setConversionGrowth] = useState('')
-  // const [newUserScreen,setNewUserScreen] = useState
+  const {accountName, setAccountName, setEmail, setPhoneNumber,setDateOfBirth, setGender,setProfilePicture} = useContext(UserContext)
 
   useEffect(() => {
     const userName = JSON.parse(localStorage.getItem("token"));
     if (userName) {
-      setUserName(userName.user.accountName);
       token.current = userName.token
     }
 
@@ -59,15 +58,26 @@ const Index = () => {
             Authorization: `Bearer ${token.current}`,
           }
         }),
+        fetch(`http://35.153.52.116/api/v1/user`,{
+        headers:{
+          Authorization: `Bearer ${token.current}`,
+        }
+      })
       ])
-        .then(([resDashboardData]) => 
-          Promise.all([resDashboardData.json()])
+        .then(([resDashboardData,resUser]) => 
+          Promise.all([resDashboardData.json(),resUser.json()])
         )
-        .then(([dataDashboardData]) => {
-          // console.log(dataDashboardData.data);
+        .then(([dataDashboardData,dataUser]) => {
           setRunningAds(dataDashboardData.data.adCount.runningAds);
           setCompleteAds(dataDashboardData.data.adCount.completedAds);
           setConversionGrowth(dataDashboardData.data.conversionRate)
+          setAccountName(dataUser.data.accountName)
+          setEmail(dataUser.data.email)
+          setPhoneNumber(dataUser.data.phoneNumber)
+          setDateOfBirth(dataUser.data.dateOfBirth)
+          setGender(dataUser.data.gender)
+          setProfilePicture(dataUser.data.profilePicture)
+          console.log(dataUser);
         })
 
   },[token]);
@@ -173,20 +183,11 @@ const Index = () => {
               <Image src={profile} alt='user profile picture'/>
             </div>
             <div className="welcome-text">
-              <h3>Hi, {userName}</h3>
+              <h3>Hi, {accountName}</h3>
               <div className="welcome-text-sub">
                 <Image src={hands} alt='waving hands'/>
                 <p>Welcome back!</p>
               </div>
-              <div className="welcome-text">
-                <h3>Hi, Leilani Angel</h3>
-                <div className="welcome-text-sub">
-                  <div className="profile-img">
-                    <Image src={hands} alt='waving hands'/>
-                  </div>
-                  <p>Welcome back!</p>
-                </div>
-            </div>
 
             <div className="bell">
               <Image src={bell} alt="notification bell"/>
@@ -197,7 +198,7 @@ const Index = () => {
               <Placers />
             </div>
           </div>
-          <DashboardSummaryContainer>
+          <ScrollContainer className="dashboard-summary-container">
             <div className="header-text">
               <h3>Dashboard Summary</h3>
             </div>
@@ -281,7 +282,7 @@ const Index = () => {
               </div>
             </div>
 
-          </DashboardSummaryContainer>
+          </ScrollContainer>
         </DashboardContainer>
         <TabContainer>
           <div className="tab-head">

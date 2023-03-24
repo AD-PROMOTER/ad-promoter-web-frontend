@@ -25,15 +25,15 @@ export const useLogin = () => {
     const json = await response.json();
 
     if (!response.ok) {
-      console.log(json);
-      console.log('user not logged in');
+      // console.log(json);
+      // console.log('user not logged in');
       setIsLoading(false);
       setError(json.msg);
       setIsLoading(false);
     }
     if (response.ok) {
-      console.log(json);
-      console.log('user logged in');
+      // console.log(json);
+      // console.log('user logged in');
       setError(json.success);
       setIsLoading(false);
 

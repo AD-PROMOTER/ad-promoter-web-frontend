@@ -38,8 +38,6 @@ const Index = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     
-    // await signup(email,password,accountName,phoneNumber)
-
     if(phoneNumber && isPossiblePhoneNumber(phoneNumber) && phoneNumber && isValidPhoneNumber(phoneNumber) && phoneNumber && formatPhoneNumber(phoneNumber) && formatPhoneNumberIntl(phoneNumber)){
       phoneRef.current = true
       setPhoneState(true)

@@ -10,6 +10,7 @@ import AdminLayout from '@/components/AdminLayout';
 import { AuthContextProvider } from '@/context/authContext';
 import PlacersLayout from '@/components/PlacersLayout';
 import { TokenContextProvider } from '@/context/tokenContext';
+import { UserProvider } from '@/context/userContext';
 
 function MyApp({ Component, pageProps, router }) {
   if (router.pathname.startsWith('/admin')) {
@@ -33,12 +34,14 @@ function MyApp({ Component, pageProps, router }) {
         <TokenContextProvider>
           <AdPlacerProvider>
             <NotificationProvider>
-              <PlacersLayout>
-                <VariableStyle />
-                <GlobalStyle />
-                <SanitizeStyle />
-                <Component {...pageProps} />
-              </PlacersLayout>
+              <UserProvider>
+                <PlacersLayout>
+                  <VariableStyle />
+                  <GlobalStyle />
+                  <SanitizeStyle />
+                  <Component {...pageProps} />
+                </PlacersLayout>
+              </UserProvider>
             </NotificationProvider>
           </AdPlacerProvider>
         </TokenContextProvider>
@@ -68,12 +71,14 @@ function MyApp({ Component, pageProps, router }) {
       <AuthContextProvider>
         <TokenContextProvider>
           <NotificationProvider>
-            <PromoterLayout>
-              <VariableStyle />
-              <GlobalStyle />
-              <SanitizeStyle />
-              <Component {...pageProps} />
-            </PromoterLayout>
+            <UserProvider>
+              <PromoterLayout>
+                <VariableStyle />
+                <GlobalStyle />
+                <SanitizeStyle />
+                <Component {...pageProps} />
+              </PromoterLayout>
+            </UserProvider>
           </NotificationProvider>
         </TokenContextProvider>
       </AuthContextProvider>

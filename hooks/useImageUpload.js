@@ -12,7 +12,6 @@ export const useImageUpload = () => {
     if (userToken) {
       setToken(userToken.token);
     }
-    // console.log(token);
   });
 
   const imageUpload = async (formData) => {

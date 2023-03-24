@@ -28,17 +28,6 @@ import ScrollIntoView from 'react-scroll-into-view'
 const Index = ({router}) => {
 
   const {query: {tab}} = router
-
-  // const scollToRef = useRef();
-
-  // const scrollToView = () => {
-  //   divRef.current.scrollIntoView({ behavior: 'smooth' });
-  // };
-
-  // useEffect(() => {
-  //   scrollToView;
-  // });
-
   
 
   const isTabOne = tab === "recent" || tab == null
@@ -48,25 +37,68 @@ const Index = ({router}) => {
   const [showSortDropdown, setShowSortDropdown] = useState(false)
   const [showNotif, setShowNotif] = useState(false)
   const [userName,setUserName] = useState('')
+  const token = useRef('')
+  const [totalBalance,setTotalBalance] = useState('')
+  const [adsPromoted,setAdsPromoted] = useState('')
+  const [videosAccepted,setVideosAccepted] = useState('')
+  const [pendingWithdrawals,setPendingWithdrawals] = useState('')
+  const [adsConverted,setAdsConverted] = useState('')
   useEffect(() => {
     const userName = JSON.parse(localStorage.getItem("token"));
     if (userName) {
       setUserName(userName.user.accountName);
     }
   },[setUserName]);
+
+  useEffect(() => {
+    const userName = JSON.parse(localStorage.getItem("token"));
+    if (userName) {
+      token.current = userName.token
+    }
+
+      Promise.all([
+        fetch('http://35.153.52.116/api/v1/user/dashboard',{
+          headers:{
+            Authorization: `Bearer ${token.current}`,
+          }
+        }),
+        fetch(`http://35.153.52.116/api/v1/user`,{
+        headers:{
+          Authorization: `Bearer ${token.current}`,
+        }
+      })
+      ])
+        .then(([resDashboardData,resUser]) => 
+          Promise.all([resDashboardData.json(),resUser.json()])
+        )
+        .then(([dataDashboardData,dataUser]) => {
+          setTotalBalance(dataDashboardData.data.totalBalance);
+          setAdsPromoted(dataDashboardData.data.adsPromoted);
+          setVideosAccepted(dataDashboardData.data.noOfVideosAccepted)
+          setPendingWithdrawals(dataDashboardData.data.pendingWithdrawals)
+          setAdsConverted(dataDashboardData.data.noOfAdsConverted)
+          // setAccountName(dataUser.data.accountName)
+          // setEmail(dataUser.data.email)
+          // setPhoneNumber(dataUser.data.phoneNumber)
+          // setDateOfBirth(dataUser.data.dateOfBirth)
+          // setGender(dataUser.data.gender)
+          // setProfilePicture(dataUser.data.profilePicture)
+        })
+
+  },[token]);
   
   const mobileSummary = [
     {
       icon: money,
       name: 'Total Balance',
-      price: '₦200,000.35',
+      price: totalBalance,
       bg: '#D2EFFF',
       nameClass: 'balance'
     },
     {
       icon: wallet,
       name: 'Pending Withdrawal',
-      price: '₦15,000.35',
+      price: pendingWithdrawals,
       bg: '#FFE2C7'
     },
     {
@@ -78,13 +110,13 @@ const Index = ({router}) => {
     {
       icon: card,
       name: 'No. of Ads Promoted',
-      price: '162',
+      price: adsPromoted,
       bg: '#C8C7FF'
     },
     {
       icon: chart,
       name: 'No. of Ads Converted',
-      price: '102',
+      price: adsConverted,
       bg: '#C7FFDD'
     },
     {
@@ -96,7 +128,7 @@ const Index = ({router}) => {
     {
       icon: chart,
       name: 'No. of Videos accepted',
-      price: '3',
+      price: videosAccepted,
       bg: '#F4D5FF'
     }
   ]
@@ -104,13 +136,13 @@ const Index = ({router}) => {
     {
       icon: money,
       name: 'Total Balance',
-      price: '₦200,000.35',
+      price: totalBalance,
       bg: '#D2EFFF',
     },
     {
       icon: wallet,
       name: 'Pending Withdrawal',
-      price: '₦15,000.35',
+      price: pendingWithdrawals,
       bg: '#FFE2C7'
     },
     {
@@ -122,13 +154,13 @@ const Index = ({router}) => {
     {
       icon: card,
       name: 'No. of Ads Promoted',
-      price: '162',
+      price: adsPromoted,
       bg: '#C8C7FF'
     },
     {
       icon: chart,
       name: 'No. of Videos accepted',
-      price: '3',
+      price: videosAccepted,
       bg: '#F4D5FF',
     },
     {
@@ -140,7 +172,7 @@ const Index = ({router}) => {
     {
       icon: chart,
       name: 'No. of Ads Converted',
-      price: '102',
+      price: adsConverted,
       bg: '#C7FFDD',
       nameClass: 'balance'
     },
@@ -150,13 +182,13 @@ const Index = ({router}) => {
     {
       icon: money,
       name: 'Total Balance',
-      price: '₦200,000.35',
+      price: '₦' + totalBalance,
       bg: '#D2EFFF'
     },
     {
       icon: wallet,
       name: 'Pending Withdrawal',
-      price: '₦15,000.35',
+      price: '₦'+pendingWithdrawals,
       bg: '#FFE2C7'
     },
     {
@@ -168,13 +200,13 @@ const Index = ({router}) => {
     {
       icon: card,
       name: 'No. of Ads Promoted',
-      price: '162',
+      price: adsPromoted,
       bg: '#C8C7FF'
     },
     {
       icon: chart,
       name: 'No. of Ads Converted',
-      price: '102',
+      price: adsConverted,
       bg: '#C7FFDD'
     },
     {
@@ -186,7 +218,7 @@ const Index = ({router}) => {
     {
       icon: chart,
       name: 'No. of Videos accepted',
-      price: '3',
+      price: videosAccepted,
       bg: '#F4D5FF'
     }
    

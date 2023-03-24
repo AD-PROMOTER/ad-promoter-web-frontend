@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { StyledProfile, Button, PlainButton, Danger } from "../settings.style"
 import Image from "next/image"
 import profileImg from '../../../public/assets/profile.jpg'
@@ -7,34 +7,27 @@ import { VscClose } from 'react-icons/vsc';
 import { AiOutlineCloudUpload } from 'react-icons/ai'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
+import UserContext from "@/context/userContext"
+import { useEditProfile } from "@/hooks/useEditProfile"
 
 
 const Profile = () => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
     const [profileModal, setProfileModal] = useState(false);
-    const [listValue, setListValue] = useState('None')
     const [showDropdown, setShowDropdown] = useState(false)
     const [isChangesMade, setIsChangesMade] = useState(false)
+    const {accountName, setAccountName,email, setEmail,phoneNumber, setPhoneNumber,setDateOfBirth,dateOfBirth,gender, setGender,setProfilePicture,profilePicture,socialLink,seeVisualAd} = useContext(UserContext)
+    const {editProfile} = useEditProfile()
 
-    useEffect(()=>{
-        const userRole = JSON.parse(localStorage.getItem("token"));
-        if (userRole) {
-        setName(userRole.user.accountName);
-        setEmail(userRole.user.email)
-        setPhoneNumber(userRole.user.phoneNumber)
-        }
-    },[setName,setEmail,setPhoneNumber])
 
     const ClickedList = (e) =>{
-        setListValue(e.target.innerText)
+        setGender(e.target.innerText)
         setIsChangesMade(true)
         setShowDropdown(false)
     }
 
     const handleSaveChanges = (e) =>{
         e.preventDefault()
+        editProfile(accountName,email,phoneNumber,gender,socialLink,seeVisualAd,dateOfBirth,profilePicture)
         setIsChangesMade(false)
     }
 
@@ -74,7 +67,7 @@ const Profile = () => {
             <div className='profile-details'>
                 <div className='form-field account-name'>
                     <label htmlFor="name">Account Name </label>
-                    <input type='text' name='name' value={name} id='name' onChange={(e) => {setName(e.target.value),setIsChangesMade(true)}}/>
+                    <input type='text' name='name' value={accountName} id='name' onChange={(e) => {setAccountName(e.target.value),setIsChangesMade(true)}}/>
                 </div>
 
                 <div className='form-field account-address'>
@@ -89,18 +82,23 @@ const Profile = () => {
 
                 <div className='form-field account-birth'>
                     <label htmlFor="date" > Date Of Birth </label>
-                    <input type='date' name='date' placeholder="DD/MM/YYYY" />
+                    {/* <input type="date" name="" id="" /> */}
+                    <input type='date' name='date' onChange={(e)=>{setDateOfBirth(e.target.value),setIsChangesMade(true)}} value={dateOfBirth} />
                 </div>
 
                 <div className="dropdownContainer form-field">
                     <h3>Gender</h3>
                     <div className='dropdown' onClick={() => setShowDropdown(!showDropdown)}>
-                        <p className='inputText'>{listValue}</p>
+                        {gender ? (
+                            <p className='inputText'>{gender}</p>
+                        ):(
+                            <p className='inputText'>None</p>
+                        )}
                     </div>
                     {showDropdown && (
                         <ul className="">
-                            <li onClick={ClickedList}>Male</li>
-                            <li onClick={ClickedList}>Female</li>
+                            <li onClick={ClickedList}>male</li>
+                            <li onClick={ClickedList}>female</li>
                         </ul>
                     )}
                 </div>

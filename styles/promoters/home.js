@@ -2,13 +2,12 @@ import styled from 'styled-components';
 import { size } from '../breakpoints';
 
 export const StyledHomeContainer = styled.div`
-  display: flex;
+  /* display: flex;
   align-items: center;
-  justify-content: center;
-  /* height: 100vh; */
+  justify-content: center; */
   background: #ffffff;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
 
   @media screen and (max-width: ${size.tablet}) {
     padding-left: 25%;
@@ -23,27 +22,29 @@ export const StyledHomeContainer = styled.div`
   }
 `;
 export const StyledHome = styled.div`
-  padding: 4rem 3.7rem 0rem 3.7rem;
+  padding: 4rem 1.5rem;
   display: flex;
-  gap: 3.18rem;
-  height: 100%;
-  /* margin: auto; */
+  align-items: flex-start;
+  /* justify-content: space-between; */
+  height: 100vh;
+  width: 100vw;
+  /* background-color: blue; */
 
   .home-dashboard {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 3.6rem;
-    width: 88.5rem;
     cursor: grab;
-    height: 100%;
+    height: 100vh;
+    width: 100vw;
     .welcome {
       background: #ffffff;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 2.4rem;
+      /* padding: 2.4rem; */
       width: 100%;
       .profile-img {
         flex: 1;
@@ -76,25 +77,6 @@ export const StyledHome = styled.div`
           }
         }
       }
-
-      /* .user-status {
-        background: linear-gradient(57.67deg, #0702fd 2.15%, #83f8e3 97.85%);
-        opacity: 0.53;
-        color: #fff;
-        width: 13.4rem;
-        height: 13.4rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 8px;
-       
-        p {
-          font-weight: 700;
-          font-size: 1.6rem;
-          line-height: 150%;
-          letter-spacing: -0.03em;
-        }
-      } */
     }
 
     .dashboard-summary {
@@ -102,7 +84,7 @@ export const StyledHome = styled.div`
       border-radius: 10px;
       width: 100%;
       height: 100%;
-      padding: 2.4rem;
+      /* padding: 2.4rem; */
       display: flex;
       flex-direction: column;
       gap: 3.6rem;
@@ -210,10 +192,8 @@ export const StyledHome = styled.div`
 export const TabContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: 1.6rem;
-  width: 41.1rem;
-  height: 150%;
+  height: 100vh;
 
   @media screen and (max-width: ${size.mobileL}) {
     width: 426px;
@@ -223,13 +203,10 @@ export const TabContainer = styled.div`
     border-radius: 12px;
   }
 
-  height: 100%;
-
   .tab-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
     position: relative;
 
     @media screen and (max-width: ${size.tablet}) {
@@ -319,8 +296,6 @@ export const TabContainer = styled.div`
     }
   }
   .tab-body {
-    width: 105%;
-    height: 100%;
     cursor: grab;
     display: flex;
     flex-direction: column;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Container, UndoContainer } from './style'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
@@ -6,11 +6,39 @@ import trash from '@/public/assets/trash.svg'
 import Image from 'next/image'
 import { gridData } from './data'
 import Backdrop from '../DiscoveryFolder/ReportModal/Backdrop'
+import axios from 'axios'
 
 const PlacersActivities = () => {
     const [showDropdown, setShowDropdown] = useState(false)
-    const [rowData, setRowData] = useState(gridData)
+    const [rowData, setRowData] = useState()
     const [showBackdrop, setShowBackdrop] = useState(false)
+    const token = useRef('')
+    const userId = useRef('')
+    const [totalActivities,setTotalActivities] = useState()
+
+    useEffect(()=>{
+      const userName = JSON.parse(localStorage.getItem("token"));
+      if (userName) {
+        token.current = userName.token
+        userId.current = userName.user._id
+      }
+      Promise.all([
+        fetch(`http://35.153.52.116/api/v1/activities/all/${userId.current}?page=1&pageSize=10`,{
+          headers:{
+            Authorization: `Bearer ${token.current}`,
+          }
+        }),
+      ])
+        .then(([response]) => 
+          Promise.all([response.json()])
+        )
+        .then(([data]) => {
+          console.log(data.data);
+          setRowData(data.data.data);
+          setTotalActivities(data.data.total)
+          console.log(totalActivities);
+        })
+    },[token])
 
     const handleCheckbox = (e) => {
       const id = e.target.id
@@ -53,35 +81,38 @@ const PlacersActivities = () => {
             </ul>
         )}
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>S/N</th>
-            <th>Name</th>
-            <th>User ID</th>
-            <th>Action</th>
-            <th>Date</th>
-            <th onClick={handleDelete}><Image src={trash} alt='trash'/></th>
-          </tr>
-        </thead>
-        <tbody>
-          {rowData.map((data) => (
-            <tr className='row' key={data.id}>
-              <td>{data.id}</td>
-              <td>{data.name.map((name, index) => (
-                <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}} key={index}>
-                  <Image src={name.profile} alt='profile'/>
-                  <p>{name.user}</p>
-                </div>
-              ))}</td>
-              <td>{data.userId}</td>
-              <td>{data.action}</td>
-              <td>{data.date}</td>
-              <td><input type="checkbox" id={data.id} checked={data.value} onChange={handleCheckbox}/></td>
+        {rowData === [] && (
+          <table>
+            <thead>
+            <tr>
+              <th>S/N</th>
+              <th>Name</th>
+              <th>User ID</th>
+              <th>Action</th>
+              <th>Date</th>
+              <th onClick={handleDelete}><Image src={trash} alt='trash'/></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rowData.map((data) => (
+              <tr className='row' key={data.id}>
+                <td>{data.id}</td>
+                <td>{data.name.map((name, index) => (
+                  <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}} key={index}>
+                    <Image src={name.profile} alt='profile'/>
+                    <p>{name.user}</p>
+                  </div>
+                ))}</td>
+                <td>{data.userId}</td>
+                <td>{data.action}</td>
+                <td>{data.date}</td>
+                <td><input type="checkbox" id={data.id} checked={data.value} onChange={handleCheckbox}/></td>
+              </tr>
+            ))}
+          </tbody>
+          </table>
+        )}
+        
     </Container>
   )
 }

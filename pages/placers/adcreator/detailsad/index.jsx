@@ -59,14 +59,17 @@ const Detailsad = () => {
 
     const handleFileSelect = (event) => {
         setSelectedFile(event.target.files)
+        console.log(selectedFile);
     }
 
     const fileUploadHandler = (e) =>{
         e.preventDefault()   
        const formData = new FormData()
-       formData.append('selectedFile',selectedFile)
-        imageUpload(selectedFile.name)
+       for(let i = 0; i<selectedFile.length; i++) {
+            formData.append('selectedFile',selectedFile[i])
+        }
         console.log(selectedFile);
+        imageUpload(formData)
     }
     
   return (
@@ -226,6 +229,7 @@ const Detailsad = () => {
                         <input 
                             type="file" 
                             onChange={handleFileSelect}
+                            multiple
                         />
                         <button>Upload</button>
                     </form>

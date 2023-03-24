@@ -37,6 +37,7 @@ const Login = () => {
     if (userRole) {
       setUser(userRole.user)
       setUserRole(userRole.user.role);
+      console.log(userRole);
     }
     if(userEmail !== '' && userPassword !== '' ){
       setIsInputWithValue(true)
@@ -45,19 +46,17 @@ const Login = () => {
     }
 
    
-  }, [router, setIsLoginInputWithValue, userEmail, userPassword,userRole,setIsInputWithValue])
+  })
 
   const handleSubmit = (e) => {
     e.preventDefault()
    if(userEmail && userPassword !== ''){
     login(userEmail,userPassword)
-    if(user){
       if(userRole === 'placer'){
         router.push('/placers')
       }else if(userRole === 'promoter'){
         router.push('/promoters')
       }
-    }
    }
   }
   return (

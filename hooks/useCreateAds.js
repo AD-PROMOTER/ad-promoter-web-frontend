@@ -66,7 +66,7 @@ export const useCreateAds = () => {
     if (response.ok) {
       console.log(json);
       console.log('ad created');
-      setRedirect(json.data.paymentDetails.url);
+      // setRedirect(json.data.paymentDetails.url);
     }
   };
   return { createAd, isLoading, error, msg, redirect };

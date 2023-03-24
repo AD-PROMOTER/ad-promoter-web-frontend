@@ -22,8 +22,7 @@ const Summary = () => {
     },[setToken])
 
     const handlePush = () =>{
-        createAd(token,productName,redirectUrl,productDescription,tags,advertType,cta,images,webAddress,amount,containAdultContent)
-        // router.push('/placers/adcreator/success')
+        createAd(productName,redirectUrl,productDescription,tags,advertType,cta,images,webAddress,amount,containAdultContent)
     }
   return (
     <StyledDirectLinkSummary>
