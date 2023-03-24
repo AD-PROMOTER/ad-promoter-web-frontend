@@ -38,6 +38,11 @@ export const StyledHome = styled.div`
     &::-webkit-scrollbar {
       display: none;
     }
+    height: 100vh;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
     .welcome {
       background: #ffffff;
       border-radius: 10px;
@@ -326,6 +331,11 @@ export const TabContainer = styled.div`
     flex-direction: column;
     align-items: flex-start;
     gap: 2.4rem;
+    height: 100vh;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
     height: 100vh;
     overflow: auto;
     &::-webkit-scrollbar {
