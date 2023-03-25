@@ -5,7 +5,7 @@ export const useLogin = () => {
   const [error, setError] = useState(null);
   const [msg, setMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { dispatch, user } = useAuthContext();
+  const { dispatch } = useAuthContext();
 
   const login = async (phoneNumber, password) => {
     setIsLoading(true);
@@ -38,10 +38,10 @@ export const useLogin = () => {
       setIsLoading(false);
 
       //save user to local storage
-      localStorage.setItem('token', JSON.stringify(json));
+      localStorage.setItem('user', JSON.stringify(json));
 
       //update the auth context
-      dispatch({ type: 'TOKEN_VALUE', payload: json });
+      dispatch({ type: 'LOGIN', payload: json });
     }
   };
   // console.log(isLoading);

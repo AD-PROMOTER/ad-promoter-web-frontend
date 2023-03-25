@@ -47,7 +47,7 @@ const Index = () => {
   // const [newUserScreen,setNewUserScreen] = useState
 
   useEffect(() => {
-    const userName = JSON.parse(localStorage.getItem("token"));
+    const userName = JSON.parse(localStorage.getItem("user"));
     if (userName) {
       setUserName(userName.user.accountName);
       token.current = userName.token
@@ -178,15 +178,6 @@ const Index = () => {
                 <Image src={hands} alt='waving hands'/>
                 <p>Welcome back!</p>
               </div>
-              <div className="welcome-text">
-                <h3>Hi, Leilani Angel</h3>
-                <div className="welcome-text-sub">
-                  <div className="profile-img">
-                    <Image src={hands} alt='waving hands'/>
-                  </div>
-                  <p>Welcome back!</p>
-                </div>
-            </div>
 
             <div className="bell">
               <Image src={bell} alt="notification bell"/>

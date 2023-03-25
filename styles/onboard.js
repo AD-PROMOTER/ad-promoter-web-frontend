@@ -1,14 +1,18 @@
 import styled from 'styled-components';
 
 export const StyledOnboarding = styled.div`
-  /* min-height: 102.4rem; */
+  height: 100vh;
+  width: 100vw;
   background-color: var(--white);
-  /* overflow-y: hidden; */
   @media screen and (max-width: 425px) {
     display: none;
   }
   @media (min-width: 768px) and (max-width: 1024px) {
     display: none;
+  }
+  @media screen and (min-height: 862px) {
+    overflow-y: hidden;
+    height: 100vh;
   }
 `;
 

@@ -11,7 +11,7 @@ import Button from '@/components/authBtn/index'
 import icon from '@/public/assets/hide-icon.svg'
 import { useRouter } from "next/router"
 import Link from "next/link"
-import { useContext, useState,useEffect } from "react"
+import { useContext, useState,useEffect, useRef } from "react"
 import { BsEyeFill,BsEyeSlashFill } from "react-icons/bs"
 // import Container from '@/components/onBoardBg/index'
 import PreferenceContext from "@/context/signupContext"
@@ -26,38 +26,35 @@ const Login = () => {
   const [userEmail,setUserEmail] = useState('')
   const [userPassword,setUserPassword] = useState('')
   const [token, setToken] = useState("");
-  const [userRole, setUserRole] = useState("");
+  const [role,setRole] = useState("");
   const [user,setUser] = useState([])
-  const {setIsInputWithValue} = useContext(SignupContext)
+  const {setIsInputWithValue,isInputWithValue} = useContext(SignupContext)
   const {isLoginInputWithValue,setIsLoginInputWithValue} = useContext(PreferenceContext)
   const {login,error,isLoading} = useLogin()
   useEffect(() => {
     
-    const userRole = JSON.parse(localStorage.getItem("token"));
+    const userRole = JSON.parse(localStorage.getItem("user"));
     if (userRole) {
       setUser(userRole.user)
-      setUserRole(userRole.user.role);
+      setRole(userRole.user.role)
     }
     if(userEmail !== '' && userPassword !== '' ){
       setIsInputWithValue(true)
     }else{
       setIsInputWithValue(false)
     }
-
-   
-  }, [router, setIsLoginInputWithValue, userEmail, userPassword,userRole,setIsInputWithValue])
+    if(role === 'placer'){
+      router.push('/placers')
+    }else if(role === 'promoter'){
+      router.push('/promoters')
+    }
+  })
 
   const handleSubmit = (e) => {
     e.preventDefault()
    if(userEmail && userPassword !== ''){
     login(userEmail,userPassword)
-    if(user){
-      if(userRole === 'placer'){
-        router.push('/placers')
-      }else if(userRole === 'promoter'){
-        router.push('/promoters')
-      }
-    }
+    
    }
   }
   return (
@@ -86,7 +83,7 @@ const Login = () => {
           </div>
           <form action="" onSubmit={handleSubmit}>
             <div className="email">
-              <label htmlFor="email">Your email</label>
+              <label htmlFor="email">Your Phone Number</label>
               <input 
                 type="text" 
                 id="email" 
