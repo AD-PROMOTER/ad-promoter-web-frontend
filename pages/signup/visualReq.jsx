@@ -32,9 +32,11 @@ const VisualReq = () => {
         }
     }
 
+    useEffect(()=>{
+        setIsInputWithValue(false)
+    },[])
     useEffect(() => {
     router.prefetch('/signup/verification')
-    setIsInputWithValue(false)
     if(userVisualReq === 'yes'){
         setSeeVisualAd(true)
     }else{
@@ -62,15 +64,16 @@ const VisualReq = () => {
   }
   const selectYes = (event) => {
     setUserVisualReq(event.target.value);
-    console.log(userVisualReq);
+    // console.log(userVisualReq);
     setIsInputWithValue(true)
     setYes(true)
     toggleNo()
     toggleRemind()
+    setIsInputWithValue(true)
   }
   const selectNo = (event) => {
     setUserVisualReq(event.target.value);
-    console.log(userVisualReq);
+    // console.log(userVisualReq);
     setIsInputWithValue(true)
     setNo(true)
     toggleYes()
@@ -78,7 +81,7 @@ const VisualReq = () => {
   }
   const selectRemind = (event) => {
     setUserVisualReq(event.target.value);
-    console.log(userVisualReq);
+    // console.log(userVisualReq);
     setIsInputWithValue(true)
     setRemind(true)
     toggleYes()
