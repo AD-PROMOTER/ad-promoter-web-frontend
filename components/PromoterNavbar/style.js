@@ -6,6 +6,9 @@ export const StyledNavBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  @media screen and (max-width: 425px) {
+    display: none;
+  }
   @media (min-width: 768px) and (max-width: 1024px) {
     padding-right: 3rem;
     padding-left: 2rem;

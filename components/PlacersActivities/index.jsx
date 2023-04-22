@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Container, UndoContainer } from './style'
+import { Container, MobileActivities, TabActivities, UndoContainer } from './style'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import trash from '@/public/assets/trash.svg'
 import Image from 'next/image'
+import group from '@/public/assets/group.svg'
 import { gridData } from './data'
 import Backdrop from '../DiscoveryFolder/ReportModal/Backdrop'
 
@@ -31,7 +32,8 @@ const PlacersActivities = () => {
     
 
   return (
-    <Container>
+    <>
+      <Container>
       {showBackdrop && <Backdrop onCancel={() => setShowBackdrop(false)}/>}
       <UndoContainer style={{transform: showBackdrop ? 'translateX(0)' : 'translateX(-100vw)'}}>
         <div className='activity'>Activity deleted</div>
@@ -76,13 +78,94 @@ const PlacersActivities = () => {
               ))}</td>
               <td>{data.userId}</td>
               <td>{data.action}</td>
-              <td>{data.date}</td>
+              <td>{data.date} {data.time}</td>
               <td><input type="checkbox" id={data.id} checked={data.value} onChange={handleCheckbox}/></td>
             </tr>
           ))}
         </tbody>
       </table>
     </Container>
+    <MobileActivities>
+      <div className='adcreator'>
+        <h4>Ad creator</h4>
+        <Image src={group} alt='group'/>
+      </div>
+      <div className='body'>
+        {rowData.map((data) => (
+          <div key={data.id} className='activity'>
+            {data.name.map((item, index) => (
+              <div key={index} className='user'>
+                <Image src={item.profile}/>
+                <h3>{item.user}</h3>
+              </div>
+            ))}
+            <div className='userId'>
+              <p>User ID</p>
+              <h2>{data.userId}</h2>
+            </div>
+            <div className='action'>
+              <p>Action</p>
+              <h2>{data.action}</h2>
+            </div>
+            <div className='userId'>
+              <p>Date</p>
+              <h2>{data.date}</h2>
+            </div>
+            <div className='time'>
+              <p>Time</p>
+              <h2>{data.time}</h2>
+            </div>
+          </div>
+        ))}
+      </div>
+    </MobileActivities>
+    <TabActivities>
+      <div className='log'>
+        <p>Activity Log</p>
+        <div onClick={() => setShowDropdown(!showDropdown)} className='filter'>
+            <div>Filter</div>
+            {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
+        </div>
+        {showDropdown && (
+            <ul>
+              <li>Recent</li>
+              <li>Popular</li>
+              <li>A week ago</li>
+              <li>Less than 2 weeks</li>
+              <li>Last 30 days</li>
+            </ul>
+        )}
+      </div>
+      <div className='body'>
+        {rowData.map((data) => (
+          <div key={data.id} className='activity'>
+            {data.name.map((item, index) => (
+              <div key={index} className='user'>
+                <Image src={item.profile}/>
+                <h3>{item.user}</h3>
+              </div>
+            ))}
+            <div className='userId'>
+              <p>User ID</p>
+              <h2>{data.userId}</h2>
+            </div>
+            <div className='action'>
+              <p>Action</p>
+              <h2>{data.action}</h2>
+            </div>
+            <div className='userId'>
+              <p>Date</p>
+              <h2>{data.date}</h2>
+            </div>
+            <div className='time'>
+              <p>Time</p>
+              <h2>{data.time}</h2>
+            </div>
+          </div>
+        ))}
+      </div>
+    </TabActivities>
+    </>
   )
 }
 

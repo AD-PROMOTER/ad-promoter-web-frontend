@@ -4,6 +4,9 @@ export const StyledCreator = styled.div`
   width: 93%;
   margin: auto;
   padding-bottom: 1rem;
+  @media screen and (max-width: 425px) {
+    display: none;
+  }
   /* margin-top: 4rem;
     margin-bottom: 4rem; */
   .creator-head {
@@ -143,6 +146,119 @@ export const StyledCreator = styled.div`
   }
 `;
 
+export const MobileCreator = styled.div`
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 2rem;
+  padding-bottom: 10rem;
+  display: none;
+  @media screen and (max-width: 425px) {
+    display: block;
+  }
+  h4 {
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    letter-spacing: -0.5px;
+    color: #0d0d0d;
+  }
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  .creator {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    background-color: white;
+    padding: 1.6rem 0rem 1.6rem 0rem;
+    border-radius: 12px;
+  }
+  .product {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+
+    h3 {
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 22px;
+      letter-spacing: -0.408px;
+      color: #0d0d0d;
+    }
+    p {
+      font-weight: 600;
+      color: white;
+      font-size: 10px;
+      line-height: 15px;
+      padding: 4px 16px;
+      border-radius: 100px;
+    }
+  }
+  .types {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .type {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(198, 198, 200, 0.4);
+    padding-bottom: 1rem;
+
+    h4 {
+      padding-right: 1.6rem;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 18px;
+      letter-spacing: -0.078px;
+      color: #333333;
+    }
+  }
+  .icon {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-left: 1.6rem;
+
+    p {
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 16px;
+      color: #8e8e93;
+    }
+  }
+  .view {
+    background: #f8f8f8;
+    border-radius: 8px;
+    padding: 4px 16px;
+    color: #4f00cf;
+    width: 8.2rem;
+    margin-left: auto;
+    margin-right: 1.6rem;
+  }
+  .creator-btn {
+    background: #4f00cf;
+    border-radius: 8px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 1.6rem;
+    padding-bottom: 1.6rem;
+    margin: 2rem auto;
+    font-weight: 500;
+    font-size: 1.4rem;
+    line-height: 2.1rem;
+    width: 19.6rem;
+  }
+`;
+
 export const ModalBackground = styled.div`
   position: absolute;
   top: 0;
@@ -155,6 +271,10 @@ export const ModalBackground = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  @media screen and (max-width: 425px) {
+    position: fixed;
+    z-index: 100;
+  }
 
   .file-modal {
     display: flex;
@@ -182,6 +302,14 @@ export const ModalBackground = styled.div`
     border-radius: 2.4rem;
     width: 52.4rem;
     position: relative;
+    @media screen and (max-width: 425px) {
+      width: 38rem;
+      padding: 2rem;
+    }
+    @media screen and (max-width: 400px) {
+      width: 35rem;
+      padding: 1rem;
+    }
     .close-btn {
       position: absolute;
       right: 5%;
@@ -202,6 +330,10 @@ export const ModalBackground = styled.div`
         color: var(--black-1);
         font-family: var(--font-family-1);
         width: 318px;
+        @media screen and (max-width: 425px) {
+          font-weight: 500;
+          font-size: 1.6rem;
+        }
       }
       p {
         font-weight: 500;
@@ -209,6 +341,11 @@ export const ModalBackground = styled.div`
         line-height: 2.4rem;
         color: var(--dark-gray-2);
         text-align: center;
+        @media screen and (max-width: 425px) {
+          font-weight: 400;
+          font-size: 1rem;
+          line-height: 1.2rem;
+        }
       }
     }
 
@@ -256,6 +393,9 @@ export const ModalBackground = styled.div`
               text-align: center;
               color: var(--light-blue-1);
               font-family: var(--font-family-1);
+              @media screen and (max-width: 425px) {
+                font-weight: 500;
+              }
             }
             p {
               font-weight: 400;
@@ -263,6 +403,10 @@ export const ModalBackground = styled.div`
               line-height: 1.5rem;
               color: var(--light-blue-1);
               font-family: var(--font-family-1);
+              @media screen and (max-width: 425px) {
+                font-size: 1rem;
+                line-height: 1.2rem;
+              }
             }
           }
         }
@@ -277,6 +421,9 @@ export const StyledDirectLink = styled.div`
   align-items: center;
   gap: 3rem;
   padding: 2rem 0;
+  @media screen and (max-width: 425px) {
+    width: 100%;
+  }
   .header {
     display: flex;
     flex-direction: column;
@@ -369,6 +516,22 @@ export const StyledDirectLink = styled.div`
     gap: 38px;
     height: 677px;
     overflow-y: auto;
+    @media screen and (max-width: 425px) {
+      width: 100%;
+      height: fit-content;
+      overflow-y: hidden;
+      overflow-x: hidden;
+      padding: 2rem;
+      border-radius: 0px;
+      box-shadow: none;
+    }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      height: fit-content;
+      overflow-y: hidden;
+      overflow-x: hidden;
+      padding-bottom: 2rem;
+      width: 100%;
+    }
     &-head {
       display: flex;
       flex-direction: column;
@@ -398,6 +561,9 @@ export const StyledDirectLink = styled.div`
       align-items: flex-start;
       gap: 48px;
       width: 474px;
+      @media screen and (max-width: 425px) {
+        width: 100%;
+      }
 
       .product-tag {
         display: flex;
@@ -634,6 +800,18 @@ export const StyledDirectLink = styled.div`
     display: flex;
     justify-content: space-between;
     width: 742px;
+    @media screen and (max-width: 425px) {
+      width: 100%;
+      margin-bottom: 8rem;
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      width: 90%;
+      margin: 0 auto;
+      justify-content: center;
+      gap: 5rem;
+    }
     .prev {
       display: flex;
       flex-direction: row;
@@ -650,6 +828,12 @@ export const StyledDirectLink = styled.div`
       color: #ffffff;
       width: 112px;
       cursor: pointer;
+      @media screen and (max-width: 425px) {
+        width: 17rem;
+      }
+      @media screen and (max-width: 400px) {
+        width: 15rem;
+      }
     }
     .next {
       display: flex;
@@ -667,6 +851,12 @@ export const StyledDirectLink = styled.div`
       color: #ffffff;
       width: 112px;
       cursor: pointer;
+      @media screen and (max-width: 425px) {
+        width: 17rem;
+      }
+      @media screen and (max-width: 400px) {
+        width: 15rem;
+      }
     }
   }
 `;
@@ -678,6 +868,9 @@ export const StyledDirectLinkConversion = styled.div`
   align-items: center;
   gap: 3rem;
   padding: 2rem 0;
+  @media screen and (max-width: 425px) {
+    width: 100%;
+  }
   .header {
     display: flex;
     flex-direction: column;
@@ -709,6 +902,24 @@ export const StyledDirectLinkConversion = styled.div`
     align-items: center;
     gap: 3.8rem;
     height: 67.7rem;
+    @media screen and (max-width: 425px) {
+      width: 100%;
+      height: fit-content;
+      overflow-y: hidden;
+      overflow-x: hidden;
+      padding: 2rem;
+      border-radius: 0px;
+      box-shadow: none;
+    }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      width: 100%;
+      height: fit-content;
+      overflow-y: hidden;
+      overflow-x: hidden;
+      padding: 2rem;
+      border-radius: 0px;
+      box-shadow: none;
+    }
     &-head {
       display: flex;
       flex-direction: column;
@@ -745,6 +956,9 @@ export const StyledDirectLinkConversion = styled.div`
       align-items: center; */
       height: 46.4rem;
       /* padding: 2rem; */
+      @media screen and (max-width: 425px) {
+        width: 100%;
+      }
       &-item-container {
         display: flex;
         flex-direction: column;
@@ -778,6 +992,10 @@ export const StyledDirectLinkConversion = styled.div`
           align-items: flex-start;
           gap: 1.6rem;
           width: 41.6rem;
+          @media screen and (max-width: 425px) {
+            width: 100%;
+            padding-left: 1rem;
+          }
           .head {
             display: flex;
             flex-direction: row;
@@ -834,6 +1052,18 @@ export const StyledDirectLinkConversion = styled.div`
     display: flex;
     justify-content: space-between;
     width: 742px;
+    @media screen and (max-width: 425px) {
+      width: 100%;
+      margin-bottom: 10rem;
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      width: 90%;
+      margin: 0 auto;
+      justify-content: center;
+      gap: 5rem;
+    }
     .prev {
       display: flex;
       flex-direction: row;
@@ -850,6 +1080,12 @@ export const StyledDirectLinkConversion = styled.div`
       color: var(--primary);
       width: 112px;
       cursor: pointer;
+      @media screen and (max-width: 425px) {
+        width: 17rem;
+      }
+      @media screen and (max-width: 400px) {
+        width: 15rem;
+      }
     }
     .next {
       display: flex;
@@ -867,6 +1103,12 @@ export const StyledDirectLinkConversion = styled.div`
       color: #ffffff;
       width: 112px;
       cursor: pointer;
+      @media screen and (max-width: 425px) {
+        width: 17rem;
+      }
+      @media screen and (max-width: 400px) {
+        width: 15rem;
+      }
     }
   }
 `;
@@ -908,6 +1150,17 @@ export const StyledDirectLinkPayment = styled.div`
     flex-direction: column;
     align-items: center;
     padding-bottom: 15rem;
+    @media screen and (max-width: 425px) {
+      width: 100%;
+      box-shadow: none;
+      border-radius: 0px;
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      width: 100%;
+      box-shadow: none;
+    }
     &-head {
       display: flex;
       flex-direction: column;
@@ -938,6 +1191,9 @@ export const StyledDirectLinkPayment = styled.div`
       gap: 48px;
       width: 474px;
       margin-top: 4rem;
+      @media screen and (max-width: 425px) {
+        width: 100%;
+      }
       .card-name,
       .card-number {
         display: flex;
@@ -1020,6 +1276,18 @@ export const StyledDirectLinkPayment = styled.div`
     display: flex;
     justify-content: space-between;
     width: 742px;
+    @media screen and (max-width: 425px) {
+      width: 100%;
+      margin-bottom: 10rem;
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      width: 90%;
+      margin: 0 auto;
+      justify-content: center;
+      gap: 5rem;
+    }
     .prev {
       display: flex;
       flex-direction: row;
@@ -1036,6 +1304,12 @@ export const StyledDirectLinkPayment = styled.div`
       color: var(--primary);
       width: 112px;
       cursor: pointer;
+      @media screen and (max-width: 425px) {
+        width: 17rem;
+      }
+      @media screen and (max-width: 400px) {
+        width: 15rem;
+      }
     }
     .next {
       display: flex;
@@ -1053,6 +1327,12 @@ export const StyledDirectLinkPayment = styled.div`
       color: #ffffff;
       width: 112px;
       cursor: pointer;
+      @media screen and (max-width: 425px) {
+        width: 17rem;
+      }
+      @media screen and (max-width: 400px) {
+        width: 15rem;
+      }
     }
   }
 `;
@@ -1064,6 +1344,10 @@ export const StyledDirectLinkSummary = styled.div`
   justify-content: center;
   gap: 4rem;
   padding: 5rem 0;
+  @media screen and (max-width: 425px) {
+    padding: 0;
+  }
+
   .modal {
     background: #ffffff;
     box-shadow: 0px 1px 4px rgba(103, 127, 214, 0.15);
@@ -1075,7 +1359,17 @@ export const StyledDirectLinkSummary = styled.div`
     width: 742px;
     padding-top: 3rem;
     padding-bottom: 6rem;
-
+    @media screen and (max-width: 425px) {
+      width: 100%;
+      box-shadow: none;
+      border-radius: 0px;
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      width: 100%;
+      box-shadow: none;
+    }
     .head {
       display: flex;
       flex-direction: column;
@@ -1104,6 +1398,10 @@ export const StyledDirectLinkSummary = styled.div`
       padding: 24px;
       gap: 10rem;
       border: 1px solid #5c85ff;
+      @media screen and (max-width: 425px) {
+        gap: 2rem;
+        padding: 24px 10px;
+      }
       filter: drop-shadow(1.65263px 3.30526px 26.4421px rgba(0, 0, 0, 0.05));
       border-radius: 16px;
       .product-name,
@@ -1142,6 +1440,9 @@ export const StyledDirectLinkSummary = styled.div`
       margin: auto;
       width: 50rem;
       gap: 2.4rem;
+      @media screen and (max-width: 425px) {
+        width: 100%;
+      }
       .description,
       .web-address,
       .product-img,
@@ -1157,6 +1458,9 @@ export const StyledDirectLinkSummary = styled.div`
           /* flex-wrap: wrap; */
           /* background-color: red; */
           gap: 1rem;
+          @media screen and (max-width: 425px) {
+            width: 100%;
+          }
           img {
             width: 100%;
           }
@@ -1193,6 +1497,9 @@ export const StyledDirectLinkSummary = styled.div`
     color: #ffffff;
     width: 282px;
     cursor: pointer;
+    @media screen and (max-width: 425px) {
+      margin-bottom: 10rem;
+    }
   }
 `;
 
@@ -1204,6 +1511,9 @@ export const StyledDirectLinkSuccess = styled.div`
   padding-top: 5rem;
   padding-bottom: 5rem;
   gap: 6rem;
+  @media screen and (max-width: 425px) {
+    padding-top: 0;
+  }
   .modal {
     background: #ffffff;
     box-shadow: 0px 1px 4px rgba(103, 127, 214, 0.15);
@@ -1215,6 +1525,13 @@ export const StyledDirectLinkSuccess = styled.div`
     width: 742px;
     padding-top: 3rem;
     padding-bottom: 6rem;
+    @media screen and (max-width: 425px) {
+      width: 100%;
+    }
+    @media (min-width: 768px) and (max-width: 1024px) {
+      width: 100%;
+      box-shadow: none;
+    }
 
     .head {
       display: flex;
