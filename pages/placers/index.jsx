@@ -2,6 +2,7 @@ import { DashboardContainer, DashboardSummaryContainer, MobilePlacers, RecentAds
 import profile from '@/public/assets/placers-profile.svg'
 import profil from '@/public/assets/Profil.svg'
 import RecentMobile from '@/components/MobilePromoterHome/Recent'
+import SavedJobsMobile from "@/components/MobilePromoterHome/SavedJobs"
 import MobileNotif from '@/components/MobileNotification/index'
 import notif from '@/public/assets/notif.svg'
 import Image from "next/image"
