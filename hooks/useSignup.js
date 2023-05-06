@@ -20,21 +20,24 @@ export const useSignup = () => {
     setIsLoading(true);
     setError(null);
 
-    const response = await fetch('http://35.153.52.116/api/v1/auth/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        reference_id: refId,
-        otp,
-        phoneNumber,
-        accountName,
-        socialLink: linkValue,
-        seeVisualAd,
-        email,
-        password,
-        role: userPref,
-      }),
-    });
+    const response = await fetch(
+      'https://api.ad-promoter.com/api/v1/auth/signup',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          reference_id: refId,
+          otp,
+          phoneNumber,
+          accountName,
+          socialLink: linkValue,
+          seeVisualAd,
+          email,
+          password,
+          role: userPref,
+        }),
+      }
+    );
     const json = await response.json();
 
     if (!response.ok) {

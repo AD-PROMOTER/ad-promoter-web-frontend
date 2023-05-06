@@ -11,7 +11,7 @@ export const useVerification = () => {
     // console.log(user.data.accessToken);
 
     const response = await fetch(
-      'http://35.153.52.116/api/v1/auth/verify-OTP-password',
+      'https://api.ad-promoter.com/api/v1/auth/verify-OTP-password',
       {
         method: 'POST',
         headers: {

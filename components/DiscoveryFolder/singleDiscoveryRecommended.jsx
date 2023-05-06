@@ -145,7 +145,7 @@ const SingleDiscoveryRecommended = ({click,isLoading,recommendedJobs}) => {
                     <>
                       <div className='adImage'>
                         {item.images.map((image)=>(
-                          <img src={image} width={311} height={156} alt="product image"/>
+                          <img src={image} key={image} width={311} height={156} alt="product image"/>
                         ))}
                       </div>
                   
@@ -172,7 +172,7 @@ const SingleDiscoveryRecommended = ({click,isLoading,recommendedJobs}) => {
                     <div>
                       <div className='recUser'>
                         {item.creator.profilePicture?(
-                          <img src={item.creator?.profilePicture} width={20} height={20} alt={item.creator.accountName}/>
+                          <img src={item.creator?.profilePicture} key={item._id} width={20} height={20} alt={item.creator.accountName}/>
                           ):(
                           <CgProfile width={20} height={20}/>
                         )}

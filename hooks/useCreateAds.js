@@ -14,7 +14,7 @@ export const useCreateAds = () => {
     if (userToken) {
       setToken(userToken);
     }
-  });
+  }, []);
 
   const createAd = async (
     productName,
@@ -31,28 +31,31 @@ export const useCreateAds = () => {
     setIsLoading(true);
     setError(null);
 
-    const response = await fetch('http://35.153.52.116/api/v1/ads/create', {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        productName,
-        redirectUrl,
-        description: productDescription,
-        tags,
-        type: advertType,
-        CTAButtonDesign: cta,
-        images,
-        promotedLink: webAddress,
-        budget: amount,
-        isNfsw: containAdultContent,
-      }),
-    });
+    const response = await fetch(
+      'https://api.ad-promoter.com/api/v1/ads/create',
+      {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          productName,
+          redirectUrl,
+          description: productDescription,
+          tags,
+          type: advertType,
+          CTAButtonDesign: cta,
+          images,
+          promotedLink: webAddress,
+          budget: amount,
+          isNfsw: containAdultContent,
+        }),
+      }
+    );
     const json = await response.json();
 
     if (!response.ok) {

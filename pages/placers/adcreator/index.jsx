@@ -37,7 +37,7 @@ const Adcreator = () => {
 
     const fetchActiveAds = async() =>{
       setIsLoading(true)
-      const result = await axios(`http://35.153.52.116/api/v1/ads/all/user-ads/${id.current}?active=true`,{
+      const result = await axios(`https://api.ad-promoter.com/api/v1/ads/all/user-ads/${id.current}?active=true`,{
         headers:{
           Authorization: `Bearer ${token.current}`
         }

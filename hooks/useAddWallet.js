@@ -17,7 +17,7 @@ export const useAddWallet = () => {
     setIsLoading(true);
 
     const response = await fetch(
-      'http://35.153.52.116/api/v1/wallet/create-recipient',
+      'https://api.ad-promoter.com/api/v1/wallet/create-recipient',
       {
         method: 'POST',
         mode: 'cors',

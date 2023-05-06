@@ -13,14 +13,14 @@ export const useImageUpload = () => {
       setToken(userToken.token);
     }
     // console.log(token);
-  });
+  }, []);
 
   const imageUpload = async (formData) => {
     setIsLoading(true);
     setError(null);
 
     const response = await fetch(
-      'http://35.153.52.116/api/v1/fileUpload/image',
+      'https://api.ad-promoter.com/api/v1/fileUpload/image',
       {
         method: 'POST',
         headers: {

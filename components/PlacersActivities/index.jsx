@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 import React, { useState,useEffect,useRef } from 'react'
 import { Container, UndoContainer } from './style'
-=======
-import React, { useState } from 'react'
-import { Container, MobileActivities, TabActivities, UndoContainer } from './style'
->>>>>>> 6368a5a16630d05b46082ea080cf9f6dec8a15c3
+import {  MobileActivities, TabActivities } from './style'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import trash from '@/public/assets/trash.svg'
@@ -48,7 +44,7 @@ const PlacersActivities = () => {
 
       const fetchActivities = async() =>{
         setIsLoading(true)
-        const result = await axios(`http://35.153.52.116/api/v1/activities/all/${id.current}?page=${pageNumber}&pageSize=${activitiesPerPage}`,{
+        const result = await axios(`https://api.ad-promoter.com/api/v1/activities/all/${id.current}?page=${pageNumber}&pageSize=${activitiesPerPage}`,{
           headers:{
             Authorization: `Bearer ${token.current}`
           }
@@ -60,7 +56,7 @@ const PlacersActivities = () => {
       if(id.current){
         fetchActivities()
       }
-    },[])
+    },[pageNumber])
 
     const changeToLocalTIme = (utc) =>{
       const date = new Date(utc);
@@ -86,18 +82,13 @@ const PlacersActivities = () => {
     
 
   return (
-<<<<<<< HEAD
-    <Container>
-      {/* {showBackdrop && <Backdrop onCancel={() => setShowBackdrop(false)}/>}
-=======
     <>
       <Container>
       {showBackdrop && <Backdrop onCancel={() => setShowBackdrop(false)}/>}
->>>>>>> 6368a5a16630d05b46082ea080cf9f6dec8a15c3
       <UndoContainer style={{transform: showBackdrop ? 'translateX(0)' : 'translateX(-100vw)'}}>
         <div className='activity'>Activity deleted</div>
         <div className='undo' onClick={() => setShowBackdrop(false)}>Undo</div>
-      </UndoContainer> */}
+      </UndoContainer> 
       {isLoading || !activities ? (
         <Spinner  />
       ):(
@@ -151,49 +142,7 @@ const PlacersActivities = () => {
             <div key={number} onClick={() => paginate(number)}>{number}</div>
           ))} */}
         </div>
-<<<<<<< HEAD
       )}
-=======
-        {showDropdown && (
-            <ul>
-              <li>Recent</li>
-              <li>Popular</li>
-              <li>A week ago</li>
-              <li>Less than 2 weeks</li>
-              <li>Last 30 days</li>
-            </ul>
-        )}
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>S/N</th>
-            <th>Name</th>
-            <th>User ID</th>
-            <th>Action</th>
-            <th>Date</th>
-            <th onClick={handleDelete}><Image src={trash} alt='trash'/></th>
-          </tr>
-        </thead>
-        <tbody>
-          {rowData.map((data) => (
-            <tr className='row' key={data.id}>
-              <td>{data.id}</td>
-              <td>{data.name.map((name, index) => (
-                <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}} key={index}>
-                  <Image src={name.profile} alt='profile'/>
-                  <p>{name.user}</p>
-                </div>
-              ))}</td>
-              <td>{data.userId}</td>
-              <td>{data.action}</td>
-              <td>{data.date} {data.time}</td>
-              <td><input type="checkbox" id={data.id} checked={data.value} onChange={handleCheckbox}/></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
->>>>>>> 6368a5a16630d05b46082ea080cf9f6dec8a15c3
     </Container>
     <MobileActivities>
       <div className='adcreator'>
@@ -205,7 +154,8 @@ const PlacersActivities = () => {
           <div key={data.id} className='activity'>
             {data.name.map((item, index) => (
               <div key={index} className='user'>
-                <Image src={item.profile}/>
+                <Image src={item.profile}
+                alt=""/>
                 <h3>{item.user}</h3>
               </div>
             ))}
@@ -251,7 +201,8 @@ const PlacersActivities = () => {
           <div key={data.id} className='activity'>
             {data.name.map((item, index) => (
               <div key={index} className='user'>
-                <Image src={item.profile}/>
+                <Image src={item.profile}
+                alt=""/>
                 <h3>{item.user}</h3>
               </div>
             ))}

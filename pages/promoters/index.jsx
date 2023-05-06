@@ -55,7 +55,7 @@ const Index = ({router}) => {
 
     const fetchDashboard = async() =>{
       setIsLoading(true)
-      const result = await axios(`http://35.153.52.116/api/v1/user/dashboard`,{
+      const result = await axios(`https://api.ad-promoter.com/api/v1/user/dashboard`,{
         headers:{
           Authorization: `Bearer ${token.current}`
         }

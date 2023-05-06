@@ -14,17 +14,20 @@ export const useLogin = () => {
   const login = async (phoneNumber, password) => {
     setIsLoading(true);
 
-    const response = await fetch('http://35.153.52.116/api/v1/auth/signin', {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        phoneNumber,
-        password,
-      }),
-    });
+    const response = await fetch(
+      'https://api.ad-promoter.com/api/v1/auth/signin',
+      {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phoneNumber,
+          password,
+        }),
+      }
+    );
     const json = await response.json();
 
     if (!response.ok) {

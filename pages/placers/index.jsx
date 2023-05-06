@@ -67,7 +67,7 @@ const Index = () => {
     }
 
       Promise.all([
-        fetch('http://35.153.52.116/api/v1/user/dashboard',{
+        fetch('https://api.ad-promoter.com/api/v1/user/dashboard',{
           headers:{
             Authorization: `Bearer ${token.current}`,
           }

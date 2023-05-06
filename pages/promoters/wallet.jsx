@@ -72,7 +72,7 @@ const PromoterWallet = () => {
     }
     const fetchWalletSummary = async() =>{
       setIsLoading(true)
-      const result = await axios(`http://35.153.52.116/api/v1/wallet/wallet-summary`,{
+      const result = await axios(`https://api.ad-promoter.com/api/v1/wallet/wallet-summary`,{
         headers:{
           Authorization: `Bearer ${token.current}`
         }
@@ -85,7 +85,7 @@ const PromoterWallet = () => {
 
     const fetchTransactionHistory = async() =>{
       setIsLoading(true)
-      const result = await axios(`http://35.153.52.116/api/v1/payouts/history?page=1&pageSize=10`,{
+      const result = await axios(`https://api.ad-promoter.com/api/v1/payouts/history?page=1&pageSize=10`,{
         headers:{
           Authorization: `Bearer ${token.current}`
         }
@@ -97,7 +97,7 @@ const PromoterWallet = () => {
     const fetchAccountData = async() =>{
       setIsLoading(true)
 
-      const result = await axios(`http://35.153.52.116/api/v1/wallet/fetch-recipient`,{
+      const result = await axios(`https://api.ad-promoter.com/api/v1/wallet/fetch-recipient`,{
         headers:{
           Authorization: `Bearer ${token.current}`
         }

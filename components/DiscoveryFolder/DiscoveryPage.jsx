@@ -31,7 +31,7 @@ const DiscoveryPage = () => {
 
     const fetchFeed = async(searchTag) =>{
         setIsLoading(true)
-        const result = await axios(`http://35.153.52.116/api/v1/ads?page=1&pageSize=10&name=v`,{
+        const result = await axios(`https://api.ad-promoter.com/api/v1/ads?page=1&pageSize=10&name=v`,{
           headers:{
             Authorization: `Bearer ${token.current}`
           }
@@ -42,7 +42,7 @@ const DiscoveryPage = () => {
 
     const fetchRecommended = async(searchTag) =>{
         setIsLoading(true)
-        const result = await axios(`http://35.153.52.116/api/v1/ads/recommended?page=1&pageSize=10&name=${searchTag}`,{
+        const result = await axios(`https://api.ad-promoter.com/api/v1/ads/recommended?page=1&pageSize=10&name=${searchTag}`,{
           headers:{
             Authorization: `Bearer ${token.current}`
           }

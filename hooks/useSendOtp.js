@@ -9,13 +9,16 @@ export const useSendOtp = () => {
   const sendOtp = async (phoneNumber) => {
     setIsLoading(true);
 
-    const response = await fetch('http://35.153.52.116/api/v1/auth/send-otp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        phoneNumber,
-      }),
-    });
+    const response = await fetch(
+      'https://api.ad-promoter.com/api/v1/auth/send-otp',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phoneNumber,
+        }),
+      }
+    );
     const json = await response.json();
 
     if (!response.ok) {
