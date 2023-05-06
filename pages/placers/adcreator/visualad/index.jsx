@@ -70,7 +70,7 @@ const Visualad = () => {
                 <h4>Creating a Visual Advert</h4>
                 <p>Kindly supply the following information.</p>
             </div>
-            <form action="">
+            <div className='form'>
                 <div className="product-name">
                     <label htmlFor="productName">1. What is your Product Name</label>
                     <input 
@@ -161,7 +161,7 @@ const Visualad = () => {
                         <p>This advert contains adult content</p>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
 
         <div className="btns">

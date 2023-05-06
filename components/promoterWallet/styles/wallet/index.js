@@ -70,15 +70,29 @@ const WalletStyles = styled.div`
 
     &__acctdetails {
       display: flex;
-      justify-content: space-between;
-      width: 20rem;
+      gap: 1rem;
+      > div {
+        display: flex;
+        flex-direction: column;
+        .acctName {
+          font-size: 1rem;
+          line-height: 1.8rem;
+          color: #101c79;
+          margin-top: 0.6rem;
+        }
+        .acctNum {
+          font-weight: 500;
+          line-height: 1.8rem;
+          margin-bottom: 0.6rem;
+        }
+      }
     }
 
     &__select {
       width: 100px;
       position: relative;
 
-      input[type='checkbox'] {
+      input[type='radio'] {
         opacity: 0;
         cursor: pointer;
         width: 100%;
@@ -131,25 +145,13 @@ const WalletStyles = styled.div`
     border: 1px solid var(--light-blue);
   }
 
-  .container:hover {
+  /* .container:hover {
     border: 0.07rem solid #dce4ff;
-  }
+  } */
 
   .bank1 {
     margin-bottom: 2.8rem;
-  }
-
-  .acctName {
-    font-size: 1rem;
-    line-height: 1.8rem;
-    color: #101c79;
-    margin-top: 0.6rem;
-  }
-
-  .acctNum {
-    font-weight: 500;
-    line-height: 1.8rem;
-    margin-bottom: 0.6rem;
+    cursor: pointer;
   }
 
   .buttonContainer {

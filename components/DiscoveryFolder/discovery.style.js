@@ -112,6 +112,7 @@ export const Feed = styled.div`
         border-radius: 2rem;
         font-weight: lighter;
         font-size: 1.4rem;
+        text-transform: capitalize;
       }
       .recDot {
         cursor: pointer;
@@ -147,6 +148,7 @@ export const Feed = styled.div`
         border-radius: 2rem;
         font-weight: lighter;
         font-size: 1.4rem;
+        text-transform: capitalize;
       }
       .dot {
         cursor: pointer;

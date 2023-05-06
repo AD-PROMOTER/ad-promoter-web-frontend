@@ -7,11 +7,13 @@ import { VscClose } from 'react-icons/vsc';
 import { AiOutlineCloudUpload } from 'react-icons/ai'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
+import profile from '@/public/assets/user-onboard-profile.png'
 
 
 const Profile = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [dateOfBirth, setDateOfBirth] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [profileModal, setProfileModal] = useState(false);
     const [listValue, setListValue] = useState('None')
@@ -19,11 +21,13 @@ const Profile = () => {
     const [isChangesMade, setIsChangesMade] = useState(false)
 
     useEffect(()=>{
-        const userRole = JSON.parse(localStorage.getItem("token"));
-        if (userRole) {
-        setName(userRole.user.accountName);
-        setEmail(userRole.user.email)
-        setPhoneNumber(userRole.user.phoneNumber)
+        const user = JSON.parse(localStorage.getItem("user-detail"));
+        if (user) {
+        setName(user.accountName);
+        setEmail(user.email)
+        setPhoneNumber(user.phoneNumber)
+        setDateOfBirth(user.dateOfBirth)
+        setListValue(user.gender)
         }
     },[setName,setEmail,setPhoneNumber])
 
@@ -43,7 +47,7 @@ const Profile = () => {
             <div className='profile-image'>
                 <p> Profile picture </p>
                 <div className='image-wrapper'>
-                    <Image src={profileImg} onClick={() => setProfileModal(true)} alt='Profile' style={{ cursor: 'pointer', borderRadius: '50%' }} height={105} width={105} objectFit='contain' />
+                    <Image src={profile} onClick={() => setProfileModal(true)} alt='Profile' style={{ cursor: 'pointer', borderRadius: '50%' }} height={105} width={105} objectFit='contain' />
                     <div className='upload-icon'>
                         <Image src={upload} onClick={() => setProfileModal(true)}  alt='Profile' height={20} width={20} objectFit='contain' />
                     </div>
@@ -89,13 +93,17 @@ const Profile = () => {
 
                 <div className='form-field account-birth'>
                     <label htmlFor="date" > Date Of Birth </label>
-                    <input type='date' name='date' placeholder="DD/MM/YYYY" />
+                    <input type='date' name='date' placeholder="DD/MM/YYYY" value={dateOfBirth} onChange={(e)=>setDateOfBirth(e.target.value)} />
                 </div>
 
                 <div className="dropdownContainer form-field">
                     <h3>Gender</h3>
                     <div className='dropdown' onClick={() => setShowDropdown(!showDropdown)}>
-                        <p className='inputText'>{listValue}</p>
+                        {!listValue ?(
+                            <p className='inputText'>None</p>
+                        ):(
+                            <p className='inputText'>{listValue}</p>
+                        )}
                     </div>
                     {showDropdown && (
                         <ul className="">

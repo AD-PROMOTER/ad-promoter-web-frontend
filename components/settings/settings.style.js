@@ -1180,6 +1180,7 @@ const StyledProfile = styled.div`
           line-height: 2rem;
           letter-spacing: -0.01em;
           color: #404040;
+          text-transform: capitalize;
         }
       }
       ul {

@@ -76,6 +76,7 @@ export const TransactionStyles = styled.div`
 
     &__profile {
       display: flex;
+      align-items: cen;
       width: 17rem;
 
       img {

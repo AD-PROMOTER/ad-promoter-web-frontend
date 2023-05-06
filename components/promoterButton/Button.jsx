@@ -2,7 +2,7 @@ import ButtonStyles from './styles';
 
 
 const Button = (props) => {
-  console.log(props);
+  // console.log(props);
   const toggleModals = () => {
     props.onClose();
     props.onOpen();

@@ -1,5 +1,6 @@
 import { MobileCotainer, StyledHome, StyledHomeContainer, TabContainer, TabletContainer } from "@/styles/promoters/home"
-import profile from '@/public/assets/home-profile.svg'
+// import profile from '@/public/assets/home-profile.svg'
+import profile from '@/public/assets/squared-profile.png'
 import wave from '@/public/assets/wave-hands.svg'
 import filter from '@/public/assets/filter-icon.svg'
 import profil from '@/public/assets/Profil.svg'
@@ -24,23 +25,10 @@ import userStatus from '@/public/assets/promoters-logo.svg'
 import MobileNotif from '@/components/MobileNotification/index'
 import ScrollContainer from 'react-indiana-drag-scroll'
 import ScrollIntoView from 'react-scroll-into-view'
+import axios from "axios"
 
 const Index = ({router}) => {
-
   const {query: {tab}} = router
-
-  // const scollToRef = useRef();
-
-  // const scrollToView = () => {
-  //   divRef.current.scrollIntoView({ behavior: 'smooth' });
-  // };
-
-  // useEffect(() => {
-  //   scrollToView;
-  // });
-
-  
-
   const isTabOne = tab === "recent" || tab == null
   const isTabTwo = tab === "saved jobs"
   const [showRecentJobs, setShowRecentJobs] = useState(true)
@@ -48,10 +36,39 @@ const Index = ({router}) => {
   const [showSortDropdown, setShowSortDropdown] = useState(false)
   const [showNotif, setShowNotif] = useState(false)
   const [userName,setUserName] = useState('')
+  const token = useRef('')
+  const [totalBalance,setTotalBalance] = useState('')
+  const [adsPromoted,setAdsPromoted] = useState('')
+  const [videosAccepted,setVideosAccepted] = useState('')
+  const [pendingWithdrawals,setPendingWithdrawals] = useState('')
+  const [adsConverted,setAdsConverted] = useState([])
+  const [isLoading,setIsLoading] = useState(false)
+
   useEffect(() => {
-    const userName = JSON.parse(localStorage.getItem("token"));
-    if (userName) {
-      setUserName(userName.user.accountName);
+    const user = JSON.parse(localStorage.getItem("user-detail"));
+    const userToken = JSON.parse(localStorage.getItem("user-token"));
+
+    if (user) {
+      setUserName(user.accountName);
+      token.current = userToken
+    }
+
+    const fetchDashboard = async() =>{
+      setIsLoading(true)
+      const result = await axios(`http://35.153.52.116/api/v1/user/dashboard`,{
+        headers:{
+          Authorization: `Bearer ${token.current}`
+        }
+      })
+      setTotalBalance(result.data.data.totalBalance)
+      setAdsPromoted(result.data.data.adsPromoted)
+      setVideosAccepted(result.data.data.noOfVideosAccepted)
+      setPendingWithdrawals(result.data.data.pendingWithdrawals)
+      setAdsConverted(result.data.data.noOfAdsConverted)
+      setIsLoading(false)
+    }
+    if(token.current){
+      fetchDashboard()
     }
   },[setUserName]);
   
@@ -59,44 +76,44 @@ const Index = ({router}) => {
     {
       icon: money,
       name: 'Total Balance',
-      price: '₦200,000.35',
+      price: `₦${totalBalance}`,
       bg: '#D2EFFF',
       nameClass: 'balance'
     },
     {
       icon: wallet,
       name: 'Pending Withdrawal',
-      price: '₦15,000.35',
+      price: `₦${pendingWithdrawals}`,
       bg: '#FFE2C7'
     },
     {
       icon: money,
       name: 'No of jobs recieved',
-      price: '200',
+      price: '0',
       bg: 'rgba(87, 159, 190, 0.2)'
     },
     {
       icon: card,
       name: 'No. of Ads Promoted',
-      price: '162',
+      price: `${adsPromoted}`,
       bg: '#C8C7FF'
     },
     {
       icon: chart,
       name: 'No. of Ads Converted',
-      price: '102',
+      price: `${adsConverted}`,
       bg: '#C7FFDD'
     },
     {
       icon: chart,
       name: 'No. of Visitors',
-      price: '102',
+      price: '0',
       bg: '#FFE2E4'
     },
     {
       icon: chart,
       name: 'No. of Videos accepted',
-      price: '3',
+      price: `${videosAccepted}`,
       bg: '#F4D5FF'
     }
   ]
@@ -104,43 +121,43 @@ const Index = ({router}) => {
     {
       icon: money,
       name: 'Total Balance',
-      price: '₦200,000.35',
+      price: `₦${totalBalance}`,
       bg: '#D2EFFF',
     },
     {
       icon: wallet,
       name: 'Pending Withdrawal',
-      price: '₦15,000.35',
+      price: `₦${pendingWithdrawals}`,
       bg: '#FFE2C7'
     },
     {
       icon: money,
       name: 'No of jobs recieved',
-      price: '200',
+      price: '0',
       bg: 'rgba(87, 159, 190, 0.2)'
     },
     {
       icon: card,
       name: 'No. of Ads Promoted',
-      price: '162',
+      price: `${adsPromoted}`,
       bg: '#C8C7FF'
     },
     {
       icon: chart,
       name: 'No. of Videos accepted',
-      price: '3',
+      price: `${videosAccepted}`,
       bg: '#F4D5FF',
     },
     {
       icon: chart,
       name: 'No. of Visitors',
-      price: '102',
+      price: '0',
       bg: '#FFE2E4'
     },
     {
       icon: chart,
       name: 'No. of Ads Converted',
-      price: '102',
+      price: `${adsConverted}`,
       bg: '#C7FFDD',
       nameClass: 'balance'
     },
@@ -150,43 +167,43 @@ const Index = ({router}) => {
     {
       icon: money,
       name: 'Total Balance',
-      price: '₦200,000.35',
+      price: `₦${totalBalance}`,
       bg: '#D2EFFF'
     },
     {
       icon: wallet,
       name: 'Pending Withdrawal',
-      price: '₦15,000.35',
+      price: `₦${pendingWithdrawals}`,
       bg: '#FFE2C7'
     },
     {
       icon: money,
       name: 'No of jobs recieved',
-      price: '200',
+      price: '0',
       bg: 'rgba(87, 159, 190, 0.2)'
     },
     {
       icon: card,
       name: 'No. of Ads Promoted',
-      price: '162',
+      price: `${adsPromoted}`,
       bg: '#C8C7FF'
     },
     {
       icon: chart,
       name: 'No. of Ads Converted',
-      price: '102',
+      price: `${adsConverted}`,
       bg: '#C7FFDD'
     },
     {
       icon: chart,
       name: 'No. of Visitors',
-      price: '102',
+      price: '0',
       bg: '#FFE2E4'
     },
     {
       icon: chart,
       name: 'No. of Videos accepted',
-      price: '3',
+      price: `${videosAccepted}`,
       bg: '#F4D5FF'
     }
    
@@ -202,8 +219,8 @@ const Index = ({router}) => {
         <StyledHome>
           <ScrollContainer className="home-dashboard">
             <div className="welcome">
-              <div className="profile-img">
-                <Image src={profile} alt='profile picture'/>
+              <div className="profile-img" style={{borderRadius: '45%'}}>
+                <Image src={profile} width={145} height={134} alt='profile picture'/>
               </div>
   
               <div className="user-details">

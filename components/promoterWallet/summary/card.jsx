@@ -8,7 +8,7 @@ const Card = (props) => {
         <Image src={props.img} alt="Money Icon" />
         <p>{props.text}</p>
       </div>
-      <div className="amount">&#8358;{props.amount}</div>
+      <div className="amount">{props.amount}</div>
     </CardStyles>
   );
 };

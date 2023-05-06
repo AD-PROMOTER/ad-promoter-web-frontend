@@ -1,29 +1,18 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 import ModalContainer from '../ModalContainer';
 import { PaymentDetailsStyles } from './styles';
 import Image from 'next/image';
-
 import close from '@/public/assets/close-circle.svg';
+import { useAddWallet } from '@/hooks/useAddWallet';
 
 const PaymentDetailsModal = (props) => {
-  const [bankName, setBankName] = useState("");
+  const [bankCode, setBankCode] = useState("");
   const [acctName, setAcctName] = useState("");
   const [acctNumber, setAcctNumber] = useState("");
-
-  const bankNameRef = useRef();
-  const acctNameRef = useRef();
-  const acctNumberRef = useRef();
-
-  const handleChange = (e) => {
-    setBankName(bankNameRef.current.value);
-    setAcctName(acctNameRef.current.value);
-    setAcctNumber(acctNumberRef.current.value);
-  }
-
-  const toggleModal = () => {
-    props.onClose();
-    props.onOpen();
+  const {createBank,isLoading} = useAddWallet()
+  const saveBank = () => {
+    createBank(bankCode,acctName,acctNumber,props)
   }
 
   return (
@@ -44,11 +33,12 @@ const PaymentDetailsModal = (props) => {
                   className="input__element"
                   name="bankName"
                   id="bankName"
-                  ref={bankNameRef}
-                  onChange={handleChange}
+                  value={bankCode}
+                  onChange={(e) => setBankCode(e.target.value)}
                 >
-                  <option>Select a bank</option>
-                  {/* <option>Guaranty Trust Bank</option> */}
+                  {props.banks.map((index)=>(
+                    <option key={index.code} value={index.code}>{index.name}</option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -62,8 +52,7 @@ const PaymentDetailsModal = (props) => {
                   value={acctName}
                   type="text"
                   placeholder="Enter your account name"
-                  ref={acctNameRef}
-                  onChange={handleChange}
+                  onChange={(e) => setAcctName(e.target.value)}
                 />
               </div>
             </div>
@@ -75,16 +64,15 @@ const PaymentDetailsModal = (props) => {
                   id="acctNumber"
                   name="acctNumber"
                   value={acctNumber}
-                  type="text"
+                  type="number"
                   placeholder="Enter your account number"
-                  ref={acctNumberRef}
-                  onChange={handleChange}
+                  onChange={(e)=>setAcctNumber(e.target.value)}
                 />
               </div>
             </div>
           </form>
           <div className="submit">
-            <button onClick={toggleModal}>Save changes</button>
+            <button onClick={saveBank}>{isLoading ? 'Saving...':'Save changes'}</button>
           </div>
         </div>
       </PaymentDetailsStyles>

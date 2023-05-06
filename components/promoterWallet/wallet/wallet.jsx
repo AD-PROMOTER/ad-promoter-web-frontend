@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Image from 'next/image';
 import plus from '@/public/assets/plus.svg';
@@ -10,11 +10,13 @@ import EditWalletDropdown from './Dropdown';
 import Card from '../summary/card';
 import money from '@/public/assets/money-2.svg';
 import AdminWalletStyles from '@/styles/adminWallet';
+import axios from 'axios';
 
 const Wallet = (props) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [firstBank, setFirstBank] = useState(false);
   const [secondBank, setSecondBank] = useState(false);
+  const [selectedBank, setSelectedBank] = useState(null);
 
   const toggleDropdown = () => {
     if (showDropdown) {
@@ -56,7 +58,7 @@ const Wallet = (props) => {
           className="intro__add"
           onClick={props.onOpenPaymentDetailsModal}
         >
-          <Image src={plus} alt="Add banck account icon" />
+          <Image src={plus} alt="Add bank account icon" />
         </button>
       </div>
 
@@ -72,49 +74,39 @@ const Wallet = (props) => {
         </AdminWalletStyles>
       ) : null}
 
-      <div>
-        <div
-          className={firstBank ? 'container bank1 clicked' : 'container bank1'}
-          onClick={selectFirstBank}
-        >
-          <div className="container__acctdetails">
-            <Image src={gtb} alt="Guarantee trust bank logo" />
-            <div>
-              <p className="acctNum">02347685075</p>
-              <p className="acctName">Skylar Diaz</p>
-            </div>
-          </div>
-          <div className="container__select">
-            {firstBank ? (
-              <input type="checkbox" id="bank-2" name="" checked />
-            ) : (
-              <input type="checkbox" id="bank-2" name="" />
+      <>     
+        {!props.accountData || props.isLoading ? (
+          <p>Loading</p>
+        ):(
+          <>      
+            {props.accountData.length === 0 ?(
+              <p>Add an account</p>
+            ):(
+              <div>
+                {[...props.accountData].reverse().map((index)=>(
+                  <div
+                  key={index.id}
+                    className={selectedBank === index.id ? 'container bank1 clicked': 'container bank1'}
+                    onClick={()=>setSelectedBank(index.id)}
+                  >
+                    <div className="container__acctdetails">
+                      {/* <Image src={i.logo} width={0} height={0} alt="Guarantee trust bank logo" /> */}
+                      <div>
+                        <p className="acctNum">{index.details.account_number}</p>
+                        <p className="acctName">{index.details.account_name}</p>
+                      </div>
+                    </div>
+                    <div className="container__select">
+                      <input type="radio" name="banks" value={index.id} checked={selectedBank === index.id} onChange={() => setSelectedBank(index.id)}/> 
+                      <span className="checkmark"></span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
-            <span className="checkmark"></span>
-          </div>
-        </div>
-
-        <div
-          className={secondBank ? 'container bank1 clicked' : 'container bank1'}
-          onClick={selectSecondBank}
-        >
-          <div className="container__acctdetails">
-            <Image src={fcmb} alt="FCMB logo" />
-            <div>
-              <p className="acctNum">42456530765</p>
-              <p className="acctName">Mitchelle Diaz</p>
-            </div>
-          </div>
-          <div className="container__select">
-            {secondBank ? (
-              <input type="checkbox" id="bank-2" name="" checked />
-            ) : (
-              <input type="checkbox" id="bank-2" name="" />
-            )}
-            <span className="checkmark"></span>
-          </div>
-        </div>
-      </div>
+          </>
+        )}
+      </>
 
       <div className="buttonContainer">
         <button onClick={props.onOpenWithdrawProcess}>

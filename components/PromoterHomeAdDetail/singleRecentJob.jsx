@@ -15,7 +15,7 @@ import { detailsAd, directlinkAd, visualAd } from './data'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 
-const DetailedAd = () => {
+const SingleRecentJob = () => {
     const [showReport, setShowReport] = useState(false)
     const ref = useRef(null)
     const [isReadMore, setIsReadMore] = useState(true);
@@ -188,4 +188,4 @@ const DetailedAd = () => {
   )
 }
 
-export default DetailedAd;
+export default SingleRecentJob;

@@ -81,7 +81,7 @@ export const WithdrawProcessStyles = styled.div`
           position: relative;
           width: 50px;
 
-          input[type='checkbox'] {
+          input[type='radio'] {
             opacity: 0;
             cursor: pointer;
             width: 100%;
@@ -102,7 +102,7 @@ export const WithdrawProcessStyles = styled.div`
             top: 0.5rem;
           }
 
-          input[type='checkbox']:checked ~ .checkmark {
+          input[type='radio']:checked ~ .checkmark {
             background: var(--light-blue);
           }
 
@@ -112,7 +112,7 @@ export const WithdrawProcessStyles = styled.div`
             display: none;
           }
 
-          input[type='checkbox']:checked ~ .checkmark:after {
+          input[type='radio']:checked ~ .checkmark:after {
             display: block;
           }
 
@@ -469,7 +469,7 @@ export const PaymentDetailsStyles = styled.div`
           outline: 0;
           font-size: 1rem;
           font-weight: 600;
-          color: #e0e0e0;
+          color: #000;
           letter-spacing: -0.011em;
         }
       }

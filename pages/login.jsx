@@ -18,6 +18,7 @@ import PreferenceContext from "@/context/signupContext"
 import { useLogin } from "@/hooks/useLogin"
 import { useAuthContext } from "@/hooks/useAuthContext"
 import SignupContext from "@/context/signupContext"
+import { Spinner } from "@chakra-ui/react"
 
 const Login = () => {
   const router = useRouter();
@@ -28,33 +29,20 @@ const Login = () => {
   const [token, setToken] = useState("");
   const [role,setRole] = useState("");
   const [user,setUser] = useState([])
-  const {setIsInputWithValue,isInputWithValue} = useContext(SignupContext)
-  const {isLoginInputWithValue,setIsLoginInputWithValue} = useContext(PreferenceContext)
+  const {setIsInputWithValue} = useContext(SignupContext)
   const {login,error,isLoading} = useLogin()
   useEffect(() => {
-    
-    const userRole = JSON.parse(localStorage.getItem("user"));
-    if (userRole) {
-      setUser(userRole.user)
-      setRole(userRole.user.role)
-    }
     if(userEmail !== '' && userPassword !== '' ){
       setIsInputWithValue(true)
     }else{
       setIsInputWithValue(false)
-    }
-    if(role === 'placer'){
-      router.push('/placers')
-    }else if(role === 'promoter'){
-      router.push('/promoters')
     }
   })
 
   const handleSubmit = (e) => {
     e.preventDefault()
    if(userEmail && userPassword !== ''){
-    login(userEmail,userPassword)
-    
+    login(userEmail,userPassword)    
    }
   }
   return (
@@ -120,10 +108,9 @@ const Login = () => {
               </div>
               <div className="error-container">
                 <p>Forgot your password</p>
-                <p className="error">{error}</p>
               </div>
             </div>
-            <Button text={isLoading ? 'Loading...' : 'Log in'} />
+            <Button text={isLoading ? <Spinner /> : 'Log in'} />
           </form>
         </div>
       </Overlay>
@@ -184,7 +171,7 @@ const Login = () => {
           </div>
           <p>Forgot your password</p>
         </div>
-        <Button text='Log in' />
+        <Button text={isLoading ? <Spinner /> : 'Log in'} />
       </form>
     </MobileLogin>
     </>

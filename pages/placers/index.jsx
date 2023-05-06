@@ -18,7 +18,7 @@ import refresh from '@/public/assets/refresh-2.svg'
 import money from '@/public/assets/money-send.svg'
 import { StyledHomeContainer, TabContainer } from "@/styles/promoters/home"
 import Link from "next/link"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState,useContext } from "react"
 import ArrowUp from "@/public/assets/arrow-up"
 import ScrollContainer from 'react-indiana-drag-scroll'
 import more from '@/public/assets/ellipsis.svg'
@@ -29,7 +29,7 @@ import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import bell from '@/public/assets/notif.svg'
 import adpic from '@/public/assets/adpics.png'
-
+import UserContext from "@/context/userContext"
 
 const Index = () => {
   const [showSortDropdown, setShowSortDropdown] = useState(false)
@@ -44,13 +44,16 @@ const Index = () => {
   const [runningAds,setRunningAds] = useState('')
   const [completeAds,setCompleteAds] = useState('')
   const [conversionGrowth,setConversionGrowth] = useState('')
-  // const [newUserScreen,setNewUserScreen] = useState
+  const {user} = useContext(UserContext)
+
+  console.log(user);
 
   useEffect(() => {
-    const userName = JSON.parse(localStorage.getItem("user"));
-    if (userName) {
-      setUserName(userName.user.accountName);
-      token.current = userName.token
+    const user = JSON.parse(localStorage.getItem("user-detail"));
+    const userToken = JSON.parse(localStorage.getItem("user-token"));
+    if (user) {
+      setUserName(user.accountName);
+      token.current = userToken
     }
 
       Promise.all([

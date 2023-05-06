@@ -286,6 +286,7 @@ export const Feed = styled.div`
         font-size: 1.4rem;
         line-height: 2.1rem;
         color: var(--white);
+        text-transform: capitalize;
 
         @media screen and (max-width: ${size.mobileL}) {
           margin-left: 242px;

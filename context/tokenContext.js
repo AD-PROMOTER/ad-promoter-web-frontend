@@ -23,7 +23,7 @@ export const TokenContextProvider = ({ children }) => {
       dispatch({ type: 'TOKEN_VALUE', payload: token });
     }
   }, []);
-  console.log('AuthContext state: ', state);
+  // console.log('AuthContext state: ', state);
 
   return (
     <TokenContext.Provider value={{ ...state, dispatch }}>

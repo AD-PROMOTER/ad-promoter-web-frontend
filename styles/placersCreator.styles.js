@@ -87,6 +87,7 @@ export const StyledCreator = styled.div`
             font-size: 12px;
             line-height: 18px;
             color: #333333;
+            text-transform: capitalize;
           }
         }
         .status {
@@ -101,6 +102,7 @@ export const StyledCreator = styled.div`
             font-weight: 600;
             font-size: 1rem;
             line-height: 1.5rem;
+            color: #ffffff;
           }
         }
       }
@@ -392,7 +394,7 @@ export const StyledDirectLink = styled.div`
         font-family: var(--font-family-2);
       }
     }
-    form {
+    .form {
       display: flex;
       flex-direction: column;
       align-items: flex-start;

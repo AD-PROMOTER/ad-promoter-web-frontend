@@ -28,6 +28,13 @@ export default function Home() {
   useEffect(() => {
     router.prefetch('/signup');
   }, [router]);
+  const handleGoogleSignIn = () => {
+    window.open('http://35.153.52.116/api/v1/auth/google', '_self');
+  };
+
+  const handleFbSignIn = () => {
+    window.open('http://35.153.52.116/api/v1/auth/facebook', '_self');
+  };
   return (
     <>
       <StyledOnboarding>
@@ -110,8 +117,12 @@ export default function Home() {
           </p>
         </div>
         <div className="socials">
-          <SocialBtn icon={google} text="Google" />
-          <SocialBtn icon={fb} text="Facebook" />
+          <div onClick={handleGoogleSignIn}>
+            <SocialBtn icon={google} text="Google" />
+          </div>
+          <div onClick={handleFbSignIn}>
+            <SocialBtn icon={fb} text="Facebook" />
+          </div>
         </div>
         <div className="divider">
           <div></div>
@@ -175,8 +186,12 @@ export default function Home() {
               </p>
             </div>
             <div className="socials">
-              <SocialBtn icon={google} text="Google" />
-              <SocialBtn icon={fb} text="Facebook" />
+              <div onClick={handleGoogleSignIn}>
+                <SocialBtn icon={google} text="Google" />
+              </div>
+              <div onClick={handleFbSignIn}>
+                <SocialBtn icon={fb} text="Facebook" />
+              </div>
             </div>
             <div className="divider">
               <div className="line"></div>

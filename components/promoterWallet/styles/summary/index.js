@@ -57,6 +57,7 @@ export const CardStyles = styled.div`
   padding: 2.5rem 0;
   width: 23rem;
   border-radius: 0.75rem;
+  margin-left: 1rem;
   background: var(${(props) => props.bg});
   box-shadow: var(${(props) => props.shadow});
 

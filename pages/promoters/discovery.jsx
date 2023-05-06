@@ -12,6 +12,7 @@ import Recent from "@/components/MobilePromoterHome/Recent"
 import SavedJobs from "@/components/MobilePromoterHome/SavedJobs"
 import ArrowDown from "@/public/assets/arrow-down"
 import ArrowUp from "@/public/assets/arrow-up"
+import DiscoveryJob from "@/components/DiscoveryFolder/DiscoveryJob"
 
 
 const Discovery = ({router}) => {
@@ -73,7 +74,7 @@ const Discovery = ({router}) => {
                 </Link>
               </div>
               <p className="tab-para">Recommended Jobs</p>
-              <SavedJobs />
+              <DiscoveryJob />
             </>
           )}
         </MobileDiscovery>
@@ -138,7 +139,7 @@ const Discovery = ({router}) => {
             )}
           </div>
           <div className="show-recent">
-            {showRecentJobs ? <Recent /> : <SavedJobs />}
+            {showRecentJobs ? <Recent /> : <DiscoveryJob />}
           </div>
         </TabDiscovery>
     </div>

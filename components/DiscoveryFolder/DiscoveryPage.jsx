@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
@@ -7,14 +7,65 @@ import DiscoveryFeed from './DiscoveryFeed'
 import DiscoveryJob from './DiscoveryJob'
 import Modal from './ReportModal/Modal'
 import Backdrop from './ReportModal/Backdrop'
+import axios from 'axios'
 
 const DiscoveryPage = () => {
     const [showDropdown, setShowDropdown] = useState(false)
     const [showReport, setShowReport] = useState(false)
+    const [searchTag,setSearchTag] = useState('')
+    const token = useRef('')
+    const [recommendedJobs,setRecommendedJobs] = useState()
+    const [feed,setFeed] = useState()
+    const [isLoading,setIsLoading] = useState(false)
 
+    useEffect(()=>{
+        const userToken = JSON.parse(localStorage.getItem("user-token"));
+        if (userToken) {
+            token.current = userToken
+        }
+        if(token.current){
+            fetchFeed()
+            fetchRecommended()
+        }
+    },[])
+
+    const fetchFeed = async(searchTag) =>{
+        setIsLoading(true)
+        const result = await axios(`http://35.153.52.116/api/v1/ads?page=1&pageSize=10&name=v`,{
+          headers:{
+            Authorization: `Bearer ${token.current}`
+          }
+        })
+        setFeed(result.data.data.data)
+        setIsLoading(false)
+    }
+
+    const fetchRecommended = async(searchTag) =>{
+        setIsLoading(true)
+        const result = await axios(`http://35.153.52.116/api/v1/ads/recommended?page=1&pageSize=10&name=${searchTag}`,{
+          headers:{
+            Authorization: `Bearer ${token.current}`
+          }
+        })
+        setRecommendedJobs(result.data.data.data)
+        setIsLoading(false)
+    }
+
+    const handleSearch = (event) =>{
+        if (event.key === 'Enter') {
+            if(!searchTag){
+                return
+            }else{
+                fetchFeed(searchTag)
+                fetchRecommended(searchTag)
+            }
+        }
+    }
+    
     const handleShowReport = () => {
         setShowReport(true)
     }
+
 
   return (
     <Desktop>
@@ -30,7 +81,7 @@ const DiscoveryPage = () => {
                         </path>
                         </svg>
                     </span>
-                    <input placeholder='Search ad niche...'/>
+                    <input name='search' id='search' value={searchTag} onKeyDown={handleSearch} onChange={(e)=>setSearchTag(e.target.value)} placeholder='Search ad niche...'/>
                 </div>  
                 <div className='select' onClick={() => setShowDropdown(!showDropdown)}>
                     <div>Filter</div>
@@ -53,10 +104,11 @@ const DiscoveryPage = () => {
         <Container>
             <div className='jobs'>
                 <div className='col1'>
-                    <DiscoveryFeed clickShow={handleShowReport}/>
+                    <DiscoveryFeed isLoading={isLoading} feed={feed} clickShow={handleShowReport}/>
                 </div>
                 <div className='col2'>
-                    <DiscoveryJob clickShow={handleShowReport}/>
+                    <h3 style={{fontWeight: 'bold', fontSize: '2rem',marginBottom:'1rem'}}>Recommended Jobs</h3>
+                    <DiscoveryJob isLoading={isLoading} recommendedJobs={recommendedJobs} clickShow={handleShowReport}/>
                 </div>
             </div>
         </Container>

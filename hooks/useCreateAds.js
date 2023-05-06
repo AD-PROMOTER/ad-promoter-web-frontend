@@ -4,21 +4,17 @@ import { useEffect, useState } from 'react';
 export const useCreateAds = () => {
   const [error, setError] = useState(null);
   const [msg, setMsg] = useState('');
-  const [isLoading, setIsLoading] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [token, setToken] = useState('');
   const [redirect, setRedirect] = useState('');
   const router = useRouter();
 
   useEffect(() => {
-    const userToken = JSON.parse(localStorage.getItem('token'));
+    const userToken = JSON.parse(localStorage.getItem('user-token'));
     if (userToken) {
-      setToken(userToken.token);
+      setToken(userToken);
     }
   });
-
-  useEffect(() => {
-    router.push(redirect);
-  }, [redirect]);
 
   const createAd = async (
     productName,
@@ -61,12 +57,12 @@ export const useCreateAds = () => {
 
     if (!response.ok) {
       console.log(json);
-      console.log('ad not created');
+      setIsLoading(false);
     }
     if (response.ok) {
       console.log(json);
-      console.log('ad created');
-      setRedirect(json.data.paymentDetails.url);
+      setIsLoading(false);
+      // router.push(json.data.paymentDetails.url)
     }
   };
   return { createAd, isLoading, error, msg, redirect };

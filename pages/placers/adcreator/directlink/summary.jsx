@@ -8,7 +8,7 @@ import { useCreateAds } from '@/hooks/useCreateAds'
 const Summary = () => {
     const router = useRouter()
     const {productName,redirectUrl,cta,visitors,productDescription,webAddress,amount,advertType,tags,containAdultContent,images} = useContext(AdPlacerContext)
-    const {createAd,redirect} = useCreateAds()
+    const {createAd,isLoading} = useCreateAds()
 
     
     const handlePush = () =>{
@@ -63,7 +63,7 @@ const Summary = () => {
             </div>
         </div>
 
-        <div className="btn" onClick={handlePush}>Run Advert</div>
+        <div className="btn" onClick={handlePush}>{isLoading ? 'Running' : 'Run Advert'}</div>
     </StyledDirectLinkSummary>
   )
 }

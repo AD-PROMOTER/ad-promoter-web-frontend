@@ -11,7 +11,7 @@ const Summary = () => {
     const router = useRouter()
     const [token ,setToken] = useState('')
     const {productName,redirectUrl,cta,visitors,productDescription,webAddress,amount,advertType,tags,containAdultContent,images} = useContext(AdPlacerContext)
-    const {createAd} = useCreateAds()
+    const {createAd,isLoading} = useCreateAds()
 
     useEffect(()=>{
         const userToken = JSON.parse(localStorage.getItem('token'));
@@ -22,7 +22,7 @@ const Summary = () => {
     },[setToken])
 
     const handlePush = () =>{
-        createAd(token,productName,redirectUrl,productDescription,tags,advertType,cta,images,webAddress,amount,containAdultContent)
+        createAd(productName,redirectUrl,productDescription,tags,advertType,cta,images,webAddress,amount,containAdultContent)
         // router.push('/placers/adcreator/success')
     }
   return (
@@ -64,14 +64,14 @@ const Summary = () => {
                     <p>{productDescription}</p>
                 </div>
 
-                <div className="product-img">
+                {/* <div className="product-img">
                     <h4>Product Images</h4>
                     <div className="img-container">
                         <Image src={Img1} alt='product'/>
                         <Image src={Img2} alt='product'/>
-                        {/* <Image src={Img1} alt='product'/> */}
+                        <Image src={Img1} alt='product'/>
                     </div>
-                </div>
+                </div> */}
                 
                 <div className='web-address'>
                     <h4>Company web address</h4>
@@ -84,7 +84,7 @@ const Summary = () => {
             </div>
         </div>
 
-        <div className="btn" onClick={handlePush}>Run Advert</div>
+        <div className="btn" onClick={handlePush}>{isLoading ? 'Running' : 'Run Advert'}</div>
     </StyledDirectLinkSummary>
   )
 }

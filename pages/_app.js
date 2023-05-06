@@ -10,6 +10,7 @@ import AdminLayout from '@/components/AdminLayout';
 import { AuthContextProvider } from '@/context/authContext';
 import PlacersLayout from '@/components/PlacersLayout';
 import { TokenContextProvider } from '@/context/tokenContext';
+import { UserProvider } from '../context/userContext';
 
 function MyApp({ Component, pageProps, router }) {
   if (router.pathname.startsWith('/admin')) {
@@ -34,10 +35,12 @@ function MyApp({ Component, pageProps, router }) {
           <AdPlacerProvider>
             <NotificationProvider>
               <PlacersLayout>
-                <VariableStyle />
-                <GlobalStyle />
-                <SanitizeStyle />
-                <Component {...pageProps} />
+                <UserProvider>
+                  <VariableStyle />
+                  <GlobalStyle />
+                  <SanitizeStyle />
+                  <Component {...pageProps} />
+                </UserProvider>
               </PlacersLayout>
             </NotificationProvider>
           </AdPlacerProvider>
@@ -69,10 +72,12 @@ function MyApp({ Component, pageProps, router }) {
         <TokenContextProvider>
           <NotificationProvider>
             <PromoterLayout>
-              <VariableStyle />
-              <GlobalStyle />
-              <SanitizeStyle />
-              <Component {...pageProps} />
+              <UserProvider>
+                <VariableStyle />
+                <GlobalStyle />
+                <SanitizeStyle />
+                <Component {...pageProps} />
+              </UserProvider>
             </PromoterLayout>
           </NotificationProvider>
         </TokenContextProvider>
@@ -83,10 +88,12 @@ function MyApp({ Component, pageProps, router }) {
     <AuthContextProvider>
       <TokenContextProvider>
         <SignupProvider>
-          <VariableStyle />
-          <GlobalStyle />
-          <SanitizeStyle />
-          <Component {...pageProps} />
+          <UserProvider>
+            <VariableStyle />
+            <GlobalStyle />
+            <SanitizeStyle />
+            <Component {...pageProps} />
+          </UserProvider>
         </SignupProvider>
       </TokenContextProvider>
     </AuthContextProvider>

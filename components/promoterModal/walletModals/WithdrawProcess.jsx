@@ -7,9 +7,11 @@ import gtb from '@/public/assets/gtb.svg';
 import fcmb from '@/public/assets/fcmb.svg';
 import Button from '@/components/promoterButton/Button';
 import { WithdrawProcessStyles } from './styles';
+import { formatCurrency } from '@/utils/formatCurrency';
+import ButtonStyles from '@/components/promoterButton/styles';
 
 const ProcessWithdrawModal = (props) => {
-  const [amount, setAmount] = useState('');
+  const [selectedBank, setSelectedBank] = useState(null);
   const [firstBank, setFirstBank] = useState(false);
   const [secondBank, setSecondBank] = useState(false);
   const inputRef = useRef();
@@ -17,10 +19,8 @@ const ProcessWithdrawModal = (props) => {
   const {onOpenWithdrawDetails, onCloseWithdrawProcess} = props;
   const {showWithdrawDetailsModal} = props.show;
 
-  console.log(showWithdrawDetailsModal);
-
-  const handleChange = (props) => {
-    setAmount(inputRef.current.value);
+  const handleChange = () => {
+    props.setAmount(inputRef.current.value);
   };
 
   const toggleFirstBank = () => {
@@ -29,10 +29,11 @@ const ProcessWithdrawModal = (props) => {
     }
     return;
   }
-
-  const toggleSecondBank = () => {
-    if(secondBank) {
-      setSecondBank(false);
+  
+  const handleClick = () =>{
+    if(selectedBank && props.amount){
+      onOpenWithdrawDetails()
+      onCloseWithdrawProcess()
     }
     return;
   }
@@ -58,34 +59,24 @@ const ProcessWithdrawModal = (props) => {
         <form>
           <h2>Process Withdrawal</h2>
           <div className="acct">
-            <div className={firstBank ? "acct__container acct__bank1 acct__clicked" :"acct__container acct__bank1"} onClick={selectFirstBank}>
-              <div className="acctDetails">
-                <Image src={gtb} alt="Guarantee trust bank logo" />
-                <div>
-                  <p className="acctNum">02347685075</p>
-                  <p className="acctName">Skylar Diaz</p>
+            {[...props.accountData].reverse().map((index)=>(
+              <div 
+                key={index.id} 
+                className={selectedBank === index.id ? "acct__container acct__bank1 acct__clicked" :"acct__container acct__bank1"} 
+                onClick={()=>setSelectedBank(index.id)}>
+                <div className="acctDetails">
+                  {/* <Image src={gtb} alt="Guarantee trust bank logo" /> */}
+                  <div>
+                    <p className="acctNum">{index.details.account_number}</p>
+                    <p className="acctName">{index.details.account_name}</p>
+                  </div>
+                </div>
+                <div div className="select">
+                <input type="radio" name="banks" value={index.id} checked={selectedBank === index.id} onChange={() => setSelectedBank(index.id)}/> 
+                  <span className="checkmark"></span>
                 </div>
               </div>
-              <div div className="select">
-                {firstBank ? <input type="checkbox" id="bank-1" checked /> : <input type="checkbox" id="bank-1" />}
-                
-                <span className="checkmark"></span>
-              </div>
-            </div>
-
-            <div className={secondBank ? "acct__container acct__clicked" : "acct__container"} onClick={selectSecondBank}>
-              <div className="acctDetails">
-                <Image src={fcmb} alt="FCMB logo" />
-                <div>
-                  <p className="acctNum">42456530765</p>
-                  <p className="acctName">Mitchelle Diaz</p>
-                </div>
-              </div>
-              <div className="select">
-                {secondBank ? <input type="checkbox" id="bank-2" name="" checked /> : <input type="checkbox" id="bank-2" name="" />}                
-                <span className="checkmark"></span>
-              </div>
-            </div>
+            ))}
           </div>
           <div className="amountInput">
             <div className='input-container'>
@@ -94,19 +85,22 @@ const ProcessWithdrawModal = (props) => {
                 type="number"
                 id="amount"
                 name="amount"
-                value={amount}
+                value={props.amount}
                 ref={inputRef}
                 onChange={handleChange}
               />
             </div>
             <div className="balance-container">
               <p className='balance'> BALANCE:</p>
-              <p className='balance-amount'>₦200,000.35</p>
+              <p className='balance-amount'>{formatCurrency(props.totalBalance)}</p>
             </div>
           </div>
           {/* <Button text="Withdraw" onOpen={onOpenWithdrawDetails} onClose={onCloseWithdrawProcess}/> */}
         </form>
-        <Button text="Withdraw" onOpen={onOpenWithdrawDetails} onClose={onCloseWithdrawProcess}/>
+        <ButtonStyles onClick={handleClick}>
+          <button>Withdraw</button>
+        </ButtonStyles>
+        {/* <Button text="Withdraw" onOpen={onOpenWithdrawDetails} onClose={onCloseWithdrawProcess}/> */}
       </WithdrawProcessStyles>
     </ModalContainer>
   );

@@ -8,24 +8,90 @@ import AdPlacerContext from '@/context/adPlacerContext'
 import { useContext } from 'react'
 import ArrowDown from '@/public/assets/arrow-down'
 import CloudPlus from '@/public/assets/cloud-plus'
-import { useImageUpload } from '@/hooks/useImageUpload'
+
 const Detailsad = () => {
     const router = useRouter()
     const {productName,setProductName,productDescription,setProductDescription,tags,setTags,webAddress,setWebAddress,setContainAdultContent,images,setImages,imageURLs,setImageURLs,cta,setCta} = useContext(AdPlacerContext)
+    const token = useRef('')
     const [tagValue,setTagValue] = useState('');
     const [isDropdownClicked,setIsDropdownClicked] = useState(false)
     const [showModal,setShowModal] = useState(false)
-    const [token,setToken] = useState('')
-    const [selectedFile, setSelectedFile] = useState(null)
-    const {imageUpload} = useImageUpload()
+    const submitButtonRef = useRef(null);
+    const [image, setImage] = useState(null);
 
     useEffect(()=>{
-        const userRole = JSON.parse(localStorage.getItem("token"));
-        if (userRole) {
-        setToken(userRole.token);
+        const userToken = JSON.parse(localStorage.getItem("user-token"));
+        if (userToken) {
+            token.current = userToken
         }
         setCta('Select a conversion button')
-    },[setToken,setCta])
+    },[token,setCta])
+
+    // useEffect(()=>{
+    //     console.log(image);
+    //     const formData = new FormData;
+    //     formData.append('image', `${image.name};type=${image.type}`);
+    //     const handleSubmit = async () => {
+    
+    //         const res = await fetch('http://35.153.52.116/api/v1/fileUpload/image', {
+    //           method: 'POST',
+    //           body: formData,
+    //           headers:{
+    //             Accept: "*/*",
+    //             Authorization: `Bearer ${token.current}`,
+    //             "Content-Type": "multipart/form-data"
+    //           }
+    //         });
+    //         const data = await res.json();
+    //         if(res.ok){
+    //             console.log(data);
+    //             console.log('image uploaded');
+    //         }
+    //         if(!res.ok){
+    //             console.error('failed to upload')
+    //             console.log(data);
+    //         }
+    //     };
+        
+    //         handleSubmit()
+        
+
+    // },[image])
+
+    const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+    // submitButtonRef.current.click();
+    };
+
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+
+    //     if (!image) {
+    //         console.log('No image found');
+    //         return;
+    //     }
+
+    //     const formData = new FormData();
+    //     formData.append('image', image);
+
+    //     const res = await fetch('http://35.153.52.116/api/v1/fileUpload/image', {
+    //       method: 'POST',
+    //       body: formData,
+    //       headers:{
+    //         Authorization: `Bearer ${token.current}`,
+    //       }
+    //     });
+    //     const data = await res.json();
+    //     // console.log(data);
+    //     if(res.ok){
+    //         console.log(data);
+    //         console.log('image uploaded');
+    //     }
+    //     if(!res.ok){
+    //         console.error('failed to upload')
+    //         console.log(data);
+    //     }
+    // };
 
     const ClickedList = (e) =>{
         setCta(e.target.innerText)
@@ -57,18 +123,7 @@ const Detailsad = () => {
         }
     }
 
-    const handleFileSelect = (event) => {
-        setSelectedFile(event.target.files)
-    }
-
-    const fileUploadHandler = (e) =>{
-        e.preventDefault()   
-       const formData = new FormData()
-       formData.append('selectedFile',selectedFile)
-        imageUpload(selectedFile.name)
-        console.log(selectedFile);
-    }
-    
+ 
   return (
     <StyledDirectLink>
         <div className="header">
@@ -101,7 +156,7 @@ const Detailsad = () => {
                 <h4>Creating a Details Advert</h4>
                 <p>Kindly supply the following information.</p>
             </div>
-            <form action="">
+            <div className='form'>
                 <div className="product-name">
                     <label htmlFor="productName">1. What is your Product Name</label>
                     <input 
@@ -128,10 +183,14 @@ const Detailsad = () => {
                     <div className="upload-container">
                         <div className="text-container">
                             <CloudPlus />
-                            <p>Drop files to upload or <span onClick={() => setShowModal(true)}>browse</span></p>  
+                            {/* <form onSubmit={handleSubmit}> */}
+                                <input type="file" id="file-input" style={{ display: 'none' }} onChange={handleImageChange} />
+                                <p>Drop files to upload or <span onClick={() => document.getElementById('file-input').click()}>browse</span></p>  
+                                {/* <button type="submit" style={{ display: 'none' }} ref={submitButtonRef} /> */}
+                            {/* </form> */}
                         </div>
                         <div>
-                            {imageURLs.map(imageSrc => <Image key={imageSrc} src={imageSrc} alt='imageSrc' width={20} height={20}/>)}
+                            {/* {imageURLs.map(imageSrc => <Image key={imageSrc} src={imageSrc} alt='imageSrc' width={20} height={20}/>)} */}
                             {/* <span>&times;</span> */}
                         </div>
                     </div>
@@ -211,7 +270,7 @@ const Detailsad = () => {
                         <p>This advert contains adult content</p>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
 
         <div className="btns">
@@ -219,7 +278,7 @@ const Detailsad = () => {
             <div className="next" onClick={handlePush}>Next</div>
         </div>
 
-        {showModal&&(
+        {/* {showModal&&(
             <ModalBackground onClick={() => setShowModal(false)}>
                 <div onClick={(e)=> e.stopPropagation()} className='file-modal'>
                     <form onSubmit={fileUploadHandler}>
@@ -231,7 +290,7 @@ const Detailsad = () => {
                     </form>
                 </div>
             </ModalBackground>
-        )}
+        )} */}
     </StyledDirectLink>
   )
 }

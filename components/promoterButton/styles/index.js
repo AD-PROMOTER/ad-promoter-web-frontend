@@ -11,7 +11,7 @@ const ButtonStyles = styled.div`
     color: #fff;
     font-weight: 700;
     line-height: 1.5rem;
-    width: 15.3rem;
+    /* width: 15.3rem; */
     cursor: pointer;
   }
 `;

@@ -1,15 +1,18 @@
-import { useState } from 'react';
+import { useToast } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import { useRef, useState } from 'react';
 import { useAuthContext } from './useAuthContext';
 
 export const useLogin = () => {
-  const [error, setError] = useState(null);
-  const [msg, setMsg] = useState('');
+  const error = useRef(null);
+  const msg = useRef('');
   const [isLoading, setIsLoading] = useState(false);
   const { dispatch } = useAuthContext();
+  const toast = useToast();
+  const router = useRouter();
 
   const login = async (phoneNumber, password) => {
     setIsLoading(true);
-    setError(null);
 
     const response = await fetch('http://35.153.52.116/api/v1/auth/signin', {
       method: 'POST',
@@ -25,23 +28,37 @@ export const useLogin = () => {
     const json = await response.json();
 
     if (!response.ok) {
+      error.current = json.success;
       console.log(json);
-      console.log('user not logged in');
-      setIsLoading(false);
-      setError(json.msg);
+      toast({
+        title: json.msg,
+        status: 'warning',
+        duration: '5000',
+        isClosable: true,
+        position: 'top-left',
+      });
       setIsLoading(false);
     }
     if (response.ok) {
-      console.log(json);
-      console.log('user logged in');
-      setError(json.success);
-      setIsLoading(false);
-
+      error.current = json.success;
       //save user to local storage
-      localStorage.setItem('user', JSON.stringify(json));
-
+      localStorage.setItem('user-token', JSON.stringify(json.token));
+      localStorage.setItem('user-detail', JSON.stringify(json.user));
       //update the auth context
       dispatch({ type: 'LOGIN', payload: json });
+      setIsLoading(false);
+      toast({
+        title: 'Logged In Successfully',
+        status: 'sucess',
+        duration: '5000',
+        isClosable: true,
+        position: 'bottom-left',
+      });
+      if (json.user.role === 'placer') {
+        router.push('placers');
+      } else if (json.user.role === 'promoter') {
+        router.push('promoters');
+      }
     }
   };
   // console.log(isLoading);

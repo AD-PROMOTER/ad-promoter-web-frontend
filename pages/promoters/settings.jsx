@@ -23,6 +23,11 @@ import { BackdropContainer } from "@/components/DiscoveryFolder/ReportModal/Moda
 const PromoterSettings = () => {
   const [selected, setSelected] = useState("Settings")
   const [showlogout, setShowlogout] = useState(false)
+  const [userName,setUserName] = useState('')
+  useEffect(() =>{
+    const user = JSON.parse(localStorage.getItem("user-detail"));
+    setUserName(user.accountName);
+  },[])
 
   const settingsTabs = [
     {
@@ -63,7 +68,7 @@ const PromoterSettings = () => {
               <>
                 <div className="user-profile">
                   <Image src={profil} alt='profile-picture'/>
-                  <h2>Hi, Skylar Dias</h2>
+                  <h2>Hi, {userName}</h2>
                   <div className="welcome">
                     <Image src={wave} alt='wave'/>
                     <p>Welcome back!</p>

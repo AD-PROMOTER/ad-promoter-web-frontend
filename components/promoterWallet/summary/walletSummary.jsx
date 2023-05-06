@@ -7,7 +7,7 @@ import chevronDown from '@/public/assets/chevron-down.svg';
 import { WalletSummaryStyles } from '../styles/summary';
 import Card from './card';
 import FilterDropdown from './filterDropdown';
-
+import { formatCurrencyWithoutStyle,formatCurrency } from '@/utils/formatCurrency';
 const WalletSummary = (props) => {
   const [openFilter, setOpenFilter] = useState(false);
 
@@ -42,21 +42,21 @@ const WalletSummary = (props) => {
         <Card
           img={money}
           text={props.admin ? "Total Amount Received" : "Total Balance"}
-          amount="200,000.35"
+          amount={formatCurrency(props.totalBalance)}
           bg="--unknown-1"
           shadow="--shadow-2"
         />
         <Card
           img={emptyWallet}
           text={props.admin ? "Total Amount Paid out" : "Pending Withdrawal"}
-          amount="15,000.35"
+          amount={formatCurrency(props.pendingWithdrawals)}
           bg="--unknown-2"
           shadow="--shadow-3"
         />
         <Card
           img={money}
           text={props.admin ? "Total Amount Unpaid" : "Amount Paid"}
-          amount="5,000.00"
+          amount={formatCurrency(props.amountPaid)}
           bgClass="amount"
           bg="--unknown-3"
           shadow="--shadow-2"

@@ -7,11 +7,10 @@ import { WithdrawalFundsStyles } from './styles';
 import close from '@/public/assets/close-circle.svg';
 import SuccessMark from '@/public/assets/success-mark.gif'
 const WithdrawFundsModal = (props) => {
-  const [withdrawConfirmed, setWithdrawConfirmed] = useState(false);
 
   return (
     <ModalContainer>
-      {withdrawConfirmed ? (
+      {props.withdrawConfirmed ? (
         <WithdrawalFundsStyles>
           <div className="close">
             <button onClick={props.onClose}>
@@ -125,7 +124,7 @@ const WithdrawFundsModal = (props) => {
               <button className="cancel" onClick={props.onClose}>
                 Cancel
               </button>
-              <button className="confirm" onClick={() => setWithdrawConfirmed(true)}>Confirm and Withdraw</button>
+              <button className="confirm" onClick={() => props.setWithdrawConfirmed(true)}>Confirm and Withdraw</button>
             </div>
           </div>
           <hr />
