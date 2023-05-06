@@ -1,8 +1,14 @@
-import { DashboardContainer, DashboardSummaryContainer, RecentAdsContainer, StyledHome } from "@/styles/placerHome.styles"
+import { DashboardContainer, DashboardSummaryContainer, MobilePlacers, RecentAdsContainer, StyledHome, TabPlacers } from "@/styles/placerHome.styles"
 import profile from '@/public/assets/placers-profile.svg'
+import profil from '@/public/assets/Profil.svg'
+import RecentMobile from '@/components/MobilePromoterHome/Recent'
+import SavedJobsMobile from "@/components/MobilePromoterHome/SavedJobs"
+import MobileNotif from '@/components/MobileNotification/index'
+import notif from '@/public/assets/notif.svg'
 import Image from "next/image"
 import hands from '@/public/assets/hands.svg'
 import Placers from '@/public/assets/placers-frame'
+import Placer from '@/public/assets/placers-frame.svg'
 import Flash from '@/public/assets/flash'
 import Cup from '@/public/assets/cup'
 import cup from '@/public/assets/cupIcon.svg'
@@ -30,15 +36,19 @@ import arrowDown from '@/public/assets/arrow-down.svg'
 import bell from '@/public/assets/notif.svg'
 import adpic from '@/public/assets/adpics.png'
 import UserContext from "@/context/userContext"
+import ScrollIntoView from 'react-scroll-into-view'
+
 
 const Index = () => {
   const [showSortDropdown, setShowSortDropdown] = useState(false)
+  const [showRecentJobs, setShowRecentJobs] = useState(true)
   const [showReport, setShowReport] = useState(false)
   const [isReadMore, setIsReadMore] = useState(true);
   const [showReportModal,setShowReportModal] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
   const [listValue, setListValue] = useState('It has gory images')
   const [userName, setUserName] = useState('')
+  const [showNotif, setShowNotif] = useState(false)
   const token = useRef('')
   const ref = useRef(null)
   const [runningAds,setRunningAds] = useState('')
@@ -168,7 +178,8 @@ const Index = () => {
     } 
   ]
   return (
-    <StyledHomeContainer>
+    <>
+      <StyledHomeContainer>
       <StyledHome>
         <DashboardContainer>
           <div className="welcome">
@@ -410,6 +421,140 @@ const Index = () => {
         )}
       </StyledHome>
     </StyledHomeContainer>
+    <MobilePlacers>
+      {showNotif ? <MobileNotif goBack={() => setShowNotif(false)}/>: (
+        <>
+        <div className="welcome">
+        <div className="userProfile">
+          <Image src={profil} alt='profile picture'/>
+          <div className="username">
+            <p>Hi, Skylar Dias</p>
+            <div className="wave">
+              <Image src={hands} alt='hands waving'/>
+              <p className="greeting">Welcome back!</p>                  
+            </div>
+          </div>             
+        </div>
+        <div className="promo">
+          <Image src={notif} alt='notification' onClick={() => setShowNotif(true)}/>
+        </div>            
+      </div>
+      <h2>Dashboard Summary</h2>
+      <div className="dashboard">
+        {summary.map(({Icon,name,num,bg})=>(
+          <div key={name} className="info" style={{backgroundColor: bg}}>
+            <div className="amount">
+              <Icon />
+              <h3>{name}</h3>
+              <p>{num}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="activity">
+        <div className="title">
+          <h3>Activity</h3>
+          <div className="time-filter">
+            <div className="time-week">
+              <h4>Week 1</h4>
+              <div className="chevron">
+                <Chevron />
+              </div>
+            </div>
+            <div className="month-filter">
+              <ChevronLeft />
+              <h4>Aug 2021</h4>
+              <ChevronRight />
+            </div>
+          </div>
+        </div>
+        <div className="chart"></div>
+      </div>
+      <RecentMobile />
+      </>
+      )}
+    </MobilePlacers>
+    <TabPlacers>
+      <div className="welcome">
+        <div className="userProfile">
+          <Image src={profile} alt='profile picture'/>
+          <div className="username">
+            <p>Hi, Skylar Dias</p>
+            <div className="wave">
+              <Image src={hands} alt='hands waving'/>
+              <p className="greeting">Welcome back!</p>                  
+            </div>
+          </div>             
+        </div>
+        <Image src={Placer} alt="bell"/>     
+      </div>
+      <div className="dashboard-summary">
+        <h3>Dashboard Summary</h3>
+        <div className="dashboard">
+        {summary.map(({Icon,name,num,bg})=>(
+          <div key={name} className="info" style={{backgroundColor: bg}}>
+            <div className="amount">
+              <Icon />
+              <h3>{name}</h3>
+              <p>{num}</p>
+            </div>
+          </div>
+        ))}
+        </div>
+        <div className="activity">
+          <div className="title">
+            <h3>Activity</h3>
+            <div className="time-filter">
+              <div className="time-week">
+                <h4>Week 1</h4>
+                <div className="chevron">
+                  <Chevron />
+                </div>
+              </div>
+              <div className="month-filter">
+                <ChevronLeft />
+                <h4>Aug 2021</h4>
+                <ChevronRight />
+              </div>
+            </div>
+          </div>
+          <div className="chart"></div>
+        </div>
+      </div>
+      <div className="sort">
+        <div className="tabs">
+          <ScrollIntoView selector="#inView" className="tab-sort">
+            <div className={showRecentJobs ? 'active-job' : 'non-active'} onClick={()=> setShowRecentJobs(true)}>
+              Recent
+            </div>
+          </ScrollIntoView>
+          <ScrollIntoView selector="#inView" className="tab-sort">
+            <div className={showRecentJobs !== true ? 'active-job' : 'non-active'} onClick={()=> setShowRecentJobs(!showRecentJobs)}>
+              Saved Jobs
+            </div>
+          </ScrollIntoView>
+        </div>
+        <div className='arrow-sort' onClick={() => setShowSortDropdown(!showSortDropdown)}>
+          <p>Sort</p>
+          {showSortDropdown ? 
+            <ArrowUp /> : <ArrowDown />
+          }
+        </div>
+        {showSortDropdown && (
+          <ul className="list">
+            <li>Recent</li>
+            <li>Two days ago</li>
+            <li>A week ago</li>
+            <li>Less than 2 weeks</li>
+            <li>Last 30 days</li>
+          </ul>
+        )}
+      </div>
+      <div id="inView">
+        {showRecentJobs ? <RecentMobile /> : <SavedJobsMobile />}
+      </div>
+    </TabPlacers>
+    </>
   )
 }
 

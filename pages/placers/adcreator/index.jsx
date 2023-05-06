@@ -1,5 +1,5 @@
 import ArrowDown from "@/public/assets/arrow-down"
-import { ModalBackground, StyledCreator } from "@/styles/placersCreator.styles"
+import { MobileCreator, ModalBackground, StyledCreator } from "@/styles/placersCreator.styles"
 import userTag from '@/public/assets/user-tag.svg'
 import Image from "next/image"
 import send from '@/public/assets/send-2.svg'
@@ -56,21 +56,17 @@ const Adcreator = () => {
 
 
   return (
-    <StyledCreator>
-      {isLoading || !activeAds ? (
-        <Spinner  />
-      ):(
-        <> 
-          <div className="creator-head">
-            <h3>Active Ads - ({activeAds.length})</h3>
-            <div className="filter-dropdown">
-              <p>Filter</p>
-              <div>
-                <ArrowDown />
-              </div>
-            </div>
+    <>
+      <StyledCreator>
+      <div className="creator-head">
+        <h3>Active Ads - ({activeAds.length})</h3>
+        <div className="filter-dropdown">
+          <p>Filter</p>
+          <div>
+            <ArrowDown />
           </div>
-
+        </div>
+      </div>
           {activeAds.length > 0 ? (
             <div className="creator-body">
               {activeAds.map(({productName,type,target,achieved,price,adStatus,bg,_id})=>(
@@ -138,8 +134,8 @@ const Adcreator = () => {
             )
           }
       <div className="creator-btn" onClick={handlePlace}>Place new Advert</div>
-        </>
-      )}
+        
+      
 
       {toPlace && (
         <ModalBackground>
@@ -193,6 +189,105 @@ const Adcreator = () => {
         </ModalBackground>
       )}
     </StyledCreator>
+    <MobileCreator>
+      <h4>Active Ads - ({activeAds.length})</h4>
+      <div className="body">
+        {data.map((item, index) => (
+          <div key={index} className="creator">
+            <div className="product">
+              <h3>{item.productName}</h3>
+              <p style={{backgroundColor: item.bg}}>{item.status}</p>
+            </div>
+            <div className="types">
+              <div className="type">
+                <div className="icon">
+                  <Image src={money} alt="money"/>
+                  <p>Price</p>
+                </div>
+                <h4>{item.price}</h4>
+              </div>
+              <div className="type">
+                <div className="icon">
+                  <Image src={cup} alt="money"/>
+                  <p>Aim</p>
+                </div>
+                <h4>{item.aim}</h4>
+              </div>
+              <div className="type">
+                <div className="icon">
+                  <Image src={refresh} alt="money"/>
+                  <p>Conversion</p>
+                </div>
+                <h4>{item.achieved}</h4>
+              </div>
+              <div className="type">
+                <div className="icon">
+                  <Image src={send} alt="money"/>
+                  <p>Advert Type</p>
+                </div>
+                <h4>{item.adType}</h4>
+              </div>
+            </div>
+            <div className="view">
+              View
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="creator-btn" onClick={handlePlace}>Place new Advert</div>
+      {toPlace && (
+        <ModalBackground>
+          <div className="modal">
+            <div onClick={()=>setToPlace(!toPlace)} className='close-btn'>
+              <CloseCircle />
+            </div>
+            <div className="modal-head">
+              <h3>What type of Advert would you like to place?</h3>
+              <p>Select one to continue.</p>
+            </div>
+            <div className="modal-body">
+              <div className="ad-type" onClick={()=>{router.push('/placers/adcreator/directlink'),setAdvertType('direct-link')}}>
+                <Image src={link} alt='link'/>
+                <div className="vertical"></div>
+                <div className="ad-type-name">
+                  <div className="ad-type-name-text">
+                    <h5>Directlink Ad</h5>
+                    <p>Get Web Visitors</p>
+                  </div>
+                  <ArrowRight />
+                </div>
+              </div>
+
+              <div className="ad-type" onClick={()=>{router.push('/placers/adcreator/detailsad'),setAdvertType('detail')}}>
+                <Image src={document} alt='link'/>
+                <div className="vertical"></div>
+                <div className="ad-type-name">
+                  <div className="ad-type-name-text">
+                    <h5>Details Ad</h5>
+                    <p>Get Buyers to patronize your business</p>
+                  </div>
+                  <ArrowRight />
+                </div>
+              </div>
+
+              <div className="ad-type" onClick={()=>{router.push('/placers/adcreator/visualad'),setAdvertType('visual')}}>
+                <Image src={video} alt='link'/>
+                <div className="vertical"></div>
+                <div className="ad-type-name">
+                  <div className="ad-type-name-text">
+                    <h5>Visual Ad</h5>
+                    <p>Get Instagram And Tiktok Publicity</p>
+                  </div>
+                  <ArrowRight />
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </ModalBackground>
+      )}
+    </MobileCreator>
+    </>
   )
 }
 

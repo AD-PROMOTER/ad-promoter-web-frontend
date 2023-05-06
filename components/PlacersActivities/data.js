@@ -8,7 +8,8 @@ export const gridData = [
     name: [{ profile: profile1, user: 'Maharm Hassanli' }],
     userId: '#300187634',
     action: 'Maxim cakes and pastery (visual advert) was promoted',
-    date: '20/09/2022 11:52PM',
+    date: '20/09/2022',
+    time: '11:52PM',
     value: false,
   },
   {
@@ -16,7 +17,8 @@ export const gridData = [
     name: [{ profile: profile2, user: 'Maharm Hassanli' }],
     userId: '#300187634',
     action: 'Maxim cakes and pastery (visual advert) was promoted',
-    date: '20/09/2022 11:52PM',
+    date: '20/09/2022',
+    time: '11:52PM',
     value: false,
   },
   {
@@ -24,7 +26,8 @@ export const gridData = [
     name: [{ profile: profile3, user: 'Maharm Hassanli' }],
     userId: '#300187634',
     action: 'Maxim cakes and pastery (Directlink advert) was promoted',
-    date: '20/09/2022 11:52PM',
+    date: '20/09/2022',
+    time: '11:52PM',
     value: false,
   },
   {
@@ -32,7 +35,8 @@ export const gridData = [
     name: [{ profile: profile1, user: 'Maharm Hassanli' }],
     userId: '#300187634',
     action: 'Your payment of #150,000 was succesful',
-    date: '20/09/2022 11:52PM',
+    date: '20/09/2022',
+    time: '11:52PM',
     value: false,
   },
   {
@@ -40,7 +44,8 @@ export const gridData = [
     name: [{ profile: profile3, user: 'Maharm Hassanli' }],
     userId: '#300187634',
     action: 'You just received a visual promotion',
-    date: '20/09/2022 11:52PM',
+    date: '20/09/2022',
+    time: '11:52PM',
     value: false,
   },
   {
@@ -48,7 +53,8 @@ export const gridData = [
     name: [{ profile: profile2, user: 'Maharm Hassanli' }],
     userId: '#300187634',
     action: 'Your advert link has been copied for promotion',
-    date: '20/09/2022 11:52PM',
+    date: '20/09/2022',
+    time: '11:52PM',
     value: false,
   },
   {
@@ -56,7 +62,8 @@ export const gridData = [
     name: [{ profile: profile1, user: 'Maharm Hassanli' }],
     userId: '#300187634',
     action: 'You just received a details promotion',
-    date: '20/09/2022 11:52PM',
+    date: '20/09/2022',
+    time: '11:52PM',
     value: false,
   },
   {
@@ -64,7 +71,8 @@ export const gridData = [
     name: [{ profile: profile2, user: 'Maharm Hassanli' }],
     userId: '#300187634',
     action: 'Your advert link has been copied for promotion',
-    date: '20/09/2022 11:52PM',
+    date: '20/09/2022',
+    time: '11:52PM',
     value: false,
   },
 ];
