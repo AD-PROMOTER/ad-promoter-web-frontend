@@ -90,7 +90,7 @@ const Wallet = (props) => {
                     onClick={()=>setSelectedBank(index.id)}
                   >
                     <div className="container__acctdetails">
-                      {/* <Image src={i.logo} width={0} height={0} alt="Guarantee trust bank logo" /> */}
+                      <Image src={gtb}  alt="Guarantee trust bank logo" />
                       <div>
                         <p className="acctNum">{index.details.account_number}</p>
                         <p className="acctName">{index.details.account_name}</p>
