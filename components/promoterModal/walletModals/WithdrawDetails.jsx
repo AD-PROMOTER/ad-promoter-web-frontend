@@ -25,7 +25,7 @@ const WithdrawDetailsModal = (props) => {
 
   const toggleModals = () => {
     props.onCloseModal();
-    props.onOpenModal();
+    props.onOpenWithdrawProcess();
   }
 
   const handleChange = event => {
@@ -101,7 +101,7 @@ const WithdrawDetailsModal = (props) => {
                   width="16px"
                   height="16px"
                 />
-                <p className='bold'>Guaranty Trust Bank</p>
+                <p className='bold'>{props.selectedBankName}</p>
               </li>
               <li className='bold'>{formatCurrency(props.amount)}</li>
               <li className='bold'>AD-Promoter</li>

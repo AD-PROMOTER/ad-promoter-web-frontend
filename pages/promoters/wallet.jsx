@@ -52,9 +52,9 @@ const PromoterWallet = () => {
   const [accountData,setAccountData] = useState()
   const [amount, setAmount] = useState('');
   const [selectedBank, setSelectedBank] = useState(null);
+  const [selectedBankName, setSelectedBankName] = useState(null);
   const [withdrawConfirmed, setWithdrawConfirmed] = useState(true);
 
-  const [mappedBanks,setMappedBanks] = useState()
   useEffect(() => {
     async function fetchBanks() {
       const response = await fetch('https://nigerianbanks.xyz/');
@@ -91,7 +91,6 @@ const PromoterWallet = () => {
         }
       })
       setTransactionHistory(result.data.data.data)
-      console.log(result.data.data.data);
     }
 
     const fetchAccountData = async() =>{
@@ -191,8 +190,10 @@ const PromoterWallet = () => {
           totalBalance={totalBalance}
           amount={amount}
           setAmount={setAmount}
-          selectedBank={setSelectedBank}
+          selectedBank={selectedBank}
           setSelectedBank={setSelectedBank}
+          selectedBankName={selectedBankName}
+          setSelectedBankName = {setSelectedBankName}
           show={{ showWithdrawProcessModal, showWithdrawDetailsModal }}
         />
       ) : null}
@@ -204,6 +205,9 @@ const PromoterWallet = () => {
           amount={amount}
           withdrawConfirmed={withdrawConfirmed}
           setWithdrawConfirmed={setWithdrawConfirmed}
+          selectedBank={selectedBank}
+          selectedBankName={selectedBankName}
+          onOpenWithdrawProcess={() => setShowWithdrawProcessModal(true)}
         />
       ) : null}
       {showWithdrawFundsModal ? (

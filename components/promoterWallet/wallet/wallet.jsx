@@ -83,7 +83,7 @@ const Wallet = (props) => {
               <p>Add an account</p>
             ):(
               <div>
-                {[...props.accountData].reverse().map((index)=>(
+                {[...props.accountData].reverse().slice(0,2).map((index)=>(
                   <div
                   key={index.id}
                     className={selectedBank === index.id ? 'container bank1 clicked': 'container bank1'}

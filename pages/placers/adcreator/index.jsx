@@ -24,7 +24,7 @@ const Adcreator = () => {
   const token = useRef('')
   const id = useRef('')
   const {setAdvertType} = useContext(AdPlacerContext)
-  const [activeAds, setActiveAds] = useState(null)
+  const [activeAds, setActiveAds] = useState([])
   const [isLoading,setIsLoading] = useState(false)
 
   useEffect(()=>{
@@ -189,7 +189,7 @@ const Adcreator = () => {
         </ModalBackground>
       )}
     </StyledCreator>
-    <MobileCreator>
+    {/* <MobileCreator>
       <h4>Active Ads - ({activeAds.length})</h4>
       <div className="body">
         {data.map((item, index) => (
@@ -286,7 +286,7 @@ const Adcreator = () => {
           </div>
         </ModalBackground>
       )}
-    </MobileCreator>
+    </MobileCreator> */}
     </>
   )
 }

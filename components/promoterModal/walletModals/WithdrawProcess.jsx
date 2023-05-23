@@ -23,6 +23,11 @@ const ProcessWithdrawModal = (props) => {
     props.setAmount(inputRef.current.value);
   };
 
+  const handleBankChange = (id,name) =>{
+    setSelectedBank(id)
+    props.setSelectedBankName(name)
+  }
+
   const toggleFirstBank = () => {
     if(firstBank) {
       setFirstBank(false);
@@ -59,11 +64,11 @@ const ProcessWithdrawModal = (props) => {
         <form>
           <h2>Process Withdrawal</h2>
           <div className="acct">
-            {[...props.accountData].reverse().map((index)=>(
+            {[...props.accountData].reverse().slice(0,2).map((index)=>(
               <div 
                 key={index.id} 
                 className={selectedBank === index.id ? "acct__container acct__bank1 acct__clicked" :"acct__container acct__bank1"} 
-                onClick={()=>setSelectedBank(index.id)}>
+                onClick={() => handleBankChange(index.id,index.details.bank_name)}>
                 <div className="acctDetails">
                   {/* <Image src={gtb} alt="Guarantee trust bank logo" /> */}
                   <div>
@@ -72,7 +77,7 @@ const ProcessWithdrawModal = (props) => {
                   </div>
                 </div>
                 <div div className="select">
-                <input type="radio" name="banks" value={index.id} checked={selectedBank === index.id} onChange={() => setSelectedBank(index.id)}/> 
+                <input type="radio" name="banks" value={index.id} checked={selectedBank === index.id} onChange={() => handleBankChange(index.id,index.details.bank_name)}/> 
                   <span className="checkmark"></span>
                 </div>
               </div>
