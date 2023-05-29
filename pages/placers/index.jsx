@@ -39,6 +39,7 @@ import UserContext from "@/context/userContext"
 import ScrollIntoView from 'react-scroll-into-view'
 import TimeAgo from "@/components/timeAgo"
 import axios from "axios"
+import { useRouter } from "next/router"
 
 
 const Index = () => {
@@ -59,7 +60,7 @@ const Index = () => {
   const {user} = useContext(UserContext)
   const [recentJobs,setRecentJobs] = useState()
   const [isLoading,setIsLoading] = useState(null)
-  console.log(user);
+  const Router = useRouter()
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user-detail"));
