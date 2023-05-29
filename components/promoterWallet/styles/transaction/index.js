@@ -153,6 +153,7 @@ export const TransactionStyles = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    text-transform: capitalize;
   }
 
   .complete {
@@ -172,6 +173,7 @@ export const TransactionStyles = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    text-transform: capitalize;
   }
 
   .progress {
@@ -191,6 +193,7 @@ export const TransactionStyles = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    text-transform: capitalize;
   }
 `;
 

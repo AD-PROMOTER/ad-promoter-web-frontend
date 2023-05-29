@@ -17,7 +17,7 @@ import sort from '@/public/assets/sort.svg'
 import Link from "next/link"
 import promo from '@/public/assets/pr.svg'
 import notif from '@/public/assets/notif.svg'
-import { withRouter } from "next/router"
+import { useRouter, withRouter } from "next/router"
 import ArrowDown from "@/public/assets/arrow-down"
 import ArrowUp from "@/public/assets/arrow-up"
 import { useEffect,useRef,useState } from "react"
@@ -29,6 +29,7 @@ import axios from "axios"
 
 const Index = ({router}) => {
   const {query: {tab}} = router
+  const Router = useRouter()
   const isTabOne = tab === "recent" || tab == null
   const isTabTwo = tab === "saved jobs"
   const [showRecentJobs, setShowRecentJobs] = useState(true)
@@ -48,9 +49,11 @@ const Index = ({router}) => {
     const user = JSON.parse(localStorage.getItem("user-detail"));
     const userToken = JSON.parse(localStorage.getItem("user-token"));
 
-    if (user) {
+    if (user && userToken && user.role === 'promoter') {
       setUserName(user.accountName);
       token.current = userToken
+    }else{
+      Router.push('/login')
     }
 
     const fetchDashboard = async() =>{
@@ -66,11 +69,12 @@ const Index = ({router}) => {
       setPendingWithdrawals(result.data.data.pendingWithdrawals)
       setAdsConverted(result.data.data.noOfAdsConverted)
       setIsLoading(false)
+      console.log(result.data);
     }
     if(token.current){
       fetchDashboard()
     }
-  },[setUserName]);
+  },[Router, setUserName]);
   
   const mobileSummary = [
     {
@@ -209,37 +213,206 @@ const Index = ({router}) => {
    
   ]
 
-  
 
 
   return (
-
     <>
-        <StyledHomeContainer>
-        <StyledHome>
-          <ScrollContainer className="home-dashboard">
-            <div className="welcome">
-              <div className="profile-img" style={{borderRadius: '45%'}}>
-                <Image src={profile} width={145} height={134} alt='profile picture'/>
-              </div>
-  
-              <div className="user-details">
-                <p>Hi, {userName}</p>
-                <div className="sub-user-details">
-                  <Image src={wave} alt='hands waving'/>
-                  <p>Welcome back!</p>
+      {token.current && (
+        <>
+            <StyledHomeContainer>
+            <StyledHome>
+              <ScrollContainer className="home-dashboard">
+                <div className="welcome">
+                  <div className="profile-img" style={{borderRadius: '45%'}}>
+                    <Image src={profile} width={145} height={134} alt='profile picture'/>
+                  </div>
+      
+                  <div className="user-details">
+                    <p>Hi, {userName}</p>
+                    <div className="sub-user-details">
+                      <Image src={wave} alt='hands waving'/>
+                      <p>Welcome back!</p>
+                    </div>
+                  </div>
+      
+                  <div className="user-status">
+                    <Image src={userStatus} alt='user-status'/>
+                  </div>
                 </div>
+      
+                <div className="dashboard-summary">
+                  <div className="dashboard-summary-header">
+                    <h3>Dashboard Summary</h3>
+                    
+                    <div className="filter" onClick={() => setShowDropdown(!showDropdown)}>
+                      <p>Filter</p>
+                      <div className="arrow-drop">
+                        {showDropdown ? 
+                          <ArrowUp /> : <ArrowDown />
+                        }
+                      </div>
+                    </div>
+                    {showDropdown && (
+                      <ul>
+                        <li>Recent</li>
+                        <li>A week ago</li>
+                        <li>Less than 2 weeks</li>
+                        <li>Last 30 days</li>
+                      </ul>
+                    )}
+                  </div>
+      
+                  <div className="dashboard-summary-info">
+                    {summary.map(({icon,name,price,bg})=>(
+                      <div className="dashboard-summary-info-item" key={name} style={{backgroundColor: bg}} >
+                        <div className="dashboard-summary-info-item-child">
+                          <div className="title">
+                            <Image src={icon} alt={`${icon} icon`}/>
+                            <p>{name}</p>
+                          </div>
+                          <h3>{price}</h3>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+      
+              </ScrollContainer>
+      
+              <TabContainer>
+                <div className="tab-head">
+                  <div className="tab-container">
+                    <div className="tab">
+                      <Link href={{ pathname: "/promoters", query: { tab: "recent" } }}>
+                        <a className={isTabOne ? 'active' : ''}>Recent</a>
+                      </Link>
+                      {isTabOne && (
+                        <div className="bottom-dash"></div>
+                      )}
+                    </div>
+      
+                    <div className="tab">
+                      <Link href={{ pathname: "/promoters", query: { tab: "saved jobs" } }}>
+                        <a className={isTabTwo ? 'active' : ''}>Saved Jobs</a>
+                      </Link>
+                      {isTabTwo && (
+                        <div className="bottom-dash"></div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="sort-btn" onClick={() => setShowSortDropdown(!showSortDropdown)}>
+                    <p>Sort</p>
+                    <div className="arrow">
+                      {showSortDropdown ? 
+                        <ArrowUp /> : <ArrowDown />
+                      }
+                    </div>
+                  </div>
+                  {showSortDropdown && (
+                    <ul>
+                      <li>Recent</li>
+                      <li>Two days ago</li>
+                      <li>A week ago</li>
+                      <li>Less than 2 weeks</li>
+                      <li>Last 30 days</li>
+                    </ul>
+                  )}
+                </div>
+                <ScrollContainer className="tab-body">
+                  {isTabOne && <Recent />}
+                  {isTabTwo && <SavedJobs />}
+                </ScrollContainer>
+              </TabContainer>
+            </StyledHome>
+          </StyledHomeContainer>
+          <MobileCotainer>
+            {showNotif?<MobileNotif goBack={() => setShowNotif(false)}/>:(<>
+            <div className="welcome">
+                <div className="userProfile">
+                  <Image src={profil} alt='profile picture'/>
+                  <div className="username">
+                    <p>Hi, Skylar Dias</p>
+                    <div className="wave">
+                      <Image src={wave} alt='hands waving'/>
+                      <p className="greeting">Welcome back!</p>                  
+                    </div>
+                  </div>             
+                </div>
+                <div className="promo">
+                  <Image src={promo} alt='promoter'/>
+                  <Image src={notif} alt='notification' onClick={() => setShowNotif(true)}/>
+                </div>            
               </div>
-  
-              <div className="user-status">
-                <Image src={userStatus} alt='user-status'/>
+              <div className="dashboard">Dashboard Summary</div>
+              <div className="summary-info">
+                {mobileSummary.map((item, index)=>(
+                  <div key={index} className={item.nameClass ? 'balance' : 'card'} style={{backgroundColor: item.bg}}>
+                  <div className='amount'>
+                    <div className='icon'>
+                      <Image src={item.icon} alt='icon'/>
+                      <p>{item.name}</p>
+                    </div>
+                    <h3>{item.price}</h3>
+                  </div>
+                </div>
+                ))}
               </div>
-            </div>
-  
-            <div className="dashboard-summary">
-              <div className="dashboard-summary-header">
+              <div className="sort">
+                <ScrollIntoView selector="#inView" className="tab-sort">
+                  <div onClick={()=> setShowRecentJobs(true)}>
+                    <p className={showRecentJobs ? 'active-job' : ''}>Recent</p>
+                  </div>
+                  {showRecentJobs && (
+                    <div className="dash-bottom"></div>
+                  )}
+                </ScrollIntoView>
+                <ScrollIntoView selector="#inView" className="tab-sort">
+                  <div onClick={()=> setShowRecentJobs(!showRecentJobs)}>
+                    <p className={showRecentJobs !== true ? 'active-job' : ''}>Saved Jobs</p>
+                  </div>
+                  {showRecentJobs !== true && (
+                    <div className="dash-bottom"></div>
+                  )}
+                </ScrollIntoView>
+                <div className={showSortDropdown ? 'arrow-sort' : 'no-sort'} onClick={() => setShowSortDropdown(!showSortDropdown)}>
+                  <p>Sort</p>
+                  {showSortDropdown ? 
+                    <ArrowUp /> : <ArrowDown />
+                  }
+                </div>
+                {showSortDropdown && (
+                  <ul className="list">
+                    <li>Recent</li>
+                    <li>Two days ago</li>
+                    <li>A week ago</li>
+                    <li>Less than 2 weeks</li>
+                    <li>Last 30 days</li>
+                  </ul>
+                )}
+              </div>
+              <div id="inView">
+                {showRecentJobs ? <RecentMobile /> : <SavedJobsMobile />}
+              </div>
+            </>)}         
+            </MobileCotainer>
+            <TabletContainer>
+              <div className="welcome">
+                <div className="userProfile">
+                  <Image src={profile} alt='profile picture'/>
+                  <div className="username">
+                    <p>Hi, Skylar Dias</p>
+                    <div className="wave">
+                      <Image src={wave} alt='hands waving'/>
+                      <p className="greeting">Welcome back!</p>                  
+                    </div>
+                  </div>             
+                </div>
+                <Image src={userStatus} alt='user-status'/>           
+              </div>
+              <div className="dashboard-summary">
                 <h3>Dashboard Summary</h3>
-                
+                    
                 <div className="filter" onClick={() => setShowDropdown(!showDropdown)}>
                   <p>Filter</p>
                   <div className="arrow-drop">
@@ -257,221 +430,54 @@ const Index = ({router}) => {
                   </ul>
                 )}
               </div>
-  
-              <div className="dashboard-summary-info">
-                {summary.map(({icon,name,price,bg})=>(
-                  <div className="dashboard-summary-info-item" key={name} style={{backgroundColor: bg}} >
-                    <div className="dashboard-summary-info-item-child">
-                      <div className="title">
-                        <Image src={icon} alt={`${icon} icon`}/>
-                        <p>{name}</p>
-                      </div>
-                      <h3>{price}</h3>
+              <div className="summary-info">
+                {tabSummary.map((item, index)=>(
+                  <div key={index} className={item.nameClass ? 'balance' : 'card'} style={{backgroundColor: item.bg}}>
+                  <div className='amount'>
+                    <div className='icon'>
+                      <Image src={item.icon} alt='icon'/>
+                      <p>{item.name}</p>
                     </div>
+                    <h3>{item.price}</h3>
                   </div>
+                </div>
                 ))}
               </div>
-            </div>
-  
-          </ScrollContainer>
-  
-          <TabContainer>
-            <div className="tab-head">
-              <div className="tab-container">
-                <div className="tab">
-                  <Link href={{ pathname: "/promoters", query: { tab: "recent" } }}>
-                    <a className={isTabOne ? 'active' : ''}>Recent</a>
-                  </Link>
-                  {isTabOne && (
-                    <div className="bottom-dash"></div>
-                  )}
+              <div className="sort">
+                <div className="tabs">
+                  <ScrollIntoView selector="#inView" className="tab-sort">
+                    <div className={showRecentJobs ? 'active-job' : 'non-active'} onClick={()=> setShowRecentJobs(true)}>
+                      Recent
+                    </div>
+                  </ScrollIntoView>
+                  <ScrollIntoView selector="#inView" className="tab-sort">
+                    <div className={showRecentJobs !== true ? 'active-job' : 'non-active'} onClick={()=> setShowRecentJobs(!showRecentJobs)}>
+                      Saved Jobs
+                    </div>
+                  </ScrollIntoView>
                 </div>
-  
-                <div className="tab">
-                  <Link href={{ pathname: "/promoters", query: { tab: "saved jobs" } }}>
-                    <a className={isTabTwo ? 'active' : ''}>Saved Jobs</a>
-                  </Link>
-                  {isTabTwo && (
-                    <div className="bottom-dash"></div>
-                  )}
-                </div>
-              </div>
-              
-              <div className="sort-btn" onClick={() => setShowSortDropdown(!showSortDropdown)}>
-                <p>Sort</p>
-                <div className="arrow">
+                <div className='arrow-sort' onClick={() => setShowSortDropdown(!showSortDropdown)}>
+                  <p>Sort</p>
                   {showSortDropdown ? 
                     <ArrowUp /> : <ArrowDown />
                   }
                 </div>
+                {showSortDropdown && (
+                  <ul className="list">
+                    <li>Recent</li>
+                    <li>Two days ago</li>
+                    <li>A week ago</li>
+                    <li>Less than 2 weeks</li>
+                    <li>Last 30 days</li>
+                  </ul>
+                )}
               </div>
-              {showSortDropdown && (
-                <ul>
-                  <li>Recent</li>
-                  <li>Two days ago</li>
-                  <li>A week ago</li>
-                  <li>Less than 2 weeks</li>
-                  <li>Last 30 days</li>
-                </ul>
-              )}
-            </div>
-            <ScrollContainer className="tab-body">
-              {isTabOne && <Recent />}
-              {isTabTwo && <SavedJobs />}
-            </ScrollContainer>
-          </TabContainer>
-        </StyledHome>
-      </StyledHomeContainer>
-      <MobileCotainer>
-        {showNotif?<MobileNotif goBack={() => setShowNotif(false)}/>:(<>
-        <div className="welcome">
-            <div className="userProfile">
-              <Image src={profil} alt='profile picture'/>
-              <div className="username">
-                <p>Hi, Skylar Dias</p>
-                <div className="wave">
-                  <Image src={wave} alt='hands waving'/>
-                  <p className="greeting">Welcome back!</p>                  
-                </div>
-              </div>             
-            </div>
-            <div className="promo">
-              <Image src={promo} alt='promoter'/>
-              <Image src={notif} alt='notification' onClick={() => setShowNotif(true)}/>
-            </div>            
-          </div>
-          <div className="dashboard">Dashboard Summary</div>
-          <div className="summary-info">
-            {mobileSummary.map((item, index)=>(
-              <div key={index} className={item.nameClass ? 'balance' : 'card'} style={{backgroundColor: item.bg}}>
-              <div className='amount'>
-                <div className='icon'>
-                  <Image src={item.icon} alt='icon'/>
-                  <p>{item.name}</p>
-                </div>
-                <h3>{item.price}</h3>
+              <div id="inView">
+                {showRecentJobs ? <RecentMobile /> : <SavedJobsMobile />}
               </div>
-            </div>
-            ))}
-          </div>
-          <div className="sort">
-            <ScrollIntoView selector="#inView" className="tab-sort">
-              <div onClick={()=> setShowRecentJobs(true)}>
-                <p className={showRecentJobs ? 'active-job' : ''}>Recent</p>
-              </div>
-              {showRecentJobs && (
-                <div className="dash-bottom"></div>
-              )}
-            </ScrollIntoView>
-            <ScrollIntoView selector="#inView" className="tab-sort">
-              <div onClick={()=> setShowRecentJobs(!showRecentJobs)}>
-                <p className={showRecentJobs !== true ? 'active-job' : ''}>Saved Jobs</p>
-              </div>
-              {showRecentJobs !== true && (
-                <div className="dash-bottom"></div>
-              )}
-            </ScrollIntoView>
-            <div className={showSortDropdown ? 'arrow-sort' : 'no-sort'} onClick={() => setShowSortDropdown(!showSortDropdown)}>
-              <p>Sort</p>
-              {showSortDropdown ? 
-                <ArrowUp /> : <ArrowDown />
-              }
-            </div>
-            {showSortDropdown && (
-              <ul className="list">
-                <li>Recent</li>
-                <li>Two days ago</li>
-                <li>A week ago</li>
-                <li>Less than 2 weeks</li>
-                <li>Last 30 days</li>
-              </ul>
-            )}
-          </div>
-          <div id="inView">
-            {showRecentJobs ? <RecentMobile /> : <SavedJobsMobile />}
-          </div>
-        </>)}         
-        </MobileCotainer>
-        <TabletContainer>
-          <div className="welcome">
-            <div className="userProfile">
-              <Image src={profile} alt='profile picture'/>
-              <div className="username">
-                <p>Hi, Skylar Dias</p>
-                <div className="wave">
-                  <Image src={wave} alt='hands waving'/>
-                  <p className="greeting">Welcome back!</p>                  
-                </div>
-              </div>             
-            </div>
-            <Image src={userStatus} alt='user-status'/>           
-          </div>
-          <div className="dashboard-summary">
-            <h3>Dashboard Summary</h3>
-                
-            <div className="filter" onClick={() => setShowDropdown(!showDropdown)}>
-              <p>Filter</p>
-              <div className="arrow-drop">
-                {showDropdown ? 
-                  <ArrowUp /> : <ArrowDown />
-                }
-              </div>
-            </div>
-            {showDropdown && (
-              <ul>
-                <li>Recent</li>
-                <li>A week ago</li>
-                <li>Less than 2 weeks</li>
-                <li>Last 30 days</li>
-              </ul>
-            )}
-          </div>
-          <div className="summary-info">
-            {tabSummary.map((item, index)=>(
-              <div key={index} className={item.nameClass ? 'balance' : 'card'} style={{backgroundColor: item.bg}}>
-              <div className='amount'>
-                <div className='icon'>
-                  <Image src={item.icon} alt='icon'/>
-                  <p>{item.name}</p>
-                </div>
-                <h3>{item.price}</h3>
-              </div>
-            </div>
-            ))}
-          </div>
-          <div className="sort">
-            <div className="tabs">
-              <ScrollIntoView selector="#inView" className="tab-sort">
-                <div className={showRecentJobs ? 'active-job' : 'non-active'} onClick={()=> setShowRecentJobs(true)}>
-                  Recent
-                </div>
-              </ScrollIntoView>
-              <ScrollIntoView selector="#inView" className="tab-sort">
-                <div className={showRecentJobs !== true ? 'active-job' : 'non-active'} onClick={()=> setShowRecentJobs(!showRecentJobs)}>
-                  Saved Jobs
-                </div>
-              </ScrollIntoView>
-            </div>
-            <div className='arrow-sort' onClick={() => setShowSortDropdown(!showSortDropdown)}>
-              <p>Sort</p>
-              {showSortDropdown ? 
-                <ArrowUp /> : <ArrowDown />
-              }
-            </div>
-            {showSortDropdown && (
-              <ul className="list">
-                <li>Recent</li>
-                <li>Two days ago</li>
-                <li>A week ago</li>
-                <li>Less than 2 weeks</li>
-                <li>Last 30 days</li>
-              </ul>
-            )}
-          </div>
-          <div id="inView">
-            {showRecentJobs ? <RecentMobile /> : <SavedJobsMobile />}
-          </div>
-        </TabletContainer>
+            </TabletContainer>
+        </>
+      )}
     </>
   )
 }

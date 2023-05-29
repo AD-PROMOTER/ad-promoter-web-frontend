@@ -38,7 +38,7 @@ const WithdrawDetailsModal = (props) => {
 
   const withdraw = async(amount,userId) =>{
       setIsLoading(true)
-      const response = await fetch('http://35.153.52.116/api/v1/payouts/create', {
+      const response = await fetch('https://api.ad-promoter.com/api/v1/payouts/create', {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -116,7 +116,7 @@ const WithdrawDetailsModal = (props) => {
               </ul>
               <ul>
                 <li className='bold'>{formatCurrency(100)}</li>
-                <li className='bold'>{formatCurrency(props.amount)}</li>
+                <li className='bold'>{formatCurrency(props.amount - 100)}</li>
               </ul>
             </div>
           </div>

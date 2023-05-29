@@ -31,12 +31,13 @@ const DiscoveryPage = () => {
 
     const fetchFeed = async(searchTag) =>{
         setIsLoading(true)
-        const result = await axios(`https://api.ad-promoter.com/api/v1/ads?page=1&pageSize=10&name=v`,{
+        const result = await axios(`https://api.ad-promoter.com/api/v1/ads/searchTag?page=1&pageSize=10&tag=${searchTag}`,{
           headers:{
             Authorization: `Bearer ${token.current}`
           }
         })
         setFeed(result.data.data.data)
+        console.log(result.data.data.data);
         setIsLoading(false)
     }
 
@@ -48,6 +49,7 @@ const DiscoveryPage = () => {
           }
         })
         setRecommendedJobs(result.data.data.data)
+        console.log(result.data.data.data);
         setIsLoading(false)
     }
 

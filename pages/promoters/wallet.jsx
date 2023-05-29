@@ -63,6 +63,29 @@ const PromoterWallet = () => {
     }
     fetchBanks();
   }, []);
+
+  useEffect(() => {
+    const userToken = JSON.parse(localStorage.getItem("user-token"));
+    if (userToken) {
+      token.current = userToken
+    }
+
+    const fetchDashboard = async() =>{
+      setIsLoading(true)
+      const result = await axios(`https://api.ad-promoter.com/api/v1/user/dashboard`,{
+        headers:{
+          Authorization: `Bearer ${token.current}`
+        }
+      })
+      setTotalBalance(result.data.data.totalBalance)
+      setPendingWithdrawals(result.data.data.pendingWithdrawals)
+      setAmountPaid(result.data.data.totalWithdrawals)
+      setIsLoading(false)
+    }
+    if(token.current){
+      fetchDashboard()
+    }
+  },[]);
  
 
   useEffect(()=>{
@@ -70,18 +93,18 @@ const PromoterWallet = () => {
     if (userToken) {
       token.current = userToken
     }
-    const fetchWalletSummary = async() =>{
-      setIsLoading(true)
-      const result = await axios(`https://api.ad-promoter.com/api/v1/wallet/wallet-summary`,{
-        headers:{
-          Authorization: `Bearer ${token.current}`
-        }
-      })
-      setTotalBalance(result.data.data.amountPaidIn)
-      setPendingWithdrawals(result.data.data.amountPaidOut)
-      setAmountPaid(result.data.data.amountUnpaid)
+    // const fetchWalletSummary = async() =>{
+    //   setIsLoading(true)
+    //   const result = await axios(`https://api.ad-promoter.com/api/v1/wallet/wallet-summary`,{
+    //     headers:{
+    //       Authorization: `Bearer ${token.current}`
+    //     }
+    //   })
+    //   setTotalBalance(result.data.data.amountPaidIn)
+    //   setPendingWithdrawals(result.data.data.amountPaidOut)
+    //   setAmountPaid(result.data.data.amountUnpaid)
 
-    }
+    // }
 
     const fetchTransactionHistory = async() =>{
       setIsLoading(true)
@@ -107,7 +130,7 @@ const PromoterWallet = () => {
     
 
     fetchAccountData()
-    fetchWalletSummary()
+    // fetchWalletSummary()
     fetchTransactionHistory()
   },[])
 
@@ -211,7 +234,13 @@ const PromoterWallet = () => {
         />
       ) : null}
       {showWithdrawFundsModal ? (
-        <WithdrawFundsModal withdrawConfirmed={withdrawConfirmed} setWithdrawConfirmed={setWithdrawConfirmed} onClose={() => setShowWithdrawFundsModal(false)} />
+        <WithdrawFundsModal 
+        withdrawConfirmed={withdrawConfirmed} 
+        setWithdrawConfirmed={setWithdrawConfirmed} 
+        onClose={() => setShowWithdrawFundsModal(false)} 
+        amount={amount}
+        selectedBank={selectedBank}
+        selectedBankName={selectedBankName}/>
       ) : null}
       {showPaymentDetailsModal ? (
         <PaymentDetailsModal

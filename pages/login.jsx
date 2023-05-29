@@ -45,6 +45,15 @@ const Login = () => {
     login(userEmail,userPassword)    
    }
   }
+
+  const handleGoogleSignIn = () => {
+    window.open('https://api.ad-promoter.com/api/v1/auth/google', '_self');
+  };
+
+  const handleFbSignIn = () => {
+    window.open('https://api.ad-promoter.com/api/v1/auth/facebook', '_self');
+  };
+
   return (
     <>
     <BgContainer image={bg}>
@@ -61,8 +70,12 @@ const Login = () => {
             </div>
           </div>
           <div className="content-socials">
-            <SocialBtn icon={google} text="Google" />
-            <SocialBtn icon={fb} text="Facebook" />
+            <div onClick={handleGoogleSignIn}>
+              <SocialBtn icon={google} text="Google" />
+            </div>
+            <div onClick={handleFbSignIn}>
+              <SocialBtn icon={fb} text="Facebook" />
+            </div>
           </div>
           <div className="divider">
             <div></div>

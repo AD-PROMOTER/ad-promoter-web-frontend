@@ -3,7 +3,7 @@ import { StyledNavBar } from '@/components/PromoterNavbar/style'
 import { links } from './links'
 import logo from '@/public/assets/newest-logo.png'
 import notif from '@/public/assets/notif.svg'
-import profile from '@/public/assets/Profil.svg'
+import profile from '@/public/assets/user-onboard-profile.png'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
@@ -56,7 +56,7 @@ const Index = () => {
                     <NotificationContainer />
                 )}
             </div>
-            <Image src={profile} alt='profile picture'/>
+            <Image src={profile} alt='profile picture' width={52} height={52}/>
         </div>
     </StyledNavBar>
   )

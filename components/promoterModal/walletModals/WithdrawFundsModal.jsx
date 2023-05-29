@@ -6,7 +6,50 @@ import Button from '@/components/promoterButton/Button';
 import { WithdrawalFundsStyles } from './styles';
 import close from '@/public/assets/close-circle.svg';
 import SuccessMark from '@/public/assets/success-mark.gif'
+import { formatCurrency } from '@/utils/formatCurrency';
 const WithdrawFundsModal = (props) => {
+  
+  const withdraw = async(amount,userId) =>{
+    setIsLoading(true)
+    const response = await fetch('https://api.ad-promoter.com/api/v1/payouts/create', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        "amount": amount,
+        "recipient": userId
+      }),
+    });
+    const json = await response.json();
+
+    if (!response.ok) {
+      success.current = false
+      setIsLoading(false)
+      props.setWithdrawConfirmed(false)
+      props.onOpenWithdrawModal()
+      props.onCloseModal()
+    }
+    if (response.ok) {
+      setIsLoading(false)
+      if(json.success){
+       props.setWithdrawConfirmed(true)
+       if(props.withdrawConfirmed){
+          props.onOpenWithdrawModal()
+          props.onCloseModal()
+        }
+      }
+    }
+
+}
+
+const handleClick = () =>{
+ withdraw(props.amount,userId)
+}
 
   return (
     <ModalContainer>
@@ -43,9 +86,9 @@ const WithdrawFundsModal = (props) => {
                       width="16px"
                       height="16px"
                     />
-                    <div className="bold">Guaranty Trust Bank</div>
+                    <div className="bold">{props.selectedBankName}</div>
                   </li>
-                  <li className="bold">&#8358;2,000.35</li>
+                  <li className="bold">{formatCurrency(props.amount)}</li>
                   <li className="bold">AD-Promoter</li>
                 </ul>
               </div>
@@ -56,8 +99,8 @@ const WithdrawFundsModal = (props) => {
                   <li>Total Amount</li>
                 </ul>
                 <ul>
-                  <li className="bold">&#8358;100.00</li>
-                  <li className="bold">&#8358;2,100.35</li>
+                  <li className="bold">{formatCurrency(100)}</li>
+                  <li className="bold">{formatCurrency(props.amount - 100)}</li>
                 </ul>
               </div>
             </div>
@@ -102,9 +145,9 @@ const WithdrawFundsModal = (props) => {
                       width="16px"
                       height="16px"
                     />
-                    <div className="bold">Guaranty Trust Bank</div>
+                    <div className="bold">{props.selectedBankName}</div>
                   </li>
-                  <li className="bold">&#8358;2,000.35</li>
+                  <li className="bold">{formatCurrency(props.amount)}</li>
                   <li className="bold">AD-Promoter</li>
                 </ul>
               </div>
@@ -115,8 +158,8 @@ const WithdrawFundsModal = (props) => {
                   <li>Total Amount</li>
                 </ul>
                 <ul>
-                  <li className="bold">&#8358;100.00</li>
-                  <li className="bold">&#8358;2,100.35</li>
+                  <li className="bold">{formatCurrency(100)}</li>
+                  <li className="bold">{formatCurrency(props.amount - 100)}</li>
                 </ul>
               </div>
             </div>
@@ -124,7 +167,7 @@ const WithdrawFundsModal = (props) => {
               <button className="cancel" onClick={props.onClose}>
                 Cancel
               </button>
-              <button className="confirm" onClick={() => props.setWithdrawConfirmed(true)}>Confirm and Withdraw</button>
+              <button className="confirm" onClick={handleClick}>Confirm and Withdraw</button>
             </div>
           </div>
           <hr />

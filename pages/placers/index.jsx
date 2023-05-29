@@ -1,5 +1,5 @@
 import { DashboardContainer, DashboardSummaryContainer, MobilePlacers, RecentAdsContainer, StyledHome, TabPlacers } from "@/styles/placerHome.styles"
-import profile from '@/public/assets/placers-profile.svg'
+import profile from '@/public/assets/squared-profile.png'
 import profil from '@/public/assets/Profil.svg'
 import RecentMobile from '@/components/MobilePromoterHome/Recent'
 import SavedJobsMobile from "@/components/MobilePromoterHome/SavedJobs"
@@ -37,6 +37,8 @@ import bell from '@/public/assets/notif.svg'
 import adpic from '@/public/assets/adpics.png'
 import UserContext from "@/context/userContext"
 import ScrollIntoView from 'react-scroll-into-view'
+import TimeAgo from "@/components/timeAgo"
+import axios from "axios"
 
 
 const Index = () => {
@@ -55,15 +57,18 @@ const Index = () => {
   const [completeAds,setCompleteAds] = useState('')
   const [conversionGrowth,setConversionGrowth] = useState('')
   const {user} = useContext(UserContext)
-
+  const [recentJobs,setRecentJobs] = useState()
+  const [isLoading,setIsLoading] = useState(null)
   console.log(user);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user-detail"));
     const userToken = JSON.parse(localStorage.getItem("user-token"));
-    if (user) {
+    if (user && userToken && user.role === 'placer') {
       setUserName(user.accountName);
       token.current = userToken
+    }else{
+      Router.push('/login')
     }
 
       Promise.all([
@@ -84,6 +89,27 @@ const Index = () => {
         })
 
   },[token]);
+
+  useEffect(()=>{
+    const userToken = JSON.parse(localStorage.getItem("user-token"));
+    if (userToken) {
+        token.current = userToken
+    }
+
+    const fetchRecentJobs = async() =>{
+        setIsLoading(true)
+        const result = await axios(`https://api.ad-promoter.com/api/v1/ads/recent-ads?page=1&pageSize=10`,{
+          headers:{
+            Authorization: `Bearer ${token.current}`
+          }
+        })
+        setRecentJobs(result.data.data.data)
+        setIsLoading(false)
+    }
+    if(token.current){
+        fetchRecentJobs()
+    }
+},[])
 
   const toggleReadMore = () => {
     setIsReadMore(!isReadMore);
@@ -183,8 +209,8 @@ const Index = () => {
       <StyledHome>
         <DashboardContainer>
           <div className="welcome">
-            <div className="profile-img">
-              <Image src={profile} alt='user profile picture'/>
+            <div className="profile-img" style={{borderRadius: '45%'}}>
+              <Image src={profile} width={145} height={134} alt='profile picture'/>
             </div>
             <div className="welcome-text">
               <h3>Hi, {userName}</h3>
@@ -315,80 +341,123 @@ const Index = () => {
               </ul>
             )}
           </div>
-          <ScrollContainer className="tab-body">
-            {RecentBody.map(({adTag,businessName,tag1,tag2,details,conversionNo,priceVal,aimNo,timeStamp,index})=>(
-              <Feed bg='#0594FB' key={index}>
-                <div className="product-summary">
-                  <div className="product-summary-head">
-                      <div className="ad-type-container">
-                          <div className="adtype">{adTag}</div>
-                          <div className='dot' onClick={()=> setShowReport(true)}>
-                            {showReport ? (<ul ref={ref}>
-                              <li onClick={()=>setShowReportModal(true)}>Report this advert</li>
-                              <li>Remove from feed</li>
-                            </ul>) : <Image src={more} alt="more"/>}
-                          </div>
+          <>
+            {!recentJobs ? (
+               <p>Loading...</p>
+            ):(
+              <>
+                {recentJobs.length === 0 ?(
+                  <p>No Recent Job</p>
+                ):(
+                <ScrollContainer className="tab-body">
+                  {recentJobs.map((item)=>(
+                    <Feed bg={item.type === 'direct-link' ? '#0594FB': item.type === 'detail' ? 'var(--yellow)':'var(--green)'} key={item._id}>
+                      <div className="product-summary">
+                        <div className="product-summary-head">
+                            <div className="ad-type-container">
+                                <div className="adtype">{item.type}</div>
+                                <div className='dot' onClick={()=> setShowReport(true)}>
+                                  {showReport ? (<ul ref={ref}>
+                                    <li onClick={()=>setShowReportModal(true)}>Report this advert</li>
+                                    <li>Remove from feed</li>
+                                  </ul>) : <Image src={more} alt="more"/>}
+                                </div>
+                            </div>
+                            <div className="business-name-container">
+                                <h3>{item.productName}</h3>
+                                <div className="tag-container">
+                                    <p>Tags:</p>
+                                    <div className="tag">
+                                      {item.tags.map((tag) => (
+                                          <div key={tag}>{tag}</div>
+                                      ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="product-summary-text">
+                            <p>
+                                {isReadMore ? item.description.slice(0, 156) : item.description}
+                                {item.description.length > 156 ? (
+                                    <span onClick={toggleReadMore}>
+                                        {isReadMore ? " Read more" : " Show less"}
+                                    </span>
+                                ):(
+                                <p></p>
+                                )}
+                            </p>
+                        </div>
                       </div>
-                      <div className="business-name-container">
-                          <h3>{businessName}</h3>
-                          <div className="tag-container">
-                              <p>Tags:</p>
-                              <div className="tag">
-                                <div key={index}>{tag1}</div>
-                                <div key={index}>{tag2}</div>
+
+                      <div className="product-plan">
+                        <div className="price">
+                          <div className="head">
+                            <Image src={currency} alt="currency"/>
+                            <h4>Price</h4>
+                          </div>
+                          {item.type === 'detail' || 'direct-link' ?(
+                            <p>#25/Visitor</p>
+                            ):(
+                            <p>#50/Video</p>
+                          )}
+                        </div>
+                        <div className="aim">
+                          <div className="head">
+                            <Image src={cup} alt="cup"/>
+                            <h4>Aim</h4>
+                          </div>
+                          {item.type === 'detail' || 'direct-link' ?(
+                            <p>{item.target} Visitors</p>
+                            ):(
+                            <p>{item.target} Videos</p>
+                          )}
+                        </div>
+                        <div className="achieved">
+                          <div className="head">
+                            <Image src={vector} alt="vector"/>
+                            <h4>Achieved</h4>
+                          </div>
+                          {item.type === 'detail' || 'direct-link' ?(
+                            <p>{item.conversions} Visitors</p>
+                            ):(
+                            <p>{item.conversions} Videos</p>
+                          )}
+                        </div>
+                      </div>
+
+                      {item.images.length === 0 ?(
+                        <></>
+                        ):(
+                        <div className="product-img-container">
+                          <div className='carousel-container'>
+                              <div onClick={goToPrevious} className='left-arrow'>
+                                  ❮
+                              </div>
+                              <div className='img-container'>
+                                  <Image src={item.images[currentIndex]} alt='product'/>
+                              </div>
+                              <div onClick={goToNext} className='right-arrow'>
+                                  ❯
                               </div>
                           </div>
+                        </div>
+                      )}
+                      
+                      <hr style={{width: 350}}/>
+
+                      <div className="bottom">
+                        <div className="user-details">
+                          <p>Posted <TimeAgo dateTime={item.dateCreated} /></p>
+                        </div>
                       </div>
-                  </div>
-                  <div className="product-summary-text">
-                      <p>
-                          {isReadMore ? details.slice(0, 156) : details}
-                          {details.length > 156 ? (
-                              <span onClick={toggleReadMore}>
-                                  {isReadMore ? " Read more" : " Show less"}
-                              </span>
-                          ):(
-                          <p></p>
-                          )}
-                      </p>
-                  </div>
-                </div>
+                    </Feed>
+                  ))}
+                </ScrollContainer>
 
-                <div className="product-plan">
-                  <div className="price">
-                    <div className="head">
-                      <Image src={currency} alt="currency"/>
-                      <h4>Price</h4>
-                    </div>
-                    <p>{priceVal}</p>
-                  </div>
-                  <div className="aim">
-                    <div className="head">
-                      <Image src={cup} alt="cup"/>
-                      <h4>Aim</h4>
-                    </div>
-                    <p>{aimNo}</p>
-                  </div>
-                  <div className="achieved">
-                    <div className="head">
-                      <Image src={vector} alt="vector"/>
-                      <h4>Achieved</h4>
-                    </div>
-                    <p>{conversionNo}</p>
-                  </div>
-                </div>
-
-                
-                <hr style={{width: 350}}/>
-
-                <div className="bottom">
-                  <div className="user-details">
-                    <p>{timeStamp}</p>
-                  </div>
-                </div>
-              </Feed>
-            ))}
-          </ScrollContainer>
+                )}
+              </>
+            )}          
+          </>
         </TabContainer>
         
         {showReportModal && (

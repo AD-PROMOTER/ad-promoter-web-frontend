@@ -27,7 +27,8 @@ const Index = () => {
                             src={logo} 
                             alt='ad-promoter'
                             width={184}
-                            height={19}/>
+                            height={19}
+                        />
                     </a>
                 </Link>
             </div>

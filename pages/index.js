@@ -28,12 +28,13 @@ export default function Home() {
   useEffect(() => {
     router.prefetch('/signup');
   }, [router]);
+
   const handleGoogleSignIn = () => {
-    window.open('http://35.153.52.116/api/v1/auth/google', '_self');
+    window.open('https://api.ad-promoter.com/api/v1/auth/google', '_self');
   };
 
   const handleFbSignIn = () => {
-    window.open('http://35.153.52.116/api/v1/auth/facebook', '_self');
+    window.open('https://api.ad-promoter.com/api/v1/auth/facebook', '_self');
   };
   return (
     <>

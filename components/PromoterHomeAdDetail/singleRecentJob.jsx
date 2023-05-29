@@ -14,15 +14,42 @@ import { BackdropContainer, Feed, ModalContainer } from './styles'
 import { detailsAd, directlinkAd, visualAd } from './data'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
+import axios from 'axios'
+import { CgProfile } from 'react-icons/cg'
+import TimeAgo from '../timeAgo'
 
 const SingleRecentJob = () => {
     const [showReport, setShowReport] = useState(false)
     const ref = useRef(null)
+    const token = useRef('')
     const [isReadMore, setIsReadMore] = useState(true);
     const [showReportModal,setShowReportModal] = useState(false)
     const [showDropdown, setShowDropdown] = useState(false)
     const [listValue, setListValue] = useState('It has gory images')
     const [currentIndex,setCurrentIndex] = useState(0)
+    const [recentJobs,setRecentJobs] = useState()
+    const [isLoading,setIsLoading] = useState(false)
+
+    useEffect(()=>{
+        const userToken = JSON.parse(localStorage.getItem("user-token"));
+        if (userToken) {
+            token.current = userToken
+        }
+
+        const fetchRecentJobs = async() =>{
+            setIsLoading(true)
+            const result = await axios(`https://api.ad-promoter.com/api/v1/ads/recent-ads?page=1&pageSize=10`,{
+              headers:{
+                Authorization: `Bearer ${token.current}`
+              }
+            })
+            setRecentJobs(result.data.data.data)
+            setIsLoading(false)
+        }
+        if(token.current){
+            fetchRecentJobs()
+        }
+    },[])
 
     const ClickedList = (e) =>{
       setListValue(e.target.innerText)
@@ -62,99 +89,131 @@ const SingleRecentJob = () => {
 
   return (
     <>
-        {detailsAd.map((item, index) => (
-            <Feed bg='#FBBC05' key={index}>
-                <div className="product-summary">
-                    <div className="product-summary-head">
-                        <div className="ad-type-container">
-                            <div className="adtype">{item.type}</div>
-                            <div className='dot' onClick={()=> setShowReport(true)}>
-                                {showReport ? (<ul ref={ref}>
-                                    <li onClick={()=>setShowReportModal(true)}>Report this advert</li>
-                                    <li>Remove from feed</li>
-                                </ul>) : <Image src={more} alt="more"/>}
-                            </div>
-                        </div>
-                        <div className="business-name-container">
-                            <h3>{item.product}</h3>
-                            <div className="tag-container">
-                                <p>Tags:</p>
-                                <div className="tag">
-                                    {item.tags.map((tag, index) => (
-                                        <div key={index}>{tag}</div>
-                                    ))}
+        {!recentJobs || isLoading ? (
+            <p>Loading...</p>
+        ):(
+            <>
+                {recentJobs.length === 0 ?(
+                    <p>No Recent Job</p>
+                ):(
+                    <>            
+                        {recentJobs.map((item) => (
+                            <Feed bg={item.type === 'direct-link' ? '#0594FB': item.type === 'detail' ? 'var(--yellow)':'var(--green)'} key={item._id}>
+                                <div className="product-summary">
+                                    <div className="product-summary-head">
+                                        <div className="ad-type-container">
+                                            <div className="adtype">{item.type}</div>
+                                            <div className='dot' onClick={()=> setShowReport(true)}>
+                                                {showReport ? (<ul ref={ref}>
+                                                    <li onClick={()=>setShowReportModal(true)}>Report this advert</li>
+                                                    <li>Remove from feed</li>
+                                                </ul>) : <Image src={more} alt="more"/>}
+                                            </div>
+                                        </div>
+                                        <div className="business-name-container">
+                                            <h3>{item.productName}</h3>
+                                            <div className="tag-container">
+                                                <p>Tags:</p>
+                                                <div className="tag">
+                                                    {item.tags.map((tag) => (
+                                                        <div key={tag}>{tag}</div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="product-summary-text">
+                                        <p>
+                                            {isReadMore ? item.description.slice(0, 156) : item.description}
+                                            {item.description.length > 156 ? (
+                                                <span onClick={toggleReadMore}>
+                                                    {isReadMore ? " Read more" : " Show less"}
+                                                </span>
+                                            ):(
+                                            <p></p>
+                                            )}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="product-summary-text">
-                        <p>
-                            {isReadMore ? item.desc.slice(0, 156) : item.desc}
-                            {item.desc.length > 156 ? (
-                                <span onClick={toggleReadMore}>
-                                    {isReadMore ? " Read more" : " Show less"}
-                                </span>
-                            ):(
-                            <p></p>
-                            )}
-                        </p>
-                    </div>
-                </div>
 
-                <div className="product-plan">
-                    <div className="price">
-                        <div className="head">
-                            <Image src={currency} alt="currency"/>
-                            <h4>Price</h4>
-                        </div>
-                        <p>{item.price}</p>
-                    </div>
-                    <div className="aim">
-                        <div className="head">
-                            <Image src={cup} alt="cup"/>
-                            <h4>Aim</h4>
-                        </div>
-                        <p>{item.aim}</p>
-                    </div>
-                    <div className="achieved">
-                        <div className="head">
-                            <Image src={vector} alt="vector"/>
-                            <h4>Achieved</h4>
-                        </div>
-                        <p>{item.achieved}</p>
-                    </div>
-                </div>
+                                <div className="product-plan">
+                                    <div className="price">
+                                        <div className="head">
+                                            <Image src={currency} alt="currency"/>
+                                            <h4>Price</h4>
+                                        </div>
+                                        {item.type === 'detail' || 'direct-link' ?(
+                                            <p>#25/Visitor</p>
+                                        ):(
+                                            <p>#50/Video</p>
+                                        )}
+                                    </div>
+                                    <div className="aim">
+                                        <div className="head">
+                                            <Image src={cup} alt="cup"/>
+                                            <h4>Aim</h4>
+                                        </div>
+                                        {item.type === 'detail' || 'direct-link' ?(
+                                            <p>{item.target} Visitors</p>
+                                        ):(
+                                            <p>{item.target} Videos</p>
+                                        )}  
+                                    </div>
+                                    <div className="achieved">
+                                        <div className="head">
+                                            <Image src={vector} alt="vector"/>
+                                            <h4>Achieved</h4>
+                                        </div>
+                                        {item.type === 'detail' || 'direct-link' ?(
+                                            <p>{item.conversions} Visitors</p>
+                                        ):(
+                                            <p>{item.conversions} Videos</p>
+                                        )}
+                                    </div>
+                                </div>
+                                
+                                {item.images.length === 0 ?(
+                                    <></>
+                                ):(
+                                    <div className="product-img-container">
+                                        <div className='carousel-container'>
+                                            <div onClick={goToPrevious} className='left-arrow'>
+                                                ❮
+                                            </div>
+                                            <div className='img-container'>
+                                                <Image src={item.images[currentIndex]} alt='product'/>
+                                            </div>
+                                            <div onClick={goToNext} className='right-arrow'>
+                                                ❯
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
 
-                <div className="product-img-container">
-                    <div className='carousel-container'>
-                        <div onClick={goToPrevious} className='left-arrow'>
-                            ❮
-                        </div>
-                        <div className='img-container'>
-                            <Image src={item.productImg[currentIndex].url} alt='product'/>
-                        </div>
-                        <div onClick={goToNext} className='right-arrow'>
-                            ❯
-                        </div>
-                    </div>
-                </div>
-
-                <div className="bottom">
-                    <div className="user-details">
-                        <div className="user-details-text">
-                            <Image src={item.userImg} alt='user'/>
-                            <h5>{item.userName}</h5>
-                        </div>
-                        <p>{item.timePosted}</p>
-                    </div>
-                    <div className="share-container">
-                        <Image src={exportLink} alt='export'/>
-                        <Image src={download} alt='download'/>
-                        <Image src={archive} alt='archieve'/>
-                    </div>
-                </div>
-            </Feed>
-        ))}
+                                <div className="bottom">
+                                    <div className="user-details">
+                                        <div className="user-details-text">
+                                            {item.creator.profilePicture?(
+                                                <Image src={item.creator?.profilePicture} width={20} height={20} alt={item.creator.accountName}/>
+                                            ):(
+                                                <CgProfile width={20} height={20}/>
+                                            )}
+                                            <h5>{item.creator.accountName}</h5>
+                                        </div>
+                                        <p>Posted <TimeAgo dateTime={item.dateCreated}/></p>
+                                    </div>
+                                    <div className="share-container">
+                                        <Image src={exportLink} alt='export'/>
+                                        <Image src={download} alt='download'/>
+                                        <Image src={archive} alt='archieve'/>
+                                    </div>
+                                </div>
+                            </Feed>
+                        ))}
+                    </>
+                )}            
+            </>
+        )}
 
         {showReportModal && (
             <BackdropContainer onClick={()=>setShowReportModal(false)}>

@@ -174,12 +174,12 @@ const SingleDiscoveryFeed = ({click,isLoading,feed}) => {
                                 <div className='time'>
                                     <div>
                                         <div className='user'>
-                                            {item.creator.profilePicture?(
+                                            {item.creator?.profilePicture?(
                                                 <Image src={item.creator?.profilePicture} width={20} height={20} alt={item.creator.accountName}/>
                                             ):(
                                                 <CgProfile width={20} height={20}/>
                                             )}
-                                            <div>{item.creator.accountName}</div>
+                                            <div>{item.creator?.accountName}</div>
                                         </div>
                                         <p>Posted <TimeAgo dateTime={item.dateCreated}/></p>
                                     </div>
