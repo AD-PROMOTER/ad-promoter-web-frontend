@@ -72,22 +72,24 @@ const Index = () => {
       Router.push('/login')
     }
 
-      Promise.all([
-        fetch('https://api.ad-promoter.com/api/v1/user/dashboard',{
-          headers:{
-            Authorization: `Bearer ${token.current}`,
-          }
-        }),
-      ])
-        .then(([resDashboardData]) => 
-          Promise.all([resDashboardData.json()])
-        )
-        .then(([dataDashboardData]) => {
-          // console.log(dataDashboardData.data);
-          setRunningAds(dataDashboardData.data.adCount.runningAds);
-          setCompleteAds(dataDashboardData.data.adCount.completedAds);
-          setConversionGrowth(dataDashboardData.data.conversionRate)
-        })
+      if(token.current){
+        Promise.all([
+          fetch('https://api.ad-promoter.com/api/v1/user/dashboard',{
+            headers:{
+              Authorization: `Bearer ${token.current}`,
+            }
+          }),
+        ])
+          .then(([resDashboardData]) => 
+            Promise.all([resDashboardData.json()])
+          )
+          .then(([dataDashboardData]) => {
+            // console.log(dataDashboardData.data);
+            setRunningAds(dataDashboardData.data.adCount.runningAds);
+            setCompleteAds(dataDashboardData.data.adCount.completedAds);
+            setConversionGrowth(dataDashboardData.data.conversionRate)
+          })
+      }
 
   },[Router, token]);
 

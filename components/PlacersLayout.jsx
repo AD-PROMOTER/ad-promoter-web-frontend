@@ -18,7 +18,7 @@ const PlacersLayout = ({ children }) => {
   },[Router])
     return (
       <>
-        {token.current &&(
+        {/* {token.current &&( */}
           <StyledLayout>
             <div className="desktop-nav">
               <PlacersNavbar />
@@ -28,7 +28,7 @@ const PlacersLayout = ({ children }) => {
               <MobileNavbar />
             </div>
           </StyledLayout>
-        )}
+        {/* )} */}
       </>
     );
   };

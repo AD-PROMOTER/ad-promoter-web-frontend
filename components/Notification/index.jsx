@@ -1,13 +1,15 @@
 import { NotificationModalContainer } from "./styles"
 import CloseIcon from '@/public/assets/close-circle'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import NotificationContext from '@/context/notificationContext'
 import image from '@/public/assets/Ellipse 3.svg'
 import Image from "next/image"
+import axios from "axios"
 const Index = () => {
   const { isNotifClicked,setIsNotifClicked } = useContext(NotificationContext)
   const [isLoading,setIsLoading] = useState(null)
   const [notificationData,setNotificationData] = useState()
+  const token = useRef()
   useEffect(() => {
     const userToken = JSON.parse(localStorage.getItem("user-token"));
 
@@ -41,29 +43,39 @@ const Index = () => {
             </div>
           </div>
         </div>
-        <div className="notification-modal-body">
-          {notificationData.map((item)=> (
-            <div className="notification-modal-body-item" key={item._id}>
-              <div className="notification-modal-body-item-textContainer">
-                <Image src={item.sender?.profilePicture} alt='notification image'/>
-                <div className="notification-modal-body-item-textContainer-text">
-                  <div className="notification-modal-body-item-textContainer-text-head">
-                    <h3>{item.title}</h3>
-                    {!item.isRead && (
-                      <div className="red-circle"></div>
-                    )}
+        {!notificationData ? (
+          <p>Loading</p>
+        ):(
+          <>
+            {notificationData.length === 0 ? (
+              <p>No Notification</p>
+            ):(
+              <div className="notification-modal-body">
+                {notificationData.map((item)=> (
+                  <div className="notification-modal-body-item" key={item._id}>
+                    <div className="notification-modal-body-item-textContainer">
+                      <Image src={item.sender?.profilePicture} alt='notification image' width={20} height={20}/>
+                      <div className="notification-modal-body-item-textContainer-text">
+                        <div className="notification-modal-body-item-textContainer-text-head">
+                          <h3>{item.title}</h3>
+                          {!item.isRead && (
+                            <div className="red-circle"></div>
+                          )}
+                        </div>
+                        <div className="notification-modal-body-item-textContainer-text-info">
+                          <p>{item.body}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="time-stamp">
+                      {/* <p>{time}</p> */}
+                    </div>
                   </div>
-                  <div className="notification-modal-body-item-textContainer-text-info">
-                    <p>{item.body}</p>
-                  </div>
-                </div>
+                ))}
               </div>
-              <div className="time-stamp">
-                <p>{time}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+            )}          
+          </>
+        )}
       </div>
     </NotificationModalContainer>
   )

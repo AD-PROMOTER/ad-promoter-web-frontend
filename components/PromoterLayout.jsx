@@ -18,7 +18,7 @@ const PromoterLayout = ({ children }) => {
   },[Router])
     return (
       <>
-        {token.current && (
+        {/* {token.current && ( */}
           <StyledLayout>
             <div className="desktop-nav">
               <Navbar />
@@ -28,7 +28,7 @@ const PromoterLayout = ({ children }) => {
               <MobileNavbar />
             </div>
           </StyledLayout>
-        )}
+        {/* )} */}
       </>
     );
   };

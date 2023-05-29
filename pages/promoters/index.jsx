@@ -477,7 +477,7 @@ const Index = ({router}) => {
               </div>
             </TabletContainer>
         </>
-      )}
+      )} 
     </>
   )
 }

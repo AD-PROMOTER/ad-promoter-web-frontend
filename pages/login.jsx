@@ -147,9 +147,9 @@ const Login = () => {
       </div>
       <form action="" onSubmit={handleSubmit}>
         <div className="email">
-          <label htmlFor="email">Your email</label>
+          <label htmlFor="email">Your Phone Number</label>
           <input 
-            type="email" 
+            type="text" 
             id="memail" 
             required
             value={userEmail}
