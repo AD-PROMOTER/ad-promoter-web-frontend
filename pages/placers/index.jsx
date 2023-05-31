@@ -40,6 +40,7 @@ import ScrollIntoView from 'react-scroll-into-view'
 import TimeAgo from "@/components/timeAgo"
 import axios from "axios"
 import { useRouter } from "next/router"
+import { useToast } from "@chakra-ui/react"
 
 
 const Index = () => {
@@ -61,6 +62,9 @@ const Index = () => {
   const [recentJobs,setRecentJobs] = useState()
   const [isLoading,setIsLoading] = useState(null)
   const Router = useRouter()
+  const [isReportLoading, setIsReportLoading] = useState(null);
+  const toast = useToast()
+
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user-detail"));
@@ -99,20 +103,22 @@ const Index = () => {
         token.current = userToken
     }
 
-    const fetchRecentJobs = async() =>{
-        setIsLoading(true)
-        const result = await axios(`https://api.ad-promoter.com/api/v1/ads/recent-ads?page=1&pageSize=10`,{
-          headers:{
-            Authorization: `Bearer ${token.current}`
-          }
-        })
-        setRecentJobs(result.data.data.data)
-        setIsLoading(false)
-    }
     if(token.current){
         fetchRecentJobs()
     }
 },[])
+
+const fetchRecentJobs = async() =>{
+  setIsLoading(true)
+  const result = await axios(`https://api.ad-promoter.com/api/v1/ads/recent-ads?page=1&pageSize=10`,{
+    headers:{
+      Authorization: `Bearer ${token.current}`
+    }
+  })
+  setRecentJobs(result.data.data.data)
+  console.log(result.data);
+  setIsLoading(false)
+}
 
   const toggleReadMore = () => {
     setIsReadMore(!isReadMore);
@@ -123,68 +129,89 @@ const Index = () => {
     setShowDropdown(false)
   }
 
-  const RecentBody = [
-    {
-      adTag: 'Directlink Ad',
-      businessName: 'Maxim cakes and pastery',
-      tag1: 'confectionery',
-      tag2: 'Food',
-      details: 'At our store, you can get the best chocolate cakes at a super affordable price and with a customization on all our cakes. You also get a 50% discount on all cakespurchased in the next 48hrs.',
-      adpic: adpic,
-      aimNo: '1000 Visitors',
-      conversionNo: '10 Visitors',
-      priceVal: '₦25/Visitor',
-      timeStamp: 'Posted 1 hour ago'
-    },
-    {
-      adTag: 'Directlink Ad',
-      businessName: 'Maxim cakes and pastery',
-      tag1: 'confectionery',
-      tag2: 'Food',
-      details: 'At our store, you can get the best chocolate cakes at a super affordable price and with a customization on all our cakes. You also get a 50% discount on all cakespurchased in the next 48hrs.',
-      adpic: adpic,
-      aimNo: '1000 Visitors',
-      conversionNo: '10 Visitors',
-      priceVal: '₦25/Visitor',
-      timeStamp: 'Posted 1 hour ago'
-    },
-    {
-      adTag: 'Directlink Ad',
-      businessName: 'Maxim cakes and pastery',
-      tag1: 'confectionery',
-      tag2: 'Food',
-      details: 'At our store, you can get the best chocolate cakes at a super affordable price and with a customization on all our cakes. You also get a 50% discount on all cakespurchased in the next 48hrs.',
-      adpic: adpic,
-      aimNo: '1000 Visitors',
-      conversionNo: '10 Visitors',
-      priceVal: '₦25/Visitor',
-      timeStamp: 'Posted 1 hour ago'
-    },
-    {
-      adTag: 'Directlink Ad',
-      businessName: 'Maxim cakes and pastery',
-      tag1: 'confectionery',
-      tag2: 'Food',
-      details: 'At our store, you can get the best chocolate cakes at a super affordable price and with a customization on all our cakes. You also get a 50% discount on all cakespurchased in the next 48hrs.',
-      adpic: adpic,
-      aimNo: '1000 Visitors',
-      conversionNo: '10 Visitors',
-      priceVal: '₦25/Visitor',
-      timeStamp: 'Posted 1 hour ago'
-    },
-    {
-      adTag: 'Directlink Ad',
-      businessName: 'Maxim cakes and pastery',
-      tag1: 'confectionery',
-      tag2: 'Food',
-      details: 'At our store, you can get the best chocolate cakes at a super affordable price and with a customization on all our cakes. You also get a 50% discount on all cakespurchased in the next 48hrs.',
-      adpic: adpic,
-      aimNo: '1000 Visitors',
-      conversionNo: '10 Visitors',
-      priceVal: '₦25/Visitor',
-      timeStamp: 'Posted 1 hour ago'
-    },
-  ]
+    const handleReport = async (id,report) =>{
+      setIsReportLoading(true)
+      const response = await fetch(
+        'https://api.ad-promoter.com/api/v1/reports/create',
+        {
+          method: 'POST',
+          headers: { 
+                'Content-Type': 'application/json', 
+                Authorization: `Bearer ${token.current}`
+            },
+          body: JSON.stringify({
+            adsId: id,
+            report: report
+          }),
+        }
+      );
+      const json = await response.json();
+  
+      if (!response.ok) {
+        setIsReportLoading(false);
+        setShowReportModal(false)
+        toast({
+            title: json.msg,
+            status: "error",
+            duration: "5000",
+            isClosable: true,
+            position: "bottom-left",
+            size: "lg"
+        });
+      }
+      if (response.ok) {
+          setIsReportLoading(false);
+          setShowReportModal(false)
+          toast({
+            title: json.msg,
+            status: "success",
+            duration: "5000",
+            isClosable: true,
+            position: "bottom-left",
+            size: "lg"
+        });
+      }
+    }
+
+    const handleShowReport = () =>{
+      setShowReportModal(true)
+      setShowReport(false)
+    }
+
+    const handleAdRemoval = async(id) =>{
+      const response = await fetch(
+          `https://api.ad-promoter.com/api/v1/ads/${id}`,
+          {
+            method: 'DELETE',
+            headers: { 
+                  Authorization: `Bearer ${token.current}`
+              },
+          }
+        );
+        const json = await response.json();
+    
+        if (!response.ok) {
+          toast({
+              title: json.msg,
+              status: "error",
+              duration: "5000",
+              isClosable: true,
+              position: "bottom-left",
+              size: "lg"
+          });
+        }
+        if (response.ok) {
+           fetchFeed()
+            toast({
+              title: json.msg,
+              status: "success",
+              duration: "5000",
+              isClosable: true,
+              position: "bottom-left",
+              size: "lg"
+          });
+        }
+    }
 
   const summary = [
     {
@@ -361,10 +388,10 @@ const Index = () => {
                             <div className="product-summary-head">
                                 <div className="ad-type-container">
                                     <div className="adtype">{item.type}</div>
-                                    <div className='dot' onClick={()=> setShowReport(true)}>
+                                    <div className='dot' onClick={()=> setShowReport(!showReport)}>
                                       {showReport ? (<ul ref={ref}>
-                                        <li onClick={()=>setShowReportModal(true)}>Report this advert</li>
-                                        <li>Remove from feed</li>
+                                        <li onClick={handleShowReport}>Report this advert</li>
+                                        <li onClick={()=>handleAdRemoval(item.id)}>Remove from feed</li>
                                       </ul>) : <Image src={more} alt="more"/>}
                                     </div>
                                 </div>
@@ -439,7 +466,7 @@ const Index = () => {
                                       ❮
                                   </div>
                                   <div className='img-container'>
-                                      <Image src={item.images[currentIndex]} alt='product'/>
+                                      <Image src={item.images[currentIndex]} alt='product' width={360} height={236}/>
                                   </div>
                                   <div onClick={goToNext} className='right-arrow'>
                                       ❯
@@ -455,6 +482,34 @@ const Index = () => {
                               <p>Posted <TimeAgo dateTime={item.dateCreated} /></p>
                             </div>
                           </div>
+                          {showReportModal && (
+                            <BackdropContainer onClick={()=>setShowReportModal(false)}>
+                              <ModalContainer onClick={e => e.stopPropagation()}>
+                                  <div className='report'>
+                                      <p className='advert'>Report Advert</p>
+                                      <p className='reason'>Tell us why you want to report this advert?</p>
+                                  </div>
+                                  <div className='language'>Why are you reporting this advert</div>
+                                  <div className="input-container">
+                                      <div className='inputArea' onClick={() => setShowDropdown(!showDropdown)}>
+                                          <div className='inputText'>{listValue}</div>
+                                          {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
+                                      </div>
+                                      {showDropdown && (
+                                          <ul>
+                                              <li onClick={ClickedList}>It has gory images</li>
+                                              <li onClick={ClickedList}>It is a scam advert</li>
+                                              <li onClick={ClickedList}>It has nudity or sexual content</li>
+                                              <li onClick={ClickedList}>Other reasons</li>
+                                          </ul>
+                                      )}
+                                  </div>
+                                  <div onClick={()=>handleReport(item.id,listValue)} className='reportButton'>
+                                      <button>{isReportLoading ? 'Reporting..' : 'Send Report'}</button>
+                                  </div>
+                              </ModalContainer>
+                            </BackdropContainer>
+                          )}
                         </Feed>
                       ))}
                     </ScrollContainer>
@@ -465,34 +520,6 @@ const Index = () => {
               </>
             </TabContainer>
             
-            {showReportModal && (
-                <BackdropContainer onClick={()=>setShowReportModal(false)}>
-                    <ModalContainer onClick={e => e.stopPropagation()}>
-                        <div className='report'>
-                            <p className='advert'>Report Advert</p>
-                            <p className='reason'>Tell us why you want to report this advert?</p>
-                        </div>
-                        <div className='language'>Why are you reporting this advert</div>
-                        <div className="input-container">
-                            <div className='inputArea' onClick={() => setShowDropdown(!showDropdown)}>
-                                <div className='inputText'>{listValue}</div>
-                                {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
-                            </div>
-                            {showDropdown && (
-                                <ul>
-                                    <li onClick={ClickedList}>It has gory images</li>
-                                    <li onClick={ClickedList}>It is a scam advert</li>
-                                    <li onClick={ClickedList}>It has nudity or sexual content</li>
-                                    <li onClick={ClickedList}>Other reasons</li>
-                                </ul>
-                            )}
-                        </div>
-                        <div className='reportButton'>
-                            <button>Send Report</button>
-                        </div>
-                    </ModalContainer>
-                </BackdropContainer>
-            )}
           </StyledHome>
         </StyledHomeContainer>
         <MobilePlacers>

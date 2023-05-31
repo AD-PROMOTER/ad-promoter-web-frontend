@@ -160,7 +160,7 @@ export const Feed = styled.div`
           box-shadow: var(--shadow-1);
           background-color: var(--white);
           position: absolute;
-          top: 0;
+          /* top: 2%; */
           right: 0;
           width: 20rem;
           li {
@@ -388,8 +388,90 @@ export const Feed = styled.div`
       }
     }
 
-    .adImage {
-      margin-top: 5rem;
+    .product-img-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3rem;
+
+      .carousel-container {
+        position: relative;
+        .img-container {
+          border-radius: 3.6rem;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .right-arrow {
+          position: absolute;
+          top: 50%;
+          transform: translate(0, -50%);
+          right: 0.5rem;
+          font-size: 4.5rem;
+          color: var(--white);
+          z-index: 1;
+          cursor: pointer;
+        }
+        .left-arrow {
+          position: absolute;
+          top: 50%;
+          transform: translate(0, -50%);
+          left: 0.5rem;
+          font-size: 4.5rem;
+          color: var(--white);
+          z-index: 1;
+          cursor: pointer;
+        }
+      }
+      .paste-input {
+        display: flex;
+        align-items: center;
+        .copy-icon {
+          margin-right: -4rem;
+          z-index: 10;
+        }
+        .input {
+          input {
+            background: #e6e6e6;
+            border: 2px solid #ffffff;
+            border-radius: 12px;
+            width: 36.3rem;
+            height: 5.2rem;
+            padding-left: 6rem;
+            padding-right: 10rem;
+          }
+        }
+        .button {
+          padding: 1rem 2rem;
+          color: #ffffff;
+          background: #6b8bfc;
+          border-radius: 10px;
+          margin-left: -8.5rem;
+          cursor: pointer;
+          p {
+            font-weight: 500;
+            font-size: 1.3rem;
+            line-height: 2rem;
+          }
+        }
+      }
+      .btn {
+        padding: 1.3rem 0.8rem;
+        border-radius: 1rem;
+        background-color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 1.2rem;
+        line-height: 150%;
+        letter-spacing: -0.02em;
+        color: #ffffff;
+        width: 11.2rem;
+        cursor: pointer;
+      }
     }
 
     .submit {

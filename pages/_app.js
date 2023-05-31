@@ -11,6 +11,7 @@ import { AuthContextProvider } from '@/context/authContext';
 import PlacersLayout from '@/components/PlacersLayout';
 import { TokenContextProvider } from '@/context/tokenContext';
 import { UserProvider } from '../context/userContext';
+import { ChakraProvider } from '@chakra-ui/react';
 
 function MyApp({ Component, pageProps, router }) {
   if (router.pathname.startsWith('/admin')) {
@@ -39,7 +40,9 @@ function MyApp({ Component, pageProps, router }) {
                   <VariableStyle />
                   <GlobalStyle />
                   <SanitizeStyle />
-                  <Component {...pageProps} />
+                  <ChakraProvider>
+                    <Component {...pageProps} />
+                  </ChakraProvider>
                 </UserProvider>
               </PlacersLayout>
             </NotificationProvider>
@@ -76,7 +79,9 @@ function MyApp({ Component, pageProps, router }) {
                 <VariableStyle />
                 <GlobalStyle />
                 <SanitizeStyle />
-                <Component {...pageProps} />
+                <ChakraProvider>
+                  <Component {...pageProps} />
+                </ChakraProvider>
               </UserProvider>
             </PromoterLayout>
           </NotificationProvider>
@@ -92,7 +97,9 @@ function MyApp({ Component, pageProps, router }) {
             <VariableStyle />
             <GlobalStyle />
             <SanitizeStyle />
-            <Component {...pageProps} />
+            <ChakraProvider>
+              <Component {...pageProps} />
+            </ChakraProvider>
           </UserProvider>
         </SignupProvider>
       </TokenContextProvider>

@@ -37,8 +37,8 @@ const DiscoveryPage = () => {
           }
         })
         setFeed(result.data.data.data)
-        console.log(result.data.data.data);
         setIsLoading(false)
+        setSearchTag('')
     }
 
     const fetchRecommended = async(searchTag) =>{
@@ -106,7 +106,7 @@ const DiscoveryPage = () => {
         <Container>
             <div className='jobs'>
                 <div className='col1'>
-                    <DiscoveryFeed isLoading={isLoading} feed={feed} clickShow={handleShowReport}/>
+                    <DiscoveryFeed isLoading={isLoading} feed={feed} fetchFeed={fetchFeed} clickShow={handleShowReport}/>
                 </div>
                 <div className='col2'>
                     <h3 style={{fontWeight: 'bold', fontSize: '2rem',marginBottom:'1rem'}}>Recommended Jobs</h3>

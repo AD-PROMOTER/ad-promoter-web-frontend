@@ -6,14 +6,12 @@ import { DiscoveryContainer } from './discovery.style'
 import { useRef } from 'react'
 import ScrollContainer from 'react-indiana-drag-scroll'
 import SingleDiscoveryFeed from './singleDiscoveryFeed'
-const DiscoveryFeed = ({clickShow,isLoading,feed}) => {
+const DiscoveryFeed = ({clickShow,isLoading,feed,fetchFeed}) => {
   return (
     <DiscoveryContainer>
       <h3 style={{fontWeight: 'bold', fontSize: '2rem',marginBottom:'1rem'}}>Your Feed</h3>
       <ScrollContainer className='scroll-container'>
-        <SingleDiscoveryFeed isLoading={isLoading} feed={feed} click={clickShow}/>
-        {/* <VisualAd click={clickShow}/>
-        <DetailedAd click={clickShow}/> */}
+        <SingleDiscoveryFeed isLoading={isLoading} feed={feed} fetchFeed={fetchFeed} click={clickShow}/>
       </ScrollContainer>
     </DiscoveryContainer>
   )

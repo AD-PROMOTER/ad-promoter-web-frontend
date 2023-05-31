@@ -566,6 +566,61 @@ export const Feed = styled.div`
       cursor: pointer;
     }
   }
+
+  .submit {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+
+    .paste {
+      position: relative;
+
+      .pasteLink {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        padding-left: 0.8rem;
+      }
+
+      .pasteButton {
+        position: absolute;
+        top: 0.7rem;
+        right: 0.6rem;
+        background-color: var(--light-blue);
+        padding: 1rem;
+        color: var(--white);
+        border-radius: 1rem;
+        max-width: 8.1rem;
+        width: 100%;
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 20px;
+      }
+      input {
+        padding-left: 6rem;
+        padding-right: 10rem;
+        border-radius: 0.8rem;
+        background: var(--light-gray-3);
+        border: 2px solid #ffffff;
+        color: white;
+        /* width: 47.376rem; */
+        /* width: 100%; */
+        height: 5.6rem;
+        /* height: 100%; */
+      }
+    }
+
+    button {
+      padding: 0.8rem 3rem;
+      background-color: var(--primary);
+      color: white;
+      border-radius: 0.8rem;
+      cursor: pointer;
+    }
+  }
 `;
 
 export const Container = styled.div`
@@ -584,7 +639,7 @@ export const ModalContainer = styled.div`
   box-shadow: var(--shadow-2);
   padding: 4.8rem;
   left: 30%;
-  top: 30%;
+  top: 20%;
 
   .report {
     text-align: center;
@@ -672,9 +727,9 @@ export const BackdropContainer = styled.div`
   z-index: 100;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.2);
   left: 0;
   top: 0;
   cursor: default;
-  backdrop-filter: blur(12px);
+  /* backdrop-filter: blur(12px); */
 `;

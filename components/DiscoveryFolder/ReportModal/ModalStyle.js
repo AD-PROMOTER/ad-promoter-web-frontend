@@ -10,7 +10,7 @@ export const ModalContainer = styled.div`
   box-shadow: var(--shadow-2);
   padding: 4.8rem;
   left: 30%;
-  top: 30%;
+  top: 20%;
 
   .report {
     text-align: center;
@@ -92,8 +92,8 @@ export const BackdropContainer = styled.div`
   z-index: 100;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.2);
   left: 0;
   top: 0;
-  backdrop-filter: blur(12px);
+  /* backdrop-filter: blur(12px); */
 `;
