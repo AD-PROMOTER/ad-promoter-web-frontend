@@ -84,10 +84,11 @@ const Login = () => {
           </div>
           <form action="" onSubmit={handleSubmit}>
             <div className="email">
-              <label htmlFor="email">Your Phone Number</label>
+              <label htmlFor="email">Your Email</label>
               <input 
-                type="text" 
+                type="email" 
                 id="email" 
+                name="email"
                 required
                 value={userEmail}
                 onChange={e => setUserEmail(e.target.value)}
@@ -147,9 +148,9 @@ const Login = () => {
       </div>
       <form action="" onSubmit={handleSubmit}>
         <div className="email">
-          <label htmlFor="email">Your Phone Number</label>
+          <label htmlFor="email">Your Email</label>
           <input 
-            type="text" 
+            type="email" 
             id="memail" 
             required
             value={userEmail}

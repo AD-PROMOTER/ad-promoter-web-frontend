@@ -1,3 +1,4 @@
+import LandingPage from '@/components/LandingPage';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -7,6 +8,7 @@ export const useCreateAds = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [token, setToken] = useState('');
   const [redirect, setRedirect] = useState('');
+  const [data, setData] = useState();
   const router = useRouter();
 
   useEffect(() => {
@@ -65,8 +67,15 @@ export const useCreateAds = () => {
     if (response.ok) {
       console.log(json);
       setIsLoading(false);
-      // router.push(json.data.paymentDetails.url)
+      // {<LandingPage data={json.data.ad}/>}
+      setData(json.data.ad);
+      localStorage.setItem('landingData', JSON.stringify(json.data.ad));
+      if (advertType === 'detail') {
+        router.push(`/landing/${encodeURIComponent(productName)}`);
+      } else {
+        router.push(json.data.paymentDetails.url);
+      }
     }
   };
-  return { createAd, isLoading, error, msg, redirect };
+  return { createAd, data, isLoading, error, msg, redirect, data };
 };

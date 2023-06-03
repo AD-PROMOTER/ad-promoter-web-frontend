@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 import AdPlacerContext from '@/context/adPlacerContext'
 const Conversion = () => {
     const router = useRouter()
-    const {amount,setAmount,visitors,setVisitors} = useContext(AdPlacerContext)
+    const {productName,redirectUrl,cta,visitors,productDescription,webAddress,setAmount,setVisitors,amount,advertType,tags,containAdultContent,images} = useContext(AdPlacerContext)
 
     useEffect(()=>{
         setVisitors(amount/50)

@@ -37,6 +37,7 @@ const DiscoveryPage = () => {
           }
         })
         setFeed(result.data.data.data)
+        console.log(result.data.data.data);
         setIsLoading(false)
         setSearchTag('')
     }

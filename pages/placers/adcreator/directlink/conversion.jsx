@@ -6,8 +6,10 @@ import NairaIcon from '@/public/assets/naira-icon'
 import UserIcon from '@/public/assets/user-icon'
 import { useRouter } from 'next/router'
 import AdPlacerContext from '@/context/adPlacerContext'
+import { useToast } from '@chakra-ui/react'
 const Conversion = () => {
     const router = useRouter()
+    const toast = useToast()
     const {amount,setAmount,visitors,setVisitors} = useContext(AdPlacerContext)
 
     useEffect(()=>{
@@ -15,8 +17,18 @@ const Conversion = () => {
     })
 
     const handlePush = () =>{
-        if(amount)
-        router.push('summary')
+        if(amount >= 1000){
+            router.push('summary')
+        }else{
+            toast({
+                title: 'Amount must not be less than 1,000',
+                status: "error",
+                duration: "5000",
+                isClosable: true,
+                position: "bottom-left",
+                size: "lg"
+            });
+        }
     }
   return (
     <StyledDirectLinkConversion>

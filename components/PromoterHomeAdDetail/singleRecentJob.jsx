@@ -225,6 +225,32 @@ const SingleRecentJob = () => {
                 });
             }
         }
+
+        const handleDownload = async (imageLinks) => {
+            try {
+              for (let i = 0; i < imageLinks.length; i++) {
+                const imageUrl = imageLinks[i];
+                const filename = `image${i + 1}`;
+        
+                const response = await fetch('/api/convert-to-jpeg', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ imageUrl, filename })
+                });
+        
+                const blob = await response.blob();
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `${filename}.jpg`;
+                link.click();
+                URL.revokeObjectURL(link.href);
+              }
+            } catch (error) {
+              console.error('Error downloading images:', error);
+            }
+        };
     
   return (
     <>
@@ -368,8 +394,8 @@ const SingleRecentJob = () => {
                                         <p>Posted <TimeAgo dateTime={item.dateCreated}/></p>
                                     </div>
                                     <div className="share-container">
-                                        {item.type === 'visual' ? (
-                                            <div className='icons'>
+                                        {item.images.length !==0 ? (
+                                            <div className='icons' onClick={() => handleDownload(item.images)}>
                                                 <Image src={download} alt=""/>
                                             </div>
                                         ):(
