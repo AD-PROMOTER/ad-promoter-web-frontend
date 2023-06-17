@@ -34,7 +34,7 @@ const VisualReq = () => {
 
     useEffect(()=>{
         setIsInputWithValue(false)
-    },[])
+    },[setIsInputWithValue])
     useEffect(() => {
     router.prefetch('/signup/verification')
     if(userVisualReq === 'yes'){

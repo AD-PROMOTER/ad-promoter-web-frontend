@@ -79,7 +79,7 @@ const DiscoveryPage = () => {
             fetchFeed()
             fetchRecommended()
         }
-    },[adType, endDate, popular, recent, startDate])
+    },[adType, endDate, popular, recent, searchTag, startDate])
 
     const fetchFeed = async() =>{
       let apiUrl = 'https://api.ad-promoter.com/api/v1/ads/personal?page=1&pageSize=10';
