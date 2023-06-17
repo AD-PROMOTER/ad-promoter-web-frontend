@@ -29,6 +29,7 @@ import WithdrawFunds from '@/components/MobilePromoterWallet/WithdrawFunds';
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import axios from 'axios';
+import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from '@/utils/formatFilterDate';
 
 const PromoterWallet = () => {
   const [showModal, setShowModal] = useState(false);
@@ -44,6 +45,7 @@ const PromoterWallet = () => {
   const [showSummary, setShowSummary] = useState(true)
   const token = useRef('')
   const [isLoading,setIsLoading] = useState(false)
+  const [isDashboardLoading,setIsDashboardLoading] = useState(false)
   const [totalBalance,setTotalBalance] = useState('')
   const [pendingWithdrawals,setPendingWithdrawals] = useState('')
   const [amountPaid,setAmountPaid] = useState('')
@@ -53,16 +55,48 @@ const PromoterWallet = () => {
   const [amount, setAmount] = useState('');
   const [selectedBank, setSelectedBank] = useState(null);
   const [selectedBankName, setSelectedBankName] = useState(null);
+  const [selectedBankImage, setSelectedBankImage] = useState(null);
   const [withdrawConfirmed, setWithdrawConfirmed] = useState(true);
+  const [dashboardStartDate,setDashboardStartDate] = useState('')
+  const [dashboardEndDate,setDashboardEndDate] = useState('')
+  const [clickedFilter,setClickedFilter] = useState('Filter')
+  const [openFilter, setOpenFilter] = useState(false);
 
   useEffect(() => {
-    async function fetchBanks() {
-      const response = await fetch('https://nigerianbanks.xyz/');
-      const data = await response.json();
-      setBanks(data);
-    }
-    fetchBanks();
+    const fetchData = async () => {
+      setIsLoading(false);
+      try {
+        const fetchedBankData = await fetchBanks();
+        setBanks(fetchedBankData);
+
+        const fetchedAccountData = await fetchAccountData();
+        setAccountData(fetchedAccountData);
+
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
   }, []);
+
+  async function fetchBanks() {
+    const response = await fetch('https://nigerianbanks.xyz/');
+    const data = await response.json();
+    // setBanks(data);
+    return data
+  }
+
+  const fetchAccountData = async() =>{
+    const result = await axios(`https://api.ad-promoter.com/api/v1/wallet/fetch-recipient`,{
+      headers:{
+        Authorization: `Bearer ${token.current}`
+      }
+    })
+    // setAccountData(result.data.data)
+    return result.data.data
+  }
 
   useEffect(() => {
     const userToken = JSON.parse(localStorage.getItem("user-token"));
@@ -71,8 +105,15 @@ const PromoterWallet = () => {
     }
 
     const fetchDashboard = async() =>{
-      setIsLoading(true)
-      const result = await axios(`https://api.ad-promoter.com/api/v1/user/dashboard`,{
+      let apiUrl = 'https://api.ad-promoter.com/api/v1/user/dashboard';
+      if (dashboardStartDate) {
+        apiUrl += `?startDate=${dashboardStartDate}`;
+      }
+      if (dashboardEndDate) {
+        apiUrl += `&endDate=${dashboardEndDate}`;
+      }
+      setIsDashboardLoading(true)
+      const result = await axios(apiUrl,{
         headers:{
           Authorization: `Bearer ${token.current}`
         }
@@ -80,12 +121,12 @@ const PromoterWallet = () => {
       setTotalBalance(result.data.data.totalBalance)
       setPendingWithdrawals(result.data.data.pendingWithdrawals)
       setAmountPaid(result.data.data.totalWithdrawals)
-      setIsLoading(false)
+      setIsDashboardLoading(false)
     }
     if(token.current){
       fetchDashboard()
     }
-  },[]);
+  },[dashboardEndDate, dashboardStartDate]);
  
 
   useEffect(()=>{
@@ -93,19 +134,7 @@ const PromoterWallet = () => {
     if (userToken) {
       token.current = userToken
     }
-    // const fetchWalletSummary = async() =>{
-    //   setIsLoading(true)
-    //   const result = await axios(`https://api.ad-promoter.com/api/v1/wallet/wallet-summary`,{
-    //     headers:{
-    //       Authorization: `Bearer ${token.current}`
-    //     }
-    //   })
-    //   setTotalBalance(result.data.data.amountPaidIn)
-    //   setPendingWithdrawals(result.data.data.amountPaidOut)
-    //   setAmountPaid(result.data.data.amountUnpaid)
-
-    // }
-
+    
     const fetchTransactionHistory = async() =>{
       setIsLoading(true)
       const result = await axios(`https://api.ad-promoter.com/api/v1/payouts/history?page=1&pageSize=10`,{
@@ -115,24 +144,34 @@ const PromoterWallet = () => {
       })
       setTransactionHistory(result.data.data.data)
     }
-
-    const fetchAccountData = async() =>{
-      setIsLoading(true)
-
-      const result = await axios(`https://api.ad-promoter.com/api/v1/wallet/fetch-recipient`,{
-        headers:{
-          Authorization: `Bearer ${token.current}`
-        }
-      })
-      setAccountData(result.data.data)
-      setIsLoading(false)
-    }
     
-
-    fetchAccountData()
-    // fetchWalletSummary()
+    // fetchAccountData()
     fetchTransactionHistory()
   },[])
+
+  const handleFilterSelect = (e) =>{
+    setClickedFilter(e.target.innerText)
+    if(e.target.innerText === 'Recent'){
+      setDashboardStartDate('')
+      setDashboardEndDate('')
+    }
+    if(e.target.innerText === 'A week ago'){
+      const { startOfWeek, endOfWeek } = getWeekAgoRange();
+      setDashboardStartDate(startOfWeek)
+      setDashboardEndDate(endOfWeek)
+    }
+    if(e.target.innerText === 'Less than 2 weeks'){
+      const { startOfWeek, endOfWeek } = getTwoWeeksAgoRange();
+      setDashboardStartDate(startOfWeek)
+      setDashboardEndDate(endOfWeek)
+    }
+    if(e.target.innerText === 'Last 30 days'){
+      const { startOfWeek, endOfWeek } = getThirtyDaysAgoRange();
+      setDashboardStartDate(startOfWeek)
+      setDashboardEndDate(endOfWeek)
+    }
+    setOpenFilter(false)
+  }
 
   const toggleDropdown = () => {
     if (showDropdown) {
@@ -193,7 +232,7 @@ const PromoterWallet = () => {
     <PromoterWalletContainer>
       <PromoterWalletStyles>
         <div className='container'>
-          <WalletSummary totalBalance={totalBalance} pendingWithdrawals={pendingWithdrawals} amountPaid={amountPaid} admin={false} />
+          <WalletSummary isDashboardLoading={isDashboardLoading} openFilter={openFilter} setOpenFilter={setOpenFilter} totalBalance={totalBalance} pendingWithdrawals={pendingWithdrawals} amountPaid={amountPaid} handleFilterSelect={handleFilterSelect} clickedFilter={clickedFilter} admin={false} />
           <TransactionHistory transactionHistory={transactionHistory} />
         </div>
         <Wallet
@@ -203,6 +242,7 @@ const PromoterWallet = () => {
           accountData={accountData}
           isLoading={isLoading}
           onOpenPaymentDetailsModal={() => setShowPaymentDetailsModal(true)}
+
         />
       </PromoterWalletStyles>
       {showWithdrawProcessModal ? (
@@ -210,6 +250,7 @@ const PromoterWallet = () => {
           onCloseWithdrawProcess={() => setShowWithdrawProcessModal(false)}
           onOpenWithdrawDetails={() => setShowWithdrawDetailsModal(true)}
           accountData={accountData}
+          banks={banks}
           totalBalance={totalBalance}
           amount={amount}
           setAmount={setAmount}
@@ -217,6 +258,8 @@ const PromoterWallet = () => {
           setSelectedBank={setSelectedBank}
           selectedBankName={selectedBankName}
           setSelectedBankName = {setSelectedBankName}
+          selectedBankImage={selectedBankImage}
+          setSelectedBankImage = {setSelectedBankImage}
           show={{ showWithdrawProcessModal, showWithdrawDetailsModal }}
         />
       ) : null}
@@ -230,6 +273,7 @@ const PromoterWallet = () => {
           setWithdrawConfirmed={setWithdrawConfirmed}
           selectedBank={selectedBank}
           selectedBankName={selectedBankName}
+          selectedBankImage={selectedBankImage}
           onOpenWithdrawProcess={() => setShowWithdrawProcessModal(true)}
         />
       ) : null}

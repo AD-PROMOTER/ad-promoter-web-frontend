@@ -41,6 +41,7 @@ import TimeAgo from "@/components/timeAgo"
 import axios from "axios"
 import { useRouter } from "next/router"
 import { useToast } from "@chakra-ui/react"
+import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from "@/utils/formatFilterDate"
 
 
 const Index = () => {
@@ -63,8 +64,11 @@ const Index = () => {
   const [isLoading,setIsLoading] = useState(null)
   const Router = useRouter()
   const [isReportLoading, setIsReportLoading] = useState(null);
+  const [clickedFilter,setClickedFilter] = useState('Sort')
   const toast = useToast()
-
+  const [currentIndex,setCurrentIndex] = useState(0)
+  const [dashboardStartDate,setDashboardStartDate] = useState('')
+  const [dashboardEndDate,setDashboardEndDate] = useState('')
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user-detail"));
@@ -103,22 +107,31 @@ const Index = () => {
         token.current = userToken
     }
 
+    const fetchRecentJobs = async() =>{
+      let apiUrl = `https://api.ad-promoter.com/api/v1/ads/recent-ads?page=1&pageSize=10`;
+      if (dashboardStartDate) {
+        apiUrl += `&startDate=${dashboardStartDate}`;
+      }
+      if (dashboardEndDate) {
+        apiUrl += `&endDate=${dashboardEndDate}`;
+      }
+      setIsLoading(true)
+      const result = await axios(apiUrl,{
+        headers:{
+          Authorization: `Bearer ${token.current}`
+        }
+      })
+      setRecentJobs(result.data.data.data)
+      console.log(result.data);
+      setIsLoading(false)
+    }
+
     if(token.current){
         fetchRecentJobs()
     }
-},[])
+},[dashboardEndDate, dashboardStartDate])
 
-const fetchRecentJobs = async() =>{
-  setIsLoading(true)
-  const result = await axios(`https://api.ad-promoter.com/api/v1/ads/recent-ads?page=1&pageSize=10`,{
-    headers:{
-      Authorization: `Bearer ${token.current}`
-    }
-  })
-  setRecentJobs(result.data.data.data)
-  console.log(result.data);
-  setIsLoading(false)
-}
+
 
   const toggleReadMore = () => {
     setIsReadMore(!isReadMore);
@@ -178,6 +191,32 @@ const fetchRecentJobs = async() =>{
       setShowReport(false)
     }
 
+    const handleClickedFilter = (e) =>{
+      setClickedFilter(e.target.innerText)
+
+      if(e.target.innerText === 'Recent'){
+        setDashboardStartDate('')
+        setDashboardEndDate('')
+      }
+      if(e.target.innerText === 'A week ago'){
+        const { startOfWeek, endOfWeek } = getWeekAgoRange();
+        setDashboardStartDate(startOfWeek)
+        setDashboardEndDate(endOfWeek)
+      }
+      if(e.target.innerText === 'Less than 2 weeks'){
+        const { startOfWeek, endOfWeek } = getTwoWeeksAgoRange();
+        setDashboardStartDate(startOfWeek)
+        setDashboardEndDate(endOfWeek)
+      }
+      if(e.target.innerText === 'Last 30 days'){
+        const { startOfWeek, endOfWeek } = getThirtyDaysAgoRange();
+        setDashboardStartDate(startOfWeek)
+        setDashboardEndDate(endOfWeek)
+      }
+
+      setShowSortDropdown(false)
+    }
+
     const handleAdRemoval = async(id) =>{
       const response = await fetch(
           `https://api.ad-promoter.com/api/v1/ads/${id}`,
@@ -212,6 +251,18 @@ const fetchRecentJobs = async() =>{
           });
         }
     }
+
+    const nextImage = (images) => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      );
+  };
+  
+  const previousImage = (images) => {
+      setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+      );
+  };
 
   const summary = [
     {
@@ -298,7 +349,7 @@ const fetchRecentJobs = async() =>{
                       </div>
                     </div>
                     <div className="dashboard-info-activity-chart">
-                    {/* <Line
+                    <Line
                       data={{
                         labels: ['S', 'M', 'T', 'W', 'T', 'F','S'],
                         datasets: [
@@ -339,7 +390,7 @@ const fetchRecentJobs = async() =>{
                           },
                         },
                       }}
-                    /> */}
+                    />
                     </div>
                   </div>
                 </div>
@@ -365,11 +416,11 @@ const fetchRecentJobs = async() =>{
                 </div>
                 {showSortDropdown && (
                   <ul>
-                    <li>Recent</li>
-                    <li>Two days ago</li>
-                    <li>A week ago</li>
-                    <li>Less than 2 weeks</li>
-                    <li>Last 30 days</li>
+                    <li onClick={handleClickedFilter}>Recent</li>
+                    <li onClick={handleClickedFilter}>Two days ago</li>
+                    <li onClick={handleClickedFilter}>A week ago</li>
+                    <li onClick={handleClickedFilter}>Less than 2 weeks</li>
+                    <li onClick={handleClickedFilter}>Last 30 days</li>
                   </ul>
                 )}
               </div>
@@ -462,13 +513,13 @@ const fetchRecentJobs = async() =>{
                             ):(
                             <div className="product-img-container">
                               <div className='carousel-container'>
-                                  <div onClick={goToPrevious} className='left-arrow'>
+                                  <div onClick={() => previousImage(item.images)} className='left-arrow'>
                                       ❮
                                   </div>
                                   <div className='img-container'>
                                       <Image src={item.images[currentIndex]} alt='product' width={360} height={236}/>
                                   </div>
-                                  <div onClick={goToNext} className='right-arrow'>
+                                  <div onClick={() => nextImage(item.images)} className='right-arrow'>
                                       ❯
                                   </div>
                               </div>

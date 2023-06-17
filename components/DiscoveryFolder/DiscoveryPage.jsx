@@ -8,6 +8,7 @@ import DiscoveryJob from './DiscoveryJob'
 import Modal from './ReportModal/Modal'
 import Backdrop from './ReportModal/Backdrop'
 import axios from 'axios'
+import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from '@/utils/formatFilterDate'
 
 const DiscoveryPage = () => {
     const [showDropdown, setShowDropdown] = useState(false)
@@ -17,41 +18,137 @@ const DiscoveryPage = () => {
     const [recommendedJobs,setRecommendedJobs] = useState()
     const [feed,setFeed] = useState()
     const [isLoading,setIsLoading] = useState(false)
+    const [clickedFilter,setClickedFilter] = useState('Filter')
+    const [startDate,setStartDate] = useState('')
+    const [endDate,setEndDate] = useState('')
+    const [adType,setAdType] = useState('')
+    const [recent,setRecent] = useState()
+    const [popular,setPopular] = useState()
 
     useEffect(()=>{
         const userToken = JSON.parse(localStorage.getItem("user-token"));
         if (userToken) {
             token.current = userToken
         }
+
+        const fetchFeed = async() =>{
+          let apiUrl = 'https://api.ad-promoter.com/api/v1/ads/personal?page=1&pageSize=10';
+          if (startDate) {
+            apiUrl += `&startDate=${startDate}`;
+          }
+          if (endDate) {
+            apiUrl += `&endDate=${endDate}`;
+          }
+          if (searchTag) {
+            apiUrl += `&query=${searchTag}`;
+          }
+          if (adType) {
+            apiUrl += `&adType=${adType}`;
+          }
+          if (recent) {
+            apiUrl += `&recent=${recent}`;
+          }
+          if (popular) {
+            apiUrl += `&popular=${popular}`;
+          }
+          setIsLoading(true)
+          const result = await axios(apiUrl,{
+            headers:{
+              Authorization: `Bearer ${token.current}`
+            }
+          })
+          setFeed(result.data.data)
+          console.log(result.data.data);
+          setIsLoading(false)
+          // setSearchTag('')
+        }
+
+        const fetchRecommended = async(searchTag) =>{
+          setIsLoading(true)
+          const result = await axios(`https://api.ad-promoter.com/api/v1/ads/recommended?page=1&pageSize=10&name=${searchTag}`,{
+            headers:{
+              Authorization: `Bearer ${token.current}`
+            }
+          })
+          setRecommendedJobs(result.data.data.data)
+          console.log(result.data.data.data);
+          setIsLoading(false)
+        }
+
         if(token.current){
             fetchFeed()
             fetchRecommended()
         }
-    },[])
+    },[adType, endDate, popular, recent, startDate])
 
-    const fetchFeed = async(searchTag) =>{
-        setIsLoading(true)
-        const result = await axios(`https://api.ad-promoter.com/api/v1/ads/searchTag?page=1&pageSize=10&tag=${searchTag}`,{
-          headers:{
-            Authorization: `Bearer ${token.current}`
-          }
-        })
-        setFeed(result.data.data.data)
-        console.log(result.data.data.data);
-        setIsLoading(false)
-        setSearchTag('')
+    const fetchFeed = async() =>{
+      let apiUrl = 'https://api.ad-promoter.com/api/v1/ads/personal?page=1&pageSize=10';
+      if (startDate) {
+        apiUrl += `&startDate=${startDate}`;
+      }
+      if (endDate) {
+        apiUrl += `&endDate=${endDate}`;
+      }
+      if (searchTag) {
+        apiUrl += `&query=${searchTag}`;
+      }
+      if (adType) {
+        apiUrl += `&adType=${adType}`;
+      }
+      if (recent) {
+        apiUrl += `&recent=${recent}`;
+      }
+      if (popular) {
+        apiUrl += `&popular=${popular}`;
+      }
+      setIsLoading(true)
+      const result = await axios(apiUrl,{
+        headers:{
+          Authorization: `Bearer ${token.current}`
+        }
+      })
+      setFeed(result.data.data)
+      console.log(result.data.data);
+      setIsLoading(false)
+      // setSearchTag('')
     }
 
-    const fetchRecommended = async(searchTag) =>{
-        setIsLoading(true)
-        const result = await axios(`https://api.ad-promoter.com/api/v1/ads/recommended?page=1&pageSize=10&name=${searchTag}`,{
-          headers:{
-            Authorization: `Bearer ${token.current}`
-          }
-        })
-        setRecommendedJobs(result.data.data.data)
-        console.log(result.data.data.data);
-        setIsLoading(false)
+    const handleFilterSelect = (e) =>{
+        setClickedFilter(e.target.innerText)
+        if(e.target.innerText === 'Recent'){
+          setRecent(true)
+        }
+        if(e.target.innerText === 'Popular'){
+          setPopular(true)
+        }
+        if(e.target.innerText === 'Link-only Ads'){
+          setAdType('direct-link')
+        }
+        if(e.target.innerText === 'Visual Ads'){
+          setAdType('visual')
+        }
+        if(e.target.innerText === 'Detailed Ads'){
+          setAdType('detail')
+        }
+        if(e.target.innerText === 'Detailed Ads'){
+          setAdType('detail')
+        }
+        if(e.target.innerText === 'A week ago'){
+          const { startOfWeek, endOfWeek } = getWeekAgoRange();
+          setStartDate(startOfWeek)
+          setEndDate(endOfWeek)
+        }
+        if(e.target.innerText === 'Less than 2 weeks'){
+          const { startOfWeek, endOfWeek } = getTwoWeeksAgoRange();
+          setStartDate(startOfWeek)
+          setEndDate(endOfWeek)
+        }
+        if(e.target.innerText === 'Last 30 days'){
+          const { startOfWeek, endOfWeek } = getThirtyDaysAgoRange();
+          setStartDate(startOfWeek)
+          setEndDate(endOfWeek)
+        }
+        setShowDropdown(false)
     }
 
     const handleSearch = (event) =>{
@@ -59,8 +156,9 @@ const DiscoveryPage = () => {
             if(!searchTag){
                 return
             }else{
+                // setSearchTag(event.target.value)
                 fetchFeed(searchTag)
-                fetchRecommended(searchTag)
+                // fetchRecommended(searchTag)
             }
         }
     }
@@ -86,19 +184,19 @@ const DiscoveryPage = () => {
                     </span>
                     <input name='search' id='search' value={searchTag} onKeyDown={handleSearch} onChange={(e)=>setSearchTag(e.target.value)} placeholder='Search ad niche...'/>
                 </div>  
-                <div className='select' onClick={() => setShowDropdown(!showDropdown)}>
-                    <div>Filter</div>
+                <div className='select' style={{cursor: 'pointer'}} onClick={() => setShowDropdown(!showDropdown)}>
+                    <div>{clickedFilter}</div>
                     {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
                     {showDropdown && (
                     <ul>
-                        <li>Recent</li>
-                        <li>Popular</li>
-                        <li>Link-only Ads</li>
-                        <li>Visual Ads</li>
-                        <li>Detailed Ads</li>
-                        <li>A week ago</li>
-                        <li>Less than 2 weeks</li>
-                        <li>Last 30 days</li>
+                        <li onClick={handleFilterSelect}>Recent</li>
+                        <li onClick={handleFilterSelect}>Popular</li>
+                        <li onClick={handleFilterSelect}>Link-only Ads</li>
+                        <li onClick={handleFilterSelect}>Visual Ads</li>
+                        <li onClick={handleFilterSelect}>Detailed Ads</li>
+                        <li onClick={handleFilterSelect}>A week ago</li>
+                        <li onClick={handleFilterSelect}>Less than 2 weeks</li>
+                        <li onClick={handleFilterSelect}>Last 30 days</li>
                     </ul>
                 )}
                 </div>

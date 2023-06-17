@@ -1,95 +1,96 @@
-import React from 'react';
-import { FacebookShareButton, WhatsappShareButton, TwitterShareButton } from 'react-share';
-import styled from 'styled-components';
-// import { TwitterShareButton, FacebookShareButton, LinkedInShareButton } from 'react-share';
+import { useState } from 'react';
+import styled, { keyframes }  from 'styled-components';
+import { FiTwitter, FiFacebook } from 'react-icons/fi';
+import { FaWhatsapp } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 
-const ModalContainer = styled.div`
-  /* background-color: rgba(0, 0, 0, 0.1);
-  width: 100%;
-  height: 100vh;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0; */
-  /* border-radius: 4px; */
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
-  /* padding: 20px;
-  width: 300px; */
-`;
-const ShareDialogueContainer = styled.div`
-  background-color: #ffffff;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 300px;
-  /* position: absolute;
-  top: 30%; */
-  /* bottom: 0; */
-  /* left: 35%; */
-  /* right: 0; */
-`;
-
-const ShareDialogueTitle = styled.h2`
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
-
-const ShareDialogueText = styled.p`
-  font-size: 14px;
-  margin-bottom: 20px;
-`;
-
-const ShareDialogueButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const ShareDialogueButton = styled.button`
-  background-color: transparent;
+const ShareButton = styled.button`
+  padding: 8px;
+  background-color: #007bff;
+  color: #fff;
   border: none;
   cursor: pointer;
-  font-size: 16px;
-  padding: 10px;
 `;
 
-const ShareDialogue = ({ onClose,shareUrl,title,imageUrl,description }) => {
-  const handleShare = (platform) => {
-    // Implement your share logic here based on the selected platform
-    console.log(`Sharing on ${platform}...`);
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const ShareDialogueContainer = styled.div`
+  /* display: ${(props) => (props.open ? 'block' : 'none')}; */
+  position: absolute;
+  top: 60%;
+  left: 60%;
+  width: 70%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 2rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  animation: ${fadeIn} 0.5s ease-in-out;
+`;
+
+const SocialIcon = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+`;
+
+const Icon = styled.div`
+  margin-right: 1rem;
+`;
+
+const ShareDialogueContent = styled.div``;
+
+const ShareDialogue = ({shareLink}) => {
+  // const shareLink = window.location.href;
+  const router = useRouter();
+
+  const shareToTwitter = () => {
+    const shareUrl = `https://twitter.com/share?url=${encodeURIComponent(shareLink)}`;
+    window.open(shareUrl, '_blank');
+  };
+
+  const shareToFacebook = () => {
+    const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareLink)}`;
+    window.open(shareUrl, '_blank');
+  };
+
+  const shareToWhatsApp = () => {
+    const shareUrl = `whatsapp://send?text=${encodeURIComponent(shareLink)}`;
+    window.open(shareUrl, '_blank');
   };
 
   return (
-    <ModalContainer>
-
-        <ShareDialogueContainer>
-        <ShareDialogueTitle>Share Dialogue</ShareDialogueTitle>
-        <ShareDialogueText>Share this content with others.</ShareDialogueText>
-        
-        <ShareDialogueButtonContainer>
-            <ShareDialogueButton onClick={() => handleShare('Facebook')}>
-                <TwitterShareButton url={shareUrl} title={title} imageUrl={imageUrl} description={description}>
-                    Share on Twitter
-                </TwitterShareButton>
-            </ShareDialogueButton>
-
-            <ShareDialogueButton onClick={() => handleShare('Twitter')}>
-                <FacebookShareButton url={shareUrl} quote={title} imageUrl={imageUrl} description={description}>
-                    Share on Facebook
-                </FacebookShareButton>        
-            </ShareDialogueButton>
-
-            <ShareDialogueButton onClick={() => handleShare('LinkedIn')}>
-                <WhatsappShareButton url={shareUrl} title={title} imageUrl={imageUrl} description={description}>
-                    Share on Whatsapp
-                </WhatsappShareButton>        
-            </ShareDialogueButton>
-        </ShareDialogueButtonContainer>
-
-        <ShareDialogueButton onClick={onClose}>Close</ShareDialogueButton>
-        </ShareDialogueContainer>
-    </ModalContainer>
+    <>
+      {/* <ShareButton>Share</ShareButton> */}
+      <ShareDialogueContainer>
+        <ShareDialogueContent>
+          <SocialIcon>
+            <Icon>
+              <FiTwitter size={20} />
+            </Icon>
+            <button onClick={shareToTwitter}>Share on Twitter</button>
+          </SocialIcon>
+          <SocialIcon>
+            <Icon>
+              <FiFacebook size={20} />
+            </Icon>
+            <button onClick={shareToFacebook}>Share on Facebook</button>
+          </SocialIcon>
+          <SocialIcon>
+            <Icon>
+              <FaWhatsapp size={20} />
+            </Icon>
+            <button onClick={shareToWhatsApp}>Share on Whatsapp</button>
+          </SocialIcon>
+        </ShareDialogueContent>
+      </ShareDialogueContainer>
+    </>
   );
 };
 

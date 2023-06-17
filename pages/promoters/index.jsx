@@ -20,12 +20,14 @@ import notif from '@/public/assets/notif.svg'
 import { useRouter, withRouter } from "next/router"
 import ArrowDown from "@/public/assets/arrow-down"
 import ArrowUp from "@/public/assets/arrow-up"
-import { useEffect,useRef,useState } from "react"
+import { useContext, useEffect,useRef,useState } from "react"
 import userStatus from '@/public/assets/promoters-logo.svg'
 import MobileNotif from '@/components/MobileNotification/index'
 import ScrollContainer from 'react-indiana-drag-scroll'
 import ScrollIntoView from 'react-scroll-into-view'
 import axios from "axios"
+import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from "@/utils/formatFilterDate"
+import RecentJobContext from "@/context/recentJobContext"
 
 const Index = ({router}) => {
   const {query: {tab}} = router
@@ -44,7 +46,15 @@ const Index = ({router}) => {
   const [pendingWithdrawals,setPendingWithdrawals] = useState('')
   const [adsConverted,setAdsConverted] = useState([])
   const [isLoading,setIsLoading] = useState(false)
-
+  const [isTabLoading,setIsTabLoading] = useState(false)
+  const [clickedFilter,setClickedFilter] = useState('Filter')
+  const [clickedSort,setClickedSort] = useState('Sort')
+  const [dashboardStartDate,setDashboardStartDate] = useState('')
+  const [dashboardEndDate,setDashboardEndDate] = useState('')
+  const [sortStartDate,setSortStartDate] = useState('')
+  const [sortEndDate,setSortEndDate] = useState('')
+  const {recentJobs,setRecentJobs} = useContext(RecentJobContext)
+  
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user-detail"));
     const userToken = JSON.parse(localStorage.getItem("user-token"));
@@ -57,8 +67,15 @@ const Index = ({router}) => {
     }
 
     const fetchDashboard = async() =>{
+      let apiUrl = 'https://api.ad-promoter.com/api/v1/user/dashboard';
+      if (dashboardStartDate) {
+        apiUrl += `?startDate=${dashboardStartDate}`;
+      }
+      if (dashboardEndDate) {
+        apiUrl += `&endDate=${dashboardEndDate}`;
+      }
       setIsLoading(true)
-      const result = await axios(`https://api.ad-promoter.com/api/v1/user/dashboard`,{
+      const result = await axios(apiUrl,{
         headers:{
           Authorization: `Bearer ${token.current}`
         }
@@ -69,12 +86,61 @@ const Index = ({router}) => {
       setPendingWithdrawals(result.data.data.pendingWithdrawals)
       setAdsConverted(result.data.data.noOfAdsConverted)
       setIsLoading(false)
-      console.log(result.data);
     }
     if(token.current){
-      fetchDashboard()
+      // fetchDashboard()
     }
-  },[Router, setUserName]);
+
+  },[Router, dashboardEndDate, dashboardStartDate, setUserName]);
+
+
+  const handleFilterSelect = (e) =>{
+    setClickedFilter(e.target.innerText)
+    if(e.target.innerText === 'Recent'){
+      setDashboardStartDate('')
+      setDashboardEndDate('')
+    }
+    if(e.target.innerText === 'A week ago'){
+      const { startOfWeek, endOfWeek } = getWeekAgoRange();
+      setDashboardStartDate(startOfWeek)
+      setDashboardEndDate(endOfWeek)
+    }
+    if(e.target.innerText === 'Less than 2 weeks'){
+      const { startOfWeek, endOfWeek } = getTwoWeeksAgoRange();
+      setDashboardStartDate(startOfWeek)
+      setDashboardEndDate(endOfWeek)
+    }
+    if(e.target.innerText === 'Last 30 days'){
+      const { startOfWeek, endOfWeek } = getThirtyDaysAgoRange();
+      setDashboardStartDate(startOfWeek)
+      setDashboardEndDate(endOfWeek)
+    }
+    setShowDropdown(false)
+  }
+  
+  const handleSortSelect = (e) =>{
+    setClickedSort(e.target.innerText)
+    if(e.target.innerText === 'Recent'){
+      setSortStartDate('')
+      setSortEndDate('')
+    }
+    if(e.target.innerText === 'A week ago'){
+      const { startOfWeek, endOfWeek } = getWeekAgoRange();
+      setSortStartDate(startOfWeek)
+      setSortEndDate(endOfWeek)
+    }
+    if(e.target.innerText === 'Less than 2 weeks'){
+      const { startOfWeek, endOfWeek } = getTwoWeeksAgoRange();
+      setSortStartDate(startOfWeek)
+      setSortEndDate(endOfWeek)
+    }
+    if(e.target.innerText === 'Last 30 days'){
+      const { startOfWeek, endOfWeek } = getThirtyDaysAgoRange();
+      setSortStartDate(startOfWeek)
+      setSortEndDate(endOfWeek)
+    }
+    setShowSortDropdown(false)
+  }
   
   const mobileSummary = [
     {
@@ -245,7 +311,7 @@ const Index = ({router}) => {
                     <h3>Dashboard Summary</h3>
                     
                     <div className="filter" onClick={() => setShowDropdown(!showDropdown)}>
-                      <p>Filter</p>
+                      <p>{clickedFilter}</p>
                       <div className="arrow-drop">
                         {showDropdown ? 
                           <ArrowUp /> : <ArrowDown />
@@ -254,10 +320,10 @@ const Index = ({router}) => {
                     </div>
                     {showDropdown && (
                       <ul>
-                        <li>Recent</li>
-                        <li>A week ago</li>
-                        <li>Less than 2 weeks</li>
-                        <li>Last 30 days</li>
+                        <li onClick={handleFilterSelect}>Recent</li>
+                        <li onClick={handleFilterSelect}>A week ago</li>
+                        <li onClick={handleFilterSelect}>Less than 2 weeks</li>
+                        <li onClick={handleFilterSelect}>Last 30 days</li>
                       </ul>
                     )}
                   </div>
@@ -311,16 +377,15 @@ const Index = ({router}) => {
                   </div>
                   {showSortDropdown && (
                     <ul>
-                      <li>Recent</li>
-                      <li>Two days ago</li>
-                      <li>A week ago</li>
-                      <li>Less than 2 weeks</li>
-                      <li>Last 30 days</li>
+                      <li onClick={handleSortSelect}>Recent</li>
+                      <li onClick={handleSortSelect}>A week ago</li>
+                      <li onClick={handleSortSelect}>Less than 2 weeks</li>
+                      <li onClick={handleSortSelect}>Last 30 days</li>
                     </ul>
                   )}
                 </div>
                 <ScrollContainer className="tab-body">
-                  {isTabOne && <Recent />}
+                  {isTabOne && <Recent sortStartDate={sortStartDate} setSortStartDate={setSortStartDate} setSortEndDate={setSortEndDate} sortEndDate={sortEndDate}/>}
                   {isTabTwo && <SavedJobs />}
                 </ScrollContainer>
               </TabContainer>

@@ -95,6 +95,7 @@ export const Feed = styled.div`
   margin-bottom: 3rem;
   background-color: var(--white);
   border-radius: 1.2rem;
+  position: relative;
 
   .type {
     padding: 2rem;
@@ -393,7 +394,7 @@ export const Feed = styled.div`
       flex-direction: column;
       align-items: center;
       gap: 3rem;
-
+      margin-top: 4rem;
       .carousel-container {
         position: relative;
         .img-container {

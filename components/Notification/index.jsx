@@ -5,6 +5,7 @@ import NotificationContext from '@/context/notificationContext'
 import image from '@/public/assets/Ellipse 3.svg'
 import Image from "next/image"
 import axios from "axios"
+import { GlobalStyle } from "@/styles/global"
 const Index = () => {
   const { isNotifClicked,setIsNotifClicked } = useContext(NotificationContext)
   const [isLoading,setIsLoading] = useState(null)
@@ -33,51 +34,54 @@ const Index = () => {
     }
   },[]);
   return (
-    <NotificationModalContainer>
-      <div className="notification-modal">
-        <div className="notification-modal-head">
-          <div className="notification-modal-head-inner">
-            <h3>notifications</h3>
-            <div className="close-icon" onClick={()=>setIsNotifClicked(!isNotifClicked)}>
-              <CloseIcon />
+    <>
+      <NotificationModalContainer>
+        <div className="notification-modal">
+          <div className="notification-modal-head">
+            <div className="notification-modal-head-inner">
+              <h3>notifications</h3>
+              <div className="close-icon" onClick={()=>setIsNotifClicked(!isNotifClicked)}>
+                <CloseIcon />
+              </div>
             </div>
           </div>
-        </div>
-        {!notificationData ? (
-          <p>Loading</p>
-        ):(
-          <>
-            {notificationData.length === 0 ? (
-              <p>No Notification</p>
-            ):(
-              <div className="notification-modal-body">
-                {notificationData.map((item)=> (
-                  <div className="notification-modal-body-item" key={item._id}>
-                    <div className="notification-modal-body-item-textContainer">
-                      <Image src={item.sender?.profilePicture} alt='notification image' width={20} height={20}/>
-                      <div className="notification-modal-body-item-textContainer-text">
-                        <div className="notification-modal-body-item-textContainer-text-head">
-                          <h3>{item.title}</h3>
-                          {!item.isRead && (
-                            <div className="red-circle"></div>
-                          )}
-                        </div>
-                        <div className="notification-modal-body-item-textContainer-text-info">
-                          <p>{item.body}</p>
+          {!notificationData ? (
+            <p>Loading</p>
+          ):(
+            <>
+              {notificationData.length === 0 ? (
+                <p>No Notification</p>
+              ):(
+                <div className="notification-modal-body">
+                  {notificationData.map((item)=> (
+                    <div className="notification-modal-body-item" key={item._id}>
+                      <div className="notification-modal-body-item-textContainer">
+                        <Image style={{borderRadius: '50%'}} src={item.sender?.profilePicture} alt='notification image' width={'48px'} height={'48px'}/>
+                        <div className="notification-modal-body-item-textContainer-text">
+                          <div className="notification-modal-body-item-textContainer-text-head">
+                            <h3>{item.title}</h3>
+                            {!item.isRead && (
+                              <div className="red-circle"></div>
+                            )}
+                          </div>
+                          <div className="notification-modal-body-item-textContainer-text-info">
+                            <p>{item.body}</p>
+                          </div>
                         </div>
                       </div>
+                      <div className="time-stamp">
+                        {/* <p>{time}</p> */}
+                      </div>
                     </div>
-                    <div className="time-stamp">
-                      {/* <p>{time}</p> */}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}          
-          </>
-        )}
-      </div>
-    </NotificationModalContainer>
+                  ))}
+                </div>
+              )}          
+            </>
+          )}
+        </div>
+      </NotificationModalContainer>
+      {/* <GlobalStyle /> */}
+    </>
   )
 }
 

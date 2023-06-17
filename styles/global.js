@@ -26,7 +26,7 @@ export const GlobalStyle = createGlobalStyle`
     font-family: var(--font-family);
     font-weight: 400;
     overflow-x: hidden;
-    background-color: var(--bg);
+    background: var(--bg);
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -119,13 +119,6 @@ export const GlobalStyle = createGlobalStyle`
     max-width: 100%;
   }
 
-  .dummy{
-    display: flex;
-    justify-content: center;
-    color: var(--primary);
-    width: 100%;
-  }
-
   .blurred-bg{
     position: absolute;
     width: 100%;
@@ -142,6 +135,10 @@ export const GlobalStyle = createGlobalStyle`
   input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+body.modal-open {
+  overflow: hidden;
 }
 
 /* Firefox */

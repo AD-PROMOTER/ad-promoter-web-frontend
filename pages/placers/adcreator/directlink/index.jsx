@@ -6,10 +6,12 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import AdPlacerContext from '@/context/adPlacerContext'
 import { useContext } from 'react'
+import { useToast } from '@chakra-ui/react'
 const Directlink = () => {
     const router = useRouter()
     const {productName,setProductName,productDescription,setProductDescription,tags,setTags,webAddress,setWebAddress,setContainAdultContent} = useContext(AdPlacerContext)
     const [tagValue,setTagValue] = useState('');
+    const toast = useToast()
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -29,6 +31,15 @@ const Directlink = () => {
     const handlePush = () =>{
         if(productName&&productDescription&&webAddress !== ''){
             router.push('directlink/conversion')
+        }else{
+            toast({
+                title: 'Input field needs to be filled completely',
+                status: "error",
+                duration: "5000",
+                isClosable: true,
+                position: "bottom-left",
+                size: "lg"
+            });
         }
     }
 

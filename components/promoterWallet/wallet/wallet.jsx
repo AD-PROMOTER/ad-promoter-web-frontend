@@ -18,6 +18,33 @@ const Wallet = (props) => {
   const [secondBank, setSecondBank] = useState(false);
   const [selectedBank, setSelectedBank] = useState(null);
 
+  const renderMappedElements = () => {
+    return [...props.accountData].reverse().slice(0,2).map((item) => {
+      const matchedBank = props.banks.find((bank) => bank.code === item.details.bank_code);
+      const logo = matchedBank ? matchedBank.logo : null;
+
+      return (
+        <div
+        key={item.id}
+        className={selectedBank === item.id ? 'container bank1 clicked': 'container bank1'}
+        onClick={()=>setSelectedBank(item.id)}
+        >
+          <div className="container__acctdetails">
+            {logo && <Image src={logo} alt="Bank Logo" width={49} height={49} />}
+            <div>
+              <p className="acctNum">{item.details.account_number}</p>
+              <p className="acctName">{item.details.account_name}</p>
+            </div>
+          </div>
+          <div className="container__select">
+            <input type="radio" name="banks" value={item.id} checked={selectedBank === item.id} onChange={() => setSelectedBank(item.id)}/> 
+            <span className="checkmark"></span>
+          </div>
+        </div>
+      );
+    });
+  };
+
   const toggleDropdown = () => {
     if (showDropdown) {
       setShowDropdown(false);
@@ -82,27 +109,7 @@ const Wallet = (props) => {
             {props.accountData.length === 0 ?(
               <p>Add an account</p>
             ):(
-              <div>
-                {[...props.accountData].reverse().slice(0,2).map((index)=>(
-                  <div
-                  key={index.id}
-                    className={selectedBank === index.id ? 'container bank1 clicked': 'container bank1'}
-                    onClick={()=>setSelectedBank(index.id)}
-                  >
-                    <div className="container__acctdetails">
-                      <Image src={gtb}  alt="Guarantee trust bank logo" />
-                      <div>
-                        <p className="acctNum">{index.details.account_number}</p>
-                        <p className="acctName">{index.details.account_name}</p>
-                      </div>
-                    </div>
-                    <div className="container__select">
-                      <input type="radio" name="banks" value={index.id} checked={selectedBank === index.id} onChange={() => setSelectedBank(index.id)}/> 
-                      <span className="checkmark"></span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              renderMappedElements()
             )}
           </>
         )}

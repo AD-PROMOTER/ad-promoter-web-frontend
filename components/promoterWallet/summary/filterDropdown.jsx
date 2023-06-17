@@ -1,13 +1,13 @@
 import { FilterDropdownStyles } from "../styles/summary";
 
-const FilterDropdown = () => {
+const FilterDropdown = ({handleFilterSelect}) => {
   return (
     <FilterDropdownStyles>
       <ul>
-        <li>Recent</li>
-        <li>A week ago</li>
-        <li>Less than 2 weeks</li>
-        <li>Last 30 days</li>
+        <li onClick={handleFilterSelect}>Recent</li>
+        <li onClick={handleFilterSelect}>A week ago</li>
+        <li onClick={handleFilterSelect}>Less than 2 weeks</li>
+        <li onClick={handleFilterSelect}>Last 30 days</li>
       </ul>
     </FilterDropdownStyles>
   );

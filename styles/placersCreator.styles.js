@@ -1,14 +1,24 @@
 import styled from 'styled-components';
 
+export const TopStyledCreator = styled.div`
+  background: var(--bg);
+  padding-top: 4rem;
+`;
+
 export const StyledCreator = styled.div`
   width: 93%;
   margin: auto;
   padding-bottom: 1rem;
+
   @media screen and (max-width: 425px) {
     display: none;
   }
-  /* margin-top: 4rem;
-    margin-bottom: 4rem; */
+  .spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
   .creator-head {
     display: flex;
     flex-direction: row;
@@ -19,27 +29,38 @@ export const StyledCreator = styled.div`
     background: #ffffff;
     border-radius: 1.6rem;
     width: 100%;
-    margin-top: 4rem;
+    /* margin-top: 4rem; */
     h3 {
       font-weight: 600;
       font-size: 1.8rem;
       line-height: 2.7rem;
       color: var(--black-1);
     }
-    .filter-dropdown {
+    .filter {
+      width: 28.1rem;
+      padding: 1.2rem 2rem;
+      border: 0.1rem solid var(--light-primary);
+      border-radius: 0.8rem;
       display: flex;
+      font-size: 1.6rem;
       align-items: center;
-      padding: 1.4rem 2.4rem;
-      gap: 17.9rem;
-      background: var(--white);
-      border: 1px solid #dbd8fc;
-      border-radius: 1rem;
+      justify-content: space-between;
       cursor: pointer;
-      p {
-        font-weight: 400;
-        font-size: 1.6rem;
-        line-height: 2.4rem;
-        color: var(--black-3);
+    }
+    ul {
+      background-color: var(--white);
+      position: absolute;
+      top: 19rem;
+      right: 12rem;
+      border-radius: 0.8rem;
+      box-shadow: var(--shadow-1);
+      width: 28.1rem;
+      z-index: 100;
+
+      li {
+        padding: 1.2rem 2.4rem;
+        border-bottom: 0.1rem solid #d9d9d9;
+        cursor: pointer;
       }
     }
   }
@@ -89,7 +110,7 @@ export const StyledCreator = styled.div`
             font-weight: 400;
             font-size: 12px;
             line-height: 18px;
-            color: #333333;
+            /* color: #333333; */
             text-transform: capitalize;
           }
         }
@@ -100,12 +121,12 @@ export const StyledCreator = styled.div`
             justify-content: center;
             align-items: center;
             padding: 0.4rem 1.6rem;
-            border: 1px solid #dbd8fc;
+            /* border: 1px solid #dbd8fc; */
             border-radius: 10rem;
             font-weight: 600;
             font-size: 1rem;
             line-height: 1.5rem;
-            color: #ffffff;
+            color: white;
           }
         }
       }

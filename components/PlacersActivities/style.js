@@ -1,9 +1,15 @@
 import styled from 'styled-components';
 
+export const TopContainer = styled.div`
+  background: var(--bg);
+  /* height: 100vh; */
+  padding-top: 3rem;
+`;
+
 export const Container = styled.div`
   max-width: 123rem;
   margin: 0 auto;
-  margin-top: 3rem;
+  /* margin-top: 3rem; */
   @media screen and (max-width: 425px) {
     display: none;
   }
@@ -11,45 +17,54 @@ export const Container = styled.div`
     display: none;
   }
 
-  .log {
-    background-color: var(--white);
-    padding: 2.4rem 6rem 2.4rem 2.4rem;
-    border-radius: 1rem;
+  .spinner {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
 
-    p {
-      font-weight: 600;
-      font-size: 1.8rem;
-    }
-
-    .filter {
-      width: 28.1rem;
-      padding: 1.2rem 2rem;
-      border: 0.1rem solid var(--light-primary);
-      border-radius: 0.8rem;
-      display: flex;
-      font-size: 1.6rem;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-    }
-
-    ul {
+  > div {
+    .log {
       background-color: var(--white);
-      position: absolute;
-      top: 19rem;
-      right: 12rem;
-      border-radius: 0.8rem;
-      box-shadow: var(--shadow-1);
-      width: 28.1rem;
-      z-index: 100;
+      padding: 2.4rem 6rem 2.4rem 2.4rem;
+      border-radius: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      /* margin-top: 10%; */
 
-      li {
-        padding: 1.2rem 2.4rem;
-        border-bottom: 0.1rem solid #d9d9d9;
+      p {
+        font-weight: 600;
+        font-size: 1.8rem;
+      }
+
+      .filter {
+        width: 28.1rem;
+        padding: 1.2rem 2rem;
+        border: 0.1rem solid var(--light-primary);
+        border-radius: 0.8rem;
+        display: flex;
+        font-size: 1.6rem;
+        align-items: center;
+        justify-content: space-between;
         cursor: pointer;
+      }
+
+      ul {
+        background-color: var(--white);
+        position: absolute;
+        top: 19rem;
+        right: 12rem;
+        border-radius: 0.8rem;
+        box-shadow: var(--shadow-1);
+        width: 28.1rem;
+        z-index: 100;
+
+        li {
+          padding: 1.2rem 2.4rem;
+          border-bottom: 0.1rem solid #d9d9d9;
+          cursor: pointer;
+        }
       }
     }
   }
@@ -69,9 +84,26 @@ export const Container = styled.div`
       text-align: left;
     }
 
+    tbody {
+      /* display: flex; */
+      /* flex-direction: column; */
+      /* gap: 2rem; */
+    }
+
     tbody td {
       position: relative;
-      top: 3rem;
+      /* top: 3rem; */
+      > div p {
+        font-family: 'Poppins';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1.4rem;
+        line-height: 2.1rem;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #333333;
+      }
     }
     tbody tr {
       background-color: white;

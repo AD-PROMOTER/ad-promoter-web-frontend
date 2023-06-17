@@ -9,13 +9,12 @@ import Card from './card';
 import FilterDropdown from './filterDropdown';
 import { formatCurrencyWithoutStyle,formatCurrency } from '@/utils/formatCurrency';
 const WalletSummary = (props) => {
-  const [openFilter, setOpenFilter] = useState(false);
 
   const toggleDropdown = () => {
-    if (openFilter) {
-      setOpenFilter(false);
+    if (props.openFilter) {
+      props.setOpenFilter(false);
     } else {
-      setOpenFilter(true);
+      props.setOpenFilter(true);
     }
   };
 
@@ -29,11 +28,11 @@ const WalletSummary = (props) => {
         <div className="intro">
           <h1>Wallet Summary</h1>
           <div className="intro__filter" onClick={toggleDropdown}>
-            <p>Filter</p>
+            <p>{props.clickedFilter}</p>
             <Image
               src={chevronDown}
               alt=""
-              className={openFilter ? 'arrow rotate' : 'arrow'}
+              className={props.openFilter ? 'arrow rotate' : 'arrow'}
             />
           </div>
         </div>
@@ -44,12 +43,14 @@ const WalletSummary = (props) => {
           text={props.admin ? "Total Amount Received" : "Total Balance"}
           amount={formatCurrency(props.totalBalance)}
           bg="--unknown-1"
+          isLoading={props.isDashboardLoading}
           shadow="--shadow-2"
         />
         <Card
           img={emptyWallet}
           text={props.admin ? "Total Amount Paid out" : "Pending Withdrawal"}
           amount={formatCurrency(props.pendingWithdrawals)}
+          isLoading={props.isDashboardLoading}
           bg="--unknown-2"
           shadow="--shadow-3"
         />
@@ -57,12 +58,13 @@ const WalletSummary = (props) => {
           img={money}
           text={props.admin ? "Total Amount Unpaid" : "Amount Paid"}
           amount={formatCurrency(props.amountPaid)}
+          isLoading={props.isDashboardLoading}
           bgClass="amount"
           bg="--unknown-3"
           shadow="--shadow-2"
         />
       </div>
-      {openFilter ? <FilterDropdown /> : null}
+      {props.openFilter ? <FilterDropdown handleFilterSelect={props.handleFilterSelect}/> : null}
     </WalletSummaryStyles>
   );
 };

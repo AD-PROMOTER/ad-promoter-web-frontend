@@ -73,18 +73,20 @@ const LandingPage = () => {
                   <p>{data.description}</p>
                 </div>
 
-                <div className="desc-item">
-                  <h3>Product Images</h3>
-                  {data.images.map((image) => (
-                    <Image
-                      key={image}
-                      src={image}
-                      alt=""
-                      width={310.77}
-                      height={156}
-                    />
-                  ))}
-                </div>
+                {data.images.length > 0 && (
+                  <div className="desc-item">
+                    <h3>Product Images</h3>
+                    {data.images.map((image) => (
+                      <Image
+                        key={image}
+                        src={image}
+                        alt=""
+                        width={310.77}
+                        height={156}
+                      />
+                    ))}
+                  </div>
+                )}
 
                 <div className="desc-item">
                   <h3>Conversion Button</h3>
@@ -103,13 +105,13 @@ const LandingPage = () => {
                   </Link>
                 </div>
 
-                <div className="desc-item">
+                {/* <div className="desc-item">
                   <h3>Nudity Awareness</h3>
                   <div className="checkbox">
                     <input type="checkbox" />
                     <p>This advert contains adult content</p>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="desc-item">
                   <h3>Total Advert Amount</h3>

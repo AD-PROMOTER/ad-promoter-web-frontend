@@ -48,7 +48,7 @@ const SingleSavedJobs = () => {
     };
 
     const handleOpenDialogue = () => {
-        setShowDialogue(true);
+        setShowDialogue(!showDialogue);
     };
     
     const handleCloseDialogue = () => {
@@ -252,6 +252,18 @@ const SingleSavedJobs = () => {
             }
         };
 
+        const nextImage = (images) => {
+            setCurrentIndex((prevIndex) =>
+              prevIndex === images.length - 1 ? 0 : prevIndex + 1
+            );
+        };
+        
+        const previousImage = (images) => {
+            setCurrentIndex((prevIndex) =>
+            prevIndex === 0 ? images.length - 1 : prevIndex - 1
+            );
+        };
+
   return (
     <>    
         {!savedJobs || isLoading ? (
@@ -343,13 +355,13 @@ const SingleSavedJobs = () => {
                                     <>
                                         <div className="product-img-container">
                                             <div className='carousel-container'>
-                                                <div onClick={goToPrevious} className='left-arrow'>
+                                                <div onClick={() => previousImage(item.images)} className='left-arrow'>
                                                     ❮
                                                 </div>
                                                 <div className='img-container' style={{borderRadius:'36px'}}>
                                                     <Image src={item.images[currentIndex]} alt='product' width={360} height={236}/>
                                                 </div>
-                                                <div onClick={goToNext} className='right-arrow'>
+                                                <div onClick={() => nextImage(item.images)} className='right-arrow'>
                                                     ❯
                                                 </div>
                                             </div>
@@ -386,12 +398,12 @@ const SingleSavedJobs = () => {
                             <div className="bottom">
                                 <div className="user-details">
                                     <div className="user-details-text">
-                                        {item.creator.profilePicture?(
+                                        {item.creator?.profilePicture?(
                                             <Image src={item.creator?.profilePicture} width={20} height={20} alt={item.creator.accountName}/>
                                             ):(
                                             <CgProfile width={20} height={20}/>
                                         )}
-                                        <h5>{item.creator.accountName}</h5>
+                                        <h5>{item.creator?.accountName}</h5>
                                     </div>
                                     <p>Posted <TimeAgo dateTime={item.dateCreated}/></p>
                                 </div>
@@ -413,7 +425,7 @@ const SingleSavedJobs = () => {
                                         </div>
                                 </div>
                             </div>
-                            {showDialogue && <ShareDialogue shareUrl={'app.ad-promoter.com'} title={item.productName} imageUrl={item.images[0]} onClose={handleCloseDialogue} description={item.description} />}
+                            {showDialogue && <ShareDialogue shareLink={item.promotedLink} />}
                             {showReportModal && (
                                 <BackdropContainer onClick={()=>setShowReportModal(false)}>
                                     <ModalContainer onClick={e => e.stopPropagation()}>

@@ -8,6 +8,7 @@ import AdPlacerContext from '@/context/adPlacerContext'
 import { useContext } from 'react'
 import ArrowDown from '@/public/assets/arrow-down'
 import CloudPlus from '@/public/assets/cloud-plus'
+import { useToast } from '@chakra-ui/react'
 
 const Detailsad = () => {
     const router = useRouter()
@@ -18,6 +19,7 @@ const Detailsad = () => {
     const [showModal,setShowModal] = useState(false)
     const submitButtonRef = useRef(null);
     const [image, setImage] = useState(null);
+    const toast = useToast()
 
     useEffect(()=>{
         const userToken = JSON.parse(localStorage.getItem("user-token"));
@@ -55,7 +57,6 @@ const Detailsad = () => {
         
     //         handleSubmit()
         
-
     // },[image])
 
     const handleImageChange = (e) => {
@@ -120,6 +121,15 @@ const Detailsad = () => {
     const handlePush = () =>{
         if(productName&&productDescription&&webAddress !== ''){
             router.push('detailsad/conversion')
+        }else{
+            toast({
+                title: 'Input field needs to be filled completely',
+                status: "error",
+                duration: "5000",
+                isClosable: true,
+                position: "bottom-left",
+                size: "lg"
+            });
         }
     }
 

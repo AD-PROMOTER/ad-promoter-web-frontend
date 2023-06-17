@@ -13,7 +13,7 @@ export const NotificationModalContainer = styled.div`
   }
   .notification-modal {
     background: #f7f7f7;
-    border-radius: 10px;
+    border-radius: 1rem;
     width: 62rem;
     position: absolute;
     top: 10rem;
@@ -26,6 +26,7 @@ export const NotificationModalContainer = styled.div`
       background: #ffffff;
       width: 100%;
       padding: 1.4rem;
+      border-radius: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;

@@ -96,8 +96,8 @@ const WithdrawDetailsModal = (props) => {
             <ul>
               <li className="flex">
                 <Image
-                  src="/assets/gtb.png"
-                  alt="Guaranty Trust Bank"
+                  src={props.selectedBankImage}
+                  alt="Bank Logo"
                   width="16px"
                   height="16px"
                 />

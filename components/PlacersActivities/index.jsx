@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState,useEffect,useRef } from 'react'
-import { Container, UndoContainer } from './style'
+import { Container, TopContainer, UndoContainer } from './style'
 import {  MobileActivities, TabActivities } from './style'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
@@ -10,6 +11,7 @@ import { gridData } from './data'
 import Backdrop from '../DiscoveryFolder/ReportModal/Backdrop'
 import axios from 'axios'
 import { Spinner } from '@chakra-ui/react'
+import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from '@/utils/formatFilterDate'
 
 const PlacersActivities = () => {
     const [showDropdown, setShowDropdown] = useState(false)
@@ -17,11 +19,14 @@ const PlacersActivities = () => {
     const [showBackdrop, setShowBackdrop] = useState(false)
     const token = useRef('')
     const id = useRef('')
-    const [activities, setActivities] = useState([])
+    const [activities, setActivities] = useState()
     const [totalactivities, setTotalActivities] = useState(null)
     const [isLoading,setIsLoading] = useState(false)
     const [pageNumber, setPageNumber] = useState(1)
-    const revActivities = activities.reverse()
+    const [checkedItems, setCheckedItems] = useState([]);
+    const [clickedFilter,setClickedFilter] = useState('Filter')
+    const [dashboardStartDate,setDashboardStartDate] = useState('')
+    const [dashboardEndDate,setDashboardEndDate] = useState('')
 
     const pageNumbers = [];
     const activitiesPerPage = 8;
@@ -43,20 +48,31 @@ const PlacersActivities = () => {
       }
 
       const fetchActivities = async() =>{
+        let apiUrl = `https://api.ad-promoter.com/api/v1/activities/all/${id.current}?page=${pageNumber}&pageSize=${activitiesPerPage}`;
+      if (dashboardStartDate) {
+        apiUrl += `&startDate=${dashboardStartDate}`;
+      }
+      if (dashboardEndDate) {
+        apiUrl += `&endDate=${dashboardEndDate}`;
+      }
         setIsLoading(true)
-        const result = await axios(`https://api.ad-promoter.com/api/v1/activities/all/${id.current}?page=${pageNumber}&pageSize=${activitiesPerPage}`,{
+        const result = await axios(apiUrl,{
           headers:{
             Authorization: `Bearer ${token.current}`
           }
         })
         setActivities(result.data.data.data);
+        console.log(result.data.data.data);
         setTotalActivities(result.data.data.total)
         setIsLoading(false)
       }
+
       if(id.current){
         fetchActivities()
       }
-    },[pageNumber])
+    },[dashboardStartDate,dashboardEndDate])
+
+    
 
     const changeToLocalTIme = (utc) =>{
       const date = new Date(utc);
@@ -64,25 +80,66 @@ const PlacersActivities = () => {
       return localTime;
     }
 
-    const handleCheckbox = (e) => {
-      const id = e.target.id
-      const data = [...rowData]
-      const checkedValue = data.map((data) => data.id === +id ? {...data, value: !data.value} : data)
-      setRowData(checkedValue)
+    const handleCheckboxChange = (itemId) => {
+      const isChecked = checkedItems.includes(itemId);
+  
+      if (isChecked) {
+        setCheckedItems(checkedItems.filter((id) => id !== itemId));
+      } else {
+        setCheckedItems([...checkedItems, itemId]);
+      }
+    };
+
+    const handleDelete = async() => {
+      const response = await fetch(`https://api.ad-promoter.com/api/v1/activities`,{
+        method: "DELETE",
+        headers:{
+          Authorization: `Bearer ${token.current}`,
+          Accept: "*/*",
+          "Content-Type": "application/json"
+        },
+        body: {
+          "activities": checkedItems
+        }
+      })
+      const json = response.json()
+
+      if(!response.ok){
+        console.log(json);
+      }
+      if(response.ok){
+        console.log(json);
+      }
+      // console.log(checkedItemsId);
     }
 
-    const handleDelete = () => {
-      const data = [...rowData]
-      const rows = data.filter(item => !item.value)
-      setRowData(rows)
-      if (rows.length !== data.length) {
-        setShowBackdrop(true)
+    const handleFilterText = (e) =>{
+      setClickedFilter(e.target.innerText)
+      if(e.target.innerText === 'Recent'){
+        setDashboardStartDate('')
+        setDashboardEndDate('')
       }
+      if(e.target.innerText === 'A week ago'){
+        const { startOfWeek, endOfWeek } = getWeekAgoRange();
+        setDashboardStartDate(startOfWeek)
+        setDashboardEndDate(endOfWeek)
+      }
+      if(e.target.innerText === 'Less than 2 weeks'){
+        const { startOfWeek, endOfWeek } = getTwoWeeksAgoRange();
+        setDashboardStartDate(startOfWeek)
+        setDashboardEndDate(endOfWeek)
+      }
+      if(e.target.innerText === 'Last 30 days'){
+        const { startOfWeek, endOfWeek } = getThirtyDaysAgoRange();
+        setDashboardStartDate(startOfWeek)
+        setDashboardEndDate(endOfWeek)
+      }
+      setShowDropdown(false)
     }
     
 
   return (
-    <>
+    <TopContainer>
       <Container>
       {showBackdrop && <Backdrop onCancel={() => setShowBackdrop(false)}/>}
       <UndoContainer style={{transform: showBackdrop ? 'translateX(0)' : 'translateX(-100vw)'}}>
@@ -90,22 +147,30 @@ const PlacersActivities = () => {
         <div className='undo' onClick={() => setShowBackdrop(false)}>Undo</div>
       </UndoContainer> 
       {isLoading || !activities ? (
-        <Spinner  />
+        <div className='spinner'>
+          <Spinner 
+           thickness='4px'
+           speed='0.65s'
+           emptyColor='gray.200'
+           color='#4F00CF'
+           size='xl'
+           />
+        </div>
       ):(
         <div>
           <div className='log'>
             <p>Activity Log</p>
             <div onClick={() => setShowDropdown(!showDropdown)} className='filter'>
-                <div>Filter</div>
+                <div>{clickedFilter}</div>
                 {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
             </div>
             {showDropdown && (
                 <ul>
-                  <li>Recent</li>
-                  <li>Popular</li>
-                  <li>A week ago</li>
-                  <li>Less than 2 weeks</li>
-                  <li>Last 30 days</li>
+                  <li onClick={handleFilterText}>Recent</li>
+                  <li onClick={handleFilterText}>Popular</li>
+                  <li onClick={handleFilterText}>A week ago</li>
+                  <li onClick={handleFilterText}>Less than 2 weeks</li>
+                  <li onClick={handleFilterText}>Last 30 days</li>
                 </ul>
             )}
           </div>
@@ -117,23 +182,23 @@ const PlacersActivities = () => {
                 <th>User ID</th>
                 <th>Action</th>
                 <th>Date</th>
-                <th><Image src={trash} alt='trash'/></th>
+                <th style={{cursor:'pointer'}} onClick={()=>handleDelete(checkedItems)}><Image src={trash} alt='trash'/></th>
               </tr>
             </thead>
             <tbody>
-              {revActivities.map((data) => (
+              {[...activities].reverse().map((data,index) => (
                 <tr className='row' key={data._id}>
-                  <td>{activities.indexOf(data._id)}</td>
+                  <td>{index + 1}</td>
                   <td>
                     <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
-                      <Image src={''} alt='profile'/>
+                      <Image src={data.sender?.profilePicture} width={36} height={36} alt='profile' style={{borderRadius: '50%'}}/>
                       <p>{data.sender.accountName}</p>
                     </div>
                   </td>
                   <td>{data.sender._id}</td>
                   <td>{data.body}</td>
                   <td>{changeToLocalTIme(data.createdAt)}</td>
-                  <td><input type="checkbox" id={data._id} checked={data.read} onChange={handleCheckbox}/></td>
+                  <td><input type="checkbox" name='select' id={data._id} checked={checkedItems.includes(data._id)} onChange={() => handleCheckboxChange(data._id)}/></td>
                 </tr>
               ))}
             </tbody>
@@ -226,7 +291,7 @@ const PlacersActivities = () => {
         ))}
       </div>
     </TabActivities>
-    </>
+    </TopContainer>
   )
 }
 

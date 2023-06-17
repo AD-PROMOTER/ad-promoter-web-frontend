@@ -9,7 +9,6 @@ import archive from '@/public/assets/bookmarkIcon1.svg'
 import copyLink from '@/public/assets/bottom-link-icon.svg'
 import { Feed } from './discovery.style'
 import Image from 'next/image'
-import { directlinkAd } from './data'
 import TimeAgo from '../timeAgo'
 import axios from 'axios'
 import { CgProfile } from 'react-icons/cg'
@@ -21,7 +20,7 @@ import arrowDown from '@/public/assets/arrow-down.svg'
 import { BackdropContainer, ModalContainer } from '../PromoterHomeAdDetail/styles'
 
 const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
-    const [showReport, setShowReport] = useState(false)
+    const [showReport, setShowReport] = useState([])
     const [showDropdown, setShowDropdown] = useState(false)
     const [showPaste, setShowPaste] = useState(false)
     const [showSubmit, setShowSubmit] = useState(true)
@@ -43,9 +42,69 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
         }
     },[])
 
+    useEffect(() => {
+        // Function to send data to the API endpoint
+        const sendDataToEndpoint = () => {
+          const storedTags = localStorage.getItem('adTags');
+          if (!storedTags) {
+            return;
+          }
+    
+          // Perform your API request here to send the data to the endpoint
+          fetch('https://api.ad-promoter.com/api/v1/user/tags', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: storedTags,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              // Handle the response data from the endpoint
+              console.log(data);
+            })
+            .catch((error) => {
+              // Handle any errors that occur during the API request
+              console.error(error);
+            });
+    
+          // Clear the tags array from local storage
+          localStorage.removeItem('adTags');
+        };
+    
+        const interval = setInterval(sendDataToEndpoint, 600000); // Send data every 10 minutes (600,000 milliseconds)
+    
+        return () => {
+          clearInterval(interval);
+        };
+    }, []);
+
+    // Function to add tags to the local storage
+    const addTagsToLocalStorage = (tags) => {
+        const storedTags = localStorage.getItem('adTags');
+        let tagsArray = [];
+
+        if (storedTags) {
+        tagsArray = JSON.parse(storedTags);
+        }
+
+        // Remove duplicates by filtering the tags
+        const uniqueTags = tags.filter((tag) => !tagsArray.includes(tag));
+
+        // Add new tags to the array
+        tagsArray.push(...uniqueTags);
+
+        // Store the updated tags array in local storage
+        localStorage.setItem('adTags', JSON.stringify(tagsArray));
+    };
+
+    const handleAdInteraction = (tags) => {
+        addTagsToLocalStorage(tags);
+    };
+
   const handleOpenDialogue = () => {
-    setShowDialogue(true);
-  };
+    setShowDialogue(!showDialogue);
+};
 
   const handleCloseDialogue = () => {
     setShowDialogue(false);
@@ -209,6 +268,12 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
         setShowReport(false)
     }
 
+    const toggleDropdown = (index) => {
+        const updatedDropdownOpen = [...showReport];
+        updatedDropdownOpen[index] = !updatedDropdownOpen[index];
+        setShowReport(updatedDropdownOpen);
+    };
+
     const handleDownload = async (imageLinks) => {
         try {
           for (let i = 0; i < imageLinks.length; i++) {
@@ -235,6 +300,18 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
         }
     };
 
+    const nextImage = (images) => {
+        setCurrentIndex((prevIndex) =>
+          prevIndex === images.length - 1 ? 0 : prevIndex + 1
+        );
+    };
+    
+    const previousImage = (images) => {
+        setCurrentIndex((prevIndex) =>
+        prevIndex === 0 ? images.length - 1 : prevIndex - 1
+        );
+    };
+
   return (
     <>
         {!feed || isLoading ? (
@@ -250,9 +327,9 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                             <div className='type'>
                                 <div className='more'>
                                     <div className='direct'>{item.type + ' ad'}</div>
-                                    <div className='dot' onClick={()=> setShowReport(!showReport)}>
+                                    <div className='dot' onClick={() => toggleDropdown(item.id)}>
                                         <Image src={more} alt="more"/>
-                                        {showReport && (<ul ref={ref}>
+                                        {showReport[item.id] && (<ul>
                                             <li onClick={handleShowReport}>Report this advert</li>
                                             <li onClick={()=>handleAdRemoval(item.id)}>Remove from feed</li>
                                         </ul>)}
@@ -325,13 +402,13 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                     <>
                                         <div className="product-img-container">
                                             <div className='carousel-container'>
-                                                <div onClick={goToPrevious} className='left-arrow'>
+                                                <div onClick={() => previousImage(item.images)} className='left-arrow'>
                                                     ❮
                                                 </div>
                                                 <div className='img-container' style={{borderRadius:'36px'}}>
                                                     <Image src={item.images[currentIndex]} alt='product' width={360} height={236}/>
                                                 </div>
-                                                <div onClick={goToNext} className='right-arrow'>
+                                                <div onClick={() => nextImage(item.images)} className='right-arrow'>
                                                     ❯
                                                 </div>
                                             </div>
@@ -379,24 +456,24 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                     </div>
                                     <div className='post'>
                                         {item.images.length !==0 ? (
-                                            <div className='icons' onClick={() => handleDownload(item.images)}>
+                                            <div className='icons' onClick={() =>{ handleDownload(item.images); handleAdInteraction(item.tags)}}>
                                                 <Image src={download} alt=""/>
                                             </div>
                                         ):(
-                                            <div className='icons' onClick={()=>handleCopyLink(item.promotedLink)}>
+                                            <div className='icons' onClick={()=>{handleCopyLink(item.promotedLink); handleAdInteraction(item.tags)}}>
                                                 <Image src={copyLink} alt=""/>
                                             </div>
                                         )}
-                                        <div className='icons' onClick={handleOpenDialogue}>
+                                        <div className='icons' onClick={() => {handleOpenDialogue; handleAdInteraction(item.tags)}}>
                                             <Image src={exportLink} alt=""/>
                                         </div>
-                                        <div className='icons' onClick={()=>handleJobSave(item.id)}>
+                                        <div className='icons' onClick={()=>{handleJobSave(item.id); handleAdInteraction(item.tags)}}>
                                             <Image src={archive} alt=""/>
                                         </div>
                                     </div>
                                 </div>      
                             </div>
-                            {showDialogue && <ShareDialogue shareUrl={'app.ad-promoter.com'} title={item.productName} imageUrl={item.images[0]} onClose={handleCloseDialogue} description={item.description} />}
+                            {showDialogue && <ShareDialogue shareLink={item.promotedLink} />}
                             {showReportModal && (
                                 <BackdropContainer onClick={()=>setShowReportModal(false)}>
                                     <ModalContainer onClick={e => e.stopPropagation()}>

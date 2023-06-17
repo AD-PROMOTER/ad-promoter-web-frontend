@@ -20,7 +20,7 @@ import linkFrame from '@/public/assets/linkframe.svg'
 import { useToast } from '@chakra-ui/react'
 import ShareDialogue from '../shareDialogue'
 
-const SingleRecentJob = () => {
+const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
     const [showReport, setShowReport] = useState(false)
     const toast = useToast()
     const ref = useRef(null)
@@ -31,34 +31,42 @@ const SingleRecentJob = () => {
     const [showDropdown, setShowDropdown] = useState(false)
     const [listValue, setListValue] = useState('It has gory images')
     const [currentIndex,setCurrentIndex] = useState(0)
-    const [recentJobs,setRecentJobs] = useState()
     const [isLoading,setIsLoading] = useState(false)
+    const [recentJobs,setRecentJobs] = useState(false)
     const [showSubmit,setShowSubmit] = useState(true)
     const [showPaste,setShowPaste] = useState(false)
     const [inputValue, setInputValue] = useState('');
     const [showDialogue, setShowDialogue] = useState(false);
+    
 
     useEffect(()=>{
         const userToken = JSON.parse(localStorage.getItem("user-token"));
         if (userToken) {
             token.current = userToken
         }
-
+    
+        const fetchRecentJobs = async() =>{
+            let apiUrl = `https://api.ad-promoter.com/api/v1/ads/recent-ads?page=1&pageSize=10`;
+            if (sortStartDate) {
+              apiUrl += `&startDate=${sortStartDate}`;
+            }
+            if (sortEndDate) {
+              apiUrl += `&endDate=${sortEndDate}`;
+            }
+            setIsLoading(true)
+            const result = await axios(apiUrl,{
+              headers:{
+                Authorization: `Bearer ${token.current}`
+              }
+            })
+            setRecentJobs(result.data.data.data)
+            setIsLoading(false)
+          }
+    
         if(token.current){
             fetchRecentJobs()
         }
-    },[])
-
-    const fetchRecentJobs = async() =>{
-        setIsLoading(true)
-        const result = await axios(`https://api.ad-promoter.com/api/v1/ads/recent-ads?page=1&pageSize=10`,{
-          headers:{
-            Authorization: `Bearer ${token.current}`
-          }
-        })
-        setRecentJobs(result.data.data.data)
-        setIsLoading(false)
-    }
+      },[sortEndDate, sortStartDate])
 
     const ClickedList = (e) =>{
       setListValue(e.target.innerText)
@@ -84,12 +92,9 @@ const SingleRecentJob = () => {
     }
 
     const handleOpenDialogue = () => {
-        setShowDialogue(true);
+        setShowDialogue(!showDialogue);
     };
     
-    const handleCloseDialogue = () => {
-        setShowDialogue(false);
-    };
 
     const handleChange = (event) => {
         setInputValue(event.target.value);
@@ -341,7 +346,7 @@ const SingleRecentJob = () => {
                                 {item.images.length === 0 ?(
                                     <></>
                                 ):(
-                                    <>                                    
+                                    <div className='submit-image-container'>                                    
                                         <div className="product-img-container">
                                             <div className='carousel-container'>
                                                 <div onClick={goToPrevious} className='left-arrow'>
@@ -356,18 +361,14 @@ const SingleRecentJob = () => {
                                             </div>
                                         </div>
 
+                                        {/* {item.type === 'visual'}{} */}
                                         <div className='submit' ref={ref}>
-                                            {showSubmit && <button onClick={togglePaste}>Submit</button>}
+                                            {showSubmit && <button className='btn' onClick={togglePaste}>Submit</button>}
                                             {showPaste && (
-                                                <form className='paste'>
+                                                <form className='paste' onSubmit={(e)=>e.preventDefault()}>
                                                     <div className='pasteLink'>
                                                         <Image src={linkFrame} alt=""/>
                                                     </div>
-                                                    
-                                                        <button className='pasteButton'>
-                                                            Submit
-                                                        </button>
-                                                    
                                                     <input 
                                                         type="text"
                                                         id="inputValue"
@@ -375,21 +376,25 @@ const SingleRecentJob = () => {
                                                         onChange={(e)=>setInputValue(e.target.value)}
                                                         value={inputValue}
                                                     />
+                                                    <button className='pasteButton'>
+                                                        Submit
+                                                    </button>
+                                                    
                                                 </form>
                                             )}
                                         </div>
-                                    </>
+                                    </div>
                                 )}
 
                                 <div className="bottom">
                                     <div className="user-details">
                                         <div className="user-details-text">
-                                            {item.creator.profilePicture?(
+                                            {item.creator?.profilePicture?(
                                                 <Image src={item.creator?.profilePicture} width={20} height={20} alt={item.creator.accountName}/>
                                             ):(
                                                 <CgProfile width={20} height={20}/>
                                             )}
-                                            <h5>{item.creator.accountName}</h5>
+                                            <h5>{item.creator?.accountName}</h5>
                                         </div>
                                         <p>Posted <TimeAgo dateTime={item.dateCreated}/></p>
                                     </div>
@@ -411,7 +416,7 @@ const SingleRecentJob = () => {
                                         </div>
                                     </div>
                                 </div>
-                                {showDialogue && <ShareDialogue shareUrl={'app.ad-promoter.com'} title={item.productName} imageUrl={item.images[0]} onClose={handleCloseDialogue} description={item.description} />}
+                                {showDialogue && <ShareDialogue shareLink={item.promotedLink}  />}
                                 {showReportModal && (
                                     <BackdropContainer onClick={()=>setShowReportModal(false)}>
                                         <ModalContainer onClick={e => e.stopPropagation()}>
