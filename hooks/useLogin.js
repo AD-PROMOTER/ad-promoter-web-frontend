@@ -11,7 +11,7 @@ export const useLogin = () => {
   const toast = useToast();
   const router = useRouter();
 
-  const login = async (phoneNumber, password) => {
+  const login = async (email, password) => {
     setIsLoading(true);
 
     const response = await fetch(
@@ -23,7 +23,7 @@ export const useLogin = () => {
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          phoneNumber,
+          email,
           password,
         }),
       }

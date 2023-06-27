@@ -53,6 +53,7 @@ const Index = () => {
   const [listValue, setListValue] = useState('It has gory images')
   const [userName, setUserName] = useState('')
   const [showNotif, setShowNotif] = useState(false)
+  const [profileImage, setProfileImage] = useState("");
   const token = useRef('')
   const ref = useRef(null)
   const [runningAds,setRunningAds] = useState('')
@@ -68,6 +69,7 @@ const Index = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user-detail"));
+    setProfileImage(user.profilePicture);
     const userToken = JSON.parse(localStorage.getItem("user-token"));
     if (user && userToken && user.role === 'placer') {
       setUserName(user.accountName);
@@ -242,7 +244,7 @@ const fetchRecentJobs = async() =>{
             <DashboardContainer>
               <div className="welcome">
                 <div className="profile-img" style={{borderRadius: '45%'}}>
-                  <Image src={profile} width={145} height={134} alt='profile picture'/>
+                  <Image src={profileImage} width={150} height={150} alt='profile picture'/>
                 </div>
                 <div className="welcome-text">
                   <h3>Hi, {userName}</h3>

@@ -139,6 +139,20 @@ const StyledSettings = styled.div`
         background-color: #dce4ff;
         padding: 0.75rem 1.05rem;
         cursor: pointer;
+        position: relative;
+
+        input {
+          position: absolute;
+          width: 100%;
+          opacity: 0;
+          cursor: pointer;
+        }
+
+        label {
+          color: var(--dark-gray);
+          font-weight: 500;
+          font-size: 1.425rem;
+        }
       }
       .cancel {
         margin-top: 3rem;
@@ -947,6 +961,7 @@ const StyledProfile = styled.div`
     .image-wrapper {
       margin-top: 1.75rem;
       position: relative;
+      overflow: hidden;
 
       .upload-icon {
         position: absolute;
@@ -1032,6 +1047,11 @@ const StyledProfile = styled.div`
           font-size: 10px;
           display: inline-block;
           width: 90%;
+        }
+
+        &__imageError {
+          font-size: 14px;
+          color: red;
         }
       }
 

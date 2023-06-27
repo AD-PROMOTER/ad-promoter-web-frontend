@@ -10,8 +10,19 @@ import { motion } from 'framer-motion'
 import { useContext } from 'react'
 import NotificationContext from '@/context/notificationContext'
 import NotificationContainer from '@/components/Notification/index'
+import { useEffect } from 'react'
+import { useState } from 'react'
 
 const Index = () => {
+
+    const [profileImage, setProfileImage] = useState("");
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user-detail'));
+        setProfileImage(user.profilePicture)
+    }, [])
+    
+
     const router = useRouter();
     const { isNotifClicked,setIsNotifClicked } = useContext(NotificationContext)
     const variants = {
@@ -56,7 +67,7 @@ const Index = () => {
                     <NotificationContainer />
                 )}
             </div>
-            <Image src={profile} alt='profile picture' width={52} height={52}/>
+            <Image src={profileImage} alt='profile picture' width={52} height={52} style={{borderRadius: "50%"}}/>
         </div>
     </StyledNavBar>
   )

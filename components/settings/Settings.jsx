@@ -17,15 +17,26 @@ import Navbar from '@/components/PromoterNavbar/index';
 import { adminSettingCategories } from './settingsCategories';
 import AdminNavbar from '@/components/AdminNavbar/index';
 import { useLogout } from '@/hooks/useLogout';
+import { useEffect } from 'react';
 
 const Settings = (props) => {
   const router = useRouter();
   const [selected, setSelected] = useState('General');
   const [logoutModal, setLogoutModal] = useState(false);
-  const {logout} = useLogout()
+  const [userDetails, setUserDetails] = useState();
+  const [userToken, setUserToken] = useState();
+  const { logout } = useLogout();
   const displayLogoutModal = () => {
     setLogoutModal(true);
   };
+
+  useEffect(() => {
+    const userDetails = JSON.parse(window.localStorage.getItem('user-detail'));
+    setUserDetails(userDetails);
+    const userToken = JSON.parse(window.localStorage.getItem('user-token'));
+    setUserToken(userToken);
+    console.log(userToken, userDetails);
+  }, []);
 
   return (
     <Container>
@@ -79,7 +90,7 @@ const Settings = (props) => {
             {selected == 'General' ? (
               <General />
             ) : selected == 'Notification' ? (
-              <Notification />
+              <Notification userDetails={userDetails} token={userToken} />
             ) : selected == 'Secuirity' ? (
               <Secuirity />
             ) : selected == 'Payment' ? (
@@ -134,8 +145,7 @@ const Settings = (props) => {
                 <Plain onClick={() => setLogoutModal(false)}> Cancel </Plain>
                 <Danger
                   onClick={() => {
-                    logout(),
-                    router.push('/')
+                    logout(), router.push('/');
                   }}
                 >
                   {' '}
