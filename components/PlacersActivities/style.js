@@ -4,6 +4,7 @@ export const TopContainer = styled.div`
   background: var(--bg);
   /* height: 100vh; */
   padding-top: 3rem;
+  padding-bottom: 2rem;
 `;
 
 export const Container = styled.div`
@@ -68,49 +69,73 @@ export const Container = styled.div`
       }
     }
   }
-  table {
-    margin-top: 3rem;
-    width: 100%;
-    font-size: 1.4rem;
-    position: relative;
-    border-collapse: separate;
-    border-spacing: 0 1.5rem;
 
-    thead {
-      font-weight: 600;
-    }
-
-    thead th {
-      text-align: left;
-    }
-
-    tbody {
-      /* display: flex; */
-      /* flex-direction: column; */
-      /* gap: 2rem; */
-    }
-
-    tbody td {
+  .table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    table {
+      margin-top: 3rem;
+      width: 100%;
+      font-size: 1.4rem;
       position: relative;
-      /* top: 3rem; */
-      > div p {
-        font-family: 'Poppins';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 1.4rem;
-        line-height: 2.1rem;
-        display: flex;
-        align-items: center;
-        text-align: center;
-        color: #333333;
+      border-collapse: separate;
+      border-spacing: 0 1.5rem;
+
+      thead {
+        font-weight: 600;
+      }
+
+      thead th {
+        text-align: left;
+      }
+
+      tbody {
+        /* display: flex; */
+        /* flex-direction: column; */
+        /* gap: 2rem; */
+      }
+
+      tbody td {
+        position: relative;
+        /* top: 3rem; */
+        > div p {
+          font-family: 'Poppins';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 1.4rem;
+          line-height: 2.1rem;
+          display: flex;
+          align-items: center;
+          text-align: center;
+          color: #333333;
+        }
+      }
+      tbody tr {
+        background-color: white;
+      }
+
+      td {
+        padding: 1.5rem;
       }
     }
-    tbody tr {
-      background-color: white;
-    }
 
-    td {
-      padding: 1.5rem;
+    .pagination-style {
+      display: flex;
+      gap: 1rem;
+      &-child {
+        border: 2px solid var(--primary);
+        color: #000;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+      }
+      &-child-active {
+        background-color: var(--primary);
+        color: var(--white);
+        padding: 0.5rem 1rem;
+        /* border-radius: 60%; */
+      }
     }
   }
 `;

@@ -8,10 +8,95 @@ import Image from 'next/image';
 import { useContext } from 'react';
 import SingleAdContext from '@/context/singleAdContext';
 import { useRouter } from 'next/router';
+import { CiPlay1 } from 'react-icons/ci';
+import { useToast } from '@chakra-ui/react';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const SingleAd = () => {
-  const { adData } = useContext(SingleAdContext);
+  const {
+    query: { id },
+  } = useRouter();
+  const { adData, setAdData } = useContext(SingleAdContext);
   const router = useRouter();
+  const toast = useToast();
+
+  useEffect(() => {
+    const handleSetAdId = async () => {
+      const res = await fetch(`https://api.ad-promoter.com/api/v1/ads/${id}`);
+      const data = await res.json();
+      setAdData(data);
+    };
+    if (id) {
+      handleSetAdId();
+    }
+  }, [id, setAdData]);
+
+  const handlePause = async () => {
+    const response = await fetch(
+      `https://api.ad-promoter.com/api/v1/ads/update-status?id=${adData._id}&status=paused`,
+      {
+        method: 'PUT',
+      }
+    );
+    const json = await response.json();
+
+    if (!response.ok) {
+      toast({
+        title: json.msg,
+        status: 'error',
+        duration: '5000',
+        isClosable: true,
+        position: 'bottom-left',
+        size: 'lg',
+      });
+    }
+
+    if (response.ok) {
+      setAdData(json.data);
+      toast({
+        title: 'Ad Paused',
+        status: 'success',
+        duration: '5000',
+        isClosable: true,
+        position: 'bottom-left',
+        size: 'lg',
+      });
+    }
+  };
+
+  const handleResume = async () => {
+    const response = await fetch(
+      `https://api.ad-promoter.com/api/v1/ads/update-status?id=${adData._id}&status=incomplete`,
+      {
+        method: 'PUT',
+      }
+    );
+    const json = await response.json();
+
+    if (!response.ok) {
+      toast({
+        title: json.msg,
+        status: 'error',
+        duration: '5000',
+        isClosable: true,
+        position: 'bottom-left',
+        size: 'lg',
+      });
+    }
+
+    if (response.ok) {
+      setAdData(json.data);
+      toast({
+        title: 'Ad is now on',
+        status: 'success',
+        duration: '5000',
+        isClosable: true,
+        position: 'bottom-left',
+        size: 'lg',
+      });
+    }
+  };
   return (
     <>
       {adData && (
@@ -66,7 +151,7 @@ const SingleAd = () => {
                   <p>{adData.description}</p>
                 </div>
 
-                {adData.images.length > 0 && (
+                {adData.images?.length > 0 && (
                   <div className="desc-item">
                     <h3>Product Images</h3>
                     {adData.images.map((image) => (
@@ -90,7 +175,7 @@ const SingleAd = () => {
 
                 <div className="desc-item">
                   <h3>Company Web Address</h3>
-                  <Link href={adData.promotedLink}>
+                  <Link href={adData.promotedLink ? adData.promotedLink : ''}>
                     <a>{adData.promotedLink}</a>
                   </Link>
                 </div>
@@ -111,10 +196,21 @@ const SingleAd = () => {
             </div>
           </div>
 
-          <div className="pause-btn">
-            <Image src={Pause} alt="pause button" />
-            <p>Pause Advert</p>
-          </div>
+          {!adData.completed && (
+            <>
+              {adData.adStatus !== 'paused' ? (
+                <div onClick={handlePause} className="pause-btn">
+                  <Image src={Pause} alt="pause button" />
+                  <p>Pause Advert</p>
+                </div>
+              ) : (
+                <div onClick={handleResume} className="pause-btn">
+                  <CiPlay1 color="#fff" size="24px" />
+                  <p>Resume Advert</p>
+                </div>
+              )}
+            </>
+          )}
         </SingleAdContainer>
       )}
     </>

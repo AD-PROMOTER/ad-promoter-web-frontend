@@ -70,7 +70,7 @@ const PlacersActivities = () => {
       if(id.current){
         fetchActivities()
       }
-    },[dashboardStartDate,dashboardEndDate])
+    },[dashboardStartDate,dashboardEndDate,pageNumber])
 
     
 
@@ -110,7 +110,7 @@ const PlacersActivities = () => {
       if(response.ok){
         console.log(json);
       }
-      // console.log(checkedItemsId);
+      console.log(checkedItems);
     }
 
     const handleFilterText = (e) =>{
@@ -174,38 +174,42 @@ const PlacersActivities = () => {
                 </ul>
             )}
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>S/N</th>
-                <th>Name</th>
-                <th>User ID</th>
-                <th>Action</th>
-                <th>Date</th>
-                <th style={{cursor:'pointer'}} onClick={()=>handleDelete(checkedItems)}><Image src={trash} alt='trash'/></th>
-              </tr>
-            </thead>
-            <tbody>
-              {[...activities].reverse().map((data,index) => (
-                <tr className='row' key={data._id}>
-                  <td>{index + 1}</td>
-                  <td>
-                    <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
-                      <Image src={data.sender?.profilePicture} width={36} height={36} alt='profile' style={{borderRadius: '50%'}}/>
-                      <p>{data.sender.accountName}</p>
-                    </div>
-                  </td>
-                  <td>{data.sender._id}</td>
-                  <td>{data.body}</td>
-                  <td>{changeToLocalTIme(data.createdAt)}</td>
-                  <td><input type="checkbox" name='select' id={data._id} checked={checkedItems.includes(data._id)} onChange={() => handleCheckboxChange(data._id)}/></td>
+          <div className='table-container'>
+            <table>
+              <thead>
+                <tr>
+                  <th>S/N</th>
+                  <th>Name</th>
+                  <th>User ID</th>
+                  <th>Action</th>
+                  <th>Date</th>
+                  <th style={{cursor:'pointer'}} onClick={()=>handleDelete(checkedItems)}><Image src={trash} alt='trash'/></th>
                 </tr>
+              </thead>
+              <tbody>
+                {[...activities].reverse().map((data,index) => (
+                  <tr className='row' key={data._id}>
+                    <td>{index + 1}</td>
+                    <td>
+                      <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
+                        <Image src={data.sender?.profilePicture} width={36} height={36} alt='profile' style={{borderRadius: '50%'}}/>
+                        <p>{data.sender?.accountName}</p>
+                      </div>
+                    </td>
+                    <td>{data.sender?._id}</td>
+                    <td>{data.body}</td>
+                    <td>{changeToLocalTIme(data.createdAt)}</td>
+                    <td><input type="checkbox" name='select' id={data._id} checked={checkedItems.includes(data._id)} onChange={() => handleCheckboxChange(data._id)}/></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className='pagination-style'>
+              {pageNumbers.map((number)=>(
+                <div className={pageNumber === number ? 'pagination-style-child-active':'pagination-style-child'} key={number} onClick={() => paginate(number)}>{number}</div>
               ))}
-            </tbody>
-          </table>
-          {/* {pageNumbers.map((number)=>(
-            <div key={number} onClick={() => paginate(number)}>{number}</div>
-          ))} */}
+            </div>
+          </div>
         </div>
       )}
     </Container>

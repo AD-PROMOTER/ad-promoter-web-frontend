@@ -88,7 +88,7 @@ const Index = ({router}) => {
       setIsLoading(false)
     }
     if(token.current){
-      // fetchDashboard()
+      fetchDashboard()
     }
 
   },[Router, dashboardEndDate, dashboardStartDate, setUserName]);

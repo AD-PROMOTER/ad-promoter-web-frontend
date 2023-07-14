@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react'
 import more from '@/public/assets/ellipsis.svg'
 import vector from '@/public/assets/Vector.svg'
@@ -7,7 +8,7 @@ import download from '@/public/assets/downloadIcon3.svg'
 import exportLink from '@/public/assets/shareIcon1.svg'
 import archive from '@/public/assets/bookmarkIcon1.svg'
 import copyLink from '@/public/assets/bottom-link-icon.svg'
-import { useToast } from '@chakra-ui/react'
+import { Spinner, useToast } from '@chakra-ui/react'
 // import { Feed } from '@/components/DiscoveryFolder/discovery.style'
 import Image from 'next/image'
 // import { directlinkAd } from '@/components/DiscoveryFolder/data'
@@ -21,7 +22,7 @@ import TimeAgo from '../timeAgo'
 import linkFrame from '@/public/assets/linkframe.svg'
 import ShareDialogue from '../shareDialogue'
 
-const SingleSavedJobs = () => {
+const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
     const [showReport, setShowReport] = useState(false)
     const ref = useRef(null)
     const token = useRef('')
@@ -31,13 +32,59 @@ const SingleSavedJobs = () => {
     const [showDropdown, setShowDropdown] = useState(false)
     const [listValue, setListValue] = useState('It has gory images')
     const [isLoading,setIsLoading] = useState(false)
-    const [savedJobs,setSavedJobs] = useState()
+    const [savedJobs,setSavedJobs] = useState([])
     const [showSubmit,setShowSubmit] = useState(true)
     const [showPaste,setShowPaste] = useState(false)
     const [currentIndex,setCurrentIndex] = useState(0)
     const [inputValue, setInputValue] = useState('');
     const toast = useToast()
     const [showDialogue, setShowDialogue] = useState(false);
+    const [page, setPage] = useState(1);
+
+    useEffect(()=>{
+        const userToken = JSON.parse(localStorage.getItem("user-token"));
+        if (userToken) {
+            token.current = userToken
+        }
+
+        if(token.current){
+            fetchSavedJobs()
+        }
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+          window.removeEventListener('scroll', handleScroll);
+        };
+    },[])
+
+    const fetchSavedJobs = async() =>{
+        let apiUrl = `https://api.ad-promoter.com/api/v1/user/saved-jobs?page=${page}&pageSize=10`;
+        if (sortStartDate) {
+            apiUrl += `&startDate=${sortStartDate}`;
+          }
+          if (sortEndDate) {
+            apiUrl += `&endDate=${sortEndDate}`;
+          }
+        setIsLoading(true)
+        const result = await axios(apiUrl,{
+          headers:{
+            Authorization: `Bearer ${token.current}`
+          }
+        })
+        setSavedJobs((prevData) => [...prevData, ...result.data.data.data.data]);
+        setPage((prevPage) => prevPage + 1);
+        // setSavedJobs(result.data.data.data.data)
+        setIsLoading(false)
+    }
+
+    const handleScroll = () => {
+        if (
+          window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+          !isLoading
+        ) {
+          fetchRecentJobs();
+        }
+    };
 
     const ClickedList = (e) =>{
       setListValue(e.target.innerText)
@@ -119,28 +166,6 @@ const SingleSavedJobs = () => {
           });
     };
 
-
-    useEffect(()=>{
-        const userToken = JSON.parse(localStorage.getItem("user-token"));
-        if (userToken) {
-            token.current = userToken
-        }
-
-        if(token.current){
-            fetchSavedJobs()
-        }
-    },[])
-
-    const fetchSavedJobs = async() =>{
-        setIsLoading(true)
-        const result = await axios(`https://api.ad-promoter.com/api/v1/user/saved-jobs`,{
-          headers:{
-            Authorization: `Bearer ${token.current}`
-          }
-        })
-        setSavedJobs(result.data.data.data.data)
-        setIsLoading(false)
-    }
 
     const handleShowReport = () =>{
         setShowReportModal(true)
@@ -264,13 +289,47 @@ const SingleSavedJobs = () => {
             );
         };
 
-  return (
-    <>    
-        {!savedJobs || isLoading ? (
-            <p>Loading...</p>
-        ):(            
+        const handleVisualSubmit = async (id,link) =>{
+            const response = await fetch(
+                `https://api.ad-promoter.com/api/v1/promotion/visual`,
+                {
+                  method: 'POST',
+                  headers: { 
+                        Authorization: `Bearer ${token.current}`
+                    },
+                    body: JSON.stringify({
+                        adID: id,
+                        link: link
+                    })
+                }
+              );
+            const json = await response.json();
+          
+            if (!response.ok) {
+            toast({
+                title: json.msg,
+                status: "error",
+                duration: "5000",
+                isClosable: true,
+                position: "bottom-left",
+                size: "lg"
+                });
+            }
+            if (response.ok) {
+                toast({
+                title: json.msg,
+                status: "success",
+                duration: "5000",
+                isClosable: true,
+                position: "bottom-left",
+                size: "lg"
+                });
+            }
+        }
+
+  return (          
             <>
-            {savedJobs.length === 0 ?(
+            {savedJobs.length && !isLoading === 0 ?(
                 <p>No saved job</p>
             ):(
                 <>                
@@ -352,7 +411,7 @@ const SingleSavedJobs = () => {
                             {item.images.length === 0 ?(
                                     <></>
                                 ):(
-                                    <>
+                                    <div className='submit-image-container'>
                                         <div className="product-img-container">
                                             <div className='carousel-container'>
                                                 <div onClick={() => previousImage(item.images)} className='left-arrow'>
@@ -367,21 +426,17 @@ const SingleSavedJobs = () => {
                                             </div>
                                         </div>
                                         <div className='submit' ref={ref}>
-                                            {showSubmit && <button onClick={handleShowPaste}>Submit</button>}
+                                            {showSubmit && <button  onClick={handleShowPaste}>Submit</button>}
                                             {showPaste && (
-                                                <form className='paste'>
+                                                <form className='paste' onSubmit={(e)=>e.preventDefault()}>
                                                     <div className='pasteLink'>
                                                         <Image src={linkFrame} alt=""/>
                                                     </div>
-                                                    {inputValue === '' ? (
-                                                        <button className='pasteButton'>
-                                                            Paste
-                                                        </button>
-                                                    ):(
-                                                        <button className='pasteButton'>
+                                                  
+                                                        <button onClick={() => handleVisualSubmit(item.id,inputValue)} className='pasteButton'>
                                                             Submit
                                                         </button>
-                                                    )}
+
                                                     <input 
                                                         type="text"
                                                         id="inputValue"
@@ -392,7 +447,7 @@ const SingleSavedJobs = () => {
                                                 </form>
                                             )}
                                         </div>
-                                    </>
+                                    </div>
                                 )}
 
                             <div className="bottom">
@@ -459,10 +514,14 @@ const SingleSavedJobs = () => {
                     ))}
                 </>
             )}
-                
-            </>
-        )}
-    </>
+            {isLoading && <Spinner 
+            thickness='4px'
+            speed='0.65s'
+            emptyColor='gray.200'
+            color='#4F00CF'
+            size='xl'/>
+        } 
+        </>
   )
 }
 

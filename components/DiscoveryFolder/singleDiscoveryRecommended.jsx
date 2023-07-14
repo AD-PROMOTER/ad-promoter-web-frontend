@@ -17,10 +17,10 @@ import arrowDown from '@/public/assets/arrow-down.svg'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import ShareDialogue from '../shareDialogue'
 import { BackdropContainer, ModalContainer } from '../PromoterHomeAdDetail/styles'
-import { useToast } from '@chakra-ui/react'
+import { Spinner, useToast } from '@chakra-ui/react'
 
 
-const SingleDiscoveryRecommended = ({recommendedJobs}) => {
+const SingleDiscoveryRecommended = ({recommendedJobs,fetchRecommended,isLoading}) => {
   const [showReport, setShowReport] = useState(false)
     const toast = useToast()
     const ref = useRef(null)
@@ -32,7 +32,6 @@ const SingleDiscoveryRecommended = ({recommendedJobs}) => {
     const [listValue, setListValue] = useState('It has gory images')
     const [currentIndex,setCurrentIndex] = useState(0)
     const [recentJobs,setRecentJobs] = useState()
-    const [isLoading,setIsLoading] = useState(false)
     const [showSubmit,setShowSubmit] = useState(true)
     const [showPaste,setShowPaste] = useState(false)
     const [inputValue, setInputValue] = useState('');
@@ -44,7 +43,20 @@ const SingleDiscoveryRecommended = ({recommendedJobs}) => {
         token.current = userToken
     }
 
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
 },[])
+
+const handleScroll = () => {
+  if (
+    window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+    !isLoading
+  ) {
+    fetchRecommended();
+  }
+};
 
   const toggleReadMore = () => {
     setIsReadMore(!isReadMore);
@@ -196,7 +208,7 @@ const handleReport = async (id,report) =>{
           });
         }
         if (response.ok) {
-           fetchRecentJobs()
+           fetchRecommended()
             toast({
               title: json.msg,
               status: "success",
@@ -246,13 +258,47 @@ const handleReport = async (id,report) =>{
     );
   };
 
+  const handleVisualSubmit = async (id,link) =>{
+    const response = await fetch(
+        `https://api.ad-promoter.com/api/v1/promotion/visual`,
+        {
+          method: 'POST',
+          headers: { 
+                Authorization: `Bearer ${token.current}`
+            },
+            body: JSON.stringify({
+                adID: id,
+                link: link
+            })
+        }
+      );
+    const json = await response.json();
+  
+    if (!response.ok) {
+    toast({
+        title: json.msg,
+        status: "error",
+        duration: "5000",
+        isClosable: true,
+        position: "bottom-left",
+        size: "lg"
+        });
+    }
+    if (response.ok) {
+        toast({
+        title: json.msg,
+        status: "success",
+        duration: "5000",
+        isClosable: true,
+        position: "bottom-left",
+        size: "lg"
+        });
+    }
+}
+
   return (
-    <>
-      {!recommendedJobs || isLoading ? (
-        <p>Loading</p>
-      ):(
         <>
-          {recommendedJobs.length === 0 ?(
+          {recommendedJobs.length === 0 && !isLoading ?(
             <p>No Recommended Jobs</p>
           ):(
             <>        
@@ -355,7 +401,7 @@ const handleReport = async (id,report) =>{
                               <div className='recPasteLink'>
                                 <Image src={linkFrame} alt=""/>
                               </div>
-                              <div className='recPasteButton'>
+                              <div onClick={() => handleVisualSubmit(item.id,inputValue)} className='recPasteButton'>
                                 Submit
                               </div>
                               <input 
@@ -374,12 +420,12 @@ const handleReport = async (id,report) =>{
                   <div className='recTime'>
                     <div>
                       <div className='recUser'>
-                        {item.creator.profilePicture?(
+                        {item.creator?.profilePicture?(
                            <Image src={item.creator?.profilePicture} width={20} height={20} alt={item.creator.accountName}/>
                           ):(
                           <CgProfile width={20} height={20}/>
                         )}
-                        <div>{item.creator.accountName}</div>
+                        <div>{item.creator?.accountName}</div>
                       </div>
                       <p>Posted <TimeAgo dateTime={item.dateCreated}/></p>
                     </div>
@@ -435,9 +481,14 @@ const handleReport = async (id,report) =>{
               ))}
             </>      
           )}
+          {isLoading && <Spinner 
+            thickness='4px'
+            speed='0.65s'
+            emptyColor='gray.200'
+            color='#4F00CF'
+            size='xl'/>
+          }
         </>
-      )}
-    </>
   )
 }
 

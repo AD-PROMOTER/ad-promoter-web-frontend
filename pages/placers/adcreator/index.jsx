@@ -60,7 +60,6 @@ const Adcreator = () => {
         }
       })
       setActiveAds(result.data.data);
-      console.log(result.data.data);
       setIsLoading(false)
     }
 
@@ -70,7 +69,7 @@ const Adcreator = () => {
   },[dashboardEndDate, dashboardStartDate, id, token])
 
    const handleSetAdId = async(id,ref) =>{
-    const res = await fetch(`https://api.ad-promoter.com/api/v1/ads/${id}?ref=${ref}`);
+    const res = await fetch(`https://api.ad-promoter.com/api/v1/ads/${id}`);
     const data = await res.json();
     setAdData(data)
     router.push({
@@ -190,7 +189,7 @@ const Adcreator = () => {
                           <Image src={statusIcon} alt='status'/>
                           <p>Status</p>
                         </div>
-                        <p className='status-text' style={adStatus === 'incomplete' ? {backgroundColor:'#ED9005'} : adStatus === 'complete' ? {backgroundColor:'#00B068'}: adStatus === 'paused' ? {backgroundColor: '#EB1E1E'}:{backgroundColor: '#5C85FF'}}>{adStatus}</p>
+                        <p className='status-text' style={adStatus === 'incomplete' ? {backgroundColor:'#ED9005'} : adStatus === 'completed' ? {backgroundColor:'#00B068'}: adStatus === 'paused' ? {backgroundColor: '#EB1E1E'}:{backgroundColor: '#5C85FF'}}>{adStatus}</p>
                       </div>
       
                     </div>

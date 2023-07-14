@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import arrowUp from '@/public/assets/arrow-up.svg'
@@ -15,15 +16,18 @@ const DiscoveryPage = () => {
     const [showReport, setShowReport] = useState(false)
     const [searchTag,setSearchTag] = useState('')
     const token = useRef('')
-    const [recommendedJobs,setRecommendedJobs] = useState()
-    const [feed,setFeed] = useState()
+    const [recommendedJobs,setRecommendedJobs] = useState([])
+    const [feed,setFeed] = useState([])
     const [isLoading,setIsLoading] = useState(false)
+    const [isRecLoading,setIsRecLoading] = useState(false)
     const [clickedFilter,setClickedFilter] = useState('Filter')
     const [startDate,setStartDate] = useState('')
     const [endDate,setEndDate] = useState('')
     const [adType,setAdType] = useState('')
     const [recent,setRecent] = useState()
     const [popular,setPopular] = useState()
+    const [page, setPage] = useState(1);
+    const [recPage, setRecPage] = useState(1);
 
     useEffect(()=>{
         const userToken = JSON.parse(localStorage.getItem("user-token"));
@@ -31,58 +35,14 @@ const DiscoveryPage = () => {
             token.current = userToken
         }
 
-        const fetchFeed = async() =>{
-          let apiUrl = 'https://api.ad-promoter.com/api/v1/ads/personal?page=1&pageSize=10';
-          if (startDate) {
-            apiUrl += `&startDate=${startDate}`;
-          }
-          if (endDate) {
-            apiUrl += `&endDate=${endDate}`;
-          }
-          if (searchTag) {
-            apiUrl += `&query=${searchTag}`;
-          }
-          if (adType) {
-            apiUrl += `&adType=${adType}`;
-          }
-          if (recent) {
-            apiUrl += `&recent=${recent}`;
-          }
-          if (popular) {
-            apiUrl += `&popular=${popular}`;
-          }
-          setIsLoading(true)
-          const result = await axios(apiUrl,{
-            headers:{
-              Authorization: `Bearer ${token.current}`
-            }
-          })
-          setFeed(result.data.data)
-          console.log(result.data.data);
-          setIsLoading(false)
-          // setSearchTag('')
-        }
-
-        const fetchRecommended = async(searchTag) =>{
-          setIsLoading(true)
-          const result = await axios(`https://api.ad-promoter.com/api/v1/ads/recommended?page=1&pageSize=10&name=${searchTag}`,{
-            headers:{
-              Authorization: `Bearer ${token.current}`
-            }
-          })
-          setRecommendedJobs(result.data.data.data)
-          console.log(result.data.data.data);
-          setIsLoading(false)
-        }
-
         if(token.current){
             fetchFeed()
             fetchRecommended()
         }
-    },[adType, endDate, popular, recent, searchTag, startDate])
+    },[])
 
     const fetchFeed = async() =>{
-      let apiUrl = 'https://api.ad-promoter.com/api/v1/ads/personal?page=1&pageSize=10';
+      let apiUrl = `https://api.ad-promoter.com/api/v1/ads/personal?page=${page}&pageSize=10`;
       if (startDate) {
         apiUrl += `&startDate=${startDate}`;
       }
@@ -107,10 +67,33 @@ const DiscoveryPage = () => {
           Authorization: `Bearer ${token.current}`
         }
       })
-      setFeed(result.data.data)
-      console.log(result.data.data);
+      setFeed((prevData) => [...prevData, ...result.data.data]);
+      setPage((prevPage) => prevPage + 1);
+      // setFeed(result.data.data)
       setIsLoading(false)
-      // setSearchTag('')
+      setSearchTag('')
+    }
+
+    const fetchRecommended = async() =>{
+      let apiUrl = `https://api.ad-promoter.com/api/v1/ads/recommended?page=1&pageSize=10`;
+      if (searchTag) {
+        apiUrl += `&name=${searchTag}`;
+      }
+      if (startDate) {
+        apiUrl += `&startDate=${startDate}`;
+      }
+      if (endDate) {
+        apiUrl += `&endDate=${endDate}`;
+      }
+      setIsRecLoading(true)
+      const result = await axios(apiUrl,{
+        headers:{
+          Authorization: `Bearer ${token.current}`
+        }
+      })
+      setRecommendedJobs((prevData) => [...prevData, ...result.data.data.data]);
+      setRecPage((prevPage) => prevPage + 1);
+      setIsRecLoading(false)
     }
 
     const handleFilterSelect = (e) =>{
@@ -209,7 +192,7 @@ const DiscoveryPage = () => {
                 </div>
                 <div className='col2'>
                     <h3 style={{fontWeight: 'bold', fontSize: '2rem',marginBottom:'1rem'}}>Recommended Jobs</h3>
-                    <DiscoveryJob isLoading={isLoading} recommendedJobs={recommendedJobs} clickShow={handleShowReport}/>
+                    <DiscoveryJob isLoading={isRecLoading} recommendedJobs={recommendedJobs} fetchRecommended={fetchRecommended} clickShow={handleShowReport}/>
                 </div>
             </div>
         </Container>

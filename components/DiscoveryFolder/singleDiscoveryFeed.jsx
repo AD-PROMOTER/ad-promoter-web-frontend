@@ -13,7 +13,7 @@ import TimeAgo from '../timeAgo'
 import axios from 'axios'
 import { CgProfile } from 'react-icons/cg'
 import linkFrame from '@/public/assets/linkframe.svg'
-import { useToast } from '@chakra-ui/react'
+import { Spinner, useToast } from '@chakra-ui/react'
 import ShareDialogue from '../shareDialogue'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
@@ -40,6 +40,11 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
         if (userToken) {
             token.current = userToken
         }
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+          window.removeEventListener('scroll', handleScroll);
+        };
     },[])
 
     useEffect(() => {
@@ -78,6 +83,15 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
           clearInterval(interval);
         };
     }, []);
+
+    const handleScroll = () => {
+        if (
+          window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+          !isLoading
+        ) {
+          fetchFeed();
+        }
+    };
 
     // Function to add tags to the local storage
     const addTagsToLocalStorage = (tags) => {
@@ -312,13 +326,47 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
         );
     };
 
-  return (
-    <>
-        {!feed || isLoading ? (
-         <p>Loading</p>
-        ):(
+    const handleVisualSubmit = async (id,link) =>{
+        const response = await fetch(
+            `https://api.ad-promoter.com/api/v1/promotion/visual`,
+            {
+              method: 'POST',
+              headers: { 
+                    Authorization: `Bearer ${token.current}`
+                },
+                body: JSON.stringify({
+                    adID: id,
+                    link: link
+                })
+            }
+          );
+        const json = await response.json();
+      
+        if (!response.ok) {
+        toast({
+            title: json.msg,
+            status: "error",
+            duration: "5000",
+            isClosable: true,
+            position: "bottom-left",
+            size: "lg"
+            });
+        }
+        if (response.ok) {
+            toast({
+            title: json.msg,
+            status: "success",
+            duration: "5000",
+            isClosable: true,
+            position: "bottom-left",
+            size: "lg"
+            });
+        }
+    }
+
+  return (   
             <>
-                {feed.length === 0 ?(
+                {feed.length && !isLoading === 0 ?(
                     <p>Nothing in your feed</p>
                 ):(
                     <>
@@ -416,19 +464,14 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                         <div className='submit' ref={ref}>
                                             {showSubmit && <button onClick={handleShowPaste}>Submit</button>}
                                             {showPaste && (
-                                                <form className='paste'>
+                                                <form className='paste' onSubmit={(e)=>e.preventDefault()}>
                                                     <div className='pasteLink'>
                                                         <Image src={linkFrame} alt=""/>
                                                     </div>
-                                                    {inputValue === '' ? (
-                                                        <button className='pasteButton'>
-                                                            Paste
-                                                        </button>
-                                                    ):(
-                                                        <button className='pasteButton'>
-                                                            Submit
-                                                        </button>
-                                                    )}
+
+                                                    <button onClick={() => handleVisualSubmit(item.id,inputValue)} className='pasteButton'>
+                                                        Submit
+                                                    </button>
                                                     <input 
                                                         type="text"
                                                         id="inputValue"
@@ -506,9 +549,14 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                         ))}
                     </>        
                 )}
+                {isLoading && <Spinner 
+            thickness='4px'
+            speed='0.65s'
+            emptyColor='gray.200'
+            color='#4F00CF'
+            size='xl'/>
+        }
             </>
-        )}
-    </>
   )
 }
 
