@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react"
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useRef, useState } from "react"
 import DiscoveryPage from "@/components/DiscoveryFolder/DiscoveryPage"
 import { MobileDiscovery, TabDiscovery } from "@/components/DiscoveryFolder/discovery.style"
 import { withRouter } from "next/router"
@@ -13,6 +14,10 @@ import SavedJobs from "@/components/MobilePromoterHome/SavedJobs"
 import ArrowDown from "@/public/assets/arrow-down"
 import ArrowUp from "@/public/assets/arrow-up"
 import DiscoveryJob from "@/components/DiscoveryFolder/DiscoveryJob"
+import DiscoveryFeed from "@/components/DiscoveryFolder/DiscoveryFeed"
+import Backdrop from "@/components/DiscoveryFolder/ReportModal/Backdrop"
+import Modal from "@/components/DiscoveryFolder/ReportModal/Modal"
+import axios from "axios"
 
 
 const Discovery = ({router}) => {
@@ -22,10 +27,147 @@ const Discovery = ({router}) => {
   const [showDropdown, setShowDropdown] = useState(false)
   const [showRecentJobs, setShowRecentJobs] = useState(true)
   const [showSortDropdown, setShowSortDropdown] = useState(false)
+  const [showReport, setShowReport] = useState(false)
+  const [searchTag,setSearchTag] = useState('')
+  const token = useRef('')
+  const [recommendedJobs,setRecommendedJobs] = useState([])
+  const [feed,setFeed] = useState([])
+  const [isLoading,setIsLoading] = useState(false)
+  const [isRecLoading,setIsRecLoading] = useState(false)
+  const [clickedFilter,setClickedFilter] = useState('Filter')
+  const [startDate,setStartDate] = useState('')
+  const [endDate,setEndDate] = useState('')
+  const [adType,setAdType] = useState('')
+  const [recent,setRecent] = useState()
+  const [popular,setPopular] = useState()
+  const [page, setPage] = useState(1);
+  const [recPage, setRecPage] = useState(1);
 
+  useEffect(()=>{
+      const userToken = JSON.parse(localStorage.getItem("user-token"));
+      if (userToken) {
+          token.current = userToken
+      }
+
+      if(token.current){
+          fetchFeed()
+          fetchRecommended()
+      }
+  },[])
+
+  const fetchFeed = async() =>{
+    let apiUrl = `https://api.ad-promoter.com/api/v1/ads/personal?page=${page}&pageSize=10`;
+    if (startDate) {
+      apiUrl += `&startDate=${startDate}`;
+    }
+    if (endDate) {
+      apiUrl += `&endDate=${endDate}`;
+    }
+    if (searchTag) {
+      apiUrl += `&query=${searchTag}`;
+    }
+    if (adType) {
+      apiUrl += `&adType=${adType}`;
+    }
+    if (recent) {
+      apiUrl += `&recent=${recent}`;
+    }
+    if (popular) {
+      apiUrl += `&popular=${popular}`;
+    }
+    setIsLoading(true)
+    const result = await axios(apiUrl,{
+      headers:{
+        Authorization: `Bearer ${token.current}`
+      }
+    })
+    setFeed((prevData) => [...prevData, ...result.data.data]);
+    setPage((prevPage) => prevPage + 1);
+    // setFeed(result.data.data)
+    setIsLoading(false)
+    setSearchTag('')
+  }
+
+  const fetchRecommended = async() =>{
+    let apiUrl = `https://api.ad-promoter.com/api/v1/ads/recommended?page=1&pageSize=10`;
+    if (searchTag) {
+      apiUrl += `&name=${searchTag}`;
+    }
+    if (startDate) {
+      apiUrl += `&startDate=${startDate}`;
+    }
+    if (endDate) {
+      apiUrl += `&endDate=${endDate}`;
+    }
+    setIsRecLoading(true)
+    const result = await axios(apiUrl,{
+      headers:{
+        Authorization: `Bearer ${token.current}`
+      }
+    })
+    setRecommendedJobs((prevData) => [...prevData, ...result.data.data.data]);
+    setRecPage((prevPage) => prevPage + 1);
+    setIsRecLoading(false)
+  }
+
+  const handleFilterSelect = (e) =>{
+      setClickedFilter(e.target.innerText)
+      if(e.target.innerText === 'Recent'){
+        setRecent(true)
+      }
+      if(e.target.innerText === 'Popular'){
+        setPopular(true)
+      }
+      if(e.target.innerText === 'Link-only Ads'){
+        setAdType('direct-link')
+      }
+      if(e.target.innerText === 'Visual Ads'){
+        setAdType('visual')
+      }
+      if(e.target.innerText === 'Detailed Ads'){
+        setAdType('detail')
+      }
+      if(e.target.innerText === 'Detailed Ads'){
+        setAdType('detail')
+      }
+      if(e.target.innerText === 'A week ago'){
+        const { startOfWeek, endOfWeek } = getWeekAgoRange();
+        setStartDate(startOfWeek)
+        setEndDate(endOfWeek)
+      }
+      if(e.target.innerText === 'Less than 2 weeks'){
+        const { startOfWeek, endOfWeek } = getTwoWeeksAgoRange();
+        setStartDate(startOfWeek)
+        setEndDate(endOfWeek)
+      }
+      if(e.target.innerText === 'Last 30 days'){
+        const { startOfWeek, endOfWeek } = getThirtyDaysAgoRange();
+        setStartDate(startOfWeek)
+        setEndDate(endOfWeek)
+      }
+      setShowDropdown(false)
+  }
+
+  const handleSearch = (event) =>{
+      if (event.key === 'Enter') {
+          if(!searchTag){
+              return
+          }else{
+              // setSearchTag(event.target.value)
+              fetchFeed(searchTag)
+              // fetchRecommended(searchTag)
+          }
+      }
+  }
+  
+  const handleShowReport = () => {
+      setShowReport(true)
+  }
   return (
     <div>
         <DiscoveryPage />
+        {showReport && <Backdrop onCancel={() => setShowReport(false)}/>}
+        {showReport && <Modal />}
         <MobileDiscovery>
           <div className="back-disc">
             {/* <div>
@@ -38,21 +180,21 @@ const Discovery = ({router}) => {
               <Image src={search} alt="search"/>
             </div>
             <div className='filter' onClick={() => setShowDropdown(!showDropdown)}>
-              <p>Filter</p>
+              <p>{clickedFilter}</p>
               {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
             </div>
-            <input placeholder="Search ad niche..."/>
+            <input name='search' id='search' value={searchTag} onKeyDown={handleSearch} onChange={(e)=>setSearchTag(e.target.value)} placeholder='Search ad niche...'/>
           </div>
           {showDropdown && (
             <ul>
-              <li>Recent</li>
-              <li>Popular</li>
-              <li>Visual Ads</li>
-              <li>Link-only Ads</li>
-              <li>Detailed Ads</li>
-              <li>A week ago</li>
-              <li>Less than 2 weeks</li>
-              <li>Last 30 days</li>
+              <li onClick={handleFilterSelect}>Recent</li>
+              <li onClick={handleFilterSelect}>Popular</li>
+              <li onClick={handleFilterSelect}>Link-only Ads</li>
+              <li onClick={handleFilterSelect}>Visual Ads</li>
+              <li onClick={handleFilterSelect}>Detailed Ads</li>
+              <li onClick={handleFilterSelect}>A week ago</li>
+              <li onClick={handleFilterSelect}>Less than 2 weeks</li>
+              <li onClick={handleFilterSelect}>Last 30 days</li>
             </ul>
           )}
           {tabFeed && (
@@ -63,7 +205,7 @@ const Discovery = ({router}) => {
                 </Link>
               </div>
               <p className="tab-para">Your Feed</p>
-              <Recent />
+              <DiscoveryFeed isLoading={isLoading} feed={feed} fetchFeed={fetchFeed} clickShow={handleShowReport}/>
             </>
           )}
           {tabRecommended && (
@@ -74,7 +216,7 @@ const Discovery = ({router}) => {
                 </Link>
               </div>
               <p className="tab-para">Recommended Jobs</p>
-              <DiscoveryJob />
+              <DiscoveryJob isLoading={isRecLoading} recommendedJobs={recommendedJobs} fetchRecommended={fetchRecommended} clickShow={handleShowReport}/>
             </>
           )}
         </MobileDiscovery>
@@ -139,7 +281,7 @@ const Discovery = ({router}) => {
             )}
           </div>
           <div className="show-recent">
-            {showRecentJobs ? <Recent /> : <DiscoveryJob />}
+            {showRecentJobs ? <DiscoveryFeed isLoading={isLoading} feed={feed} fetchFeed={fetchFeed} clickShow={handleShowReport}/> : <DiscoveryJob isLoading={isRecLoading} recommendedJobs={recommendedJobs} fetchRecommended={fetchRecommended} clickShow={handleShowReport}/>}
           </div>
         </TabDiscovery>
     </div>

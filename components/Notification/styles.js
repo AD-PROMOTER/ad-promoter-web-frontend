@@ -5,7 +5,7 @@ export const NotificationModalContainer = styled.div`
   top: 0;
   left: 0;
   width: 100vw;
-  height: 1060px; //Would change it later
+  height: 100%;
   background: rgba(0, 0, 0, 0.25);
   z-index: 1000;
   @media (min-width: 768px) and (max-width: 1024px) {
@@ -13,12 +13,15 @@ export const NotificationModalContainer = styled.div`
   }
   .notification-modal {
     background: #f7f7f7;
-    border-radius: 10px;
+    border-radius: 1rem;
     width: 62rem;
     position: absolute;
     top: 10rem;
-    height: 74.5rem;
+    height: 80%;
     right: calc(10% - 100px);
+    display: flex;
+    flex-direction: column;
+    /* gap: 5rem; */
     @media (min-width: 768px) and (max-width: 1024px) {
       right: 0;
     }
@@ -26,6 +29,7 @@ export const NotificationModalContainer = styled.div`
       background: #ffffff;
       width: 100%;
       padding: 1.4rem;
+      border-radius: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -54,7 +58,7 @@ export const NotificationModalContainer = styled.div`
       align-items: center;
       gap: 12px;
       overflow-y: auto;
-      height: 66.6rem;
+      height: 85%;
       padding-top: 1rem;
       &-item {
         display: flex;

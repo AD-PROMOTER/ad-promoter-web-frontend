@@ -19,7 +19,7 @@ const placers = () => {
                     <stop offset="1" stopColor="#83EFFF"/>
                 </linearGradient>
                 <linearGradient id="paint2_linear_1589_154741" x1="-33.5109" y1="46.3939" x2="46.2179" y2="12.3259" gradientUnits="userSpaceOnUse">
-                    <stop stopCcolor="#ED0202"/>
+                    <stop stopColor="#ED0202"/>
                     <stop offset="1" stopColor="#06F2D6"/>
                 </linearGradient>
                 <linearGradient id="paint3_linear_1589_154741" x1="121.5" y1="214.5" x2="-12.1538" y2="101.798" gradientUnits="userSpaceOnUse">

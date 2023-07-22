@@ -13,6 +13,7 @@ import NotificationContainer from '@/components/Notification/index'
 import { useEffect } from 'react'
 import { useState } from 'react'
 
+import { GlobalStyle } from '@/styles/global'
 const Index = () => {
 
     const [profileImage, setProfileImage] = useState("");
@@ -25,10 +26,20 @@ const Index = () => {
 
     const router = useRouter();
     const { isNotifClicked,setIsNotifClicked } = useContext(NotificationContext)
+
     const variants = {
         animate: { width: '60px', transition: { duration: .5 } },
         stop: { width: 0 }
     };
+
+    const handleClick = () =>{
+        setIsNotifClicked(!isNotifClicked)
+        if(isNotifClicked){
+            document.body.classList.remove('modal-open');
+        }else{
+            document.body.classList.add('modal-open');
+        }
+    }
   return (
     <StyledNavBar>
         <div className="logo">
@@ -59,7 +70,7 @@ const Index = () => {
         </div>
 
         <div className="profile">
-            <div className="notif" onClick={()=>setIsNotifClicked(!isNotifClicked)}>
+            <div className="notif" onClick={handleClick}>
                 <div className="notif-img">
                     <Image src={notif} alt='notification bell'/>
                 </div>

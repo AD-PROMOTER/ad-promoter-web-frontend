@@ -6,11 +6,11 @@ import VisualAdRec from './VisualAdRec'
 import ScrollContainer from 'react-indiana-drag-scroll'
 import SingleDiscoveryRecommended from './singleDiscoveryRecommended'
 
-const DiscoveryJob = ({clickShow,isLoading,recommendedJobs}) => {
+const DiscoveryJob = ({clickShow,isLoading,recommendedJobs,fetchRecommended}) => {
   return (
     <DiscoveryContainer>
       <ScrollContainer className="scroll-container">
-        <SingleDiscoveryRecommended isLoading={isLoading} recommendedJobs={recommendedJobs} click={clickShow}/>
+        <SingleDiscoveryRecommended isLoading={isLoading} recommendedJobs={recommendedJobs} fetchRecommended={fetchRecommended} click={clickShow}/>
         {/* <VisualAdRec click={clickShow}/>
         <DetailedAdRec click={clickShow}/> */}
       </ScrollContainer>

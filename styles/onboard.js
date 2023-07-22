@@ -223,7 +223,7 @@ export const StyledMobile = styled.div`
     border-radius: 40px;
     height: 4.8rem;
     margin-top: 2rem;
-    a {
+    p {
       font-weight: 600;
       font-size: 1.6rem;
       line-height: 2.1rem;

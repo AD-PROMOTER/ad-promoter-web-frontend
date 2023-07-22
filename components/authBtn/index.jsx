@@ -16,12 +16,10 @@ const Index = ({text,path}) => {
           {text}
         </button>
       ):(
-        <button className="btn-sm">
-          <Link href={path} passHref>
-            <a>
-              <p>{text}</p>
-            </a>
-          </Link>
+        <button onClick={()=>router.push(path)} className="btn-sm">
+          
+          <p>{text}</p>
+           
         </button>
       )}
  

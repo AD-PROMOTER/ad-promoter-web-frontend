@@ -9,8 +9,8 @@ export function AdPlacerProvider({ children }) {
   const [tags, setTags] = useState([]);
   const [webAddress, setWebAddress] = useState('');
   const [containAdultContent, setContainAdultContent] = useState(false);
-  const [amount, setAmount] = useState();
-  const [visitors, setVisitors] = useState();
+  const [amount, setAmount] = useState('');
+  const [visitors, setVisitors] = useState('');
   const [images, setImages] = useState([]);
   const [imageURLs, setImageURLs] = useState([]);
   const [cta, setCta] = useState('Buy now');

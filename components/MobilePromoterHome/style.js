@@ -425,88 +425,147 @@ export const Feed = styled.div`
     }
   }
 
-  .product-img-container {
+  .submit-image-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3rem;
-    .carousel-container {
-      position: relative;
-      .img-container {
-        border-radius: 3.6rem;
-        img {
+    .product-img-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3rem;
+
+      .carousel-container {
+        position: relative;
+        .img-container {
+          border-radius: 3.6rem;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .right-arrow {
+          position: absolute;
+          top: 50%;
+          transform: translate(0, -50%);
+          right: 0.5rem;
+          font-size: 4.5rem;
+          color: var(--white);
+          z-index: 1;
+          cursor: pointer;
+        }
+        .left-arrow {
+          position: absolute;
+          top: 50%;
+          transform: translate(0, -50%);
+          left: 0.5rem;
+          font-size: 4.5rem;
+          color: var(--white);
+          z-index: 1;
+          cursor: pointer;
+        }
+      }
+      .paste-input {
+        display: flex;
+        align-items: center;
+        .copy-icon {
+          margin-right: -4rem;
+          z-index: 10;
+        }
+        .input {
+          input {
+            background: #e6e6e6;
+            border: 2px solid #ffffff;
+            border-radius: 12px;
+            width: 36.3rem;
+            height: 5.2rem;
+            padding-left: 6rem;
+            padding-right: 10rem;
+          }
+        }
+        .button {
+          padding: 1rem 2rem;
+          color: #ffffff;
+          background: #6b8bfc;
+          border-radius: 10px;
+          margin-left: -8.5rem;
+          cursor: pointer;
+          p {
+            font-weight: 500;
+            font-size: 1.3rem;
+            line-height: 2rem;
+          }
+        }
+      }
+      .btn {
+        padding: 1.3rem 0.8rem;
+        border-radius: 1rem;
+        background-color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 1.2rem;
+        line-height: 150%;
+        letter-spacing: -0.02em;
+        color: #ffffff;
+        width: 11.2rem;
+        cursor: pointer;
+      }
+    }
+
+    .submit {
+      margin-top: 3rem;
+
+      .paste {
+        position: relative;
+
+        .pasteLink {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          display: flex;
+          align-items: center;
+          padding-left: 0.8rem;
+        }
+
+        .pasteButton {
+          position: absolute;
+          top: 0.7rem;
+          right: 0.6rem;
+          background-color: var(--light-blue);
+          padding: 1rem;
+          color: var(--white);
+          border-radius: 1rem;
+          max-width: 8.1rem;
           width: 100%;
-          height: 100%;
+          font-weight: 500;
+          font-size: 13px;
+          line-height: 20px;
+        }
+        input {
+          padding-left: 6rem;
+          padding-right: 10rem;
+          border-radius: 0.8rem;
+          background: var(--light-gray-3);
+          border: 2px solid #ffffff;
+          color: white;
+          /* width: 47.376rem; */
+          /* width: 100%; */
+          height: 5.6rem;
+          /* height: 100%; */
         }
       }
 
-      .right-arrow {
-        position: absolute;
-        top: 50%;
-        transform: translate(0, -50%);
-        right: 0.5rem;
-        font-size: 3rem;
-        color: var(--white);
-        z-index: 1;
+      button {
+        padding: 0.8rem 3rem;
+        background-color: var(--primary);
+        color: white;
+        border-radius: 0.8rem;
         cursor: pointer;
       }
-      .left-arrow {
-        position: absolute;
-        top: 50%;
-        transform: translate(0, -50%);
-        left: 0.5rem;
-        font-size: 3rem;
-        color: var(--white);
-        z-index: 1;
-        cursor: pointer;
-      }
-    }
-    .paste-input {
-      display: flex;
-      align-items: center;
-      .copy-icon {
-        margin-right: -4rem;
-        z-index: 10;
-      }
-      .input {
-        input {
-          background: #e6e6e6;
-          border: 2px solid #ffffff;
-          border-radius: 12px;
-          width: 36.3rem;
-          height: 5.2rem;
-          padding-left: 6rem;
-          padding-right: 10rem;
-        }
-      }
-      .button {
-        padding: 1rem 2rem;
-        color: #ffffff;
-        background: #6b8bfc;
-        border-radius: 10px;
-        margin-left: -8.5rem;
-        cursor: pointer;
-        p {
-          font-weight: 500;
-          font-size: 1.3rem;
-          line-height: 2rem;
-        }
-      }
-    }
-    .btn {
-      padding: 1.3rem 0.8rem;
-      border-radius: 1rem;
-      background-color: var(--primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      font-size: 1.2rem;
-      line-height: 150%;
-      letter-spacing: -0.02em;
-      color: #ffffff;
-      width: 11.2rem;
-      cursor: pointer;
     }
   }
 `;
@@ -524,7 +583,7 @@ export const ModalContainer = styled.div`
   width: 38.8rem;
   min-height: 42.6rem;
   border-radius: 1rem;
-  box-shadow: var(--shadow-2);
+  /* box-shadow: var(--shadow-2); */
   padding: 2.4rem 1.6rem;
   left: 3%;
   top: 20%;
@@ -620,9 +679,9 @@ export const BackdropContainer = styled.div`
   z-index: 100;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.2);
   left: 0;
   top: 0;
   cursor: default;
-  backdrop-filter: blur(12px);
+  /* backdrop-filter: blur(12px); */
 `;

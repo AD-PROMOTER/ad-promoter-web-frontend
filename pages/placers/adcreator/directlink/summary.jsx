@@ -11,8 +11,13 @@ const Summary = () => {
     const {createAd,isLoading} = useCreateAds()
 
     
-    const handlePush = () =>{
-        createAd(productName,redirectUrl,productDescription,tags,advertType,cta,images,webAddress,amount,containAdultContent)
+    const handlePush = async () =>{
+        try {
+            await createAd(productName,redirectUrl,productDescription,tags,advertType,cta,images,webAddress,amount,containAdultContent)
+        } catch (error) {
+            console.error(error);
+            // handle error here, e.g. show error message to user
+        }
     }
   return (
     <StyledDirectLinkSummary>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import arrowUp from '@/public/assets/arrow-up.svg'
@@ -8,49 +9,129 @@ import DiscoveryJob from './DiscoveryJob'
 import Modal from './ReportModal/Modal'
 import Backdrop from './ReportModal/Backdrop'
 import axios from 'axios'
+import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from '@/utils/formatFilterDate'
 
 const DiscoveryPage = () => {
     const [showDropdown, setShowDropdown] = useState(false)
     const [showReport, setShowReport] = useState(false)
     const [searchTag,setSearchTag] = useState('')
     const token = useRef('')
-    const [recommendedJobs,setRecommendedJobs] = useState()
-    const [feed,setFeed] = useState()
+    const [recommendedJobs,setRecommendedJobs] = useState([])
+    const [feed,setFeed] = useState([])
     const [isLoading,setIsLoading] = useState(false)
+    const [isRecLoading,setIsRecLoading] = useState(false)
+    const [clickedFilter,setClickedFilter] = useState('Filter')
+    const [startDate,setStartDate] = useState('')
+    const [endDate,setEndDate] = useState('')
+    const [adType,setAdType] = useState('')
+    const [recent,setRecent] = useState()
+    const [popular,setPopular] = useState()
+    const [page, setPage] = useState(1);
+    const [recPage, setRecPage] = useState(1);
 
     useEffect(()=>{
         const userToken = JSON.parse(localStorage.getItem("user-token"));
         if (userToken) {
             token.current = userToken
         }
+
         if(token.current){
             fetchFeed()
             fetchRecommended()
         }
     },[])
 
-    const fetchFeed = async(searchTag) =>{
-        setIsLoading(true)
-        const result = await axios(`https://api.ad-promoter.com/api/v1/ads/searchTag?page=1&pageSize=10&tag=${searchTag}`,{
-          headers:{
-            Authorization: `Bearer ${token.current}`
-          }
-        })
-        setFeed(result.data.data.data)
-        setIsLoading(false)
-        setSearchTag('')
+    const fetchFeed = async() =>{
+      let apiUrl = `https://api.ad-promoter.com/api/v1/ads/personal?page=1&pageSize=10`;
+      if (startDate) {
+        apiUrl += `&startDate=${startDate}`;
+      }
+      if (endDate) {
+        apiUrl += `&endDate=${endDate}`;
+      }
+      if (searchTag) {
+        apiUrl += `&query=${searchTag}`;
+      }
+      if (adType) {
+        apiUrl += `&adType=${adType}`;
+      }
+      if (recent) {
+        apiUrl += `&recent=${recent}`;
+      }
+      if (popular) {
+        apiUrl += `&popular=${popular}`;
+      }
+      setIsLoading(true)
+      const result = await axios(apiUrl,{
+        headers:{
+          Authorization: `Bearer ${token.current}`
+        }
+      })
+      setFeed((prevData) => [...prevData, ...result.data.data]);
+      // setPage((prevPage) => prevPage + 1);
+      // setFeed(result.data.data)
+      setIsLoading(false)
+      setSearchTag('')
     }
 
-    const fetchRecommended = async(searchTag) =>{
-        setIsLoading(true)
-        const result = await axios(`https://api.ad-promoter.com/api/v1/ads/recommended?page=1&pageSize=10&name=${searchTag}`,{
-          headers:{
-            Authorization: `Bearer ${token.current}`
-          }
-        })
-        setRecommendedJobs(result.data.data.data)
-        console.log(result.data.data.data);
-        setIsLoading(false)
+    const fetchRecommended = async() =>{
+      let apiUrl = `https://api.ad-promoter.com/api/v1/ads/recommended?page=1&pageSize=10`;
+      if (searchTag) {
+        apiUrl += `&name=${searchTag}`;
+      }
+      if (startDate) {
+        apiUrl += `&startDate=${startDate}`;
+      }
+      if (endDate) {
+        apiUrl += `&endDate=${endDate}`;
+      }
+      setIsRecLoading(true)
+      const result = await axios(apiUrl,{
+        headers:{
+          Authorization: `Bearer ${token.current}`
+        }
+      })
+      setRecommendedJobs((prevData) => [...prevData, ...result.data.data.data]);
+      // setRecPage((prevPage) => prevPage + 1);
+      setIsRecLoading(false)
+    }
+
+    const handleFilterSelect = (e) =>{
+        setClickedFilter(e.target.innerText)
+        if(e.target.innerText === 'Recent'){
+          setRecent(true)
+        }
+        if(e.target.innerText === 'Popular'){
+          setPopular(true)
+        }
+        if(e.target.innerText === 'Link-only Ads'){
+          setAdType('direct-link')
+        }
+        if(e.target.innerText === 'Visual Ads'){
+          setAdType('visual')
+        }
+        if(e.target.innerText === 'Detailed Ads'){
+          setAdType('detail')
+        }
+        if(e.target.innerText === 'Detailed Ads'){
+          setAdType('detail')
+        }
+        if(e.target.innerText === 'A week ago'){
+          const { startOfWeek, endOfWeek } = getWeekAgoRange();
+          setStartDate(startOfWeek)
+          setEndDate(endOfWeek)
+        }
+        if(e.target.innerText === 'Less than 2 weeks'){
+          const { startOfWeek, endOfWeek } = getTwoWeeksAgoRange();
+          setStartDate(startOfWeek)
+          setEndDate(endOfWeek)
+        }
+        if(e.target.innerText === 'Last 30 days'){
+          const { startOfWeek, endOfWeek } = getThirtyDaysAgoRange();
+          setStartDate(startOfWeek)
+          setEndDate(endOfWeek)
+        }
+        setShowDropdown(false)
     }
 
     const handleSearch = (event) =>{
@@ -58,8 +139,9 @@ const DiscoveryPage = () => {
             if(!searchTag){
                 return
             }else{
+                // setSearchTag(event.target.value)
                 fetchFeed(searchTag)
-                fetchRecommended(searchTag)
+                // fetchRecommended(searchTag)
             }
         }
     }
@@ -85,19 +167,19 @@ const DiscoveryPage = () => {
                     </span>
                     <input name='search' id='search' value={searchTag} onKeyDown={handleSearch} onChange={(e)=>setSearchTag(e.target.value)} placeholder='Search ad niche...'/>
                 </div>  
-                <div className='select' onClick={() => setShowDropdown(!showDropdown)}>
-                    <div>Filter</div>
+                <div className='select' style={{cursor: 'pointer'}} onClick={() => setShowDropdown(!showDropdown)}>
+                    <div>{clickedFilter}</div>
                     {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
                     {showDropdown && (
                     <ul>
-                        <li>Recent</li>
-                        <li>Popular</li>
-                        <li>Link-only Ads</li>
-                        <li>Visual Ads</li>
-                        <li>Detailed Ads</li>
-                        <li>A week ago</li>
-                        <li>Less than 2 weeks</li>
-                        <li>Last 30 days</li>
+                        <li onClick={handleFilterSelect}>Recent</li>
+                        <li onClick={handleFilterSelect}>Popular</li>
+                        <li onClick={handleFilterSelect}>Link-only Ads</li>
+                        <li onClick={handleFilterSelect}>Visual Ads</li>
+                        <li onClick={handleFilterSelect}>Detailed Ads</li>
+                        <li onClick={handleFilterSelect}>A week ago</li>
+                        <li onClick={handleFilterSelect}>Less than 2 weeks</li>
+                        <li onClick={handleFilterSelect}>Last 30 days</li>
                     </ul>
                 )}
                 </div>
@@ -110,7 +192,7 @@ const DiscoveryPage = () => {
                 </div>
                 <div className='col2'>
                     <h3 style={{fontWeight: 'bold', fontSize: '2rem',marginBottom:'1rem'}}>Recommended Jobs</h3>
-                    <DiscoveryJob isLoading={isLoading} recommendedJobs={recommendedJobs} clickShow={handleShowReport}/>
+                    <DiscoveryJob isLoading={isRecLoading} recommendedJobs={recommendedJobs} fetchRecommended={fetchRecommended} clickShow={handleShowReport}/>
                 </div>
             </div>
         </Container>

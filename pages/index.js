@@ -133,10 +133,8 @@ export default function Home() {
         <div className="signup">
           <SignupBtn text="Sign up with email" path="/signup" />
         </div>
-        <div className="login">
-          <Link href="/login">
-            <a>Log in</a>
-          </Link>
+        <div className="login" onClick={() => router.push('/login')}>
+          <p>Log in</p>
         </div>
         <div className="terms">
           <p>

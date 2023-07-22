@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react'
 import more from '@/public/assets/ellipsis.svg'
 import info from '@/public/assets/info-circle.svg'
@@ -6,8 +7,9 @@ import vector from '@/public/assets/Vector.svg'
 import cup from '@/public/assets/cupIcon.svg'
 import currency from '@/public/assets/money-send.svg'
 import download from '@/public/assets/downloadIcon3.svg'
-import archive from '@/public/assets/shareIcon1.svg'
-import exportLink from '@/public/assets/bookmarkIcon1.svg'
+import exportLink from '@/public/assets/shareIcon1.svg'
+import archive from '@/public/assets/bookmarkIcon1.svg'
+import copyLink from '@/public/assets/bottom-link-icon.svg'
 // import { Feed } from '@/components/DiscoveryFolder/discovery.style'
 import Image from 'next/image'
 // import { directlinkAd } from '@/components/DiscoveryFolder/data'
@@ -16,8 +18,14 @@ import { directlinkAd } from '../PromoterHomeAdDetail/data'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import axios from 'axios'
+import { Spinner, useToast } from '@chakra-ui/react'
+import { CgProfile } from 'react-icons/cg'
+import TimeAgo from '../timeAgo'
+import ShareDialogue from '../shareDialogue'
+// import { BackdropContainer, ModalContainer } from '../DiscoveryFolder/ReportModal/ModalStyle'
+import linkFrame from '@/public/assets/linkframe.svg'
 
-const MobileDirect = () => {
+const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
     const [showReport, setShowReport] = useState(false)
     const ref = useRef(null)
     const token = useRef('')
@@ -26,7 +34,46 @@ const MobileDirect = () => {
     const [showDropdown, setShowDropdown] = useState(false)
     const [listValue, setListValue] = useState('It has gory images')
     const [isLoading,setIsLoading] = useState(false)
-    const [savedJobs,setSavedJobs] = useState()
+    const [savedJobs,setSavedJobs] = useState([])
+    const [isReportLoading, setIsReportLoading] = useState(null);
+    const [showSubmit,setShowSubmit] = useState(true)
+    const [showPaste,setShowPaste] = useState(false)
+    const [currentIndex,setCurrentIndex] = useState(0)
+    const [inputValue, setInputValue] = useState('');
+    const toast = useToast()
+    const [showDialogue, setShowDialogue] = useState(false);
+    const [page, setPage] = useState(1);
+
+    useEffect(()=>{
+        const userToken = JSON.parse(localStorage.getItem("user-token"));
+        if (userToken) {
+            token.current = userToken
+        }
+
+        if(token.current){
+            fetchSavedJobs()
+        }
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+          window.removeEventListener('scroll', handleScroll);
+        };
+    },[])
+
+    // useEffect(() => {
+    //     const onClickOutside = () => {
+    //         setShowReport(false)
+    //     }
+    //     const handleClickOutside = (event) => {
+    //         if (ref.current && !ref.current.contains(event.target)) {
+    //             onClickOutside && onClickOutside();
+    //         }
+    //     }
+    //     document.addEventListener('click', handleClickOutside, true);
+    //     return () => {
+    //         document.removeEventListener('click', handleClickOutside, true);
+    //     }
+    // }, [])
 
     const ClickedList = (e) =>{
       setListValue(e.target.innerText)
@@ -36,65 +83,238 @@ const MobileDirect = () => {
         setIsReadMore(!isReadMore);
     };
 
-    useEffect(()=>{
-        const userToken = JSON.parse(localStorage.getItem("user-token"));
-        if (userToken) {
-            token.current = userToken
-        }
 
-        const fetchSavedJobs = async() =>{
-            setIsLoading(true)
-            const result = await axios(`http://35.153.52.116/api/v1/user/saved-jobs`,{
-              headers:{
-                Authorization: `Bearer ${token.current}`
-              }
-            })
-            setSavedJobs(result.data.data)
-            setIsLoading(false)
-        }
-        if(token.current){
-            fetchSavedJobs()
-        }
-    },[])
-
-    useEffect(() => {
-        const onClickOutside = () => {
-            setShowReport(false)
-        }
-        const handleClickOutside = (event) => {
-            if (ref.current && !ref.current.contains(event.target)) {
-                onClickOutside && onClickOutside();
+    const fetchSavedJobs = async() =>{
+        let apiUrl = `https://api.ad-promoter.com/api/v1/user/saved-jobs?page=${page}&pageSize=10`;
+        if (sortStartDate) {
+            apiUrl += `&startDate=${sortStartDate}`;
             }
+            if (sortEndDate) {
+            apiUrl += `&endDate=${sortEndDate}`;
+            }
+        setIsLoading(true)
+        const result = await axios(apiUrl,{
+            headers:{
+            Authorization: `Bearer ${token.current}`
+            }
+        })
+        setSavedJobs((prevData) => [...prevData, ...result.data.data.data.data]);
+        setPage((prevPage) => prevPage + 1);
+        setIsLoading(false)
+    }
+
+    const handleScroll = () => {
+        if (
+          window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+          !isLoading
+        ) {
+          fetchSavedJobs();
         }
-        document.addEventListener('click', handleClickOutside, true);
-        return () => {
-            document.removeEventListener('click', handleClickOutside, true);
+    };
+
+    const handleShowReport = () =>{
+        setShowReportModal(true)
+        setShowReport(false)
+    }
+
+    const handleAdRemoval = async(id) =>{
+        const response = await fetch(
+            `https://api.ad-promoter.com/api/v1/ads/${id}`,
+            {
+              method: 'DELETE',
+              headers: { 
+                    Authorization: `Bearer ${token.current}`
+                },
+            }
+          );
+          const json = await response.json();
+      
+          if (!response.ok) {
+                toast({
+                    title: json.msg,
+                    status: "error",
+                    duration: "5000",
+                    isClosable: true,
+                    position: "bottom-left",
+                    size: "lg"
+                });
+            }
+            if (response.ok) {
+                fetchSavedJobs()
+                toast({
+                    title: json.msg,
+                    status: "success",
+                    duration: "5000",
+                    isClosable: true,
+                    position: "bottom-left",
+                    size: "lg"
+                });
+            }
+    }
+
+    const handleDownload = async (imageLinks) => {
+        try {
+          for (let i = 0; i < imageLinks.length; i++) {
+            const imageUrl = imageLinks[i];
+            const filename = `image${i + 1}`;
+    
+            const response = await fetch('/api/convert-to-jpeg', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ imageUrl, filename })
+            });
+    
+            const blob = await response.blob();
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${filename}.jpg`;
+            link.click();
+            URL.revokeObjectURL(link.href);
         }
-    }, [])
+        } catch (error) {
+          console.error('Error downloading images:', error);
+        }
+    };
+
+    const handleCopyLink = (link) => {
+        navigator.clipboard.writeText(link)
+          .then(() => {
+            toast({
+                title: 'Link copied to clipboard!',
+                status: "success",
+                duration: "5000",
+                isClosable: true,
+                position: "bottom-left",
+                size: "lg"
+            });
+          })
+          .catch((error) => {
+            console.error('Failed to copy link:', error);
+            toast({
+                title: 'Failed to copy link:', error,
+                status: "error",
+                duration: "5000",
+                isClosable: true,
+                position: "bottom-left",
+                size: "lg"
+            });
+          });
+    };
+
+    const handleOpenDialogue = () => {
+        setShowDialogue(!showDialogue);
+    };
+
+    const handleJobSave = async(id) =>{
+        const result = await axios(`https://api.ad-promoter.com/api/v1/user/save-job/${id}`,{
+          headers:{
+            Authorization: `Bearer ${token.current}`,
+          },
+          method: "PUT"
+        })
+        console.log(result.data)
+        toast({
+            title: result.data.data,
+            status: result.data.success ? "success" : "error",
+            duration: "5000",
+            isClosable: true,
+            position: "bottom-left",
+            size: "lg"
+        });
+    }
+
+    const handleReport = async (id,report) =>{
+        setIsReportLoading(true)
+        const response = await fetch(
+            'https://api.ad-promoter.com/api/v1/reports/create',
+            {
+              method: 'POST',
+              headers: { 
+                    'Content-Type': 'application/json', 
+                    Authorization: `Bearer ${token.current}`
+                },
+              body: JSON.stringify({
+                adsId: id,
+                report: report
+              }),
+            }
+          );
+          const json = await response.json();
+      
+          if (!response.ok) {
+            setIsReportLoading(false);
+            setShowReportModal(false)
+            toast({
+                title: json.msg,
+                status: "error",
+                duration: "5000",
+                isClosable: true,
+                position: "bottom-left",
+                size: "lg"
+            });
+          }
+          if (response.ok) {
+              setIsReportLoading(false);
+              setShowReportModal(false)
+              toast({
+                title: json.msg,
+                status: "success",
+                duration: "5000",
+                isClosable: true,
+                position: "bottom-left",
+                size: "lg"
+            });
+          }
+    }
+
+    const handleShowPaste = () =>{
+        setShowSubmit(false)
+        setShowPaste(true)
+    }
+
+    const nextImage = (images) => {
+        setCurrentIndex((prevIndex) =>
+          prevIndex === images.length - 1 ? 0 : prevIndex + 1
+        );
+    };
+    
+    const previousImage = (images) => {
+        setCurrentIndex((prevIndex) =>
+        prevIndex === 0 ? images.length - 1 : prevIndex - 1
+        );
+    };
 
   return (
-    <>
-         {!savedJobs || isLoading ? (
-            <p>Loading...</p>
-        ):(
+    // <>
+        //  {savedJobs.length === 0 && isLoading ? (
+        //     <Spinner 
+        //         thickness='4px'
+        //         speed='0.65s'
+        //         emptyColor='gray.200'
+        //         color='#4F00CF'
+        //         size='xl'
+        //     />
+        // ):(
             <>
-                {savedJobs.length === 0 ?(
+                {savedJobs.length === 0 && !isLoading ?(
                     <p>No saved job</p>
                 ):(
                     <>            
-                        {directlinkAd.map((item, index) => (
-                            <Feed bg='#0594FB' key={index}>
+                        {[...savedJobs].reverse().map((item) => (
+                            <Feed bg={item.type === 'direct-link' ? '#0594FB': item.type === 'detail' ? 'var(--yellow)':'var(--green)'} key={item.id}>
                                 <div className="product-summary">
                                     <div className="product-summary-head">
                                         <div className="ad-type-container">
                                             <div className="adtype">{item.type}</div>
-                                            <div className='dot' onClick={()=> setShowReport(true)}>
+                                            <div className='dot' onClick={()=> setShowReport(!showReport)}>
                                                 {showReport ? (<ul ref={ref}>
-                                                    <li onClick={()=>setShowReportModal(true)}>
+                                                    <li onClick={handleShowReport}>
                                                         <Image src={info} alt="info"/>
                                                         <p>Report this advert</p>
                                                     </li>
-                                                    <li>
+                                                    <li onClick={()=>handleAdRemoval(item.id)}>
                                                         <Image src={remove} alt='remove'/>
                                                         <p>Remove from feed</p>
                                                     </li>
@@ -102,26 +322,26 @@ const MobileDirect = () => {
                                             </div>
                                         </div>
                                         <div className="business-name-container">
-                                            <h3>{item.product}</h3>
+                                            <h3>{item.productName}</h3>
                                             <div className="tag-container">
                                                 <p>Tags:</p>
                                                 <div className="tag">
-                                                    {item.tags.map((tag, index) => (
-                                                        <div key={index}>{tag}</div>
-                                                    ))}
+                                                {item.tags.map((tag) => (
+                                                    <div key={tag}>{tag}</div>
+                                                ))}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="product-summary-text">
                                         <p>
-                                            {isReadMore ? item.desc.slice(0, 156) : item.desc}
-                                            {item.desc.length > 156 ? (
+                                            {isReadMore ? item.description.slice(0, 156) : item.description}
+                                            {item.description.length > 156 ? (
                                                 <span onClick={toggleReadMore}>
                                                     {isReadMore ? " Read more" : " Show less"}
                                                 </span>
                                             ):(
-                                            <p></p>
+                                            <></>
                                             )}
                                         </p>
                                     </div>
@@ -133,73 +353,151 @@ const MobileDirect = () => {
                                             <Image src={currency} alt="currency"/>
                                             <h4>Price</h4>
                                         </div>
-                                        <p>{item.price}</p>
+                                        {item.type === 'detail' || 'direct-link' ?(
+                                            <p>#25/Visitor</p>
+                                        ):(
+                                            <p>#50/Video</p>
+                                        )}
                                     </div>
                                     <div className="aim">
                                         <div className="head">
                                             <Image src={cup} alt="cup"/>
                                             <h4>Aim</h4>
                                         </div>
-                                        <p>{item.aim}</p>
+                                        {item.type === 'detail' || 'direct-link' ?(
+                                            <p>{item.target} Visitors</p>
+                                        ):(
+                                            <p>{item.target} Videos</p>
+                                        )}  
                                     </div>
                                     <div className="achieved">
                                         <div className="head">
                                             <Image src={vector} alt="vector"/>
                                             <h4>Achieved</h4>
                                         </div>
-                                        <p>{item.achieved}</p>
+                                        {item.type === 'detail' || 'direct-link' ?(
+                                            <p>{item.conversions} Visitors</p>
+                                        ):(
+                                            <p>{item.conversions} Videos</p>
+                                        )}
                                     </div>
                                 </div>
+
+                                {item.images.length === 0 ?(
+                                    <></>
+                                ):(
+                                    <div className='submit-image-container'>
+                                        <div className="product-img-container">
+                                            <div className='carousel-container'>
+                                                <div onClick={() => previousImage(item.images)} className='left-arrow'>
+                                                    ❮
+                                                </div>
+                                                <div className='img-container' style={{borderRadius:'36px'}}>
+                                                    <Image src={item.images[currentIndex]} alt='product' width={360} height={236}/>
+                                                </div>
+                                                <div onClick={() => nextImage(item.images)} className='right-arrow'>
+                                                    ❯
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='submit' ref={ref}>
+                                            {showSubmit && <button  onClick={handleShowPaste}>Submit</button>}
+                                            {showPaste && (
+                                                <form className='paste' onSubmit={(e)=>e.preventDefault()}>
+                                                    <div className='pasteLink'>
+                                                        <Image src={linkFrame} alt=""/>
+                                                    </div>
+                                                  
+                                                        <button onClick={() => handleVisualSubmit(item.id,inputValue)} className='pasteButton'>
+                                                            Submit
+                                                        </button>
+
+                                                    <input 
+                                                        type="text"
+                                                        id="inputValue"
+                                                        name="inputValue"
+                                                        onChange={handleChange}
+                                                        value={inputValue}
+                                                    />
+                                                </form>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
 
                                 <div className="bottom">
                                     <div className="user-details">
                                         <div className="user-details-text">
-                                            <Image src={item.userImg} alt='user'/>
-                                            <h5>{item.userName}</h5>
+                                        {item.creator?.profilePicture?(
+                                            <Image src={item.creator?.profilePicture} width={20} height={20} alt={item.creator.accountName}/>
+                                            ):(
+                                            <CgProfile width={20} height={20}/>
+                                        )}
+                                            <h5>{item.creator?.accountName}</h5>
                                         </div>
-                                        <p>{item.timePosted}</p>
+                                        <p>Posted <TimeAgo dateTime={item.dateCreated}/></p>
                                     </div>
                                     <div className="share-container">
-                                        <Image src={exportLink} alt='export'/>
-                                        <Image src={download} alt='download'/>
-                                        <Image src={archive} alt='archive'/>
+                                        {item.images.length !==0 ? (
+                                            <div className='icons' onClick={() => handleDownload(item.images)}>
+                                                <Image src={download} alt=""/>
+                                            </div>
+                                        ):(
+                                            <div className='icons' onClick={()=>handleCopyLink(item.promotedLink)}>
+                                                <Image src={copyLink} alt=""/>
+                                            </div>
+                                        )}
+                                        <div className='icons' onClick={handleOpenDialogue}>
+                                            <Image src={exportLink} alt=""/>
+                                        </div>
+                                        <div className='icons' onClick={()=>handleJobSave(item.id)}>
+                                            <Image src={archive} alt=""/>
+                                        </div>
                                     </div>
                                 </div>
+                                {showDialogue && <ShareDialogue shareLink={item.promotedLink} />}
+                                {showReportModal && (
+                                    <BackdropContainer onClick={()=>setShowReportModal(false)}>
+                                        <ModalContainer onClick={e => e.stopPropagation()}>
+                                            <div className='report'>
+                                                <p className='advert'>Report Advert</p>
+                                                <p className='reason'>Tell us why you want to report this advert?</p>
+                                            </div>
+                                            <div className='language'>Why are you reporting this advert</div>
+                                            <div className="input-container">
+                                                <div className='inputArea' onClick={() => setShowDropdown(!showDropdown)}>
+                                                    <div className='inputText'>{listValue}</div>
+                                                    {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
+                                                </div>
+                                                {showDropdown && (
+                                                    <ul>
+                                                        <li onClick={ClickedList}>It has gory images</li>
+                                                        <li onClick={ClickedList}>It is a scam advert</li>
+                                                        <li onClick={ClickedList}>It has nudity or sexual content</li>
+                                                        <li onClick={ClickedList}>Other reasons</li>
+                                                    </ul>
+                                                )}
+                                            </div>
+                                            <div onClick={()=>handleReport(item.id,listValue)} className='reportButton'>
+                                                <button>{isReportLoading ? 'Reporting..' : 'Send Report'}</button>
+                                            </div>
+                                        </ModalContainer>
+                                    </BackdropContainer>
+                                )}
                             </Feed>
                         ))}
                     </>        
                 )}
+                {isLoading && <Spinner 
+                    thickness='4px'
+                    speed='0.65s'
+                    emptyColor='gray.200'
+                    color='#4F00CF'
+                    size='xl'/>
+                } 
             </>
-        )}
-        {showReportModal && (
-            <BackdropContainer onClick={()=>setShowReportModal(false)}>
-                <ModalContainer onClick={e => e.stopPropagation()}>
-                    <div className='report'>
-                        <p className='advert'>Report Advert</p>
-                        <p className='reason'>Tell us why you want to report this advert?</p>
-                    </div>
-                    <div className='language'>Why are you reporting this advert</div>
-                    <div className="input-container">
-                        <div className='inputArea' onClick={() => setShowDropdown(!showDropdown)}>
-                            <div className='inputText'>{listValue}</div>
-                            {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
-                        </div>
-                        {showDropdown && (
-                            <ul>
-                                <li onClick={ClickedList}>It has gory images</li>
-                                <li onClick={ClickedList}>It is a scam advert</li>
-                                <li onClick={ClickedList}>It has nudity or sexual content</li>
-                                <li onClick={ClickedList}>Other reasons</li>
-                            </ul>
-                        )}
-                    </div>
-                    <div className='reportButton'>
-                        <button>Send Report</button>
-                    </div>
-                </ModalContainer>
-            </BackdropContainer>
-        )}
-    </>
+        // )}
+    // </>
   )
 }
 

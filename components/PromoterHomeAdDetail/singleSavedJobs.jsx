@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react'
 import more from '@/public/assets/ellipsis.svg'
 import vector from '@/public/assets/Vector.svg'
@@ -7,7 +8,7 @@ import download from '@/public/assets/downloadIcon3.svg'
 import exportLink from '@/public/assets/shareIcon1.svg'
 import archive from '@/public/assets/bookmarkIcon1.svg'
 import copyLink from '@/public/assets/bottom-link-icon.svg'
-import { useToast } from '@chakra-ui/react'
+import { Spinner, useToast } from '@chakra-ui/react'
 // import { Feed } from '@/components/DiscoveryFolder/discovery.style'
 import Image from 'next/image'
 // import { directlinkAd } from '@/components/DiscoveryFolder/data'
@@ -21,7 +22,7 @@ import TimeAgo from '../timeAgo'
 import linkFrame from '@/public/assets/linkframe.svg'
 import ShareDialogue from '../shareDialogue'
 
-const SingleSavedJobs = () => {
+const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
     const [showReport, setShowReport] = useState(false)
     const ref = useRef(null)
     const token = useRef('')
@@ -31,13 +32,59 @@ const SingleSavedJobs = () => {
     const [showDropdown, setShowDropdown] = useState(false)
     const [listValue, setListValue] = useState('It has gory images')
     const [isLoading,setIsLoading] = useState(false)
-    const [savedJobs,setSavedJobs] = useState()
+    const [savedJobs,setSavedJobs] = useState([])
     const [showSubmit,setShowSubmit] = useState(true)
     const [showPaste,setShowPaste] = useState(false)
     const [currentIndex,setCurrentIndex] = useState(0)
     const [inputValue, setInputValue] = useState('');
     const toast = useToast()
     const [showDialogue, setShowDialogue] = useState(false);
+    const [page, setPage] = useState(1);
+
+    useEffect(()=>{
+        const userToken = JSON.parse(localStorage.getItem("user-token"));
+        if (userToken) {
+            token.current = userToken
+        }
+
+        if(token.current){
+            fetchSavedJobs()
+        }
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+          window.removeEventListener('scroll', handleScroll);
+        };
+    },[])
+
+    const fetchSavedJobs = async() =>{
+        let apiUrl = `https://api.ad-promoter.com/api/v1/user/saved-jobs?page=1&pageSize=10`;
+        if (sortStartDate) {
+            apiUrl += `&startDate=${sortStartDate}`;
+          }
+          if (sortEndDate) {
+            apiUrl += `&endDate=${sortEndDate}`;
+          }
+        setIsLoading(true)
+        const result = await axios(apiUrl,{
+          headers:{
+            Authorization: `Bearer ${token.current}`
+          }
+        })
+        setSavedJobs((prevData) => [...prevData, ...result.data.data.data.data]);
+        // setPage((prevPage) => prevPage + 1);
+        // setSavedJobs(result.data.data.data.data)
+        setIsLoading(false)
+    }
+
+    const handleScroll = () => {
+        if (
+          window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+          !isLoading
+        ) {
+          fetchSavedJobs();
+        }
+    };
 
     const ClickedList = (e) =>{
       setListValue(e.target.innerText)
@@ -48,7 +95,7 @@ const SingleSavedJobs = () => {
     };
 
     const handleOpenDialogue = () => {
-        setShowDialogue(true);
+        setShowDialogue(!showDialogue);
     };
     
     const handleCloseDialogue = () => {
@@ -120,28 +167,6 @@ const SingleSavedJobs = () => {
     };
 
 
-    useEffect(()=>{
-        const userToken = JSON.parse(localStorage.getItem("user-token"));
-        if (userToken) {
-            token.current = userToken
-        }
-
-        if(token.current){
-            fetchSavedJobs()
-        }
-    },[])
-
-    const fetchSavedJobs = async() =>{
-        setIsLoading(true)
-        const result = await axios(`https://api.ad-promoter.com/api/v1/user/saved-jobs`,{
-          headers:{
-            Authorization: `Bearer ${token.current}`
-          }
-        })
-        setSavedJobs(result.data.data.data.data)
-        setIsLoading(false)
-    }
-
     const handleShowReport = () =>{
         setShowReportModal(true)
         setShowReport(false)
@@ -189,7 +214,7 @@ const SingleSavedJobs = () => {
                 size: "lg"
             });
           }
-        }
+    }
 
         const handleAdRemoval = async(id) =>{
             const response = await fetch(
@@ -226,13 +251,85 @@ const SingleSavedJobs = () => {
                 }
         }
 
-  return (
-    <>    
-        {!savedJobs || isLoading ? (
-            <p>Loading...</p>
-        ):(            
+        const handleDownload = async (imageLinks) => {
+            try {
+              for (let i = 0; i < imageLinks.length; i++) {
+                const imageUrl = imageLinks[i];
+                const filename = `image${i + 1}`;
+        
+                const response = await fetch('/api/convert-to-jpeg', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ imageUrl, filename })
+                });
+        
+                const blob = await response.blob();
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `${filename}.jpg`;
+                link.click();
+                URL.revokeObjectURL(link.href);
+            }
+            } catch (error) {
+              console.error('Error downloading images:', error);
+            }
+        };
+
+        const nextImage = (images) => {
+            setCurrentIndex((prevIndex) =>
+              prevIndex === images.length - 1 ? 0 : prevIndex + 1
+            );
+        };
+        
+        const previousImage = (images) => {
+            setCurrentIndex((prevIndex) =>
+            prevIndex === 0 ? images.length - 1 : prevIndex - 1
+            );
+        };
+
+        const handleVisualSubmit = async (id,link) =>{
+            const response = await fetch(
+                `https://api.ad-promoter.com/api/v1/promotion/visual`,
+                {
+                  method: 'POST',
+                  headers: { 
+                        Authorization: `Bearer ${token.current}`
+                    },
+                    body: JSON.stringify({
+                        adID: id,
+                        link: link
+                    })
+                }
+              );
+            const json = await response.json();
+          
+            if (!response.ok) {
+            toast({
+                title: json.msg,
+                status: "error",
+                duration: "5000",
+                isClosable: true,
+                position: "bottom-left",
+                size: "lg"
+                });
+            }
+            if (response.ok) {
+                toast({
+                title: json.msg,
+                status: "success",
+                duration: "5000",
+                isClosable: true,
+                position: "bottom-left",
+                size: "lg"
+                });
+            }
+        }
+
+  return (          
             <>
-            {savedJobs.length === 0 ?(
+            {savedJobs.length && !isLoading === 0 ?(
                 <p>No saved job</p>
             ):(
                 <>                
@@ -270,7 +367,7 @@ const SingleSavedJobs = () => {
                                                 {isReadMore ? " Read more" : " Show less"}
                                             </span>
                                         ):(
-                                        <p></p>
+                                        <></>
                                         )}
                                     </p>
                                 </div>
@@ -297,7 +394,8 @@ const SingleSavedJobs = () => {
                                         <p>{item.target} Visitors</p>
                                         ):(
                                         <p>{item.target} Videos</p>
-                                    )}                                </div>
+                                    )}                                
+                                </div>
                                 <div className="achieved">
                                     <div className="head">
                                         <Image src={vector} alt="vector"/>
@@ -314,36 +412,32 @@ const SingleSavedJobs = () => {
                             {item.images.length === 0 ?(
                                     <></>
                                 ):(
-                                    <>
+                                    <div className='submit-image-container'>
                                         <div className="product-img-container">
                                             <div className='carousel-container'>
-                                                <div onClick={goToPrevious} className='left-arrow'>
+                                                <div onClick={() => previousImage(item.images)} className='left-arrow'>
                                                     ❮
                                                 </div>
                                                 <div className='img-container' style={{borderRadius:'36px'}}>
                                                     <Image src={item.images[currentIndex]} alt='product' width={360} height={236}/>
                                                 </div>
-                                                <div onClick={goToNext} className='right-arrow'>
+                                                <div onClick={() => nextImage(item.images)} className='right-arrow'>
                                                     ❯
                                                 </div>
                                             </div>
                                         </div>
                                         <div className='submit' ref={ref}>
-                                            {showSubmit && <button onClick={handleShowPaste}>Submit</button>}
+                                            {showSubmit && <button  onClick={handleShowPaste}>Submit</button>}
                                             {showPaste && (
-                                                <form className='paste'>
+                                                <form className='paste' onSubmit={(e)=>e.preventDefault()}>
                                                     <div className='pasteLink'>
                                                         <Image src={linkFrame} alt=""/>
                                                     </div>
-                                                    {inputValue === '' ? (
-                                                        <button className='pasteButton'>
-                                                            Paste
-                                                        </button>
-                                                    ):(
-                                                        <button className='pasteButton'>
+                                                  
+                                                        <button onClick={() => handleVisualSubmit(item.id,inputValue)} className='pasteButton'>
                                                             Submit
                                                         </button>
-                                                    )}
+
                                                     <input 
                                                         type="text"
                                                         id="inputValue"
@@ -354,24 +448,24 @@ const SingleSavedJobs = () => {
                                                 </form>
                                             )}
                                         </div>
-                                    </>
+                                    </div>
                                 )}
 
                             <div className="bottom">
                                 <div className="user-details">
                                     <div className="user-details-text">
-                                        {item.creator.profilePicture?(
+                                        {item.creator?.profilePicture?(
                                             <Image src={item.creator?.profilePicture} width={20} height={20} alt={item.creator.accountName}/>
                                             ):(
                                             <CgProfile width={20} height={20}/>
                                         )}
-                                        <h5>{item.creator.accountName}</h5>
+                                        <h5>{item.creator?.accountName}</h5>
                                     </div>
                                     <p>Posted <TimeAgo dateTime={item.dateCreated}/></p>
                                 </div>
                                 <div className="share-container">
-                                    {item.type === 'visual' ? (
-                                            <div className='icons'>
+                                    {item.images.length !==0 ? (
+                                            <div className='icons' onClick={() => handleDownload(item.images)}>
                                                 <Image src={download} alt=""/>
                                             </div>
                                         ):(
@@ -387,7 +481,7 @@ const SingleSavedJobs = () => {
                                         </div>
                                 </div>
                             </div>
-                            {showDialogue && <ShareDialogue shareUrl={'app.ad-promoter.com'} title={item.productName} imageUrl={item.images[0]} onClose={handleCloseDialogue} description={item.description} />}
+                            {showDialogue && <ShareDialogue shareLink={item.promotedLink} />}
                             {showReportModal && (
                                 <BackdropContainer onClick={()=>setShowReportModal(false)}>
                                     <ModalContainer onClick={e => e.stopPropagation()}>
@@ -421,10 +515,14 @@ const SingleSavedJobs = () => {
                     ))}
                 </>
             )}
-                
-            </>
-        )}
-    </>
+            {isLoading && <Spinner 
+            thickness='4px'
+            speed='0.65s'
+            emptyColor='gray.200'
+            color='#4F00CF'
+            size='xl'/>
+        } 
+        </>
   )
 }
 

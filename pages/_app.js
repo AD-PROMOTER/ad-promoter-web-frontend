@@ -11,7 +11,27 @@ import { AuthContextProvider } from '@/context/authContext';
 import PlacersLayout from '@/components/PlacersLayout';
 import { TokenContextProvider } from '@/context/tokenContext';
 import { UserProvider } from '../context/userContext';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { SingleAdProvider } from '@/context/singleAdContext';
+import { RecentJobProvider } from '@/context/recentJobContext';
+
+const theme = extendTheme({
+  styles: {
+    global: {
+      body: {
+        lineHeight: 1.5,
+        fontSize: '1.8rem',
+        fontFamily: 'Poppins, sans-serif',
+        fontWeight: '400',
+        overflowX: 'hidden',
+        background: '#FAFAFA',
+        margin: 0,
+        padding: 0,
+        boxSizing: 'border-box',
+      },
+    },
+  },
+});
 
 function MyApp({ Component, pageProps, router }) {
   if (router.pathname.startsWith('/admin')) {
@@ -36,14 +56,16 @@ function MyApp({ Component, pageProps, router }) {
           <AdPlacerProvider>
             <NotificationProvider>
               <PlacersLayout>
-                <UserProvider>
-                  <VariableStyle />
-                  <GlobalStyle />
-                  <SanitizeStyle />
-                  <ChakraProvider>
-                    <Component {...pageProps} />
-                  </ChakraProvider>
-                </UserProvider>
+                <SingleAdProvider>
+                  <UserProvider>
+                    <VariableStyle />
+                    <GlobalStyle />
+                    <SanitizeStyle />
+                    <ChakraProvider theme={theme}>
+                      <Component {...pageProps} />
+                    </ChakraProvider>
+                  </UserProvider>
+                </SingleAdProvider>
               </PlacersLayout>
             </NotificationProvider>
           </AdPlacerProvider>
@@ -52,37 +74,22 @@ function MyApp({ Component, pageProps, router }) {
     );
   }
 
-  // if (
-  //   router.pathname.startsWith('/promoters/discovery')
-  // ) {
-  //   return (
-  //     <AuthContextProvider>
-  //       <NotificationProvider>
-  //         <PromoterLayout>
-  //           <VariableStyle />
-  //           <DiscoveryGlobalStyle />
-  //           <SanitizeStyle />
-  //           <Component {...pageProps} />
-  //         </PromoterLayout>
-  //       </NotificationProvider>
-  //     </AuthContextProvider>
-  //   );
-  // }
-
   if (router.pathname.startsWith('/promoters')) {
     return (
       <AuthContextProvider>
         <TokenContextProvider>
           <NotificationProvider>
             <PromoterLayout>
-              <UserProvider>
-                <VariableStyle />
-                <GlobalStyle />
-                <SanitizeStyle />
-                <ChakraProvider>
-                  <Component {...pageProps} />
-                </ChakraProvider>
-              </UserProvider>
+              <RecentJobProvider>
+                <UserProvider>
+                  <VariableStyle />
+                  <GlobalStyle />
+                  <SanitizeStyle />
+                  <ChakraProvider theme={theme}>
+                    <Component {...pageProps} />
+                  </ChakraProvider>
+                </UserProvider>
+              </RecentJobProvider>
             </PromoterLayout>
           </NotificationProvider>
         </TokenContextProvider>
@@ -97,7 +104,7 @@ function MyApp({ Component, pageProps, router }) {
             <VariableStyle />
             <GlobalStyle />
             <SanitizeStyle />
-            <ChakraProvider>
+            <ChakraProvider theme={theme}>
               <Component {...pageProps} />
             </ChakraProvider>
           </UserProvider>

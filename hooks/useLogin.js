@@ -32,13 +32,12 @@ export const useLogin = () => {
 
     if (!response.ok) {
       error.current = json.success;
-      console.log(json);
       toast({
         title: json.msg,
         status: 'warning',
         duration: '5000',
         isClosable: true,
-        position: 'top-left',
+        position: 'bottom-left',
       });
       setIsLoading(false);
     }
@@ -52,7 +51,7 @@ export const useLogin = () => {
       setIsLoading(false);
       toast({
         title: 'Logged In Successfully',
-        status: 'sucess',
+        status: 'success',
         duration: '5000',
         isClosable: true,
         position: 'bottom-left',

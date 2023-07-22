@@ -7,11 +7,13 @@ import { useRouter } from 'next/router'
 import AdPlacerContext from '@/context/adPlacerContext'
 import { useContext } from 'react'
 import CloudPlus from '@/public/assets/cloud-plus'
+import { useToast } from '@chakra-ui/react'
 const Visualad = () => {
     const router = useRouter()
     const {productName,setProductName,productDescription,setProductDescription,tags,setTags,webAddress,setWebAddress,setContainAdultContent} = useContext(AdPlacerContext)
     const [tagValue,setTagValue] = useState('');
     const [showModal,setShowModal] = useState(false)
+    const toast = useToast()
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -31,6 +33,15 @@ const Visualad = () => {
     const handlePush = () =>{
         if(productName&&productDescription&&webAddress !== ''){
             router.push('visualad/conversion')
+        }else{
+            toast({
+                title: 'Input field needs to be filled completely',
+                status: "error",
+                duration: "5000",
+                isClosable: true,
+                position: "bottom-left",
+                size: "lg"
+            });
         }
     }
 

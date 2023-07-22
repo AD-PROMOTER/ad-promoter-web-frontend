@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react'
 import more from '@/public/assets/ellipsis.svg'
 import vector from '@/public/assets/Vector.svg'
@@ -9,19 +10,18 @@ import archive from '@/public/assets/bookmarkIcon1.svg'
 import copyLink from '@/public/assets/bottom-link-icon.svg'
 import { Feed } from './discovery.style'
 import Image from 'next/image'
-import { directlinkAd } from './data'
 import TimeAgo from '../timeAgo'
 import axios from 'axios'
 import { CgProfile } from 'react-icons/cg'
 import linkFrame from '@/public/assets/linkframe.svg'
-import { useToast } from '@chakra-ui/react'
+import { Spinner, useToast } from '@chakra-ui/react'
 import ShareDialogue from '../shareDialogue'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import { BackdropContainer, ModalContainer } from '../PromoterHomeAdDetail/styles'
 
 const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
-    const [showReport, setShowReport] = useState(false)
+    const [showReport, setShowReport] = useState([])
     const [showDropdown, setShowDropdown] = useState(false)
     const [showPaste, setShowPaste] = useState(false)
     const [showSubmit, setShowSubmit] = useState(true)
@@ -41,11 +41,85 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
         if (userToken) {
             token.current = userToken
         }
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+          window.removeEventListener('scroll', handleScroll);
+        };
     },[])
 
+    useEffect(() => {
+        // Function to send data to the API endpoint
+        const sendDataToEndpoint = () => {
+          const storedTags = localStorage.getItem('adTags');
+          if (!storedTags) {
+            return;
+          }
+    
+          // Perform your API request here to send the data to the endpoint
+          fetch('https://api.ad-promoter.com/api/v1/user/tags', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: storedTags,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              // Handle the response data from the endpoint
+              console.log(data);
+            })
+            .catch((error) => {
+              // Handle any errors that occur during the API request
+              console.error(error);
+            });
+    
+          // Clear the tags array from local storage
+          localStorage.removeItem('adTags');
+        };
+    
+        const interval = setInterval(sendDataToEndpoint, 600000); // Send data every 10 minutes (600,000 milliseconds)
+    
+        return () => {
+          clearInterval(interval);
+        };
+    }, []);
+
+    const handleScroll = () => {
+        if (
+          window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+          !isLoading
+        ) {
+          fetchFeed();
+        }
+    };
+
+    // Function to add tags to the local storage
+    const addTagsToLocalStorage = (tags) => {
+        const storedTags = localStorage.getItem('adTags');
+        let tagsArray = [];
+
+        if (storedTags) {
+        tagsArray = JSON.parse(storedTags);
+        }
+
+        // Remove duplicates by filtering the tags
+        const uniqueTags = tags.filter((tag) => !tagsArray.includes(tag));
+
+        // Add new tags to the array
+        tagsArray.push(...uniqueTags);
+
+        // Store the updated tags array in local storage
+        localStorage.setItem('adTags', JSON.stringify(tagsArray));
+    };
+
+    const handleAdInteraction = (tags) => {
+        addTagsToLocalStorage(tags);
+    };
+
   const handleOpenDialogue = () => {
-    setShowDialogue(true);
-  };
+    setShowDialogue(!showDialogue);
+};
 
   const handleCloseDialogue = () => {
     setShowDialogue(false);
@@ -209,13 +283,91 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
         setShowReport(false)
     }
 
-  return (
-    <>
-        {!feed || isLoading ? (
-         <p>Loading</p>
-        ):(
+    const toggleDropdown = (index) => {
+        const updatedDropdownOpen = [...showReport];
+        updatedDropdownOpen[index] = !updatedDropdownOpen[index];
+        setShowReport(updatedDropdownOpen);
+    };
+
+    const handleDownload = async (imageLinks) => {
+        try {
+          for (let i = 0; i < imageLinks.length; i++) {
+            const imageUrl = imageLinks[i];
+            const filename = `image${i + 1}`;
+    
+            const response = await fetch('/api/convert-to-jpeg', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ imageUrl, filename })
+            });
+    
+            const blob = await response.blob();
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${filename}.jpg`;
+            link.click();
+            URL.revokeObjectURL(link.href);
+          }
+        } catch (error) {
+          console.error('Error downloading images:', error);
+        }
+    };
+
+    const nextImage = (images) => {
+        setCurrentIndex((prevIndex) =>
+          prevIndex === images.length - 1 ? 0 : prevIndex + 1
+        );
+    };
+    
+    const previousImage = (images) => {
+        setCurrentIndex((prevIndex) =>
+        prevIndex === 0 ? images.length - 1 : prevIndex - 1
+        );
+    };
+
+    const handleVisualSubmit = async (id,link) =>{
+        const response = await fetch(
+            `https://api.ad-promoter.com/api/v1/promotion/visual`,
+            {
+              method: 'POST',
+              headers: { 
+                    Authorization: `Bearer ${token.current}`
+                },
+                body: JSON.stringify({
+                    adID: id,
+                    link: link
+                })
+            }
+          );
+        const json = await response.json();
+      
+        if (!response.ok) {
+        toast({
+            title: json.msg,
+            status: "error",
+            duration: "5000",
+            isClosable: true,
+            position: "bottom-left",
+            size: "lg"
+            });
+        }
+        if (response.ok) {
+            toast({
+            title: json.msg,
+            status: "success",
+            duration: "5000",
+            isClosable: true,
+            position: "bottom-left",
+            size: "lg"
+            });
+        }
+    }
+
+  return (   
             <>
-                {feed.length === 0 ?(
+                {feed.length && !isLoading === 0 ?(
                     <p>Nothing in your feed</p>
                 ):(
                     <>
@@ -224,9 +376,9 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                             <div className='type'>
                                 <div className='more'>
                                     <div className='direct'>{item.type + ' ad'}</div>
-                                    <div className='dot' onClick={()=> setShowReport(!showReport)}>
+                                    <div className='dot' onClick={() => toggleDropdown(item.id)}>
                                         <Image src={more} alt="more"/>
-                                        {showReport && (<ul ref={ref}>
+                                        {showReport[item.id] && (<ul>
                                             <li onClick={handleShowReport}>Report this advert</li>
                                             <li onClick={()=>handleAdRemoval(item.id)}>Remove from feed</li>
                                         </ul>)}
@@ -234,13 +386,13 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                 </div>
                                 <div className='adlink'>
                                     <div>
-                                        <p style={{fontWeight: 'bold', fontSize: '1.6rem'}}>{item.productName}</p>
+                                        <h3 style={{fontWeight: 'bold', fontSize: '1.6rem', color:'red'}}>{item.productName}</h3>
                                         <div className='profile'>
                                             <p>Tags:</p>
                                             {item.tags.map((tag, index) => (
                                                 <div key={index} className='tag'>{tag}</div>
                                             ))}
-                                    </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className='product'>
@@ -299,13 +451,13 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                     <>
                                         <div className="product-img-container">
                                             <div className='carousel-container'>
-                                                <div onClick={goToPrevious} className='left-arrow'>
+                                                <div onClick={() => previousImage(item.images)} className='left-arrow'>
                                                     ❮
                                                 </div>
                                                 <div className='img-container' style={{borderRadius:'36px'}}>
                                                     <Image src={item.images[currentIndex]} alt='product' width={360} height={236}/>
                                                 </div>
-                                                <div onClick={goToNext} className='right-arrow'>
+                                                <div onClick={() => nextImage(item.images)} className='right-arrow'>
                                                     ❯
                                                 </div>
                                             </div>
@@ -313,19 +465,14 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                         <div className='submit' ref={ref}>
                                             {showSubmit && <button onClick={handleShowPaste}>Submit</button>}
                                             {showPaste && (
-                                                <form className='paste'>
+                                                <form className='paste' onSubmit={(e)=>e.preventDefault()}>
                                                     <div className='pasteLink'>
                                                         <Image src={linkFrame} alt=""/>
                                                     </div>
-                                                    {inputValue === '' ? (
-                                                        <button className='pasteButton'>
-                                                            Paste
-                                                        </button>
-                                                    ):(
-                                                        <button className='pasteButton'>
-                                                            Submit
-                                                        </button>
-                                                    )}
+
+                                                    <button onClick={() => handleVisualSubmit(item.id,inputValue)} className='pasteButton'>
+                                                        Submit
+                                                    </button>
                                                     <input 
                                                         type="text"
                                                         id="inputValue"
@@ -352,25 +499,25 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                         <p>Posted <TimeAgo dateTime={item.dateCreated}/></p>
                                     </div>
                                     <div className='post'>
-                                        {item.type === 'visual' ? (
-                                            <div className='icons'>
+                                        {item.images.length !==0 ? (
+                                            <div className='icons' onClick={() =>{ handleDownload(item.images); handleAdInteraction(item.tags)}}>
                                                 <Image src={download} alt=""/>
                                             </div>
                                         ):(
-                                            <div className='icons' onClick={()=>handleCopyLink(item.promotedLink)}>
+                                            <div className='icons' onClick={()=>{handleCopyLink(item.promotedLink); handleAdInteraction(item.tags)}}>
                                                 <Image src={copyLink} alt=""/>
                                             </div>
                                         )}
-                                        <div className='icons' onClick={handleOpenDialogue}>
+                                        <div className='icons' onClick={() => {handleOpenDialogue; handleAdInteraction(item.tags)}}>
                                             <Image src={exportLink} alt=""/>
                                         </div>
-                                        <div className='icons' onClick={()=>handleJobSave(item.id)}>
+                                        <div className='icons' onClick={()=>{handleJobSave(item.id); handleAdInteraction(item.tags)}}>
                                             <Image src={archive} alt=""/>
                                         </div>
                                     </div>
                                 </div>      
                             </div>
-                            {showDialogue && <ShareDialogue shareUrl={'app.ad-promoter.com'} title={item.productName} imageUrl={item.images[0]} onClose={handleCloseDialogue} description={item.description} />}
+                            {showDialogue && <ShareDialogue shareLink={item.promotedLink} />}
                             {showReportModal && (
                                 <BackdropContainer onClick={()=>setShowReportModal(false)}>
                                     <ModalContainer onClick={e => e.stopPropagation()}>
@@ -403,9 +550,14 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                         ))}
                     </>        
                 )}
+                {isLoading && <Spinner 
+            thickness='4px'
+            speed='0.65s'
+            emptyColor='gray.200'
+            color='#4F00CF'
+            size='xl'/>
+        }
             </>
-        )}
-    </>
   )
 }
 

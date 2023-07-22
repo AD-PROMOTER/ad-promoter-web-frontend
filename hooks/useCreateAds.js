@@ -1,3 +1,5 @@
+import LandingPage from '@/components/LandingPage';
+import { useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -7,7 +9,9 @@ export const useCreateAds = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [token, setToken] = useState('');
   const [redirect, setRedirect] = useState('');
+  const [data, setData] = useState();
   const router = useRouter();
+  const toast = useToast();
 
   useEffect(() => {
     const userToken = JSON.parse(localStorage.getItem('user-token'));
@@ -59,14 +63,37 @@ export const useCreateAds = () => {
     const json = await response.json();
 
     if (!response.ok) {
-      console.log(json);
+      if (json.msg === 'type must be a valid enum value') {
+        toast({
+          title: 'Pick an advert type',
+          status: 'error',
+          duration: '5000',
+          isClosable: true,
+          position: 'bottom-left',
+        });
+      } else {
+        toast({
+          title: json.msg,
+          status: 'error',
+          duration: '5000',
+          isClosable: true,
+          position: 'bottom-left',
+        });
+      }
       setIsLoading(false);
     }
     if (response.ok) {
       console.log(json);
       setIsLoading(false);
-      // router.push(json.data.paymentDetails.url)
+      // {<LandingPage data={json.data.ad}/>}
+      setData(json.data.ad);
+      localStorage.setItem('landingData', JSON.stringify(json.data.ad));
+      if (advertType === 'detail') {
+        router.push(`/landing/${encodeURIComponent(productName)}`);
+      } else {
+        router.push(json.data.paymentDetails.url);
+      }
     }
   };
-  return { createAd, isLoading, error, msg, redirect };
+  return { createAd, data, isLoading, error, msg, redirect, data };
 };
