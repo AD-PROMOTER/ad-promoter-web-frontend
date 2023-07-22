@@ -30,6 +30,8 @@ import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import axios from 'axios';
 import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from '@/utils/formatFilterDate';
+import { formatCurrency } from '@/utils/formatCurrency';
+import { Spinner } from '@chakra-ui/react';
 
 const PromoterWallet = () => {
   const [showModal, setShowModal] = useState(false);
@@ -49,7 +51,7 @@ const PromoterWallet = () => {
   const [totalBalance,setTotalBalance] = useState('')
   const [pendingWithdrawals,setPendingWithdrawals] = useState('')
   const [amountPaid,setAmountPaid] = useState('')
-  const [transactionHistory,setTransactionHistory] = useState()
+  const [transactionHistory,setTransactionHistory] = useState([])
   const [banks,setBanks] = useState([])
   const [accountData,setAccountData] = useState()
   const [amount, setAmount] = useState('');
@@ -81,6 +83,35 @@ const PromoterWallet = () => {
     fetchData();
   }, []);
 
+  const renderMappedElements = () => {
+    return [...accountData].slice(0,2).map((item) => {
+      const matchedBank = banks.find((bank) => bank.code === item.details.bank_code);
+      const logo = matchedBank ? matchedBank.logo : null;
+
+      return (
+        <div
+        key={item.id}
+        className="bank"
+        // className={selectedBank === item.id ? 'container bank1 clicked': 'container bank1'}
+        onClick={()=>setSelectedBank(item.id)}
+        style={{ backgroundColor: selectedBank === item.id && '#DCE4FF', border: selectedBank === item.id ? '0.2rem solid var(--light-blue)' : '0.145rem solid #DCE4FF' }}
+        >
+          <div className="holder">
+            <div className="image-wrapper">
+              {logo && <Image src={logo} alt="Bank Logo" width={49} height={49} />}
+            </div>
+
+            <div className='info'>
+              <span style={{ color: selectedBank === item.id && 'var(--primary)' }}>{item.details.account_number}</span>
+              <span style={{ color: selectedBank === item.id && 'var(--primary)' }}>{item.details.account_name}</span>
+            </div>
+          </div>
+          <span style={{ height: '20px', width: '20px', borderRadius: '50%', border: selectedBank === item.id ? '6px solid var(--light-blue)' : '5.5px solid #E1E1E1' }}></span>            
+        </div>
+      );
+    });
+  };
+
   async function fetchBanks() {
     const response = await fetch('https://nigerianbanks.xyz/');
     const data = await response.json();
@@ -95,6 +126,7 @@ const PromoterWallet = () => {
       }
     })
     // setAccountData(result.data.data)
+    console.log(result.data.data);
     return result.data.data
   }
 
@@ -233,7 +265,7 @@ const PromoterWallet = () => {
       <PromoterWalletStyles>
         <div className='container'>
           <WalletSummary isDashboardLoading={isDashboardLoading} openFilter={openFilter} setOpenFilter={setOpenFilter} totalBalance={totalBalance} pendingWithdrawals={pendingWithdrawals} amountPaid={amountPaid} handleFilterSelect={handleFilterSelect} clickedFilter={clickedFilter} admin={false} />
-          <TransactionHistory transactionHistory={transactionHistory} />
+          <TransactionHistory isLoading = {isLoading} transactionHistory={transactionHistory} />
         </div>
         <Wallet
           onOpenWithdrawProcess={() => setShowWithdrawProcessModal(true)}
@@ -284,6 +316,7 @@ const PromoterWallet = () => {
         onClose={() => setShowWithdrawFundsModal(false)} 
         amount={amount}
         selectedBank={selectedBank}
+        selectedBankImage={selectedBankImage}
         selectedBankName={selectedBankName}/>
       ) : null}
       {showPaymentDetailsModal ? (
@@ -310,7 +343,7 @@ const PromoterWallet = () => {
                 <Image src={item.icon} alt='icon'/>
                 <p>{item.name}</p>
               </div>
-              <h3>{item.price}</h3>
+              <h3>{!isDashboardLoading ?  formatCurrency(item.price): <Spinner/>}</h3>
             </div>
           </div>
         ))}
@@ -320,58 +353,79 @@ const PromoterWallet = () => {
           <p>Wallet</p>
           <Image src={plus} alt='plus' onClick={() => setShowPaymentDetailsModal(true)}/>
         </div>
-        <div className="bank" onClick={selectFirstBank} style={{ backgroundColor: firstBank && '#DCE4FF', border: firstBank ? '0.2rem solid var(--light-blue)' : '0.145rem solid #DCE4FF' }}>
-            <div className="holder">
-                <div className="image-wrapper">
-                  <Image src={gtb} alt="GTB logo" />
-                </div>
-                        
-                <div className="info">
-                    <span style={{ color: firstBank && 'var(--primary)' }}> 235462524 </span>
-                    <span style={{ color: firstBank && 'var(--primary)' }} className="name">Skylar Diaz</span>
-                </div>
-            </div>   
 
-                    {/* <input type='checkbox' checked /> */}
-            <span style={{ height: '20px', width: '20px', borderRadius: '50%', border: firstBank ? '6px solid var(--light-blue)' : '5.5px solid #E1E1E1' }}></span>            
-        </div>
-        <div className="bank" onClick={selectSecondBank} style={{ backgroundColor: secondBank && '#DCE4FF', border: secondBank ? '0.2rem solid var(--light-blue)' : '0.145rem solid #DCE4FF' }}>
-            <div className="holder">
-                <div className="image-wrapper">
-                    <Image src={fcmb} alt='FCMB logo'/>
-                </div>
-                        
-                <div className="info">
-                    <span style={{ color: secondBank && 'var(--primary)' }}>47463873522</span>
-                    <span style={{ color: secondBank && 'var(--primary)' }} className="name">Michelle Diaz</span>
-                </div>
-            </div>   
-
-                    {/* <input type='checkbox' checked /> */}
-            <span style={{ height: '20px', width: '20px', borderRadius: '50%', border: secondBank ? '6px solid var(--light-blue)' : '5.5px solid #E1E1E1' }}></span>            
-        </div>
+        <>     
+          {!accountData || isLoading ? (
+            <p>Loading</p>
+          ):(
+            <>      
+              {accountData.length === 0 ?(
+                <p>Add an account</p>
+              ):(
+                renderMappedElements()
+              )}
+            </>
+          )}
+        </>
+        
         <div className='withdrawal' onClick={() => setShowWithdrawProcessModal(true)}>
           <Image src={emptyWallet} alt='button'/>
           <p>Process Withdrawal</p>
         </div>
+
       </div>
       <div className='transaction'>
         <p>Transaction History</p>
         <Image src={documentDownload} alt='transaction'/>
       </div>
-      <Transaction />
+      <Transaction transactionHistory={transactionHistory}/>
       {showPaymentDetailsModal && <BackdropContainer onClick={() => setShowPaymentDetailsModal(false)}></BackdropContainer>}
-      {showPaymentDetailsModal && <PaymentDetails onOpen={() => setShowVerificationModal(true)} onClose={() => setShowPaymentDetailsModal(false)}/>}
+      {showPaymentDetailsModal && <PaymentDetails onOpen={() => setShowSuccessModal(true)} onClose={() => setShowPaymentDetailsModal(false)} banks={banks}/>}
       {showVerificationModal && <BackdropContainer onClick={() => setShowVerificationModal(false)}></BackdropContainer>}
       {showVerificationModal && <Verification onOpen={() => setShowSuccessModal(true)} onClose={() => setShowVerificationModal(false)}/>}
       {showSuccessModal && <BackdropContainer onClick={() => setShowSuccessModal(false)}></BackdropContainer>}
       {showSuccessModal && <Success />}
       {showWithdrawProcessModal && <BackdropContainer onClick={() => setShowWithdrawProcessModal(false)}></BackdropContainer>}
-      {showWithdrawProcessModal && <WithdrawProcess onClose={() => setShowWithdrawProcessModal(false)} onOpen={() => setShowWithdrawDetailsModal(true)}/>}
+      {showWithdrawProcessModal && 
+        <WithdrawProcess onCloseWithdrawProcess={() => setShowWithdrawProcessModal(false)}
+          onOpenWithdrawDetails={() => setShowWithdrawDetailsModal(true)}
+          accountData={accountData}
+          banks={banks}
+          totalBalance={totalBalance}
+          amount={amount}
+          setAmount={setAmount}
+          selectedBank={selectedBank}
+          setSelectedBank={setSelectedBank}
+          selectedBankName={selectedBankName}
+          setSelectedBankName = {setSelectedBankName}
+          selectedBankImage={selectedBankImage}
+          setSelectedBankImage = {setSelectedBankImage}
+          show={{ showWithdrawProcessModal, showWithdrawDetailsModal }}/>
+      }
       {showWithdrawDetailsModal && <BackdropContainer></BackdropContainer>}
-      {showWithdrawDetailsModal && <WithdrawDetails onClose={() => setShowWithdrawDetailsModal(false)} onOpen={() => setShowWithdrawProcessModal(true)} onCloseModal={() => setShowWithdrawDetailsModal(false)} onOpenModal={() => setShowWithdrawFundsModal(true)}/>}
+      {showWithdrawDetailsModal && 
+        <WithdrawDetails onCloseModal={() => setShowWithdrawDetailsModal(false)}
+          onOpenModal={() => setShowVerificationModal(true)}
+          onOpenWithdrawModal={() => setShowWithdrawFundsModal(true)}
+          amount={amount}
+          withdrawConfirmed={withdrawConfirmed}
+          setWithdrawConfirmed={setWithdrawConfirmed}
+          selectedBank={selectedBank}
+          selectedBankName={selectedBankName}
+          selectedBankImage={selectedBankImage}
+          onOpenWithdrawProcess={() => setShowWithdrawProcessModal(true)}/>
+      }
       {showWithdrawFundsModal && <BackdropContainer></BackdropContainer>}
-      {showWithdrawFundsModal && <WithdrawFunds onClose={() => setShowWithdrawFundsModal(false)}/>}
+      {showWithdrawFundsModal && 
+        <WithdrawFunds 
+        withdrawConfirmed={withdrawConfirmed} 
+        setWithdrawConfirmed={setWithdrawConfirmed} 
+        onClose={() => setShowWithdrawFundsModal(false)} 
+        amount={amount}
+        selectedBank={selectedBank}
+        selectedBankImage={selectedBankImage}
+        selectedBankName={selectedBankName}/>
+      }
     </MobileWallet>
     <TabWallet>
       <div className='filter'>
@@ -384,14 +438,14 @@ const PromoterWallet = () => {
           </div>
         </div>
         <div className='select' onClick={() => setShowDropdown(!showDropdown)}>
-          <p>Filter</p>
+          <p>{clickedFilter}</p>
           {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
           {showDropdown && (
             <ul>
-              <li>Recent</li>
-              <li>A week ago</li>
-              <li>Less than 2 weeks</li>
-              <li>Last 30 days</li>
+              <li onClick={handleFilterSelect}>Recent</li>
+              <li onClick={handleFilterSelect}>A week ago</li>
+              <li onClick={handleFilterSelect}>Less than 2 weeks</li>
+              <li onClick={handleFilterSelect}>Last 30 days</li>
             </ul>
           )}
         </div>
@@ -407,12 +461,12 @@ const PromoterWallet = () => {
                     <Image src={item.icon} alt="icon"/>
                     <p>{item.name}</p>
                   </div>
-                  <h2>{item.price}</h2>
+                  <h2>{!isDashboardLoading ?  formatCurrency(item.price): <Spinner/>}</h2>
                 </div>
               ))}
             </div>
           </div>
-          <TransactionHistory />
+          <TransactionHistory isLoading = {isLoading} transactionHistory={transactionHistory}/>
         </>
       ): (
       <>
@@ -424,7 +478,7 @@ const PromoterWallet = () => {
                   <Image src={item.icon} alt="icon"/>
                   <p>{item.name}</p>
                 </div>
-                <h2>{item.price}</h2>
+                <h2>{!isDashboardLoading ? formatCurrency(item.price): <Spinner/>}</h2>
               </div>
             ))}
           </div>
@@ -432,29 +486,57 @@ const PromoterWallet = () => {
         <Wallet
           onOpenWithdrawProcess={() => setShowWithdrawProcessModal(true)}
           show={showModal}
+          banks={banks}
+          accountData={accountData}
+          isLoading={isLoading}
           onOpenPaymentDetailsModal={() => setShowPaymentDetailsModal(true)}
         />
         {showWithdrawProcessModal ? (
           <ProcessWithdrawModal
-            onCloseWithdrawProcess={() => setShowWithdrawProcessModal(false)}
-            onOpenWithdrawDetails={() => setShowWithdrawDetailsModal(true)}
-            show={{ showWithdrawProcessModal, showWithdrawDetailsModal }}
+          onCloseWithdrawProcess={() => setShowWithdrawProcessModal(false)}
+          onOpenWithdrawDetails={() => setShowWithdrawDetailsModal(true)}
+          accountData={accountData}
+          banks={banks}
+          totalBalance={totalBalance}
+          amount={amount}
+          setAmount={setAmount}
+          selectedBank={selectedBank}
+          setSelectedBank={setSelectedBank}
+          selectedBankName={selectedBankName}
+          setSelectedBankName = {setSelectedBankName}
+          selectedBankImage={selectedBankImage}
+          setSelectedBankImage = {setSelectedBankImage}
+          show={{ showWithdrawProcessModal, showWithdrawDetailsModal }}
           />
         ) : null}
         {showWithdrawDetailsModal ? (
           <WithdrawDetailsModal
             onCloseModal={() => setShowWithdrawDetailsModal(false)}
-            onOpenModal={() => setShowWithdrawProcessModal(true)}
+            onOpenModal={() => setShowVerificationModal(true)}
             onOpenWithdrawModal={() => setShowWithdrawFundsModal(true)}
+            amount={amount}
+            withdrawConfirmed={withdrawConfirmed}
+            setWithdrawConfirmed={setWithdrawConfirmed}
+            selectedBank={selectedBank}
+            selectedBankName={selectedBankName}
+            selectedBankImage={selectedBankImage}
+            onOpenWithdrawProcess={() => setShowWithdrawProcessModal(true)}
           />
         ) : null}
         {showWithdrawFundsModal ? (
-          <WithdrawFundsModal onClose={() => setShowWithdrawFundsModal(false)} />
+          <WithdrawFundsModal withdrawConfirmed={withdrawConfirmed} 
+          setWithdrawConfirmed={setWithdrawConfirmed} 
+          onClose={() => setShowWithdrawFundsModal(false)} 
+          amount={amount}
+          selectedBank={selectedBank}
+          selectedBankImage={selectedBankImage}
+          selectedBankName={selectedBankName} />
         ) : null}
         {showPaymentDetailsModal ? (
           <PaymentDetailsModal
-            onOpen={() => setShowVerificationModal(true)}
+            onOpen={() => setShowSuccessModal(true)}
             onClose={() => setShowPaymentDetailsModal(false)}
+            banks={banks}
           />
         ) : null}
         {showVerificationModal ? (

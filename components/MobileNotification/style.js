@@ -2,6 +2,9 @@ import styled from 'styled-components';
 
 export const NotificationStyle = styled.div`
   margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
   .notif {
     display: flex;
     align-items: center;

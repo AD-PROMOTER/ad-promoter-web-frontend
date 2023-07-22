@@ -391,13 +391,14 @@ const Index = ({router}) => {
               </TabContainer>
             </StyledHome>
           </StyledHomeContainer>
+
           <MobileCotainer>
             {showNotif?<MobileNotif goBack={() => setShowNotif(false)}/>:(<>
             <div className="welcome">
                 <div className="userProfile">
                   <Image src={profil} alt='profile picture'/>
                   <div className="username">
-                    <p>Hi, Skylar Dias</p>
+                    <p>Hi, {userName}</p>
                     <div className="wave">
                       <Image src={wave} alt='hands waving'/>
                       <p className="greeting">Welcome back!</p>                  
@@ -461,12 +462,13 @@ const Index = ({router}) => {
               </div>
             </>)}         
             </MobileCotainer>
+            
             <TabletContainer>
               <div className="welcome">
                 <div className="userProfile">
                   <Image src={profile} alt='profile picture'/>
                   <div className="username">
-                    <p>Hi, Skylar Dias</p>
+                    <p>Hi, {userName}</p>
                     <div className="wave">
                       <Image src={wave} alt='hands waving'/>
                       <p className="greeting">Welcome back!</p>                  

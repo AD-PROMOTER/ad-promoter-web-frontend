@@ -437,7 +437,7 @@ export const WithdrawContainer = styled.div`
         position: relative;
         width: 50px;
 
-        input[type='checkbox'] {
+        input[type='radio'] {
           opacity: 0;
           cursor: pointer;
           width: 100%;
@@ -458,7 +458,7 @@ export const WithdrawContainer = styled.div`
           top: 0.5rem;
         }
 
-        input[type='checkbox']:checked ~ .checkmark {
+        input[type='radio']:checked ~ .checkmark {
           background: var(--light-blue);
         }
 
@@ -468,7 +468,7 @@ export const WithdrawContainer = styled.div`
           display: none;
         }
 
-        input[type='checkbox']:checked ~ .checkmark:after {
+        input[type='radio']:checked ~ .checkmark:after {
           display: block;
         }
 
@@ -722,7 +722,7 @@ export const DetailsContainer = styled.div`
     background-color: #4f00ce;
     border-radius: 1.2rem;
 
-    p {
+    button {
       color: white;
       font-weight: 500;
       font-size: 1.6rem;

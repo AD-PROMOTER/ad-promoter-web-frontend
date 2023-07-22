@@ -12,93 +12,70 @@ import archive from '@/public/assets/bookmarkIcon1.svg'
 import copyLink from '@/public/assets/bottom-link-icon.svg'
 // import { Feed } from '@/components/DiscoveryFolder/discovery.style'
 import Image from 'next/image'
+import Copy from '@/public/assets/copy-icon'
 // import { directlinkAd } from '@/components/DiscoveryFolder/data'
 import { BackdropContainer, Feed, ModalContainer } from './style'
-import { directlinkAd } from '../PromoterHomeAdDetail/data'
+import { directlinkAd, visualAd } from '../PromoterHomeAdDetail/data'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
-import axios from 'axios'
-import { Spinner, useToast } from '@chakra-ui/react'
-import { CgProfile } from 'react-icons/cg'
 import TimeAgo from '../timeAgo'
+import { Spinner, useToast } from '@chakra-ui/react'
+import axios from 'axios'
+import { CgProfile } from 'react-icons/cg'
 import ShareDialogue from '../shareDialogue'
-// import { BackdropContainer, ModalContainer } from '../DiscoveryFolder/ReportModal/ModalStyle'
 import linkFrame from '@/public/assets/linkframe.svg'
 
-const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
+const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
     const [showReport, setShowReport] = useState(false)
+    const toast = useToast()
     const ref = useRef(null)
     const token = useRef('')
+    const [isReportLoading, setIsReportLoading] = useState(null);
     const [isReadMore, setIsReadMore] = useState(true);
     const [showReportModal,setShowReportModal] = useState(false)
     const [showDropdown, setShowDropdown] = useState(false)
     const [listValue, setListValue] = useState('It has gory images')
+    const [currentIndex,setCurrentIndex] = useState(0)
     const [isLoading,setIsLoading] = useState(false)
-    const [savedJobs,setSavedJobs] = useState([])
-    const [isReportLoading, setIsReportLoading] = useState(null);
+    const [recentJobs,setRecentJobs] = useState([])
     const [showSubmit,setShowSubmit] = useState(true)
     const [showPaste,setShowPaste] = useState(false)
-    const [currentIndex,setCurrentIndex] = useState(0)
     const [inputValue, setInputValue] = useState('');
-    const toast = useToast()
     const [showDialogue, setShowDialogue] = useState(false);
     const [page, setPage] = useState(1);
 
-    useEffect(()=>{
+    useEffect(() => {
         const userToken = JSON.parse(localStorage.getItem("user-token"));
         if (userToken) {
             token.current = userToken
         }
 
         if(token.current){
-            fetchSavedJobs()
+            fetchRecentJobs()
         }
 
         window.addEventListener('scroll', handleScroll);
         return () => {
           window.removeEventListener('scroll', handleScroll);
         };
-    },[])
-
-    // useEffect(() => {
-    //     const onClickOutside = () => {
-    //         setShowReport(false)
-    //     }
-    //     const handleClickOutside = (event) => {
-    //         if (ref.current && !ref.current.contains(event.target)) {
-    //             onClickOutside && onClickOutside();
-    //         }
-    //     }
-    //     document.addEventListener('click', handleClickOutside, true);
-    //     return () => {
-    //         document.removeEventListener('click', handleClickOutside, true);
-    //     }
-    // }, [])
-
-    const ClickedList = (e) =>{
-      setListValue(e.target.innerText)
-      setShowDropdown(false)
-    }
-    const toggleReadMore = () => {
-        setIsReadMore(!isReadMore);
-    };
+    }, []);
 
 
-    const fetchSavedJobs = async() =>{
-        let apiUrl = `https://api.ad-promoter.com/api/v1/user/saved-jobs?page=${page}&pageSize=10`;
+    const fetchRecentJobs = async() =>{
+        let apiUrl = `https://api.ad-promoter.com/api/v1/ads/recent-ads?page=${page}&pageSize=10`;
         if (sortStartDate) {
-            apiUrl += `&startDate=${sortStartDate}`;
-            }
-            if (sortEndDate) {
-            apiUrl += `&endDate=${sortEndDate}`;
-            }
+          apiUrl += `&startDate=${sortStartDate}`;
+        }
+        if (sortEndDate) {
+          apiUrl += `&endDate=${sortEndDate}`;
+        }
         setIsLoading(true)
         const result = await axios(apiUrl,{
-            headers:{
+          headers:{
             Authorization: `Bearer ${token.current}`
-            }
+          }
         })
-        setSavedJobs((prevData) => [...prevData, ...result.data.data.data.data]);
+        setRecentJobs((prevData) => [...prevData, ...result.data.data.data]);
         setPage((prevPage) => prevPage + 1);
         setIsLoading(false)
     }
@@ -108,75 +85,64 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
           window.innerHeight + window.scrollY >= document.body.offsetHeight &&
           !isLoading
         ) {
-          fetchSavedJobs();
+          fetchRecentJobs();
         }
     };
+    
 
-    const handleShowReport = () =>{
-        setShowReportModal(true)
-        setShowReport(false)
+    const ClickedList = (e) =>{
+      setListValue(e.target.innerText)
+      setShowDropdown(false)
     }
 
-    const handleAdRemoval = async(id) =>{
-        const response = await fetch(
-            `https://api.ad-promoter.com/api/v1/ads/${id}`,
-            {
-              method: 'DELETE',
-              headers: { 
-                    Authorization: `Bearer ${token.current}`
-                },
-            }
-          );
-          const json = await response.json();
-      
-          if (!response.ok) {
-                toast({
-                    title: json.msg,
-                    status: "error",
-                    duration: "5000",
-                    isClosable: true,
-                    position: "bottom-left",
-                    size: "lg"
-                });
-            }
-            if (response.ok) {
-                fetchSavedJobs()
-                toast({
-                    title: json.msg,
-                    status: "success",
-                    duration: "5000",
-                    isClosable: true,
-                    position: "bottom-left",
-                    size: "lg"
-                });
-            }
+    const handleJobSave = async(id) =>{
+        const result = await axios(`https://api.ad-promoter.com/api/v1/user/save-job/${id}`,{
+          headers:{
+            Authorization: `Bearer ${token.current}`,
+          },
+          method: "PUT"
+        })
+        console.log(result.data)
+        toast({
+            title: result.data.data,
+            status: result.data.success ? "success" : "error",
+            duration: "5000",
+            isClosable: true,
+            position: "bottom-left",
+            size: "lg"
+        });
     }
 
-    const handleDownload = async (imageLinks) => {
-        try {
-          for (let i = 0; i < imageLinks.length; i++) {
-            const imageUrl = imageLinks[i];
-            const filename = `image${i + 1}`;
-    
-            const response = await fetch('/api/convert-to-jpeg', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ imageUrl, filename })
-            });
-    
-            const blob = await response.blob();
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `${filename}.jpg`;
-            link.click();
-            URL.revokeObjectURL(link.href);
-        }
-        } catch (error) {
-          console.error('Error downloading images:', error);
-        }
+    const handleOpenDialogue = () => {
+        setShowDialogue(!showDialogue);
     };
+    
+
+    const handleChange = (event) => {
+        setInputValue(event.target.value);
+    };
+
+    const goToPrevious = () =>{
+        visualAd.map(({productImg})=>{
+            currentIndex > 0 ? setCurrentIndex(currentIndex - 1) : setCurrentIndex(productImg.length -1)
+        })
+    }
+
+    const goToNext = () =>{
+        visualAd.map(({productImg})=>{
+            currentIndex <  productImg.length -1 ? setCurrentIndex(currentIndex + 1) : setCurrentIndex(0) 
+        })
+    }
+
+    const toggleReadMore = () => {
+        setIsReadMore(!isReadMore);
+    };
+
+  
+    const togglePaste = () =>{
+        setShowSubmit(false)
+        setShowPaste(true)
+    }
 
     const handleCopyLink = (link) => {
         navigator.clipboard.writeText(link)
@@ -202,28 +168,6 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
             });
           });
     };
-
-    const handleOpenDialogue = () => {
-        setShowDialogue(!showDialogue);
-    };
-
-    const handleJobSave = async(id) =>{
-        const result = await axios(`https://api.ad-promoter.com/api/v1/user/save-job/${id}`,{
-          headers:{
-            Authorization: `Bearer ${token.current}`,
-          },
-          method: "PUT"
-        })
-        console.log(result.data)
-        toast({
-            title: result.data.data,
-            status: result.data.success ? "success" : "error",
-            duration: "5000",
-            isClosable: true,
-            position: "bottom-left",
-            size: "lg"
-        });
-    }
 
     const handleReport = async (id,report) =>{
         setIsReportLoading(true)
@@ -267,43 +211,130 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                 size: "lg"
             });
           }
-    }
+        }
 
-    const handleShowPaste = () =>{
-        setShowSubmit(false)
-        setShowPaste(true)
-    }
+        const handleShowReport = () =>{
+            setShowReportModal(true)
+            setShowReport(false)
+        }
 
-    const nextImage = (images) => {
-        setCurrentIndex((prevIndex) =>
-          prevIndex === images.length - 1 ? 0 : prevIndex + 1
-        );
-    };
-    
-    const previousImage = (images) => {
-        setCurrentIndex((prevIndex) =>
-        prevIndex === 0 ? images.length - 1 : prevIndex - 1
-        );
-    };
+        const handleAdRemoval = async(id) =>{
+            const response = await fetch(
+                `https://api.ad-promoter.com/api/v1/ads/${id}`,
+                {
+                  method: 'DELETE',
+                  headers: { 
+                        Authorization: `Bearer ${token.current}`
+                    },
+                }
+              );
+              const json = await response.json();
+          
+              if (!response.ok) {
+                toast({
+                    title: json.msg,
+                    status: "error",
+                    duration: "5000",
+                    isClosable: true,
+                    position: "bottom-left",
+                    size: "lg"
+                });
+              }
+              if (response.ok) {
+                 fetchRecentJobs()
+                  toast({
+                    title: json.msg,
+                    status: "success",
+                    duration: "5000",
+                    isClosable: true,
+                    position: "bottom-left",
+                    size: "lg"
+                });
+            }
+        }
+
+        const handleDownload = async (imageLinks) => {
+            try {
+              for (let i = 0; i < imageLinks.length; i++) {
+                const imageUrl = imageLinks[i];
+                const filename = `image${i + 1}`;
+        
+                const response = await fetch('/api/convert-to-jpeg', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ imageUrl, filename })
+                });
+        
+                const blob = await response.blob();
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `${filename}.jpg`;
+                link.click();
+                URL.revokeObjectURL(link.href);
+              }
+            } catch (error) {
+              console.error('Error downloading images:', error);
+            }
+        };
+
+        const handleVisualSubmit = async (id,link) =>{
+            const response = await fetch(
+                `https://api.ad-promoter.com/api/v1/promotion/visual`,
+                {
+                  method: 'POST',
+                  headers: { 
+                        Authorization: `Bearer ${token.current}`
+                    },
+                    body: JSON.stringify({
+                        adID: id,
+                        link: link
+                    })
+                }
+              );
+            const json = await response.json();
+          
+            if (!response.ok) {
+            toast({
+                title: json.msg,
+                status: "error",
+                duration: "5000",
+                isClosable: true,
+                position: "bottom-left",
+                size: "lg"
+                });
+            }
+            if (response.ok) {
+                toast({
+                title: json.msg,
+                status: "success",
+                duration: "5000",
+                isClosable: true,
+                position: "bottom-left",
+                size: "lg"
+                });
+            }
+        }
 
   return (
-    // <>
-        //  {savedJobs.length === 0 && isLoading ? (
-        //     <Spinner 
-        //         thickness='4px'
-        //         speed='0.65s'
-        //         emptyColor='gray.200'
-        //         color='#4F00CF'
-        //         size='xl'
-        //     />
-        // ):(
+    <>
+        {recentJobs.length === 0 && isLoading ? (
+            <Spinner 
+            thickness='4px'
+            speed='0.65s'
+            emptyColor='gray.200'
+            color='#4F00CF'
+            size='xl'
+            />
+        ):(
             <>
-                {savedJobs.length === 0 && !isLoading ?(
-                    <p>No saved job</p>
+                {recentJobs.length === 0 ?(
+                    <p>No Recent Job</p>
                 ):(
-                    <>            
-                        {[...savedJobs].reverse().map((item) => (
-                            <Feed bg={item.type === 'direct-link' ? '#0594FB': item.type === 'detail' ? 'var(--yellow)':'var(--green)'} key={item.id}>
+                    <>
+                        {recentJobs.map((item) => (
+                            <Feed bg={item.type === 'direct-link' ? '#0594FB': item.type === 'detail' ? 'var(--yellow)':'var(--green)'} key={item._id}>
                                 <div className="product-summary">
                                     <div className="product-summary-head">
                                         <div className="ad-type-container">
@@ -311,7 +342,7 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                                             <div className='dot' onClick={()=> setShowReport(!showReport)}>
                                                 {showReport ? (<ul ref={ref}>
                                                     <li onClick={handleShowReport}>
-                                                        <Image src={info} alt="info"/>
+                                                        <Image src={info} alt='info'/>
                                                         <p>Report this advert</p>
                                                     </li>
                                                     <li onClick={()=>handleAdRemoval(item.id)}>
@@ -326,22 +357,22 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                                             <div className="tag-container">
                                                 <p>Tags:</p>
                                                 <div className="tag">
-                                                {item.tags.map((tag) => (
+                                                    {item.tags.map((tag) => (
                                                     <div key={tag}>{tag}</div>
-                                                ))}
+                                                    ))}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="product-summary-text">
                                         <p>
-                                            {isReadMore ? item.description.slice(0, 156) : item.description}
+                                        {isReadMore ? item.description.slice(0, 156) : item.description}
                                             {item.description.length > 156 ? (
                                                 <span onClick={toggleReadMore}>
                                                     {isReadMore ? " Read more" : " Show less"}
                                                 </span>
                                             ):(
-                                            <></>
+                                            <p></p>
                                             )}
                                         </p>
                                     </div>
@@ -354,10 +385,10 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                                             <h4>Price</h4>
                                         </div>
                                         {item.type === 'detail' || 'direct-link' ?(
-                                            <p>#25/Visitor</p>
+                                        <p>#25/Visitor</p>
                                         ):(
-                                            <p>#50/Video</p>
-                                        )}
+                                        <p>#50/Video</p>
+                                    )}
                                     </div>
                                     <div className="aim">
                                         <div className="head">
@@ -368,7 +399,7 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                                             <p>{item.target} Visitors</p>
                                         ):(
                                             <p>{item.target} Videos</p>
-                                        )}  
+                                    )}
                                     </div>
                                     <div className="achieved">
                                         <div className="head">
@@ -376,49 +407,50 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                                             <h4>Achieved</h4>
                                         </div>
                                         {item.type === 'detail' || 'direct-link' ?(
-                                            <p>{item.conversions} Visitors</p>
+                                        <p>{item.conversions} Visitors</p>
                                         ):(
-                                            <p>{item.conversions} Videos</p>
-                                        )}
+                                        <p>{item.conversions} Videos</p>
+                                    )}
                                     </div>
                                 </div>
 
                                 {item.images.length === 0 ?(
                                     <></>
-                                ):(
-                                    <div className='submit-image-container'>
+                                    ):(
+                                    <div className='submit-image-container'>                                    
                                         <div className="product-img-container">
                                             <div className='carousel-container'>
-                                                <div onClick={() => previousImage(item.images)} className='left-arrow'>
+                                                <div onClick={goToPrevious} className='left-arrow'>
                                                     ❮
                                                 </div>
                                                 <div className='img-container' style={{borderRadius:'36px'}}>
                                                     <Image src={item.images[currentIndex]} alt='product' width={360} height={236}/>
                                                 </div>
-                                                <div onClick={() => nextImage(item.images)} className='right-arrow'>
+                                                <div onClick={goToNext} className='right-arrow'>
                                                     ❯
                                                 </div>
                                             </div>
                                         </div>
+        
+                                        {/* {item.type === 'visual'}{} */}
                                         <div className='submit' ref={ref}>
-                                            {showSubmit && <button  onClick={handleShowPaste}>Submit</button>}
+                                            {showSubmit && <button className='btn' onClick={togglePaste}>Submit</button>}
                                             {showPaste && (
                                                 <form className='paste' onSubmit={(e)=>e.preventDefault()}>
                                                     <div className='pasteLink'>
                                                         <Image src={linkFrame} alt=""/>
                                                     </div>
-                                                  
-                                                        <button onClick={() => handleVisualSubmit(item.id,inputValue)} className='pasteButton'>
-                                                            Submit
-                                                        </button>
-
                                                     <input 
                                                         type="text"
                                                         id="inputValue"
                                                         name="inputValue"
-                                                        onChange={handleChange}
+                                                        onChange={(e)=>setInputValue(e.target.value)}
                                                         value={inputValue}
                                                     />
+                                                    <button onClick={() => handleVisualSubmit(item.id,inputValue)} className='pasteButton'>
+                                                        Submit
+                                                    </button>
+                                                    
                                                 </form>
                                             )}
                                         </div>
@@ -428,11 +460,11 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                                 <div className="bottom">
                                     <div className="user-details">
                                         <div className="user-details-text">
-                                        {item.creator?.profilePicture?(
-                                            <Image src={item.creator?.profilePicture} width={20} height={20} alt={item.creator.accountName}/>
+                                            {item.creator?.profilePicture?(
+                                                <Image src={item.creator?.profilePicture} width={20} height={20} alt={item.creator.accountName}/>
                                             ):(
-                                            <CgProfile width={20} height={20}/>
-                                        )}
+                                                <CgProfile width={20} height={20}/>
+                                            )}
                                             <h5>{item.creator?.accountName}</h5>
                                         </div>
                                         <p>Posted <TimeAgo dateTime={item.dateCreated}/></p>
@@ -455,7 +487,7 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                                         </div>
                                     </div>
                                 </div>
-                                {showDialogue && <ShareDialogue shareLink={item.promotedLink} />}
+                                {showDialogue && <ShareDialogue shareLink={item.promotedLink}  />}
                                 {showReportModal && (
                                     <BackdropContainer onClick={()=>setShowReportModal(false)}>
                                         <ModalContainer onClick={e => e.stopPropagation()}>
@@ -484,21 +516,16 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                                         </ModalContainer>
                                     </BackdropContainer>
                                 )}
+
                             </Feed>
                         ))}
-                    </>        
-                )}
-                {isLoading && <Spinner 
-                    thickness='4px'
-                    speed='0.65s'
-                    emptyColor='gray.200'
-                    color='#4F00CF'
-                    size='xl'/>
-                } 
+                        
+                    </>
+                )} 
             </>
-        // )}
-    // </>
+        )} 
+    </>
   )
 }
 
-export default MobileDirect
+export default MobileRecentPromoters;

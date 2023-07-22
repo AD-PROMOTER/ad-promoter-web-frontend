@@ -79,7 +79,7 @@ const Conversion = () => {
                                 </div>
                                 <input 
                                     type="number" 
-                                    value={visitors}
+                                    defaultValue={visitors}
                                     />
                             </div>
                         </div>

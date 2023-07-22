@@ -4,20 +4,50 @@ import Image from 'next/image';
 import gtb from '@/public/assets/gtb.svg';
 import fcmb from '@/public/assets/fcmb.svg';
 import emptyWallet from '@/public/assets/empty-wallet-add.svg';
-const WithdrawProcess = ({onOpen, onClose}) => {
-    const [amount, setAmount] = useState('');
+import { formatCurrency } from '@/utils/formatCurrency';
+const WithdrawProcess = (props) => {
+  const [selectedBank, setSelectedBank] = useState(null);
   const [firstBank, setFirstBank] = useState(false);
   const [secondBank, setSecondBank] = useState(false);
   const inputRef = useRef();
+  const {onOpenWithdrawDetails, onCloseWithdrawProcess} = props;
+  const {showWithdrawDetailsModal} = props.show;
 
-  const toggleModal = () => {
-    onClose();
-    onOpen();
-  }
+  const renderMappedElements = () => {
+    return [...props.accountData].slice(0,2).map((item) => {
+      const matchedBank = props.banks.find((bank) => bank.code === item.details.bank_code);
+      const logo = matchedBank ? matchedBank.logo : null;
 
-  const handleChange = (props) => {
-    setAmount(inputRef.current.value);
+      return (
+        <div 
+          key={item.id} 
+          className={selectedBank === item.id ? "acct__container acct__bank1 acct__clicked" :"acct__container acct__bank1"} 
+          onClick={() => handleBankChange(item.id,item.details.bank_name,logo)}>
+          <div className="acctDetails">
+            {logo && <Image src={logo} alt="Bank Logo" width={49} height={49} />}
+            <div>
+              <p className="acctNum">{item.details.account_number}</p>
+              <p className="acctName">{item.details.account_name}</p>
+            </div>
+          </div>
+          <div div className="select">
+            <input type="radio" name="banks" value={item.id} checked={selectedBank === item.id} onChange={() => handleBankChange(item.id,item.details.bank_name)}/> 
+            <span className="checkmark"></span>
+          </div>
+        </div>
+      );
+    });
   };
+
+  const handleChange = () => {
+    props.setAmount(inputRef.current.value);
+  };
+
+  const handleBankChange = (id,name,logo) =>{
+    setSelectedBank(id)
+    props.setSelectedBankName(name)
+    props.setSelectedBankImage(logo)
+  }
 
   const toggleFirstBank = () => {
     if(firstBank) {
@@ -25,6 +55,15 @@ const WithdrawProcess = ({onOpen, onClose}) => {
     }
     return;
   }
+
+  const handleClick = () =>{
+    if(selectedBank && props.amount){
+      onOpenWithdrawDetails()
+      onCloseWithdrawProcess()
+    }
+    return;
+  }
+
 
   const toggleSecondBank = () => {
     if(secondBank) {
@@ -47,34 +86,7 @@ const WithdrawProcess = ({onOpen, onClose}) => {
         <div className='withdraw'>Process Withdrawal</div>
         <form>
           <div className="acct">
-            <div className={firstBank ? "acct__container acct__bank1 acct__clicked" :"acct__container acct__bank1"} onClick={selectFirstBank}>
-              <div className="acctDetails">
-                <Image src={gtb} alt="Guarantee trust bank logo" />
-                <div>
-                  <p className="acctNum">02347685075</p>
-                  <p className="acctName">Skylar Diaz</p>
-                </div>
-              </div>
-              <div div className="select">
-                {firstBank ? <input type="checkbox" id="bank-1" checked /> : <input type="checkbox" id="bank-1" />}
-                
-                <span className="checkmark"></span>
-              </div>
-            </div>
-
-            <div className={secondBank ? "acct__container acct__clicked" : "acct__container"} onClick={selectSecondBank}>
-              <div className="acctDetails">
-                <Image src={fcmb} alt="FCMB logo" />
-                <div>
-                  <p className="acctNum">42456530765</p>
-                  <p className="acctName">Mitchelle Diaz</p>
-                </div>
-              </div>
-              <div className="select">
-                {secondBank ? <input type="checkbox" id="bank-2" name="" checked /> : <input type="checkbox" id="bank-2" name="" />}                
-                <span className="checkmark"></span>
-              </div>
-            </div>
+            {renderMappedElements()}
           </div>
           <div className="amountInput">
             <div className='input-container'>
@@ -84,19 +96,19 @@ const WithdrawProcess = ({onOpen, onClose}) => {
                 id="amount"
                 placeholder='Enter amount'
                 name="amount"
-                value={amount}
+                value={props.amount}
                 ref={inputRef}
                 onChange={handleChange}
               />
             </div>
             <div className="balance-container">
               <p className='balance'> BALANCE:</p>
-              <p className='balance-amount'>₦200,000.35</p>
+              <p className='balance-amount'>{formatCurrency(props.totalBalance)}</p>
             </div>
           </div>
           {/* <Button text="Withdraw" onOpen={onOpenWithdrawDetails} onClose={onCloseWithdrawProcess}/> */}
         </form>
-        <div className='withdraw-button' onClick={toggleModal}>
+        <div onClick={handleClick} className='withdraw-button'>
             <Image src={emptyWallet} alt='wallet'/>
             <p>Process Withdrawal</p>
         </div>

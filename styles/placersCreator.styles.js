@@ -2,13 +2,16 @@ import styled from 'styled-components';
 
 export const TopStyledCreator = styled.div`
   background: var(--bg);
-  padding-top: 4rem;
+  padding-top: 2.5rem;
 `;
 
 export const StyledCreator = styled.div`
   width: 93%;
   margin: auto;
-  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   @media screen and (max-width: 425px) {
     display: none;
@@ -29,7 +32,7 @@ export const StyledCreator = styled.div`
     background: #ffffff;
     border-radius: 1.6rem;
     width: 100%;
-    /* margin-top: 4rem; */
+    margin-bottom: 4rem;
     h3 {
       font-weight: 600;
       font-size: 1.8rem;
@@ -69,7 +72,7 @@ export const StyledCreator = styled.div`
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    margin-top: 6rem;
+    /* margin-top: 6rem; */
     width: 100%;
     .item {
       display: flex;
@@ -80,10 +83,19 @@ export const StyledCreator = styled.div`
       gap: 6.5rem;
       background: #ffffff;
       border-radius: 1.6rem;
+      @media screen and (max-width: 768px) {
+        padding: 2.4rem 1rem;
+      }
       &-details {
         display: flex;
         align-items: flex-start;
         gap: 8rem;
+        @media screen and (max-width: 1024px) {
+          gap: 6rem;
+        }
+        @media screen and (max-width: 768px) {
+          gap: 2.3rem;
+        }
         .product-name,
         .ad-type,
         .aim,
@@ -169,6 +181,38 @@ export const StyledCreator = styled.div`
   }
 `;
 
+export const EmptyCreatorScreen = styled.div`
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5625rem;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    h3 {
+      color: #0d0d0d;
+      text-align: center;
+      font-family: Poppins;
+      font-size: 1.75rem;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 152.2%; /* 2.6635rem */
+    }
+    p {
+      color: #333;
+      text-align: center;
+      font-family: Poppins;
+      font-size: 1.125rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 152.2%; /* 1.71225rem */
+    }
+  }
+`;
+
 export const MobileCreator = styled.div`
   padding-left: 1.5rem;
   padding-right: 1.5rem;
@@ -177,6 +221,9 @@ export const MobileCreator = styled.div`
   display: none;
   @media screen and (max-width: 425px) {
     display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
   }
   h4 {
     font-weight: 600;
@@ -185,19 +232,26 @@ export const MobileCreator = styled.div`
     letter-spacing: -0.5px;
     color: #0d0d0d;
   }
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
   .body {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    margin-top: 2rem;
+    /* margin-top: 2rem; */
   }
   .creator {
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: 1.5rem;
     background-color: white;
-    padding: 1.6rem 0rem 1.6rem 0rem;
+    padding: 1.5rem 1rem;
     border-radius: 12px;
+    width: 24.25rem;
   }
   .product {
     display: flex;
@@ -241,6 +295,7 @@ export const MobileCreator = styled.div`
       line-height: 18px;
       letter-spacing: -0.078px;
       color: #333333;
+      /* width: 50%; */
     }
   }
   .icon {
@@ -254,6 +309,7 @@ export const MobileCreator = styled.div`
       font-size: 12px;
       line-height: 16px;
       color: #8e8e93;
+      width: 70%;
     }
   }
   .view {

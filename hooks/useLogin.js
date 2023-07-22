@@ -32,7 +32,6 @@ export const useLogin = () => {
 
     if (!response.ok) {
       error.current = json.success;
-      console.log(json);
       toast({
         title: json.msg,
         status: 'warning',
@@ -52,7 +51,7 @@ export const useLogin = () => {
       setIsLoading(false);
       toast({
         title: 'Logged In Successfully',
-        status: 'sucess',
+        status: 'success',
         duration: '5000',
         isClosable: true,
         position: 'bottom-left',

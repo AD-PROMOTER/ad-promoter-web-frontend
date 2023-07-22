@@ -22,6 +22,7 @@ import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import SingleAdContext from "@/context/singleAdContext"
 import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from "@/utils/formatFilterDate"
+import AdCreatorEmptyScreen from "@/components/adCreatorEmptyScreen"
 
 const Adcreator = () => {
   const [toPlace,setToPlace] = useState(false)
@@ -169,7 +170,7 @@ const Adcreator = () => {
                           <Image src={refresh} alt='achieved icon'/>
                           <p>Achieved</p>
                         </div>
-                        <p>{conversions }</p>
+                        <p>{conversions}</p>
                       </div>
       
                       <div className="price">
@@ -198,7 +199,7 @@ const Adcreator = () => {
                 ))}
               </div>
             ):(
-                <p>No Active Ads</p>
+                <AdCreatorEmptyScreen />
               )
             }
           </>
@@ -259,52 +260,76 @@ const Adcreator = () => {
         </ModalBackground>
       )}
     </StyledCreator>
-    {/* <MobileCreator>
-      <h4>Active Ads - ({activeAds.length})</h4>
-      <div className="body">
-        {data.map((item, index) => (
-          <div key={index} className="creator">
-            <div className="product">
-              <h3>{item.productName}</h3>
-              <p style={{backgroundColor: item.bg}}>{item.status}</p>
+    <MobileCreator>
+      <h4>Active Ads - ({activeAds ? activeAds.length : 0})</h4>
+        <div className="">
+          {!activeAds || isLoading ? (
+            <div className="spinner">
+              <Spinner 
+              thickness='4px'
+              speed='0.65s'
+              emptyColor='gray.200'
+              color='#4F00CF'
+              size='xl'/>
             </div>
-            <div className="types">
-              <div className="type">
-                <div className="icon">
-                  <Image src={money} alt="money"/>
-                  <p>Price</p>
-                </div>
-                <h4>{item.price}</h4>
+          ):(
+          <>
+            {activeAds.length > 0 ? (
+              <div className="body">
+                {[...activeAds].reverse().map(({productName,type,target,achieved,price,adStatus,bg,_id,conversions,paymentRef})=>(
+                  <div key={_id} className="creator">
+                    <div className="product">
+                      <h3>{productName}</h3>
+                      <p style={adStatus === 'incomplete' ? {backgroundColor:'#ED9005'} : adStatus === 'completed' ? {backgroundColor:'#00B068'}: adStatus === 'paused' ? {backgroundColor: '#EB1E1E'}:{backgroundColor: '#5C85FF'}}>{adStatus}</p>
+                    </div>
+                    <div className="types">
+                      <div className="type">
+                        <div className="icon">
+                          <Image src={money} alt="money"/>
+                          <p>Price</p>
+                        </div>
+                        {type === 'detail' || type === 'direct-link' ? (
+                          <h4>₦25/Visitor</h4>
+                        ):(
+                          <h4>₦50/Video</h4>
+                        )}
+                      </div>
+                      <div className="type">
+                        <div className="icon">
+                          <Image src={cup} alt="money"/>
+                          <p>Aim</p>
+                        </div>
+                        <h4>{target + ' Visitors'}</h4>
+                      </div>
+                      <div className="type">
+                        <div className="icon">
+                          <Image src={refresh} alt="money"/>
+                          <p>Conversion</p>
+                        </div>
+                        <h4>{conversions}</h4>
+                      </div>
+                      <div className="type">
+                        <div className="icon">
+                          <Image src={send} alt="money"/>
+                          <p>Advert Type</p>
+                        </div>
+                        <h4>{type}</h4>
+                      </div>
+                    </div>
+                    <div onClick={() => handleSetAdId(_id,paymentRef)} className="view">
+                      View
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="type">
-                <div className="icon">
-                  <Image src={cup} alt="money"/>
-                  <p>Aim</p>
-                </div>
-                <h4>{item.aim}</h4>
-              </div>
-              <div className="type">
-                <div className="icon">
-                  <Image src={refresh} alt="money"/>
-                  <p>Conversion</p>
-                </div>
-                <h4>{item.achieved}</h4>
-              </div>
-              <div className="type">
-                <div className="icon">
-                  <Image src={send} alt="money"/>
-                  <p>Advert Type</p>
-                </div>
-                <h4>{item.adType}</h4>
-              </div>
-            </div>
-            <div className="view">
-              View
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="creator-btn" onClick={handlePlace}>Place new Advert</div>
+            ):(
+              <AdCreatorEmptyScreen />
+            )}        
+          </>
+        )}
+        <div className="creator-btn" onClick={handlePlace}>Place new Advert</div>
+        </div>
+      
       {toPlace && (
         <ModalBackground>
           <div className="modal">
@@ -356,7 +381,7 @@ const Adcreator = () => {
           </div>
         </ModalBackground>
       )}
-    </MobileCreator> */}
+    </MobileCreator>
     </TopStyledCreator>
   )
 }

@@ -40,7 +40,7 @@ import ScrollIntoView from 'react-scroll-into-view'
 import TimeAgo from "@/components/timeAgo"
 import axios from "axios"
 import { useRouter } from "next/router"
-import { useToast } from "@chakra-ui/react"
+import { Spinner, useToast } from "@chakra-ui/react"
 import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from "@/utils/formatFilterDate"
 
 
@@ -60,7 +60,7 @@ const Index = () => {
   const [completeAds,setCompleteAds] = useState('')
   const [conversionGrowth,setConversionGrowth] = useState('')
   const {user} = useContext(UserContext)
-  const [recentJobs,setRecentJobs] = useState()
+  const [recentJobs,setRecentJobs] = useState([])
   const [isLoading,setIsLoading] = useState(null)
   const Router = useRouter()
   const [isReportLoading, setIsReportLoading] = useState(null);
@@ -122,7 +122,6 @@ const Index = () => {
         }
       })
       setRecentJobs(result.data.data.data)
-      console.log(result.data);
       setIsLoading(false)
     }
 
@@ -349,7 +348,7 @@ const Index = () => {
                       </div>
                     </div>
                     <div className="dashboard-info-activity-chart">
-                    <Line
+                    {/* <Line
                       data={{
                         labels: ['S', 'M', 'T', 'W', 'T', 'F','S'],
                         datasets: [
@@ -390,7 +389,7 @@ const Index = () => {
                           },
                         },
                       }}
-                    />
+                    /> */}
                     </div>
                   </div>
                 </div>
@@ -425,8 +424,14 @@ const Index = () => {
                 )}
               </div>
               <>
-                {!recentJobs ? (
-                  <p>Loading...</p>
+                {recentJobs.length === 0 && isLoading? (
+                  <Spinner 
+                  thickness='4px'
+                  speed='0.65s'
+                  emptyColor='gray.200'
+                  color='#4F00CF'
+                  size='xl'
+                  />
                 ):(
                   <>
                     {recentJobs.length === 0 ?(
@@ -580,7 +585,7 @@ const Index = () => {
             <div className="userProfile">
               <Image src={profil} alt='profile picture'/>
               <div className="username">
-                <p>Hi, Skylar Dias</p>
+                <p>Hi, {userName}</p>
                 <div className="wave">
                   <Image src={hands} alt='hands waving'/>
                   <p className="greeting">Welcome back!</p>                  
@@ -622,7 +627,33 @@ const Index = () => {
             </div>
             <div className="chart"></div>
           </div>
-          <RecentMobile />
+          <div className="sort">
+            <div className="tabs">
+              <ScrollIntoView selector="#inView" className="tab-sort">
+                <div className={showRecentJobs ? 'active-job' : 'non-active'} onClick={()=> setShowRecentJobs(true)}>
+                  Recent
+                </div>
+              </ScrollIntoView>
+              
+            </div>
+            <div className='arrow-sort' onClick={() => setShowSortDropdown(!showSortDropdown)}>
+              <p>Sort</p>
+              {showSortDropdown ? 
+                <ArrowUp /> : <ArrowDown />
+              }
+            </div>
+            {showSortDropdown && (
+              <ul className="list">
+                <li onClick={handleClickedFilter}>Recent</li>
+                <li onClick={handleClickedFilter}>Two days ago</li>
+                <li onClick={handleClickedFilter}>A week ago</li>
+                <li onClick={handleClickedFilter}>Less than 2 weeks</li>
+                <li onClick={handleClickedFilter}>Last 30 days</li>
+              </ul>
+            )}
+          </div>
+
+          <RecentMobile dashboardStartDate={dashboardStartDate} dashboardEndDate={dashboardEndDate} isLoading={isLoading} recentJobs={recentJobs} handleShowReport={handleShowReport} handleAdRemoval={handleAdRemoval} showReport={showReport} setShowReport={setShowReport} showReportModal={showReportModal} setShowReportModal={setShowReportModal} showDropdown={showDropdown} setShowDropdown={setShowDropdown} isReadMore={isReadMore} setIsReadMore={setIsReadMore} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} listValue={listValue} setListValue={setListValue} ClickedList={ClickedList} toggleReadMore={toggleReadMore} previousImage={previousImage} nextImage={nextImage}/>
           </>
           )}
         </MobilePlacers>
@@ -631,7 +662,7 @@ const Index = () => {
             <div className="userProfile">
               <Image src={profile} alt='profile picture'/>
               <div className="username">
-                <p>Hi, Skylar Dias</p>
+                <p>Hi, {userName}</p>
                 <div className="wave">
                   <Image src={hands} alt='hands waving'/>
                   <p className="greeting">Welcome back!</p>                  
@@ -680,11 +711,7 @@ const Index = () => {
                   Recent
                 </div>
               </ScrollIntoView>
-              <ScrollIntoView selector="#inView" className="tab-sort">
-                <div className={showRecentJobs !== true ? 'active-job' : 'non-active'} onClick={()=> setShowRecentJobs(!showRecentJobs)}>
-                  Saved Jobs
-                </div>
-              </ScrollIntoView>
+              
             </div>
             <div className='arrow-sort' onClick={() => setShowSortDropdown(!showSortDropdown)}>
               <p>Sort</p>

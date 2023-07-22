@@ -7,6 +7,7 @@ import currency from '@/public/assets/money-send.svg'
 import download from '@/public/assets/downloadIcon3.svg'
 import exportLink from '@/public/assets/shareIcon1.svg'
 import archive from '@/public/assets/bookmarkIcon1.svg'
+import activearchive from '@/public/assets/active-bookmark.svg'
 import copyLink from '@/public/assets/bottom-link-icon.svg'
 import Image from 'next/image'
 import Copy from '@/public/assets/copy-icon'
@@ -58,7 +59,7 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
 
 
     const fetchRecentJobs = async() =>{
-        let apiUrl = `https://api.ad-promoter.com/api/v1/ads/recent-ads?page=${page}&pageSize=10`;
+        let apiUrl = `https://api.ad-promoter.com/api/v1/ads/recent-ads?page=1&pageSize=10`;
         if (sortStartDate) {
           apiUrl += `&startDate=${sortStartDate}`;
         }

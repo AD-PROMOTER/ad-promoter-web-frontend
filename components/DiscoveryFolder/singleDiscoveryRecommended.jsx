@@ -1,4 +1,5 @@
-import React, {useState, useRef, useEffect} from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+  import React, {useState, useRef, useEffect} from 'react'
 import { Feed } from './discovery.style'
 import Image from 'next/image'
 import more from '@/public/assets/ellipsis.svg'

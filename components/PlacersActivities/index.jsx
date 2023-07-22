@@ -12,6 +12,7 @@ import Backdrop from '../DiscoveryFolder/ReportModal/Backdrop'
 import axios from 'axios'
 import { Spinner } from '@chakra-ui/react'
 import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from '@/utils/formatFilterDate'
+import ActivitiesEmptyScreen from '../activitiesEmptyScreen'
 
 const PlacersActivities = () => {
     const [showDropdown, setShowDropdown] = useState(false)
@@ -19,7 +20,7 @@ const PlacersActivities = () => {
     const [showBackdrop, setShowBackdrop] = useState(false)
     const token = useRef('')
     const id = useRef('')
-    const [activities, setActivities] = useState()
+    const [activities, setActivities] = useState([])
     const [totalactivities, setTotalActivities] = useState(null)
     const [isLoading,setIsLoading] = useState(false)
     const [pageNumber, setPageNumber] = useState(1)
@@ -146,7 +147,7 @@ const PlacersActivities = () => {
         <div className='activity'>Activity deleted</div>
         <div className='undo' onClick={() => setShowBackdrop(false)}>Undo</div>
       </UndoContainer> 
-      {isLoading || !activities ? (
+      {isLoading && activities.length === 0 ? (
         <div className='spinner'>
           <Spinner 
            thickness='4px'
@@ -157,7 +158,7 @@ const PlacersActivities = () => {
            />
         </div>
       ):(
-        <div>
+        <div className='log-container'>
           <div className='log'>
             <p>Activity Log</p>
             <div onClick={() => setShowDropdown(!showDropdown)} className='filter'>
@@ -174,126 +175,186 @@ const PlacersActivities = () => {
                 </ul>
             )}
           </div>
-          <div className='table-container'>
-            <table>
-              <thead>
-                <tr>
-                  <th>S/N</th>
-                  <th>Name</th>
-                  <th>User ID</th>
-                  <th>Action</th>
-                  <th>Date</th>
-                  <th style={{cursor:'pointer'}} onClick={()=>handleDelete(checkedItems)}><Image src={trash} alt='trash'/></th>
-                </tr>
-              </thead>
-              <tbody>
-                {[...activities].reverse().map((data,index) => (
-                  <tr className='row' key={data._id}>
-                    <td>{index + 1}</td>
-                    <td>
-                      <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
-                        <Image src={data.sender?.profilePicture} width={36} height={36} alt='profile' style={{borderRadius: '50%'}}/>
-                        <p>{data.sender?.accountName}</p>
-                      </div>
-                    </td>
-                    <td>{data.sender?._id}</td>
-                    <td>{data.body}</td>
-                    <td>{changeToLocalTIme(data.createdAt)}</td>
-                    <td><input type="checkbox" name='select' id={data._id} checked={checkedItems.includes(data._id)} onChange={() => handleCheckboxChange(data._id)}/></td>
+
+          {activities.length === 0 ?(
+            <ActivitiesEmptyScreen />
+          ):(
+            <div className='table-container'>
+              <table>
+                <thead>
+                  <tr>
+                    <th>S/N</th>
+                    <th>Name</th>
+                    <th>User ID</th>
+                    <th>Action</th>
+                    <th>Date</th>
+                    <th style={{cursor:'pointer'}} onClick={()=>handleDelete(checkedItems)}><Image src={trash} alt='trash'/></th>
                   </tr>
+                </thead>
+                <tbody>
+                  {[...activities].reverse().map((data,index) => (
+                    <tr className='row' key={data._id}>
+                      <td>{index + 1}</td>
+                      <td>
+                        <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
+                          <Image src={data.sender?.profilePicture} width={36} height={36} alt='profile' style={{borderRadius: '50%'}}/>
+                          <p>{data.sender?.accountName}</p>
+                        </div>
+                      </td>
+                      <td>{data.sender?._id}</td>
+                      <td>{data.body}</td>
+                      <td>{changeToLocalTIme(data.createdAt)}</td>
+                      <td><input type="checkbox" name='select' id={data._id} checked={checkedItems.includes(data._id)} onChange={() => handleCheckboxChange(data._id)}/></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className='pagination-style'>
+                {pageNumbers.map((number)=>(
+                  <div className={pageNumber === number ? 'pagination-style-child-active':'pagination-style-child'} key={number} onClick={() => paginate(number)}>{number}</div>
                 ))}
-              </tbody>
-            </table>
-            <div className='pagination-style'>
-              {pageNumbers.map((number)=>(
-                <div className={pageNumber === number ? 'pagination-style-child-active':'pagination-style-child'} key={number} onClick={() => paginate(number)}>{number}</div>
-              ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
     </Container>
     <MobileActivities>
       <div className='adcreator'>
-        <h4>Ad creator</h4>
-        <Image src={group} alt='group'/>
+        <h4>Activity Log</h4>
+        <Image onClick={() => setShowDropdown(!showDropdown)} src={group} alt='group'/>
       </div>
-      <div className='body'>
-        {rowData.map((data) => (
-          <div key={data.id} className='activity'>
-            {data.name.map((item, index) => (
-              <div key={index} className='user'>
-                <Image src={item.profile}
-                alt=""/>
-                <h3>{item.user}</h3>
+      {/* {showDropdown && (
+        <ul>
+          <li onClick={handleFilterText}>Recent</li>
+          <li onClick={handleFilterText}>Popular</li>
+          <li onClick={handleFilterText}>A week ago</li>
+          <li onClick={handleFilterText}>Less than 2 weeks</li>
+          <li onClick={handleFilterText}>Last 30 days</li>
+        </ul>
+      )} */}
+      {isLoading && activities.length === 0 ? (
+        <div className='spinner'>
+          <Spinner 
+           thickness='4px'
+           speed='0.65s'
+           emptyColor='gray.200'
+           color='#4F00CF'
+           size='xl'
+           />
+        </div>
+      ):(     
+        <>
+          {activities.length === 0 ? (
+            <ActivitiesEmptyScreen />
+          ):(
+            <div className='body-container'>
+              <div className='body'>
+                {[...activities].reverse().map((data) => (
+                  <div key={data._id} className='activity'>
+                    
+                    <div className='user'>
+                      <Image src={data.sender?.profilePicture} width={36} height={36} alt='profile' style={{borderRadius: '50%'}}/>
+                      <h3>{data.sender?.accountName}</h3>
+                    </div>
+                    
+                    <div className='userId'>
+                      <p>User ID</p>
+                      <h2>{data.sender?._id}</h2>
+                    </div>
+                    <div className='action'>
+                      <p>Action</p>
+                      <h2>{data.body}</h2>
+                    </div>
+                    <div className='userId'>
+                      <p>Date</p>
+                      <h2>{changeToLocalTIme(data.createdAt)}</h2>
+                    </div>
+                    {/* <div className='time'>
+                      <p>Time</p>
+                      <h2>{data.time}</h2>
+                    </div> */}
+                  </div>
+                ))}
               </div>
-            ))}
-            <div className='userId'>
-              <p>User ID</p>
-              <h2>{data.userId}</h2>
+              <div className='pagination-style'>
+                {pageNumbers.map((number)=>(
+                  <div className={pageNumber === number ? 'pagination-style-child-active':'pagination-style-child'} key={number} onClick={() => paginate(number)}>{number}</div>
+                ))}
+              </div>
             </div>
-            <div className='action'>
-              <p>Action</p>
-              <h2>{data.action}</h2>
-            </div>
-            <div className='userId'>
-              <p>Date</p>
-              <h2>{data.date}</h2>
-            </div>
-            <div className='time'>
-              <p>Time</p>
-              <h2>{data.time}</h2>
-            </div>
-          </div>
-        ))}
-      </div>
+          )}        
+        </>   
+      )}
     </MobileActivities>
     <TabActivities>
       <div className='log'>
         <p>Activity Log</p>
         <div onClick={() => setShowDropdown(!showDropdown)} className='filter'>
-            <div>Filter</div>
+            <div>{clickedFilter}</div>
             {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
         </div>
         {showDropdown && (
             <ul>
-              <li>Recent</li>
-              <li>Popular</li>
-              <li>A week ago</li>
-              <li>Less than 2 weeks</li>
-              <li>Last 30 days</li>
+              <li onClick={handleFilterText}>Recent</li>
+              <li onClick={handleFilterText}>Popular</li>
+              <li onClick={handleFilterText}>A week ago</li>
+              <li onClick={handleFilterText}>Less than 2 weeks</li>
+              <li onClick={handleFilterText}>Last 30 days</li>
             </ul>
         )}
       </div>
-      <div className='body'>
-        {rowData.map((data) => (
-          <div key={data.id} className='activity'>
-            {data.name.map((item, index) => (
-              <div key={index} className='user'>
-                <Image src={item.profile}
-                alt=""/>
-                <h3>{item.user}</h3>
+
+      {isLoading && activities.length === 0 ? (
+        <div className='spinner'>
+          <Spinner 
+           thickness='4px'
+           speed='0.65s'
+           emptyColor='gray.200'
+           color='#4F00CF'
+           size='xl'
+           />
+        </div>
+      ):(
+        <>
+          {activities.length === 0 ? (
+            <ActivitiesEmptyScreen />
+          ):(
+            <div className='body-container'>
+              <div className='body'>
+                {[...activities].reverse().map((data) => (
+                  <div key={data._id} className='activity'>
+                    
+                    <div className='user'>
+                      <Image src={data.sender?.profilePicture} width={36} height={36} alt='profile' style={{borderRadius: '50%'}} />
+                      <h3>{data.sender?.accountName}</h3>
+                    </div>
+
+                    <div className='userId'>
+                      <p>User ID</p>
+                      <h2>{data.sender?._id}</h2>
+                    </div>
+                    <div className='action'>
+                      <p>Action</p>
+                      <h2>{data.body}</h2>
+                    </div>
+                    <div className='userId'>
+                      <p>Date</p>
+                      <h2>{changeToLocalTIme(data.createdAt)}</h2>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-            <div className='userId'>
-              <p>User ID</p>
-              <h2>{data.userId}</h2>
+
+              <div className='pagination-style'>
+                {pageNumbers.map((number)=>(
+                  <div className={pageNumber === number ? 'pagination-style-child-active':'pagination-style-child'} key={number} onClick={() => paginate(number)}>{number}</div>
+                ))}
+              </div>
             </div>
-            <div className='action'>
-              <p>Action</p>
-              <h2>{data.action}</h2>
-            </div>
-            <div className='userId'>
-              <p>Date</p>
-              <h2>{data.date}</h2>
-            </div>
-            <div className='time'>
-              <p>Time</p>
-              <h2>{data.time}</h2>
-            </div>
-          </div>
-        ))}
-      </div>
+          )}        
+        </>
+      )}
     </TabActivities>
     </TopContainer>
   )

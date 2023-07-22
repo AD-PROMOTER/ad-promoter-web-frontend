@@ -24,7 +24,10 @@ export const Container = styled.div`
     width: 100%;
   }
 
-  > div {
+  .log-container {
+    display: flex;
+    flex-direction: column;
+
     .log {
       background-color: var(--white);
       padding: 2.4rem 6rem 2.4rem 2.4rem;
@@ -167,7 +170,8 @@ export const MobileActivities = styled.div`
   display: none;
   padding-bottom: 10rem;
   @media screen and (max-width: 425px) {
-    display: block;
+    display: flex;
+    flex-direction: column;
   }
   .adcreator {
     background-color: white;
@@ -184,6 +188,35 @@ export const MobileActivities = styled.div`
       width: 50%;
       margin: auto;
     }
+  }
+
+  ul {
+    background-color: var(--white);
+    position: absolute;
+    top: 19rem;
+    right: 12rem;
+    border-radius: 0.8rem;
+    box-shadow: var(--shadow-1);
+    width: 28.1rem;
+    z-index: 100;
+
+    li {
+      padding: 1.2rem 2.4rem;
+      border-bottom: 0.1rem solid #d9d9d9;
+      cursor: pointer;
+    }
+  }
+
+  .spinner {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .body-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
   .body {
     margin-top: 2rem;
@@ -276,6 +309,23 @@ export const MobileActivities = styled.div`
       letter-spacing: -0.078px;
     }
   }
+  .pagination-style {
+    display: flex;
+    gap: 1rem;
+    margin: auto;
+    &-child {
+      border: 2px solid var(--primary);
+      color: #000;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+    &-child-active {
+      background-color: var(--primary);
+      color: var(--white);
+      padding: 0.5rem 1rem;
+      /* border-radius: 60%; */
+    }
+  }
 `;
 
 export const TabActivities = styled.div`
@@ -283,8 +333,15 @@ export const TabActivities = styled.div`
   padding: 2rem;
   padding-top: 5rem;
   @media (min-width: 768px) and (max-width: 1024px) {
-    display: block;
+    display: flex;
+    flex-direction: column;
   }
+  .spinner {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
   .log {
     background-color: var(--white);
     padding: 2.4rem 6rem 2.4rem 2.4rem;
@@ -327,6 +384,12 @@ export const TabActivities = styled.div`
       }
     }
   }
+
+  .body-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
   .body {
     margin-top: 2rem;
     display: flex;
@@ -416,6 +479,23 @@ export const TabActivities = styled.div`
       line-height: 1.8rem;
       color: #333333;
       letter-spacing: -0.078px;
+    }
+  }
+  .pagination-style {
+    display: flex;
+    gap: 1rem;
+    margin: auto;
+    &-child {
+      border: 2px solid var(--primary);
+      color: #000;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+    &-child-active {
+      background-color: var(--primary);
+      color: var(--white);
+      padding: 0.5rem 1rem;
+      /* border-radius: 60%; */
     }
   }
 `;

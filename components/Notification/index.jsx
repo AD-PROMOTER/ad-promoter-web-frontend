@@ -6,10 +6,12 @@ import image from '@/public/assets/Ellipse 3.svg'
 import Image from "next/image"
 import axios from "axios"
 import { GlobalStyle } from "@/styles/global"
+import NotificationEmptyScreen from "../notificationEmptyScreen"
+import { ButtonSpinner } from "@chakra-ui/react"
 const Index = () => {
   const { isNotifClicked,setIsNotifClicked } = useContext(NotificationContext)
   const [isLoading,setIsLoading] = useState(null)
-  const [notificationData,setNotificationData] = useState()
+  const [notificationData,setNotificationData] = useState([])
   const token = useRef()
   useEffect(() => {
     const userToken = JSON.parse(localStorage.getItem("user-token"));
@@ -36,7 +38,7 @@ const Index = () => {
   return (
     <>
       <NotificationModalContainer>
-        <div className="notification-modal">
+        <div className="notification-modal" onClick={(e)=>e.stopPropagation()}>
           <div className="notification-modal-head">
             <div className="notification-modal-head-inner">
               <h3>notifications</h3>
@@ -45,12 +47,20 @@ const Index = () => {
               </div>
             </div>
           </div>
-          {!notificationData ? (
-            <p>Loading</p>
+          {notificationData.length === 0 && isLoading ? (
+            <div>
+              <ButtonSpinner 
+              thickness='4px'
+              speed='0.65s'
+              emptyColor='gray.200'
+              color='#4F00CF'
+              size='xl'
+              />
+            </div>
           ):(
             <>
               {notificationData.length === 0 ? (
-                <p>No Notification</p>
+                <NotificationEmptyScreen />
               ):(
                 <div className="notification-modal-body">
                   {notificationData.map((item)=> (

@@ -42,7 +42,7 @@ const DiscoveryPage = () => {
     },[])
 
     const fetchFeed = async() =>{
-      let apiUrl = `https://api.ad-promoter.com/api/v1/ads/personal?page=${page}&pageSize=10`;
+      let apiUrl = `https://api.ad-promoter.com/api/v1/ads/personal?page=1&pageSize=10`;
       if (startDate) {
         apiUrl += `&startDate=${startDate}`;
       }
@@ -68,7 +68,7 @@ const DiscoveryPage = () => {
         }
       })
       setFeed((prevData) => [...prevData, ...result.data.data]);
-      setPage((prevPage) => prevPage + 1);
+      // setPage((prevPage) => prevPage + 1);
       // setFeed(result.data.data)
       setIsLoading(false)
       setSearchTag('')
@@ -92,7 +92,7 @@ const DiscoveryPage = () => {
         }
       })
       setRecommendedJobs((prevData) => [...prevData, ...result.data.data.data]);
-      setRecPage((prevPage) => prevPage + 1);
+      // setRecPage((prevPage) => prevPage + 1);
       setIsRecLoading(false)
     }
 

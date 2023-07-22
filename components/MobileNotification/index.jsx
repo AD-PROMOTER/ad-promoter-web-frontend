@@ -1,140 +1,86 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Image from "next/image"
 import back from '@/public/assets/back-icon.svg'
 import image from '@/public/assets/Ellipse 3.svg'
 import { NotificationStyle } from './style'
+import { Spinner } from '@chakra-ui/react'
+import { useState } from 'react'
+import { useRef } from 'react'
+import axios from 'axios'
+import NotificationEmptyScreen from '../notificationEmptyScreen'
 
 const Index = ({goBack}) => {
-    const notifications = [
-        {
-          img: image,
-          type: 'New Advert Alert',
-          text: 'Tina Couture just placed a new Visual Advert (Sizzling beef sauce...), be among the first promoters to promote her advert.',
-          time: 'Mar 30-3:12 PM',
-          key: 1
-        },
-        {
-          img: image,
-          type: 'New Advert Alert',
-          text: 'Tina Couture just placed a new Visual Advert (Sizzling beef sauce...), be among the first promoters to promote her advert.',
-          time: 'Mar 30-3:12 PM',
-          key: 2
-        },
-        {
-          img: image,
-          type: 'New Advert Alert',
-          text: 'Tina Couture just placed a new Visual Advert (Sizzling beef sauce...), be among the first promoters to promote her advert.',
-          time: 'Mar 30-3:12 PM',
-          key: 3
-        },
-        {
-          img: image,
-          type: 'New Advert Alert',
-          text: 'Tina Couture just placed a new Visual Advert (Sizzling beef sauce...), be among the first promoters to promote her advert.',
-          time: 'Mar 30-3:12 PM',
-          key: 4
-        },
-        {
-          img: image,
-          type: 'New Advert Alert',
-          text: 'Tina Couture just placed a new Visual Advert (Sizzling beef sauce...), be among the first promoters to promote her advert.',
-          time: 'Mar 30-3:12 PM',
-          key: 5
-        },
-        {
-          img: image,
-          type: 'New Advert Alert',
-          text: 'Tina Couture just placed a new Visual Advert (Sizzling beef sauce...), be among the first promoters to promote her advert.',
-          time: 'Mar 30-3:12 PM',
-          key: 6
-        },
-        {
-          img: image,
-          type: 'New Advert Alert',
-          text: 'Tina Couture just placed a new Visual Advert (Sizzling beef sauce...), be among the first promoters to promote her advert.',
-          time: 'Mar 30-3:12 PM',
-          key: 7
-        },
-        {
-          img: image,
-          type: 'New Advert Alert',
-          text: 'Tina Couture just placed a new Visual Advert (Sizzling beef sauce...), be among the first promoters to promote her advert.',
-          time: 'Mar 30-3:12 PM',
-          key: 8
-        },
-        {
-          img: image,
-          type: 'New Advert Alert',
-          text: 'Tina Couture just placed a new Visual Advert (Sizzling beef sauce...), be among the first promoters to promote her advert.',
-          time: 'Mar 30-3:12 PM',
-          key: 9
-        },
-        {
-          img: image,
-          type: 'New Advert Alert',
-          text: 'Tina Couture just placed a new Visual Advert (Sizzling beef sauce...), be among the first promoters to promote her advert.',
-          time: 'Mar 30-3:12 PM',
-          key: 10
-        },
-        {
-          img: image,
-          type: 'New Advert Alert',
-          text: 'Tina Couture just placed a new Visual Advert (Sizzling beef sauce...), be among the first promoters to promote her advert.',
-          time: 'Mar 30-3:12 PM',
-          key: 11
-        },
-        {
-          img: image,
-          type: 'New Advert Alert',
-          text: 'Tina Couture just placed a new Visual Advert (Sizzling beef sauce...), be among the first promoters to promote her advert.',
-          time: 'Mar 30-3:12 PM',
-          key: 12
-        },
-        {
-          img: image,
-          type: 'New Advert Alert',
-          text: 'Tina Couture just placed a new Visual Advert (Sizzling beef sauce...), be among the first promoters to promote her advert.',
-          time: 'Mar 30-3:12 PM',
-          key: 13
-        },
-        {
-          img: image,
-          type: 'New Advert Alert',
-          text: 'Tina Couture just placed a new Visual Advert (Sizzling beef sauce...), be among the first promoters to promote her advert.',
-          time: 'Mar 30-3:12 PM',
-          key: 14
-        },
-        {
-          img: image,
-          type: 'New Advert Alert',
-          text: 'Tina Couture just placed a new Visual Advert (Sizzling beef sauce...), be among the first promoters to promote her advert.',
-          time: 'Mar 30-3:12 PM',
-          key: 15
-        },
-      ]
+  const [isLoading,setIsLoading] = useState(null)
+  const [notificationData,setNotificationData] = useState([])
+  const token = useRef()
+
+  useEffect(() => {
+    const userToken = JSON.parse(localStorage.getItem("user-token"));
+
+    if (userToken) {
+      token.current = userToken
+    }
+
+    const fetchNotification = async() =>{
+      setIsLoading(true)
+      const result = await axios(`https://api.ad-promoter.com/api/v1/notifications?page=1&pageSize=10`,{
+        headers:{
+          Authorization: `Bearer ${token.current}`
+        }
+      })
+      setNotificationData(result.data.data.data)
+      setIsLoading(false)
+    }
+    if(token.current){
+      fetchNotification()
+    }
+  },[]);
   return (
     <NotificationStyle>
       <div className='notif'>
         <Image src={back} alt="back" onClick={goBack}/>
         <p>Notification</p>
       </div>
-      <div className='notifications'>
-        {notifications.map((item) => (
-            <div key={item.key} className="each">
-                <div className='type'>
-                    <Image src={item.img} alt='proifle picture'/>
-                    <div className='text'>
-                        <div className='advert'>
-                            <p>{item.type}</p>
-                            <div className='red-dot'></div>
-                        </div>
-                        <span>{item.text}</span>
-                    </div>
-                </div>
-                <div className='date'>{item.time}</div>
+
+      {notificationData.length === 0 && isLoading ? (
+        <Spinner 
+        thickness='4px'
+        speed='0.65s'
+        emptyColor='gray.200'
+        color='#4F00CF'
+        size='xl'
+        />
+      ):(
+        <>
+          {notificationData.length === 0 ? (
+            <div style={{margin: 'auto'}}>
+              <NotificationEmptyScreen />
             </div>
-        ))}
-      </div>
+          ):(
+            <>
+              <div className='notifications'>
+                {notificationData.map((item) => (
+                    <div key={item._id} className="each">
+                        <div className='type'>
+                            <Image style={{borderRadius: '50%'}} src={item.sender?.profilePicture} alt='notification image' width={'48px'} height={'48px'}/>
+                            <div className='text'>
+                                <div className='advert'>
+                                    <p>{item.title}</p>
+                                    {!item.isRead && (
+                                      <div className='red-dot'></div>
+                                    )}
+                                </div>
+                                <span>{item.body}</span>
+                            </div>
+                        </div>
+                        {/* <div className='date'>{item.time}</div> */}
+                    </div>
+                ))}
+              </div>
+            </>
+          )}
+        </>
+      )}
     </NotificationStyle>
   )
 }

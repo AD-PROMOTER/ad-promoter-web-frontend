@@ -43,14 +43,18 @@ export const useSignup = () => {
     if (!response.ok) {
       setIsLoading(false);
       setError('Sign Up failed');
-      console.log(json);
-      console.log(seeVisualAd);
+      toast({
+        title: json.msg,
+        status: 'warning',
+        duration: '5000',
+        isClosable: true,
+        position: 'bottom-left',
+      });
     }
     if (response.ok) {
-      console.log('user created');
-      console.log(json);
       //save user to local storage
-      localStorage.setItem('user', JSON.stringify(json));
+      localStorage.setItem('user-token', JSON.stringify(json.token));
+      localStorage.setItem('user-detail', JSON.stringify(json.user));
 
       //update the auth context
       dispatch({ type: 'LOGIN', payload: json });

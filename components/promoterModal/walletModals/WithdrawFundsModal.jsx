@@ -80,13 +80,13 @@ const handleClick = () =>{
                 </ul>
                 <ul>
                   <li className="flex">
-                    <Image
-                      src="/assets/gtb.png"
-                      alt="Guaranty Trust Bank"
-                      width="16px"
-                      height="16px"
-                    />
-                    <div className="bold">{props.selectedBankName}</div>
+                  <Image
+                    src={props.selectedBankImage}
+                    alt="Bank Logo"
+                    width="16px"
+                    height="16px"
+                  />
+                  <div className="bold">{props.selectedBankName}</div>
                   </li>
                   <li className="bold">{formatCurrency(props.amount)}</li>
                   <li className="bold">AD-Promoter</li>
@@ -118,9 +118,9 @@ const handleClick = () =>{
               <Image src={close} alt="Exit icon" />
             </button>
           </div>
-          <div className="loading">
+          {/* <div className="loading">
             <Image src={SuccessMark} alt='success'/>
-          </div>
+          </div> */}
           <div className="funds">
             <div className="funds__header">
               <h2>Withdraw Funds</h2>
@@ -139,12 +139,12 @@ const handleClick = () =>{
                 </ul>
                 <ul>
                   <li className="flex">
-                    <Image
-                      src="/assets/gtb.png"
-                      alt="Guaranty Trust Bank"
-                      width="16px"
-                      height="16px"
-                    />
+                      <Image
+                        src={props.selectedBankImage}
+                        alt="Bank Logo"
+                        width="16px"
+                        height="16px"
+                      />
                     <div className="bold">{props.selectedBankName}</div>
                   </li>
                   <li className="bold">{formatCurrency(props.amount)}</li>

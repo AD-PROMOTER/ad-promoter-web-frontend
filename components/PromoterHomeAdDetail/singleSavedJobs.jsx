@@ -58,7 +58,7 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
     },[])
 
     const fetchSavedJobs = async() =>{
-        let apiUrl = `https://api.ad-promoter.com/api/v1/user/saved-jobs?page=${page}&pageSize=10`;
+        let apiUrl = `https://api.ad-promoter.com/api/v1/user/saved-jobs?page=1&pageSize=10`;
         if (sortStartDate) {
             apiUrl += `&startDate=${sortStartDate}`;
           }
@@ -72,7 +72,7 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
           }
         })
         setSavedJobs((prevData) => [...prevData, ...result.data.data.data.data]);
-        setPage((prevPage) => prevPage + 1);
+        // setPage((prevPage) => prevPage + 1);
         // setSavedJobs(result.data.data.data.data)
         setIsLoading(false)
     }
@@ -82,7 +82,7 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
           window.innerHeight + window.scrollY >= document.body.offsetHeight &&
           !isLoading
         ) {
-          fetchRecentJobs();
+          fetchSavedJobs();
         }
     };
 
@@ -214,7 +214,7 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                 size: "lg"
             });
           }
-        }
+    }
 
         const handleAdRemoval = async(id) =>{
             const response = await fetch(
@@ -367,7 +367,7 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                                 {isReadMore ? " Read more" : " Show less"}
                                             </span>
                                         ):(
-                                        <p></p>
+                                        <></>
                                         )}
                                     </p>
                                 </div>
@@ -394,7 +394,8 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                         <p>{item.target} Visitors</p>
                                         ):(
                                         <p>{item.target} Videos</p>
-                                    )}                                </div>
+                                    )}                                
+                                </div>
                                 <div className="achieved">
                                     <div className="head">
                                         <Image src={vector} alt="vector"/>

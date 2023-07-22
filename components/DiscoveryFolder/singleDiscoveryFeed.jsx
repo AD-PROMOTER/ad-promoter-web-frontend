@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react'
 import more from '@/public/assets/ellipsis.svg'
 import vector from '@/public/assets/Vector.svg'
@@ -385,13 +386,13 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                 </div>
                                 <div className='adlink'>
                                     <div>
-                                        <p style={{fontWeight: 'bold', fontSize: '1.6rem'}}>{item.productName}</p>
+                                        <h3 style={{fontWeight: 'bold', fontSize: '1.6rem', color:'red'}}>{item.productName}</h3>
                                         <div className='profile'>
                                             <p>Tags:</p>
                                             {item.tags.map((tag, index) => (
                                                 <div key={index} className='tag'>{tag}</div>
                                             ))}
-                                    </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className='product'>

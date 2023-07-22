@@ -4,12 +4,54 @@ import Link from 'next/link';
 import SuccessMark from '@/public/assets/success-mark.gif';
 import gtb from '@/public/assets/gtb.svg';
 import { FundsContainer, FailedContainer } from './mobileWallet.style';
+import { formatCurrency } from '@/utils/formatCurrency';
 
-const WithdrawFunds = ({onClose}) => {
-    const [withdrawConfirmed, setWithdrawConfirmed] = useState(false);
+const WithdrawFunds = (props) => {
+
+    const withdraw = async(amount,userId) =>{
+        setIsLoading(true)
+        const response = await fetch('https://api.ad-promoter.com/api/v1/payouts/create', {
+          method: 'POST',
+          mode: 'cors',
+          cache: 'no-cache',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            "amount": amount,
+            "recipient": userId
+          }),
+        });
+        const json = await response.json();
+    
+        if (!response.ok) {
+          success.current = false
+          setIsLoading(false)
+          props.setWithdrawConfirmed(false)
+          props.onOpenWithdrawModal()
+          props.onCloseModal()
+        }
+        if (response.ok) {
+          setIsLoading(false)
+          if(json.success){
+           props.setWithdrawConfirmed(true)
+           if(props.withdrawConfirmed){
+              props.onOpenWithdrawModal()
+              props.onCloseModal()
+            }
+          }
+        }
+    
+    }
+    
+    const handleClick = () =>{
+     withdraw(props.amount,userId)
+    }
   return (
     <FundsContainer>
-      {withdrawConfirmed ? (
+      {props.withdrawConfirmed ? (
         <>
             <div className='funds'>
                 <div className='sucess-mark'>
@@ -25,13 +67,18 @@ const WithdrawFunds = ({onClose}) => {
                 <div className='destination'>
                     <p className='with'>Withdrawal to</p>
                     <div className='gtb'>
-                        <Image src={gtb} alt='gtb' width={50}/>
-                        <span>Guaranty Trust Bank</span>
+                        <Image
+                        src={props.selectedBankImage}
+                        alt="Bank Logo"
+                        width="16px"
+                        height="16px"
+                        />
+                        <span>{props.selectedBankName}</span>
                     </div>
                 </div>
                 <div className='price'>
                     <p>Amount</p>
-                    <span>&#8358;2,000.35</span>
+                    <span>{formatCurrency(props.amount)}</span>
                 </div>
                 <div className='price'>
                     <p>Description</p>
@@ -41,11 +88,11 @@ const WithdrawFunds = ({onClose}) => {
             <div className='to'>
                 <div className='fee'>
                     <p>Fee</p>
-                    <span>&#8358;100.00</span>
+                    <span>{formatCurrency(100)}</span>
                 </div>
                 <div className='fee'>
                     <p>Total amount</p>
-                    <span>&#8358;2,100.35</span>
+                    <span>{formatCurrency(props.amount - 100)}</span>
                 </div>
             </div>
             <div className='third'>
@@ -66,13 +113,18 @@ const WithdrawFunds = ({onClose}) => {
                 <div className='destination'>
                     <p className='with'>Withdrawal to</p>
                     <div className='gtb'>
-                        <Image src={gtb} alt='gtb' width={50}/>
-                        <span>Guaranty Trust Bank</span>
+                    <Image
+                        src={props.selectedBankImage}
+                        alt="Bank Logo"
+                        width="16px"
+                        height="16px"
+                        />
+                        <span>{props.selectedBankName}</span>
                     </div>
                 </div>
                 <div className='price'>
                     <p>Amount</p>
-                    <span>&#8358;2,000.35</span>
+                    <span>{formatCurrency(props.amount)}</span>
                 </div>
                 <div className='price'>
                     <p>Description</p>
@@ -82,11 +134,11 @@ const WithdrawFunds = ({onClose}) => {
             <div className='to'>
                 <div className='fee'>
                     <p>Fee</p>
-                    <span>&#8358;100.00</span>
+                    <span>{formatCurrency(100)}</span>
                 </div>
                 <div className='fee'>
                     <p>Total amount</p>
-                    <span>&#8358;2,100.35</span>
+                    <span>{formatCurrency(props.amount - 100)}</span>
                 </div>
             </div>
             <div className='third'>
@@ -97,8 +149,8 @@ const WithdrawFunds = ({onClose}) => {
                 <p>I can confirm the withdrawal details above</p>
             </div>
             <div className='cancel-confirm'>
-                <div className='cancel-button' onClick={onClose}>Cancel</div>
-                <div className='confirm-button' onClick={() => setWithdrawConfirmed(true)}>Confirm</div>
+                <div className='cancel-button' onClick={props.onClose}>Cancel</div>
+                <div className='confirm-button' onClick={handleClick}>Confirm</div>
             </div>
             <div className='process'>Your bank or payment processor may apply extra fees.</div>
         </FailedContainer>

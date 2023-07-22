@@ -7,6 +7,8 @@ import inProgress from '@/public/assets/minus-cirlce.svg'
 import failed from '@/public/assets/failed.svg'
 import success from '@/public/assets/success.svg'
 import refresh from "@/public/assets/retry.svg";
+import { CgProfile } from 'react-icons/cg';
+import TimeAgo from '../timeAgo';
 
 const transactionsData = [
     {
@@ -60,7 +62,7 @@ const dropdownData = [
         datePaid: "21, sept, 2019"
     }
 ]
-const Transaction = () => {
+const Transaction = ({transactionHistory}) => {
   const [openDropdown, setOpenDropdown] = useState(false);
 
   const toggleDropdown = () => {
@@ -73,20 +75,28 @@ const Transaction = () => {
   
   return (
     <TransactionContainer show={openDropdown ? false : true}>
-        {transactionsData.map((item, index) => (
-            <>
-             {item.status === failed ? (
+        {[...transactionHistory].reverse().map((item) => (
+            <div key={item._id}>
+              {item.status === failed ? (
                 <div className='open-close'>
-                    <div className='failed' key={index} onClick={toggleDropdown}>
+                    <div className='failed' onClick={toggleDropdown}>
                         <div className='profile'>
-                            <Image src={item.image} alt="profile picture"/>
-                            <p>{item.name}</p>
+                          {item.user.images ? (
+                            <Image
+                              className="profile__img"
+                              src={i.user.images[0]}
+                              alt="User's profile image"
+                            />
+                          ):(
+                            <CgProfile width={20} height={20}/>
+                          )}
+                          <p>{item.name}</p>
                         </div>
                         <div className='status'>
                             <div className='time'>
                                 <div className='date'>
-                                    <p>{item.date}</p>
-                                    <span>{item.amount}</span>
+                                    <p>{<TimeAgo dateTime={item.createdAt} />}</p>
+                                    <span>-&#8358;{item.amount}</span>
                                 </div>
                                 <Image src={item.status} alt='status'/>
                             </div>
@@ -122,22 +132,30 @@ const Transaction = () => {
                         </div>
                     )}
                 </div>
-             ) : (
+              ) : (
                 <div className='pass'>
                     <div className='profile'>
-                        <Image src={item.image} alt='profile picture'/>
+                        {item.user.images ? (
+                            <Image
+                              className="profile__img"
+                              src={i.user.images[0]}
+                              alt="User's profile image"
+                            />
+                          ):(
+                            <CgProfile width={20} height={20}/>
+                        )}
                         <p>{item.name}</p>
                     </div>
                     <div className='time'>
                         <div className='date'>
-                            <p>{item.date}</p>
+                            <p>{<TimeAgo dateTime={item.createdAt} />}</p>
                             <span>{item.amount}</span>
                         </div>
-                        <Image src={item.status === inProgress ? inProgress || item.status === success : success} alt='status'/>
+                        <Image src={item.status === "pending" ? inProgress || item.status === "COMPLETE" : success} alt='status'/>
                     </div>
                 </div>
              )}
-            </>
+            </div>
         ))}      
     </TransactionContainer>
   )

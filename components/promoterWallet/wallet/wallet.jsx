@@ -19,7 +19,7 @@ const Wallet = (props) => {
   const [selectedBank, setSelectedBank] = useState(null);
 
   const renderMappedElements = () => {
-    return [...props.accountData].reverse().slice(0,2).map((item) => {
+    return [...props.accountData].slice(0,2).map((item) => {
       const matchedBank = props.banks.find((bank) => bank.code === item.details.bank_code);
       const logo = matchedBank ? matchedBank.logo : null;
 

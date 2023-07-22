@@ -59,7 +59,7 @@ const transactionsData = [
   },
 ];
 
-const TransactionHistory = ({transactionHistory}) => {
+const TransactionHistory = ({transactionHistory,isLoading}) => {
   const [openDropdown, setOpenDropdown] = useState(false);
 
   const toggleDropdown = () => {

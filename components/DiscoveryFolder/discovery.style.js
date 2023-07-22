@@ -221,16 +221,18 @@ export const Feed = styled.div`
     .recDesc {
       display: flex;
       align-items: center;
-      justify-content: space-around;
+      gap: 10rem;
       margin-top: 5rem;
       font-size: 1.5rem;
-
+      /* color: red; */
       .recAim {
         display: flex;
         align-items: center;
-        gap: 0.8rem;
+        gap: 1rem;
         font-weight: bold;
         font-size: 1.6rem;
+        /* background-color: red; */
+        /* width: 100%; */
       }
       .recPara {
         color: var(--light-gray-1);
@@ -242,6 +244,7 @@ export const Feed = styled.div`
       align-items: center;
       gap: 10rem;
       margin-top: 5rem;
+      font-size: 1.5rem;
 
       .aim {
         display: flex;
