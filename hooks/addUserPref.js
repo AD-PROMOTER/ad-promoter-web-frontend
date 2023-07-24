@@ -4,7 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 
 export const AddUserPref = () => {
   const [token, setToken] = useState('');
+  const [isLoading, setIsLoading] = useState('');
   const toast = useToast();
+  const success = useRef();
 
   useEffect(() => {
     const userToken = JSON.parse(localStorage.getItem('user-token'));
@@ -55,7 +57,7 @@ export const AddUserPref = () => {
       });
 
       if (json.user.role === 'placer') {
-        router.pushz('placers');
+        router.push('placers');
       } else if (json.user.role === 'promoter') {
         router.push('promoters');
       }
