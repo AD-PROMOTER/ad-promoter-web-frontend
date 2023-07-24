@@ -13,23 +13,42 @@ import { useContext } from "react";
 import BackArrow from '@/public/assets/back-arrow'
 import SignupContext from '@/context/signupContext'
 import { useSendOtp } from '@/hooks/useSendOtp'
+import { AddUserPref } from '@/hooks/addUserPref'
 const VisualReq = () => {
     const {sendOtp} = useSendOtp()
     const {phoneNumber} = useContext(SignupContext)
-    const {setIsInputWithValue,userVisualReq,setUserVisualReq,seeVisualAd,setSeeVisualAd} = useContext(SignupContext)
+    const {setIsInputWithValue,userVisualReq,setUserVisualReq,seeVisualAd,setSeeVisualAd,userPref,linkValue} = useContext(SignupContext)
     const router = useRouter();
     const [yes, setYes] = useState(false)
     const [no, setNo] = useState(false)
     const [remind, setRemind] = useState(false)
+    const [user, setUser] = useState(false)
+    const {addUserPref} = AddUserPref()
+
+    useEffect(()=>{
+        const user = JSON.parse(localStorage.getItem("user-detail"));
+        setUser(user)
+    },[])
+
     const handleSubmit = (e) => {
         e.preventDefault()
-        if(userVisualReq === 'yes'){
-            router.push("/signup/visualverification")
+        if(!user){
+            if(userVisualReq === 'yes'){
+                router.push("/signup/visualverification")
+            }
+            else{
+                sendOtp(phoneNumber)
+                router.push("/signup/verification")
+            }
+        }else{
+            if(userVisualReq === 'yes'){
+                router.push("/signup/visualverification")
+            }
+            else{
+                addUserPref(userPref,seeVisualAd,linkValue)
+            }
         }
-        else{
-            sendOtp(phoneNumber)
-            router.push("/signup/verification")
-        }
+
     }
 
     useEffect(()=>{
