@@ -12,12 +12,21 @@ import Button from '@/components/authBtn/index'
 import { useContext, useEffect, useState } from "react"
 import SignupContext from "@/context/signupContext"
 import { useSendOtp } from "@/hooks/useSendOtp"
+import { AddUserPref } from "@/hooks/addUserPref"
 
 const Visualverification = () => {
-    const {setIsInputWithValue,linkValue,setLinkValue} = useContext(SignupContext)
+    const {setIsInputWithValue,linkValue,setLinkValue,userPref,seeVisualAd} = useContext(SignupContext)
     const router = useRouter()
     const {sendOtp} = useSendOtp()
     const {phoneNumber} = useContext(SignupContext)
+    const [user, setUser] = useState(false)
+    const {addUserPref} = useContext(AddUserPref)
+
+    useEffect(()=>{
+        const user = JSON.parse(localStorage.getItem("user-detail"));
+        setUser(user)
+    },[])
+
     useEffect(() =>{
         setIsInputWithValue(false)
         if(linkValue !== ''){
@@ -27,9 +36,13 @@ const Visualverification = () => {
         }
     })
     const handleClick = () =>{
-        if(linkValue !== ''){
-            sendOtp(phoneNumber)
-            router.push("/signup/verification")
+        if(!user){
+            if(linkValue !== ''){
+                sendOtp(phoneNumber)
+                router.push("/signup/verification")
+            }
+        }else{
+            addUserPref(userPref,seeVisualAd,linkValue)
         }
         
     }

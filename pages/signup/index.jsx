@@ -14,7 +14,9 @@ import 'react-phone-number-input/style.css'
 import {BsEyeFill,BsEyeSlashFill} from 'react-icons/bs'
 import { useSignup } from '@/hooks/useSignup'
 import SignupContext from '@/context/signupContext'
+import { useToast } from '@chakra-ui/react'
 
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const Index = () => {
   const [isPasswordShown,setIsPasswordShown] = useState(false)
   const [isConfirmPasswordShown,setIsConfirmPasswordShown] = useState(false)
@@ -25,7 +27,8 @@ const Index = () => {
   const {setIsInputWithValue,email,setEmail,password,setPassword,confirmPassword,setConfirmPassword,accountName,setAccountName,phoneNumber,setPhoneNumber,} = useContext(SignupContext)
   const {signup,error,isLoading} = useSignup()
   const router = useRouter()
-  
+  const toast = useToast();
+
   useEffect(() => {
     router.prefetch('/signup/preference')
     if(accountName !== '' && email !== '' && password !== '' && confirmPassword !=='' && phoneNumber !==''){
@@ -34,6 +37,13 @@ const Index = () => {
       setIsInputWithValue(false)
     }
   }, [router, setIsInputWithValue,accountName,email,password,confirmPassword,phoneNumber])
+
+  useEffect(()=>{
+    phoneRef.current = true
+    setPhoneState(true)
+    passwordRef.current = true
+    setPasswordState(true)
+  },[accountName,email,password,confirmPassword,phoneNumber])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -47,6 +57,13 @@ const Index = () => {
     else{
       phoneRef.current = false
       setPhoneState(false)
+      toast({
+        title: 'Enter a valid phone number',
+        status: 'error',
+        duration: '5000',
+        isClosable: true,
+        position: 'bottom-left',
+      });
     }
     if(confirmPassword === password){
       passwordRef.current = true
@@ -54,6 +71,27 @@ const Index = () => {
     }else{
       passwordRef.current = false
       setPasswordState(false)
+      toast({
+        title: 'Password must match',
+        status: 'error',
+        duration: '5000',
+        isClosable: true,
+        position: 'bottom-left',
+      });
+    }
+    if(PWD_REGEX.test(password)){
+      passwordRef.current = true
+      setPasswordState(true)
+    }else{
+      passwordRef.current = false
+      setPasswordState(false)
+      toast({
+        title: 'Password must be at least 8 characters long, contain a lowercase, contain an uppercase, contain a number and a special character',
+        status: 'error',
+        duration: '10000',
+        isClosable: true,
+        position: 'bottom-left',
+      });
     }
     if(passwordRef.current && phoneRef.current === true) {
       router.push('/signup/preference')
@@ -132,7 +170,7 @@ const Index = () => {
                   </div>
                 </div>
                 <input
-                  className='input'
+                  className={passwordState ? 'input' : 'invalid'}
                   type={isPasswordShown ? "text" : "password"} 
                   id="password"
                   name='password'

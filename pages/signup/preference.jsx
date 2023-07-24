@@ -11,22 +11,37 @@ import { useEffect, useState } from 'react'
 import { useContext } from "react";
 import SignupContext from '@/context/signupContext'
 import { useSendOtp } from '@/hooks/useSendOtp'
+import { AddUserPref } from '@/hooks/addUserPref'
 
 const Preference = () => {
-  const {userPref,setUserPref,setIsInputWithValue} = useContext(SignupContext)
+  const {userPref,setUserPref,setIsInputWithValue,seeVisualAd,linkValue} = useContext(SignupContext)
   const router = useRouter();
   const {sendOtp} = useSendOtp()
   const {phoneNumber} = useContext(SignupContext)
   const [placeAds, setPlaceAds] = useState(false)
   const [promoteAds, setPromoteAds] = useState(false)
+  const [user, setUser] = useState(false)
+  const {addUserPref} = useContext(AddUserPref)
+  useEffect(()=>{
+    const user = JSON.parse(localStorage.getItem("user-detail"));
+    setUser(user)
+  },[])
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if(userPref === 'promoter'){
-      router.push("/signup/visualReq")
+    if(!user){
+      if(userPref === 'promoter'){
+        router.push("/signup/visualReq")
+      }else{
+        sendOtp(phoneNumber)
+        router.push("/signup/verification")
+      }
     }else{
-      sendOtp(phoneNumber)
-      router.push("/signup/verification")
+      if(userPref === 'promoter'){
+        router.push("/signup/visualReq")
+      }else{
+        addUserPref(userPref,seeVisualAd,linkValue)
+      }
     }
   }
   useEffect(() => {
