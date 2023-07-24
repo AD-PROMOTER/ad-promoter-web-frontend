@@ -9,8 +9,6 @@ const uploadImage = async (files) => {
     formData.append('files', files[i]);
   }
 
-  console.log(formData.getAll('files'));
-
   const response = await axios.post(
     'https://api.ad-promoter.com/api/v1/fileUpload/image',
     formData,
@@ -28,7 +26,6 @@ const uploadImage = async (files) => {
 
     if (response.status === 201) {
       const data = response.data;
-      console.log(data.data);
       for (let i = 0; i < data.data.length; i++) {
         imageURLs.push(data.data[i].fileUrl);
       }
