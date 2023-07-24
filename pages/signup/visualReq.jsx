@@ -23,7 +23,7 @@ const VisualReq = () => {
     const [no, setNo] = useState(false)
     const [remind, setRemind] = useState(false)
     const [user, setUser] = useState(false)
-    const {addUserPref} = useContext(AddUserPref)
+    const {addUserPref} = AddUserPref()
 
     useEffect(()=>{
         const user = JSON.parse(localStorage.getItem("user-detail"));

@@ -21,7 +21,7 @@ const Preference = () => {
   const [placeAds, setPlaceAds] = useState(false)
   const [promoteAds, setPromoteAds] = useState(false)
   const [user, setUser] = useState(false)
-  const {addUserPref} = useContext(AddUserPref)
+  const {addUserPref} = AddUserPref()
   useEffect(()=>{
     const user = JSON.parse(localStorage.getItem("user-detail"));
     setUser(user)

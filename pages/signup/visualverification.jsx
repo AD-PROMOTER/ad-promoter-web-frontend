@@ -20,7 +20,7 @@ const Visualverification = () => {
     const {sendOtp} = useSendOtp()
     const {phoneNumber} = useContext(SignupContext)
     const [user, setUser] = useState(false)
-    const {addUserPref} = useContext(AddUserPref)
+    const {addUserPref} = AddUserPref()
 
     useEffect(()=>{
         const user = JSON.parse(localStorage.getItem("user-detail"));
