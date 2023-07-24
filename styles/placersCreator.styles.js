@@ -364,13 +364,40 @@ export const ModalBackground = styled.div`
     gap: 4rem;
     background: var(--white);
     border-radius: 1.4rem;
-    width: 30%;
+    min-width: 30%;
     height: 40%;
     position: relative;
     input {
       border: none;
     }
+    overflow-y: scroll;
+
+    .confirm {
+      background: #4f00cf;
+      color: #fff;
+      // font-size:
+      padding: 0.5rem 2rem;
+      border-radius: 1rem;
+    }
   }
+
+  .image-preview {
+    display: grid;
+    gap: 1.8rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: 50rem;
+    margin-bottom: 3rem;
+
+    .cancel {
+      position: absolute;
+      left: 6.8rem;
+      top: -1.5rem;
+      z-index: 50;
+      width: 2.2rem;
+      cursor: pointer;
+    }
+  }
+
   .modal {
     display: flex;
     flex-direction: column;
