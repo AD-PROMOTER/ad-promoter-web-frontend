@@ -23,6 +23,29 @@ import { BackdropContainer } from "@/components/DiscoveryFolder/ReportModal/Moda
 const PlacersSettings = () => {
   const [selected, setSelected] = useState("Settings")
   const [showlogout, setShowlogout] = useState(false)
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [image, setImage] = useState();
+  const [profileImage, setProfileImage] = useState();
+  const [profileModal, setProfileModal] = useState(false);
+  const [listValue, setListValue] = useState('None');
+  const [userToken, setUserToken] = useState();
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user-detail'));
+    const token = JSON.parse(localStorage.getItem('user-token'));
+    setUserToken(token);
+    if (user) {
+      setName(user.accountName);
+      setEmail(user.email);
+      setPhoneNumber(user.phoneNumber);
+      setDateOfBirth(user.dateOfBirth);
+      setListValue(user.gender);
+      setProfileImage(user.profilePicture)
+    }
+  }, [setName, setEmail, setPhoneNumber]);
 
   const settingsTabs = [
     {
@@ -62,8 +85,16 @@ const PlacersSettings = () => {
             {selected == "Settings" && (
               <>
                 <div className="user-profile">
-                  <Image src={profil} alt='profile-picture'/>
-                  <h2>Hi, Skylar Dias</h2>
+                  <Image
+                    src={profileImage}
+                    onClick={() => setProfileModal(true)}
+                    alt="Profile"
+                    style={{ cursor: 'pointer', borderRadius: '50%' }}
+                    height={105}
+                    width={105}
+                    objectFit="cover"
+                  />
+                  <h2>Hi, {name}</h2>
                   <div className="welcome">
                     <Image src={wave} alt='wave'/>
                     <p>Welcome back!</p>

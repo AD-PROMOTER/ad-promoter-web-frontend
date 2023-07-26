@@ -681,7 +681,14 @@ const Index = () => {
               <>
                 <div className="welcome">
                   <div className="userProfile">
-                    <Image src={profil} alt="profile picture" />
+                    <div className="profile-img" style={{ borderRadius: '45%' }}>
+                      <Image
+                        src={profileImage}
+                        width={60}
+                        height={60}
+                        alt="profile picture"
+                      />
+                    </div>
                     <div className="username">
                       <p>Hi, {userName}</p>
                       <div className="wave">
@@ -792,7 +799,14 @@ const Index = () => {
           <TabPlacers>
             <div className="welcome">
               <div className="userProfile">
-                <Image src={profile} alt="profile picture" />
+                <div className="profile-img" style={{ borderRadius: '45%' }}>
+                  <Image
+                    src={profileImage}
+                    width={120}
+                    height={120}
+                    alt="profile picture"
+                  />
+                </div>
                 <div className="username">
                   <p>Hi, {userName}</p>
                   <div className="wave">
