@@ -229,7 +229,7 @@ const Visualad = () => {
         <ModalBackground onClick={() => setShowModal(false)}>
           <div onClick={(e) => e.stopPropagation()} className="file-modal">
             {awaitingPreview === true ? (
-              <div>Awaiting preview...</div>
+              <div className='awaiting'>Awaiting preview...</div>
             ) : awaitingPreview === false ? (
               <div>
                 <div className="image-preview">
@@ -255,12 +255,15 @@ const Visualad = () => {
                 </div>
               </div>
             ) : (
-              <input
+              <div className='input'>
+                <input
                 type="file"
                 multiple
                 accept="image/*"
                 onChange={onImageChange}
               />
+              </div>
+              
             )}
           </div>
         </ModalBackground>
