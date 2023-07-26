@@ -29,8 +29,6 @@ const Detailsad = () => {
     setContainAdultContent,
     imageURLs,
     setImageURLs,
-    images, 
-    setImages,
     cta,
     setCta,
   } = useContext(AdPlacerContext);
@@ -40,7 +38,7 @@ const Detailsad = () => {
   const [showModal, setShowModal] = useState(false);
   const submitButtonRef = useRef(null);
   const [awaitingPreview, setAwaitingPreview] = useState();
-  // const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]);
   const toast = useToast();
 
   useEffect(() => {

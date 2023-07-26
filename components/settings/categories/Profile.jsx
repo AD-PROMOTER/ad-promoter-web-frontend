@@ -71,6 +71,7 @@ const Profile = () => {
     const files = e.target.files;
     console.log(files);
     const result = await uploadImage(files);
+    console.log(result)
 
     if(result === "erorr code 500") {
       setImageUploaderError("Something went wrong while trying to upload image");

@@ -118,7 +118,6 @@ export const DashboardContainer = styled.div`
       flex: 2;
       display: flex;
       justify-content: flex-end;
-      margin-top: -50px;
 
       @media screen and (max-width: ${size.tablet}) {
         height: 134px;

@@ -356,17 +356,26 @@ export const ModalBackground = styled.div`
   }
 
   .file-modal {
-    display: flex;
+    /* display: flex; */
     /* flex-direction: column; */
-    align-items: center;
-    justify-content: center;
-    padding: 4rem;
+    /* align-items: center;
+    justify-content: center; */
+    padding: 1.5rem;
     gap: 4rem;
     background: var(--white);
     border-radius: 1.4rem;
     min-width: 30%;
     height: 40%;
     position: relative;
+
+    .input {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
     input {
       border: none;
     }
@@ -375,9 +384,16 @@ export const ModalBackground = styled.div`
     .confirm {
       background: #4f00cf;
       color: #fff;
-      // font-size:
       padding: 0.5rem 2rem;
       border-radius: 1rem;
+    }
+
+    .awaiting {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
     }
   }
 
@@ -387,6 +403,10 @@ export const ModalBackground = styled.div`
     grid-template-columns: repeat(4, minmax(0, 1fr));
     width: 50rem;
     margin-bottom: 3rem;
+    @media screen and (max-width: 750px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      width: 35rem;
+    }
 
     .cancel {
       position: absolute;
