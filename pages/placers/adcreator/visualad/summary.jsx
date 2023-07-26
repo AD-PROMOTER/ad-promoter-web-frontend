@@ -64,14 +64,16 @@ const Summary = () => {
                     <p>{productDescription}</p>
                 </div>
 
-                {/* <div className="product-img">
+                <div className="product-img">
                     <h4>Product Images</h4>
                     <div className="img-container">
-                        <Image src={Img1} alt='product'/>
-                        <Image src={Img2} alt='product'/>
-                        <Image src={Img1} alt='product'/>
+                        {images.map((image, index) => (
+                            <div key={index} style={{ position: 'relative' }}>
+                                <Image src={image} alt="image" height={80} width={80} />
+                            </div>
+                        ))}
                     </div>
-                </div> */}
+                </div>
                 
                 <div className='web-address'>
                     <h4>Company web address</h4>

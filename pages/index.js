@@ -72,8 +72,12 @@ export default function Home() {
             </div>
             <div className="onboard-text-container-subhead">
               <div className="socials">
-                <SocialBtn icon={google} text="Google" />
-                <SocialBtn icon={fb} text="Facebook" />
+                <div onClick={handleGoogleSignIn}>
+                  <SocialBtn icon={google} text="Google" />
+                </div>
+                <div onClick={handleFbSignIn}>
+                  <SocialBtn icon={fb} text="Facebook" />
+                </div>
               </div>
               <div className="divider">
                 <div></div>
