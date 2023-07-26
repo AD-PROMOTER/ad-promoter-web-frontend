@@ -18,9 +18,9 @@ const Success = () => {
       localStorage.setItem('user-token', JSON.stringify(accessToken));
       localStorage.setItem('user-detail', JSON.stringify(result.data.data));
       if (result.data.data.role === 'placer') {
-        router.push('placers');
+        router.push('/placers');
       } else if (result.data.data.role === 'promoter') {
-        router.push('promoters');
+        router.push('/promoters');
       } else {
         router.push('/signup/preference');
       }
