@@ -37,8 +37,6 @@ const Secuirity = () => {
       confirmNewPassword: confirmValue,
     };
 
-    console.log(passwordDetails);
-
     const response = fetch(
       'https://api.ad-promoter.com/api/v1/user/change-password',
       {
@@ -59,7 +57,6 @@ const Secuirity = () => {
 
       if (response.status === 201) {
         const data = await response.json();
-        console.log(data);
         toast({
           title: 'Password Updated',
           status: 'sucess',

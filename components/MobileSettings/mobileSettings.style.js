@@ -64,6 +64,11 @@ export const ProfileContainer = styled.div`
       font-size: 1.7rem;
       line-height: 2.2rem;
     }
+
+    &__imageError {
+      font-size: 14px;
+      color: red;
+    }
   }
   .upload {
     display: flex;
@@ -74,11 +79,18 @@ export const ProfileContainer = styled.div`
     box-shadow: 0px 1px 4px rgba(103, 127, 214, 0.15);
     border-radius: 0.8rem;
     padding: 1.2rem;
+    position: relative;
 
-    p {
+    label {
       font-size: 1.4rem;
       line-height: 2.1rem;
       color: #000000;
+    }
+
+    input {
+      position: absolute;
+      width: 21rem;
+      opacity: 0;
     }
   }
 
@@ -766,8 +778,34 @@ export const SecurityContainer = styled.div`
       width: 100%;
       margin-bottom: 2rem;
     }
+
+    .submit {
+      width: 100%;
+      margin-top: 5rem;
+      margin-bottom: 2rem;
+    }
+
+    .controls {
+      background-color: var(--primary);
+      opacity: 0.25;
+      width: 100%;
+      color: white;
+      text-align: center;
+      padding-top: 1.2rem;
+      padding-bottom: 1.2rem;
+      border-radius: 0.8rem;
+    }
+    .inactive {
+      width: 100%;
+      color: white;
+      text-align: center;
+      padding-top: 1.2rem;
+      padding-bottom: 1.2rem;
+      background-color: #4f00cf;
+      border-radius: 0.8rem;
+    }
   }
-  .controls {
+  /* .controls {
     background-color: var(--primary);
     opacity: 0.25;
     width: 100%;
@@ -789,7 +827,7 @@ export const SecurityContainer = styled.div`
     background-color: #4f00cf;
     border-radius: 0.8rem;
     margin-bottom: 2rem;
-  }
+  } */
 `;
 
 export const PaymentContainer = styled.div`

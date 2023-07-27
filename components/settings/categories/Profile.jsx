@@ -69,9 +69,7 @@ const Profile = () => {
 
   const handleFileInput = async (e) => {
     const files = e.target.files;
-    console.log(files);
     const result = await uploadImage(files);
-    console.log(result)
 
     if(result === "erorr code 500") {
       setImageUploaderError("Something went wrong while trying to upload image");
@@ -95,8 +93,6 @@ const Profile = () => {
     if (listValue) userDetails.gender = listValue.toLowerCase();
     if (image) userDetails.profilePicture = image;
     if (email) userDetails.dateOfBirth = dateOfBirth;
-    
-    console.log(userDetails);
 
     const response = await fetch(
       'https://api.ad-promoter.com/api/v1/user/',
@@ -121,7 +117,6 @@ const Profile = () => {
 
       if (response.status === 200) {
         const data = await response.json();
-        console.log(data);
         toast({
           title: 'Password Updated',
           status: 'sucess',
@@ -133,7 +128,6 @@ const Profile = () => {
         window.location.reload();
       }
     } catch (error) {
-      console.log(error);
       toast({
         title: `${error.message}`,
         status: 'warning',
