@@ -69,9 +69,6 @@ const Notification = ({ userDetails, token }) => {
     setIsChangesMade(false);
   };
 
-  // const userDetails = JSON.parse(window.localStorage.getItem("user-detail"));
-  console.log(userDetails.desktopNotification);
-
   return (
     <StyledNotification>
       <form onSubmit={handleSubmit}>
