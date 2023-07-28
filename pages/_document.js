@@ -59,6 +59,11 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap"
             rel="stylesheet"
           />
+          <link
+            rel="preload"
+            href="https://i.imgur.com/m4JOcII.png"
+            as="image"
+          />
           {/* Open Graph tags */}
           <meta
             property="og:title"
