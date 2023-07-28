@@ -14,51 +14,6 @@ import RightArrowHead from '@/public/assets/right-arrowHead.svg';
 import TimeAgo from '@/components/timeAgo';
 import { CgProfile } from 'react-icons/cg';
 
-const transactionsData = [
-  {
-    name: 'Skylar Dias',
-    image: profile,
-    date: 'Today',
-    amount: '21,000.98',
-    status: 'FAILED',
-  },
-  {
-    name: 'Skylar Dias',
-    image: profile,
-    date: 'Today',
-    amount: '21,000.98',
-    status: 'IN PROGRESS',
-  },
-  {
-    name: 'Skylar Dias',
-    image: profile,
-    date: 'Yesterday',
-    amount: '21,000.98',
-    status: 'COMPLETE',
-  },
-  {
-    name: 'Skylar Dias',
-    image: profile,
-    date: '21, sept, 2019 7:30AM',
-    amount: '21,000.98',
-    status: 'COMPLETE',
-  },
-  {
-    name: 'Skylar Dias',
-    image: profile,
-    date: '21, sept, 2019 7:30AM',
-    amount: '21,000.98',
-    status: 'COMPLETE',
-  },
-  {
-    name: 'Skylar Dias',
-    image: profile,
-    date: '21, sept, 2019 7:30AM',
-    amount: '21,000.98',
-    status: 'COMPLETE',
-  },
-];
-
 const TransactionHistory = ({transactionHistory,isLoading}) => {
   const [openDropdown, setOpenDropdown] = useState(false);
 

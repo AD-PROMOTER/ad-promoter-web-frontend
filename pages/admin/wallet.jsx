@@ -22,13 +22,14 @@ const AdminWallet = () => {
   const [showPaymentDetailsModal, setShowPaymentDetailsModal] = useState(false);
   const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [transactionHistory,setTransactionHistory] = useState([]);
 
   return (
     <PromoterWalletContainer admin={true}>
       <PromoterWalletStyles>
         <div className="container">
           <WalletSummary admin={true} />
-          <TransactionHistory />
+          <TransactionHistory transactionHistory={transactionHistory}/>
         </div>
         <Wallet
           admin={true}
