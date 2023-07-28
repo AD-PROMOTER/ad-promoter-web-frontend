@@ -77,17 +77,22 @@ export const Filterstyled = styled.div`
   }
 `;
 export const Container = styled.div`
-  max-width: 123rem;
+  max-width: 128rem;
   margin: 0 auto;
   margin-top: 3rem;
 
   .jobs {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     gap: 2rem;
+    width: 100%;
   }
   .col1 {
-    grid-column: span 2 / span 2;
+    width: 60%;
+  }
+  .col2 {
+    width: 40%;
   }
 `;
 export const Feed = styled.div`
@@ -96,6 +101,7 @@ export const Feed = styled.div`
   background-color: var(--white);
   border-radius: 1.2rem;
   position: relative;
+  width: 100%;
 
   .type {
     padding: 2rem;
@@ -186,7 +192,7 @@ export const Feed = styled.div`
         align-items: center;
         gap: 0.5rem;
         font-size: 1.2rem;
-        /* margin-top: 1rem; */
+        margin-top: 0.2rem;
 
         .tag {
           padding: 0.8rem 1.6rem;
@@ -208,6 +214,7 @@ export const Feed = styled.div`
           align-items: center;
           gap: 0.5rem;
           font-size: 1.2rem;
+          margin-top: 0.2rem;
 
           .recTag {
             padding: 0.8rem 1.6rem;
@@ -535,6 +542,11 @@ export const Feed = styled.div`
 `;
 
 export const DiscoveryContainer = styled.div`
+  @media screen and (max-width: 1024px) {
+    h3 {
+      display: none;
+    }
+  }
   .scroll-container {
     height: 100vh;
     /* overflow-y: scroll; */
@@ -543,9 +555,6 @@ export const DiscoveryContainer = styled.div`
     &::-webkit-scrollbar {
       display: none;
     }
-    /* @media screen and (min-width: 425px) {
-      height: auto;
-    } */
   }
 `;
 

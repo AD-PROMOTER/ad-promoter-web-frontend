@@ -302,14 +302,14 @@ const Index = () => {
             <StyledHome>
               <DashboardContainer>
                 <div className="welcome">
-                  <div className="profile-img" style={{ borderRadius: '45%' }}>
-                    <Image
-                      src={profileImage}
-                      width={150}
-                      height={150}
-                      alt="profile picture"
-                    />
-                  </div>
+                  <Image
+                    src={profileImage}
+                    width={'145px'}
+                    height={'134px'}
+                    style={{borderRadius: '16px'}}
+                    alt="profile picture"
+                  />
+                 
                   <div className="welcome-text">
                     <h3>Hi, {userName}</h3>
                     <div className="welcome-text-sub">
@@ -681,11 +681,11 @@ const Index = () => {
               <>
                 <div className="welcome">
                   <div className="userProfile">
-                    <div className="profile-img" style={{ borderRadius: '45%' }}>
+                    <div className="profile-img" style={{ borderRadius: '1rem' }}>
                       <Image
                         src={profileImage}
-                        width={60}
-                        height={60}
+                        width={'145px'}
+                        height={'134px'}
                         alt="profile picture"
                       />
                     </div>

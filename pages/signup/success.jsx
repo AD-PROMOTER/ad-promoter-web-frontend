@@ -1,5 +1,5 @@
 import { BgContainer } from "@/components/onboardingBg/styles"
-import bg from '@/public/assets/onboard-bg.png'
+import bg from '@/public/assets/bg.png'
 import { Overlay, SuccessMobile } from "@/styles/success"
 import logo from '@/public/assets/newOnboardLogo.svg'
 import Image from "next/image"

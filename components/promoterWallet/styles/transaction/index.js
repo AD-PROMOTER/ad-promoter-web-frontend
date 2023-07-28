@@ -2,13 +2,12 @@ import styled from 'styled-components';
 
 export const TransactionHistoryStyles = styled.div`
   background: var(--white);
-  /* grid-column-start: 1;
-  grid-column-end: 3; */
   max-width: 88.7rem;
   box-shadow: var(--shadow-6);
-  border-radius: 0.6rem;
+  border-radius: 1rem;
   padding: 1.5rem;
   margin-top: 4rem;
+  /* min-height: 700px; */
   @media (min-width: 768px) and (max-width: 1024px) {
     max-width: 100%;
   }
@@ -53,7 +52,7 @@ export const TransactionHistoryStyles = styled.div`
 
   .transactionContainer {
     overflow-y: scroll;
-    height: 30rem;
+    max-height: 600px;
     background: #f4f4f4;
     cursor: grab;
   }

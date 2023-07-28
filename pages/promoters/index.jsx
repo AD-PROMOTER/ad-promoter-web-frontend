@@ -298,11 +298,12 @@ const Index = ({ router }) => {
             <StyledHome>
               <ScrollContainer className="home-dashboard">
                 <div className="welcome">
-                  <div className="profile-img" style={{ borderRadius: '45%' }}>
+                  <div className="profile-img">
                     <Image
                       src={profileImage}
                       width={145}
                       height={134}
+                      style={{borderRadius: '16px'}}
                       alt="profile picture"
                     />
                   </div>

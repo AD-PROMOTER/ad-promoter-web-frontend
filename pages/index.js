@@ -1,7 +1,7 @@
 // import Head from 'next/head'
 import Link from 'next/link';
 import logo from '@/public/assets/newest-logo.png';
-import bg from '@/public/assets/onboard-bg.png';
+import bg from '@/public/assets/bg.png';
 // import logo from '@/public/assets/onboarding-logo.svg';
 import adlogo from '@/public/assets/newOnboardLogo.svg';
 import Image from 'next/image';

@@ -1,5 +1,5 @@
 import { BgContainer } from "@/components/onboardingBg/styles"
-import bg from '@/public/assets/onboard-bg.png'
+import bg from '@/public/assets/bg.png'
 import { Overlay } from "@/styles/visualReq.styles"
 import Close from '@/public/assets/close-icon'
 import Copy from '@/public/assets/copy-icon'

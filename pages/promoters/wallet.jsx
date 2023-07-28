@@ -13,12 +13,9 @@ import Image from 'next/image';
 import money from '@/public/assets/money.svg';
 import wallet from '@/public/assets/empty-wallet-change.svg';
 import plus from '@/public/assets/plus.svg';
-import gtb from '@/public/assets/gtb.svg';
-import fcmb from '@/public/assets/fcmb.svg';
 import emptyWallet from '@/public/assets/empty-wallet-add.svg';
 import documentDownload from '@/public/assets/document-download.svg';
 import Transaction from '@/components/MobilePromoterWallet/Transaction';
-import Recent from '@/components/MobilePromoterHome/Recent';
 import { BackdropContainer } from '@/components/MobilePromoterHome/style';
 import PaymentDetails from '@/components/MobilePromoterWallet/PaymentDetails';
 import Verification from '@/components/MobilePromoterWallet/Verification';
@@ -47,6 +44,7 @@ const PromoterWallet = () => {
   const [showSummary, setShowSummary] = useState(true)
   const token = useRef('')
   const [isLoading,setIsLoading] = useState(false)
+  const [isTransactionHistoryLoading,setIsTransactionHistoryLoading] = useState(false)
   const [isDashboardLoading,setIsDashboardLoading] = useState(false)
   const [totalBalance,setTotalBalance] = useState('')
   const [pendingWithdrawals,setPendingWithdrawals] = useState('')
@@ -168,7 +166,7 @@ const PromoterWallet = () => {
     }
     
     const fetchTransactionHistory = async() =>{
-      setIsLoading(true)
+      setIsTransactionHistoryLoading(true)
       const result = await axios(`https://api.ad-promoter.com/api/v1/payouts/history?page=1&pageSize=10`,{
         headers:{
           Authorization: `Bearer ${token.current}`
@@ -265,7 +263,7 @@ const PromoterWallet = () => {
       <PromoterWalletStyles>
         <div className='container'>
           <WalletSummary isDashboardLoading={isDashboardLoading} openFilter={openFilter} setOpenFilter={setOpenFilter} totalBalance={totalBalance} pendingWithdrawals={pendingWithdrawals} amountPaid={amountPaid} handleFilterSelect={handleFilterSelect} clickedFilter={clickedFilter} admin={false} />
-          <TransactionHistory isLoading = {isLoading} transactionHistory={transactionHistory} />
+          <TransactionHistory isLoading = {isTransactionHistoryLoading} transactionHistory={transactionHistory} />
         </div>
         <Wallet
           onOpenWithdrawProcess={() => setShowWithdrawProcessModal(true)}

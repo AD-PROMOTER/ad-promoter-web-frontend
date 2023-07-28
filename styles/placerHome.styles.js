@@ -42,6 +42,7 @@ export const DashboardContainer = styled.div`
     width: 100%;
     background: #ffffff;
     border-radius: 10px;
+    padding: 2.4rem;
 
     .bell {
       display: none;

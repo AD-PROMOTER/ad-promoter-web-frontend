@@ -187,13 +187,13 @@ const DiscoveryPage = () => {
         </Filterstyled>
         <Container>
             <div className='jobs'>
-                <div className='col1'>
-                    <DiscoveryFeed isLoading={isLoading} feed={feed} fetchFeed={fetchFeed} clickShow={handleShowReport}/>
-                </div>
-                <div className='col2'>
-                    <h3 style={{fontWeight: 'bold', fontSize: '2rem',marginBottom:'1rem'}}>Recommended Jobs</h3>
-                    <DiscoveryJob isLoading={isRecLoading} recommendedJobs={recommendedJobs} fetchRecommended={fetchRecommended} clickShow={handleShowReport}/>
-                </div>
+              <div className='col1'>
+                  <DiscoveryFeed isLoading={isLoading} feed={feed} fetchFeed={fetchFeed} clickShow={handleShowReport}/>
+              </div>
+              <div className='col2'>
+                  <h3 style={{fontWeight: 'bold', fontSize: '2rem',marginBottom:'1rem'}}>Recommended Jobs</h3>
+                  <DiscoveryJob isLoading={isRecLoading} recommendedJobs={recommendedJobs} fetchRecommended={fetchRecommended} clickShow={handleShowReport}/>
+              </div>
             </div>
         </Container>
     </Desktop>

@@ -19,10 +19,11 @@ import arrowUp from '@/public/assets/arrow-up.svg'
 import ShareDialogue from '../shareDialogue'
 import { BackdropContainer, ModalContainer } from '../PromoterHomeAdDetail/styles'
 import { Spinner, useToast } from '@chakra-ui/react'
+import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
 
 
 const SingleDiscoveryRecommended = ({recommendedJobs,fetchRecommended,isLoading}) => {
-  const [showReport, setShowReport] = useState(false)
+  const [showReport, setShowReport] = useState([])
     const toast = useToast()
     const ref = useRef(null)
     const token = useRef('')
@@ -92,20 +93,20 @@ const handleOpenDialogue = () => {
   setShowDialogue(!showDialogue);
 };
 
-  useEffect(() => {
-    const onClickOutside = () => {
-      setShowReport(false)
-    }
-      const handleClickOutside = (event) => {
-          if (ref.current && !ref.current.contains(event.target)) {
-              onClickOutside && onClickOutside();
-          }
-      }
-      document.addEventListener('click', handleClickOutside, true);
-      return () => {
-          document.removeEventListener('click', handleClickOutside, true);
-      }
-  }, [])
+  // useEffect(() => {
+  //   const onClickOutside = () => {
+  //     setShowReport(false)
+  //   }
+  //     const handleClickOutside = (event) => {
+  //         if (ref.current && !ref.current.contains(event.target)) {
+  //             onClickOutside && onClickOutside();
+  //         }
+  //     }
+  //     document.addEventListener('click', handleClickOutside, true);
+  //     return () => {
+  //         document.removeEventListener('click', handleClickOutside, true);
+  //     }
+  // }, [])
 
   const handleShowPaste = () => {
     setShowSubmit(false)
@@ -297,6 +298,12 @@ const handleReport = async (id,report) =>{
     }
 }
 
+const toggleDropdown = (index) => {
+  const updatedDropdownOpen = [...showReport];
+  updatedDropdownOpen[index] = !updatedDropdownOpen[index];
+  setShowReport(updatedDropdownOpen);
+};
+
   return (
         <>
           {recommendedJobs.length === 0 && !isLoading ?(
@@ -308,9 +315,9 @@ const handleReport = async (id,report) =>{
                 <div className='type'>
                   <div className='recAd'>
                     <div className='recDirect'>{item.type + ' ad'}</div>
-                    <div className='recDot' onClick={()=> setShowReport(!showReport)}>
+                    <div className='recDot' onClick={() => toggleDropdown(item.id)}>
                       <Image src={more} alt="more"/>
-                      {showReport && (<ul ref={ref}>
+                      {showReport[item.id] && (<ul>
                         <li onClick={handleShowReport}>Report this advert</li>
                         <li onClick={()=>handleAdRemoval(item.id)}>Remove from feed</li>
                       </ul>)}
@@ -318,7 +325,7 @@ const handleReport = async (id,report) =>{
                   </div>
                   <div className='reclink'>
                     <div className='stack'>
-                      <p style={{fontWeight: 'bold', fontSize: '1.6rem'}}>{item.productName}</p>
+                      <p style={{fontWeight: '600', fontSize: '1.6rem',color: '#2C2828'}}>{item.productName}</p>
                       <div className='recProfile'>
                         <p>Tags:</p>
                         {item.tags.map((tag, index) => (
@@ -382,14 +389,14 @@ const handleReport = async (id,report) =>{
                     <>
                       <div className='product-img-container'>
                         <div className='carousel-container'>
-                          <div onClick={() => previousImage(item.images)} className='left-arrow'>
-                              ❮
+                          <div onClick={() => previousImage(item.images)} className='left-arrow' style={{width: '20px'}}>
+                              <BsFillArrowLeftCircleFill />
                           </div>
                           <div className='img-container' style={{borderRadius:'36px'}}>
                             <Image src={item.images[currentIndex]} alt='product' width={360} height={236}/>
                           </div>
-                          <div onClick={() => nextImage(item.images)} className='right-arrow'>
-                            ❯
+                          <div onClick={() => nextImage(item.images)} className='right-arrow' style={{width: '20px'}}>
+                            <BsFillArrowRightCircleFill />
                           </div>
                         </div>
                       </div>

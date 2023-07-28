@@ -63,13 +63,15 @@ const Index = () => {
           </div>
           {isNotifClicked && <NotificationContainer />}
         </div>
-        <Image
-          src={profileImage}
-          alt="profile picture"
-          width={52}
-          height={52}
-          style={{ borderRadius: '50%' }}
-        />
+        <div style={{ width: '52px', height: '52px' }}>
+          <Image
+            src={profileImage}
+            alt="profile picture"
+            width={'100%'}
+            height={'100%'}
+            style={{objectFit: 'fill', borderRadius: '100px' }}
+          />
+        </div>
       </div>
     </StyledNavBar>
   );

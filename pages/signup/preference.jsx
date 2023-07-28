@@ -1,5 +1,5 @@
 // eslint-disable-next-line react-hooks/exhaustive-deps
-import bg from '@/public/assets/onboard-bg.png'
+import bg from '@/public/assets/bg.png'
 import Close from '@/public/assets/close-icon'
 import Image from "next/image"
 import logo from '@/public/assets/newOnboardLogo.svg'

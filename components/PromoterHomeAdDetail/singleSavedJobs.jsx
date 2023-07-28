@@ -21,9 +21,10 @@ import { CgProfile } from 'react-icons/cg'
 import TimeAgo from '../timeAgo'
 import linkFrame from '@/public/assets/linkframe.svg'
 import ShareDialogue from '../shareDialogue'
+import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
 
 const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
-    const [showReport, setShowReport] = useState(false)
+    const [showReport, setShowReport] = useState([])
     const ref = useRef(null)
     const token = useRef('')
     const [isReportLoading, setIsReportLoading] = useState(null);
@@ -327,6 +328,12 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
             }
         }
 
+        const toggleDropdown = (index) => {
+            const updatedDropdownOpen = [...showReport];
+            updatedDropdownOpen[index] = !updatedDropdownOpen[index];
+            setShowReport(updatedDropdownOpen);
+        };
+
   return (          
             <>
             {savedJobs.length && !isLoading === 0 ?(
@@ -339,9 +346,9 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                 <div className="product-summary-head">
                                     <div className="ad-type-container">
                                         <div className="adtype">{item.type}</div>
-                                        <div className='dot' onClick={()=> setShowReport(!showReport)}>
+                                        <div className='dot' onClick={()=> toggleDropdown(item.id)}>
                                             <Image src={more} alt="more"/>
-                                            {showReport && (<ul ref={ref}>
+                                            {showReport[item.id] && (<ul>
                                                 <li onClick={handleShowReport}>Report this advert</li>
                                                 <li onClick={()=>handleAdRemoval(item.id)}>Remove from feed</li>
                                             </ul>)}
@@ -415,14 +422,14 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                     <div className='submit-image-container'>
                                         <div className="product-img-container">
                                             <div className='carousel-container'>
-                                                <div onClick={() => previousImage(item.images)} className='left-arrow'>
-                                                    ❮
+                                                <div onClick={() => previousImage(item.images)} className='left-arrow' style={{width: '20px'}}>
+                                                    <BsFillArrowLeftCircleFill />
                                                 </div>
                                                 <div className='img-container' style={{borderRadius:'36px'}}>
                                                     <Image src={item.images[currentIndex]} alt='product' width={360} height={236}/>
                                                 </div>
-                                                <div onClick={() => nextImage(item.images)} className='right-arrow'>
-                                                    ❯
+                                                <div onClick={() => nextImage(item.images)} className='right-arrow' style={{width: '20px'}}>
+                                                    <BsFillArrowRightCircleFill />
                                                 </div>
                                             </div>
                                         </div>

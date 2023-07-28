@@ -21,9 +21,10 @@ import TimeAgo from '../timeAgo'
 import linkFrame from '@/public/assets/linkframe.svg'
 import { Spinner, useToast } from '@chakra-ui/react'
 import ShareDialogue from '../shareDialogue'
+import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
 
 const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
-    const [showReport, setShowReport] = useState(false)
+    const [showReport, setShowReport] = useState([])
     const toast = useToast()
     const ref = useRef(null)
     const token = useRef('')
@@ -313,6 +314,12 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                 });
             }
         }
+
+        const toggleDropdown = (index) => {
+            const updatedDropdownOpen = [...showReport];
+            updatedDropdownOpen[index] = !updatedDropdownOpen[index];
+            setShowReport(updatedDropdownOpen);
+        };
     
   return (
     <>
@@ -326,9 +333,9 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                             <div className="product-summary-head">
                                 <div className="ad-type-container">
                                     <div className="adtype">{item.type}</div>
-                                    <div className='dot' onClick={()=> setShowReport(!showReport)}>
+                                    <div className='dot' onClick={()=> toggleDropdown(item.id)}>
                                         <Image src={more} alt="more"/>
-                                        {showReport && (<ul ref={ref}>
+                                        {showReport[item.id] && (<ul>
                                             <li onClick={handleShowReport}>Report this advert</li>
                                             <li onClick={()=>handleAdRemoval(item.id)}>Remove from feed</li>
                                         </ul>)}
@@ -402,14 +409,14 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                             <div className='submit-image-container'>                                    
                                 <div className="product-img-container">
                                     <div className='carousel-container'>
-                                        <div onClick={goToPrevious} className='left-arrow'>
-                                            ❮
+                                        <div onClick={goToPrevious} className='left-arrow' style={{width: '20px'}}>
+                                            <BsFillArrowLeftCircleFill />
                                         </div>
                                         <div className='img-container' style={{borderRadius:'36px'}}>
                                             <Image src={item.images[currentIndex]} alt='product' width={360} height={236}/>
                                         </div>
-                                        <div onClick={goToNext} className='right-arrow'>
-                                            ❯
+                                        <div onClick={goToNext} className='right-arrow' style={{width: '20px'}}>
+                                            <BsFillArrowRightCircleFill />
                                         </div>
                                     </div>
                                 </div>

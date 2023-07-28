@@ -19,6 +19,7 @@ import ShareDialogue from '../shareDialogue'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import { BackdropContainer, ModalContainer } from '../PromoterHomeAdDetail/styles'
+import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
 
 const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
     const [showReport, setShowReport] = useState([])
@@ -384,9 +385,10 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                         </ul>)}
                                     </div>
                                 </div>
+                                
                                 <div className='adlink'>
                                     <div>
-                                        <h3 style={{fontWeight: 'bold', fontSize: '1.6rem', color:'red'}}>{item.productName}</h3>
+                                        <h3 style={{fontWeight: '600', fontSize: '1.6rem',color: '#2C2828'}}>{item.productName}</h3>
                                         <div className='profile'>
                                             <p>Tags:</p>
                                             {item.tags.map((tag, index) => (
@@ -451,14 +453,14 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                     <>
                                         <div className="product-img-container">
                                             <div className='carousel-container'>
-                                                <div onClick={() => previousImage(item.images)} className='left-arrow'>
-                                                    ❮
+                                                <div onClick={() => previousImage(item.images)} className='left-arrow' style={{width: '20px'}}>
+                                                    < BsFillArrowLeftCircleFill />
                                                 </div>
                                                 <div className='img-container' style={{borderRadius:'36px'}}>
                                                     <Image src={item.images[currentIndex]} alt='product' width={360} height={236}/>
                                                 </div>
-                                                <div onClick={() => nextImage(item.images)} className='right-arrow'>
-                                                    ❯
+                                                <div onClick={() => nextImage(item.images)} className='right-arrow' style={{width: '20px'}}>
+                                                    <BsFillArrowRightCircleFill />
                                                 </div>
                                             </div>
                                         </div>

@@ -2,7 +2,7 @@
 import { BgContainer } from '@/components/onboardingBg/styles'
 import { Overlay, ReqMobile } from '@/styles/visualReq.styles'
 import Close from '@/public/assets/close-icon'
-import bg from '@/public/assets/onboard-bg.png'
+import bg from '@/public/assets/bg.png'
 import Image from 'next/image'
 import logo from '@/public/assets/newOnboardLogo.svg'
 import Link from 'next/link'

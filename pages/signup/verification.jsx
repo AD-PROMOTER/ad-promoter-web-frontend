@@ -2,7 +2,7 @@ import { BgContainer } from "@/components/onboardingBg/styles"
 import { Overlay, VerificationMobile } from "@/styles/verification.styles"
 import logo from '@/public/assets/logo-rounded.svg'
 import Image from "next/image"
-import bg from '@/public/assets/onboard-bg.png'
+import bg from '@/public/assets/bg.png'
 import { useRouter } from "next/router"
 import { useContext, useEffect, useState } from "react"
 import SignupContext from "@/context/signupContext"

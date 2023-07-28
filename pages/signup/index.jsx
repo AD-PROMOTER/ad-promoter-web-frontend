@@ -1,4 +1,4 @@
-import bg from '@/public/assets/onboard-bg.png'
+import bg from '@/public/assets/bg.png'
 import { Overlay, SignupMobile } from '@/styles/signup'
 import Image from 'next/image'
 import logo from '@/public/assets/newOnboardLogo.svg'

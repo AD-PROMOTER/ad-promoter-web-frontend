@@ -19,6 +19,7 @@ import arrowDown from '@/public/assets/arrow-down.svg'
 import TimeAgo from '../timeAgo'
 import { Spinner } from '@chakra-ui/react'
 import axios from 'axios'
+import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
 
 const MobileRecentPlacers = ({handleShowReport,handleAdRemoval,showReport,setShowReport,showReportModal,setShowReportModal,showDropdown,setShowDropdown,isReadMore,setIsReadMore,currentIndex,setCurrentIndex,listValue,setListValue,ClickedList,toggleReadMore,previousImage,nextImage,dashboardEndDate,dashboardStartDate}) => {
     const [recentJobs,setRecentJobs] = useState([])
@@ -57,21 +58,27 @@ const MobileRecentPlacers = ({handleShowReport,handleAdRemoval,showReport,setSho
         }
     },[dashboardEndDate, dashboardStartDate])
 
-    useEffect(() => {
-        const onClickOutside = () => {
-            setShowReport(false)
-            setIsToSubmit(false)
-        }
-        const handleClickOutside = (event) => {
-            if (ref.current && !ref.current.contains(event.target)) {
-                onClickOutside && onClickOutside();
-            }
-        }
-        document.addEventListener('click', handleClickOutside, true);
-        return () => {
-            document.removeEventListener('click', handleClickOutside, true);
-        }
-    }, [setShowReport])
+    const toggleDropdown = (index) => {
+        const updatedDropdownOpen = [...showReport];
+        updatedDropdownOpen[index] = !updatedDropdownOpen[index];
+        setShowReport(updatedDropdownOpen);
+    };
+
+    // useEffect(() => {
+    //     const onClickOutside = () => {
+    //         setShowReport(false)
+    //         setIsToSubmit(false)
+    //     }
+    //     const handleClickOutside = (event) => {
+    //         if (ref.current && !ref.current.contains(event.target)) {
+    //             onClickOutside && onClickOutside();
+    //         }
+    //     }
+    //     document.addEventListener('click', handleClickOutside, true);
+    //     return () => {
+    //         document.removeEventListener('click', handleClickOutside, true);
+    //     }
+    // }, [setShowReport])
 
     // const handleClickedFilter = (e) =>{
     //     setClickedFilter(e.target.innerText)
@@ -121,8 +128,8 @@ const MobileRecentPlacers = ({handleShowReport,handleAdRemoval,showReport,setSho
                                     <div className="product-summary-head">
                                         <div className="ad-type-container">
                                             <div className="adtype">{item.type}</div>
-                                            <div className='dot' onClick={()=> setShowReport(true)}>
-                                                {showReport ? (<ul ref={ref}>
+                                            <div className='dot' onClick={() => toggleDropdown(item.id)}>
+                                                {showReport[item.id] ? (<ul>
                                                     <li onClick={handleShowReport}>
                                                         <Image src={info} alt='info'/>
                                                         <p>Report this advert</p>
@@ -201,14 +208,14 @@ const MobileRecentPlacers = ({handleShowReport,handleAdRemoval,showReport,setSho
                                     ):(
                                     <div className="product-img-container">
                                     <div className='carousel-container'>
-                                        <div onClick={() => previousImage(item.images)} className='left-arrow'>
-                                            ❮
+                                        <div onClick={() => previousImage(item.images)} className='left-arrow' style={{width: '20px'}}>
+                                            <BsFillArrowLeftCircleFill />
                                         </div>
                                         <div className='img-container'>
                                             <Image src={item.images[currentIndex]} alt='product' width={360} height={236}/>
                                         </div>
-                                        <div onClick={() => nextImage(item.images)} className='right-arrow'>
-                                            ❯
+                                        <div onClick={() => nextImage(item.images)} className='right-arrow' style={{width: '20px'}}>
+                                            <BsFillArrowRightCircleFill />
                                         </div>
                                     </div>
                                     </div>

@@ -1,5 +1,5 @@
 import { BgContainer } from "@/components/onboardingBg/styles"
-import bg from '@/public/assets/onboard-bg.png'
+import bg from '@/public/assets/bg.png'
 import { MobileLogin, Overlay } from "@/styles/login.styles"
 import Close from '@/public/assets/close-icon'
 import Image from "next/image"
