@@ -64,7 +64,7 @@ export default class MyDocument extends Document {
             property="og:title"
             content="Explore The World Of Seamless Online Promotion"
           />
-          <meta property="og:image" content="https://imgur.com/a/xWyfhDK" />
+          <meta property="og:image" content="https://i.imgur.com/m4JOcII.png" />
           <meta
             property="og:description"
             content="AD-Promoter is a digital serviced based app that offers a result-oriented strategy for global brand growth. It creates unlimited access to transform brands into bigger ones by allowing users to reach multiple target audiences in various locations with a few clicks and a custom budget."
@@ -75,7 +75,7 @@ export default class MyDocument extends Document {
           {/* Fallback image in case the og:image is not available */}
           <meta
             property="og:image:secure_url"
-            content="https://imgur.com/a/xWyfhDK"
+            content="https://i.imgur.com/m4JOcII.png"
           />
 
           {/* Twitter card meta tags (optional, for Twitter sharing) */}
@@ -89,7 +89,10 @@ export default class MyDocument extends Document {
             name="twitter:description"
             content="AD-Promoter is a digital serviced based app that offers a result-oriented strategy for global brand growth. It creates unlimited access to transform brands into bigger ones by allowing users to reach multiple target audiences in various locations with a few clicks and a custom budget."
           />
-          <meta name="twitter:image" content="https://imgur.com/a/xWyfhDK" />
+          <meta
+            name="twitter:image"
+            content="https://i.imgur.com/m4JOcII.png"
+          />
         </Head>
         <body>
           <Main />
