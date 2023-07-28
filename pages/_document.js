@@ -59,6 +59,43 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap"
             rel="stylesheet"
           />
+          {/* Open Graph tags */}
+          <meta
+            property="og:title"
+            content="Explore The World Of Seamless Online Promotion"
+          />
+          <meta
+            property="og:image"
+            content="https://adpromoter.s3.amazonaws.com/93dc0ed5-d887-49ed-b011-44f21b690984-1200%20x%20630%20Open%20graph%20image%20.png"
+          />
+          <meta
+            property="og:description"
+            content="AD-Promoter is a digital serviced based app that offers a result-oriented strategy for global brand growth. It creates unlimited access to transform brands into bigger ones by allowing users to reach multiple target audiences in various locations with a few clicks and a custom budget."
+          />
+          <meta property="og:url" content="https://app.ad-promoter.com/" />
+          <meta property="og:type" content="website" />
+
+          {/* Fallback image in case the og:image is not available */}
+          <meta
+            property="og:image:secure_url"
+            content="https://adpromoter.s3.amazonaws.com/93dc0ed5-d887-49ed-b011-44f21b690984-1200%20x%20630%20Open%20graph%20image%20.png"
+          />
+
+          {/* Twitter card meta tags (optional, for Twitter sharing) */}
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:site" content="@adpromoter_" />
+          <meta
+            name="twitter:title"
+            content="Explore The World Of Seamless Online Promotion"
+          />
+          <meta
+            name="twitter:description"
+            content="AD-Promoter is a digital serviced based app that offers a result-oriented strategy for global brand growth. It creates unlimited access to transform brands into bigger ones by allowing users to reach multiple target audiences in various locations with a few clicks and a custom budget."
+          />
+          <meta
+            name="twitter:image"
+            content="https://adpromoter.s3.amazonaws.com/93dc0ed5-d887-49ed-b011-44f21b690984-1200%20x%20630%20Open%20graph%20image%20.png"
+          />
         </Head>
         <body>
           <Main />

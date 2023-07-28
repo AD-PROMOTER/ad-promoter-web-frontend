@@ -81,7 +81,7 @@ const TransactionHistory = ({transactionHistory,isLoading}) => {
           </div>
         </button>
       </div>
-      {transactionHistory.length === 0 && isLoading ?(
+      {isLoading ?(
         <p>Loading...</p>
       ):(
         <>      
