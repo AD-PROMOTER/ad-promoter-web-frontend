@@ -10,6 +10,8 @@ import Modal from './ReportModal/Modal'
 import Backdrop from './ReportModal/Backdrop'
 import axios from 'axios'
 import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from '@/utils/formatFilterDate'
+import DiscoveryEmptyScreen from '../discoveryEmptyScreen'
+import SearchEmptyScreen from '../failedSearch'
 
 const DiscoveryPage = () => {
     const [showDropdown, setShowDropdown] = useState(false)
@@ -186,15 +188,25 @@ const DiscoveryPage = () => {
             </div>
         </Filterstyled>
         <Container>
-            <div className='jobs'>
-              <div className='col1'>
-                  <DiscoveryFeed isLoading={isLoading} feed={feed} fetchFeed={fetchFeed} clickShow={handleShowReport}/>
+          {isLoading ? (
+            <DiscoveryEmptyScreen />
+          ):(
+          <>
+            {!isLoading && searchTag && feed.length === 0 && recommendedJobs.length === 0 ? (
+              <SearchEmptyScreen />
+            ):(
+              <div className='jobs'>
+                <div className='col1'>
+                    <DiscoveryFeed isLoading={isLoading} feed={feed} fetchFeed={fetchFeed} clickShow={handleShowReport}/>
+                </div>
+                <div className='col2'>
+                    <h3 style={{fontWeight: 'bold', fontSize: '2rem',marginBottom:'1rem'}}>Recommended Jobs</h3>
+                    <DiscoveryJob isLoading={isLoading} recommendedJobs={recommendedJobs} fetchRecommended={fetchRecommended} clickShow={handleShowReport}/>
+                </div>
               </div>
-              <div className='col2'>
-                  <h3 style={{fontWeight: 'bold', fontSize: '2rem',marginBottom:'1rem'}}>Recommended Jobs</h3>
-                  <DiscoveryJob isLoading={isRecLoading} recommendedJobs={recommendedJobs} fetchRecommended={fetchRecommended} clickShow={handleShowReport}/>
-              </div>
-            </div>
+            )}
+          </>
+          )}
         </Container>
     </Desktop>
     

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const Desktop = styled.div`
   display: block;
+  padding-bottom: 1rem;
   @media screen and (max-width: 425px) {
     display: none;
   }
@@ -80,6 +81,9 @@ export const Container = styled.div`
   max-width: 128rem;
   margin: 0 auto;
   margin-top: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .jobs {
     display: flex;
@@ -565,7 +569,8 @@ export const MobileDiscovery = styled.div`
   padding-bottom: 10rem;
   display: none;
   @media screen and (max-width: 425px) {
-    display: block;
+    display: flex;
+    flex-direction: column;
   }
 
   .back-disc {
@@ -682,7 +687,8 @@ export const MobileDiscovery = styled.div`
 export const TabDiscovery = styled.div`
   display: none;
   @media (min-width: 768px) and (max-width: 1024px) {
-    display: block;
+    display: flex;
+    flex-direction: column;
   }
   .style-filter {
     background-color: var(--white);

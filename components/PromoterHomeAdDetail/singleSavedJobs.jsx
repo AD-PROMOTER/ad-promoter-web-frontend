@@ -22,6 +22,8 @@ import TimeAgo from '../timeAgo'
 import linkFrame from '@/public/assets/linkframe.svg'
 import ShareDialogue from '../shareDialogue'
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
+import { useContext } from 'react'
+import JobsContext from '@/context/jobsContext'
 
 const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
     const [showReport, setShowReport] = useState([])
@@ -32,8 +34,7 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
     const [showReportModal,setShowReportModal] = useState(false)
     const [showDropdown, setShowDropdown] = useState(false)
     const [listValue, setListValue] = useState('It has gory images')
-    const [isLoading,setIsLoading] = useState(false)
-    const [savedJobs,setSavedJobs] = useState([])
+    const {savedJobs,setSavedJobs,isLoading,setIsLoading} = useContext(JobsContext)
     const [showSubmit,setShowSubmit] = useState(true)
     const [showPaste,setShowPaste] = useState(false)
     const [currentIndex,setCurrentIndex] = useState(0)

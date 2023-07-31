@@ -8,33 +8,9 @@ import axios from "axios"
 import { GlobalStyle } from "@/styles/global"
 import NotificationEmptyScreen from "../notificationEmptyScreen"
 import { ButtonSpinner } from "@chakra-ui/react"
-const Index = () => {
+const Index = ({notificationData,isLoading}) => {
   const { isNotifClicked,setIsNotifClicked } = useContext(NotificationContext)
-  const [isLoading,setIsLoading] = useState(null)
-  const [notificationData,setNotificationData] = useState([])
-  const token = useRef()
-  useEffect(() => {
-    const userToken = JSON.parse(localStorage.getItem("user-token"));
-
-    if (userToken) {
-      token.current = userToken
-    }
-
-    const fetchNotification = async() =>{
-      setIsLoading(true)
-      const result = await axios(`https://api.ad-promoter.com/api/v1/notifications?page=1&pageSize=10`,{
-        headers:{
-          Authorization: `Bearer ${token.current}`
-        }
-      })
-      setNotificationData(result.data.data.data)
-      setIsLoading(false)
-      console.log(result.data);
-    }
-    if(token.current){
-      fetchNotification()
-    }
-  },[]);
+  
   return (
     <>
       <NotificationModalContainer>

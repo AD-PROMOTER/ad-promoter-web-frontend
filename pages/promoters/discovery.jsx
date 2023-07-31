@@ -18,6 +18,8 @@ import DiscoveryFeed from "@/components/DiscoveryFolder/DiscoveryFeed"
 import Backdrop from "@/components/DiscoveryFolder/ReportModal/Backdrop"
 import Modal from "@/components/DiscoveryFolder/ReportModal/Modal"
 import axios from "axios"
+import DiscoveryEmptyScreen from "@/components/discoveryEmptyScreen"
+import SearchEmptyScreen from "@/components/failedSearch"
 
 
 const Discovery = ({router}) => {
@@ -197,26 +199,38 @@ const Discovery = ({router}) => {
               <li onClick={handleFilterSelect}>Last 30 days</li>
             </ul>
           )}
-          {tabFeed && (
+          {isLoading ? (
+            <DiscoveryEmptyScreen />
+          ):(
             <>
-              <div className="feed-tab">
-                <Link href={{pathname: '/promoters/discovery', query: {tab: "recommended"}}}>
-                  <a>Recommended Jobs</a>
-                </Link>
-              </div>
-              <p className="tab-para">Your Feed</p>
-              <DiscoveryFeed isLoading={isLoading} feed={feed} fetchFeed={fetchFeed} clickShow={handleShowReport}/>
-            </>
-          )}
-          {tabRecommended && (
-            <>
-              <div className="feed-tab">
-                <Link href={{pathname: '/promoters/discovery', query: {tab: "feed"}}}>
-                  <a>Your Feed</a>
-                </Link>
-              </div>
-              <p className="tab-para">Recommended Jobs</p>
-              <DiscoveryJob isLoading={isRecLoading} recommendedJobs={recommendedJobs} fetchRecommended={fetchRecommended} clickShow={handleShowReport}/>
+              {!isLoading && searchTag && feed.length === 0 && recommendedJobs.length === 0 ? (
+                <SearchEmptyScreen />
+              ):(
+                <>
+                  {tabFeed && (
+                    <>
+                      <div className="feed-tab">
+                        <Link href={{pathname: '/promoters/discovery', query: {tab: "recommended"}}}>
+                          <a>Recommended Jobs</a>
+                        </Link>
+                      </div>
+                      <p className="tab-para">Your Feed</p>
+                      <DiscoveryFeed isLoading={isLoading} feed={feed} fetchFeed={fetchFeed} clickShow={handleShowReport}/>
+                    </>
+                  )}
+                  {tabRecommended && (
+                    <>
+                      <div className="feed-tab">
+                        <Link href={{pathname: '/promoters/discovery', query: {tab: "feed"}}}>
+                          <a>Your Feed</a>
+                        </Link>
+                      </div>
+                      <p className="tab-para">Recommended Jobs</p>
+                      <DiscoveryJob isLoading={isLoading} recommendedJobs={recommendedJobs} fetchRecommended={fetchRecommended} clickShow={handleShowReport}/>
+                    </>
+                  )}
+                </>
+              )}            
             </>
           )}
         </MobileDiscovery>
@@ -280,9 +294,19 @@ const Discovery = ({router}) => {
               </ul>
             )}
           </div>
-          <div className="show-recent">
-            {showRecentJobs ? <DiscoveryFeed isLoading={isLoading} feed={feed} fetchFeed={fetchFeed} clickShow={handleShowReport}/> : <DiscoveryJob isLoading={isRecLoading} recommendedJobs={recommendedJobs} fetchRecommended={fetchRecommended} clickShow={handleShowReport}/>}
-          </div>
+          {isLoading ? (
+            <DiscoveryEmptyScreen />
+          ):(
+            <>
+               {!isLoading && searchTag && feed.length === 0 && recommendedJobs.length === 0 ? (
+                  <SearchEmptyScreen />
+               ):(
+                <div className="show-recent">
+                  {showRecentJobs ? <DiscoveryFeed isLoading={isLoading} feed={feed} fetchFeed={fetchFeed} clickShow={handleShowReport}/> : <DiscoveryJob isLoading={isRecLoading} recommendedJobs={recommendedJobs} fetchRecommended={fetchRecommended} clickShow={handleShowReport}/>}
+                </div>
+               )}
+            </>
+          )}
         </TabDiscovery>
     </div>
   )

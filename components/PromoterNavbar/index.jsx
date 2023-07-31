@@ -1,28 +1,85 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Link from 'next/link';
 import { StyledNavBar } from './style';
 import { links } from './links';
 import logo from '@/public/assets/newest-logo.png';
 import notif from '@/public/assets/notif.svg';
+import inactiveNotif from '@/public/assets/Inactive notification Icon.svg';
 // import profile from '@/public/assets/Profil.svg'
 import profile from '@/public/assets/user-onboard-profile.png';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import NotificationContext from '@/context/notificationContext';
 import NotificationContainer from '@/components/Notification/index';
 import { useState } from 'react';
+import axios from 'axios';
 const Index = () => {
   const [profileImage, setProfileImage] = useState('');
+  const [isLoading,setIsLoading] = useState(null)
+  const [notificationData,setNotificationData] = useState([])
+  const [hasNewNotification, setHasNewNotification] = useState(false);
+  const token = useRef()
+  const router = useRouter();
+  const { isNotifClicked, setIsNotifClicked } = useContext(NotificationContext);
+
+  useEffect(() => {
+    const userToken = JSON.parse(localStorage.getItem("user-token"));
+
+    if (userToken) {
+      token.current = userToken
+    }
+    if(token.current){
+      fetchNotification()
+    }
+  },[]);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-detail'));
     setProfileImage(user.profilePicture);
   }, []);
 
-  const router = useRouter();
-  const { isNotifClicked, setIsNotifClicked } = useContext(NotificationContext);
-  const variants = {
+  useEffect(() => {
+    // Fetch initial notifications on component mount
+    fetchNotification();
+
+    // Check for new notifications every 10 seconds
+    const intervalId = setInterval(() => {
+      checkNewNotifications();
+    }, 10000);
+
+    // Clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const fetchNotification = async() =>{
+    try{
+      setIsLoading(true)
+      const result = await axios(`https://api.ad-promoter.com/api/v1/notifications?page=1&pageSize=10`,{
+        headers:{
+          Authorization: `Bearer ${token.current}`
+        }
+      })
+      setNotificationData(result.data.data.data)
+      setIsLoading(false)
+    }catch{
+      console.error('Error fetching notifications:');
+    }
+  }
+
+  const checkNewNotifications = async () => {
+    try {
+      const response = await fetch('https://api.ad-promoter.com/api/v1/notifications?page=1&pageSize=10');
+      const data = await response.json();
+      const hasNew = data.length > notificationData.length;
+      setHasNewNotification(hasNew);
+    } catch (error) {
+      console.error('Error checking new notifications:', error);
+    }
+  };
+
+    const variants = {
     animate: { width: '60px', transition: { duration: 0.5 } },
     stop: { width: 0 },
   };
@@ -59,9 +116,13 @@ const Index = () => {
           onClick={() => setIsNotifClicked(!isNotifClicked)}
         >
           <div className="notif-img">
-            <Image src={notif} alt="notification bell" />
+            {hasNewNotification ? (
+              <Image src={notif} alt="notification bell" />
+            ):(
+              <Image src={inactiveNotif} alt="notification bell" />
+            )}
           </div>
-          {isNotifClicked && <NotificationContainer />}
+          {isNotifClicked && <NotificationContainer notificationData={notificationData} isLoading={isLoading} />}
         </div>
         <div style={{ width: '52px', height: '52px' }}>
           <Image

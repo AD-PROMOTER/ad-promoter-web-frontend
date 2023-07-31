@@ -42,6 +42,8 @@ const WalletStyles = styled.div`
   @media (min-width: 768px) and (max-width: 1024px) {
     max-width: 100%;
     margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
   }
 
   .intro {
@@ -163,9 +165,12 @@ const WalletStyles = styled.div`
 
     button {
       background: #4f00ce;
-      padding: 1rem 1.5rem;
-      border-radius: 1rem;
+      padding: 1.6rem 1.8rem;
+      border-radius: 1.2rem;
+      max-height: 55px;
       display: flex;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
 
       p {
@@ -174,6 +179,7 @@ const WalletStyles = styled.div`
         line-height: 1.5rem;
         margin-left: 0.8rem;
         margin-top: 0.5rem;
+        /* font-size: 1.8rem; */
       }
     }
   }

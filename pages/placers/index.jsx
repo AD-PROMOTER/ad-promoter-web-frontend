@@ -681,14 +681,15 @@ const Index = () => {
               <>
                 <div className="welcome">
                   <div className="userProfile">
-                    <div className="profile-img" style={{ borderRadius: '1rem' }}>
-                      <Image
-                        src={profileImage}
-                        width={'145px'}
-                        height={'134px'}
-                        alt="profile picture"
-                      />
-                    </div>
+                  <div style={{ width: '52px', height: '52px' }}>
+                    <Image
+                      src={profileImage}
+                      alt="profile picture"
+                      width={'100%'}
+                      height={'100%'}
+                      style={{objectFit: 'fill', borderRadius: '100px' }}
+                    />
+                  </div>
                     <div className="username">
                       <p>Hi, {userName}</p>
                       <div className="wave">
@@ -802,8 +803,9 @@ const Index = () => {
                 <div className="profile-img" style={{ borderRadius: '45%' }}>
                   <Image
                     src={profileImage}
-                    width={120}
-                    height={120}
+                    width={'145px'}
+                    height={'134px'}
+                    style={{borderRadius: '16px'}}
                     alt="profile picture"
                   />
                 </div>

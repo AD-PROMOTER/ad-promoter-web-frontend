@@ -10,11 +10,8 @@ import download from '@/public/assets/downloadIcon3.svg'
 import exportLink from '@/public/assets/shareIcon1.svg'
 import archive from '@/public/assets/bookmarkIcon1.svg'
 import copyLink from '@/public/assets/bottom-link-icon.svg'
-// import { Feed } from '@/components/DiscoveryFolder/discovery.style'
 import Image from 'next/image'
-// import { directlinkAd } from '@/components/DiscoveryFolder/data'
 import { BackdropContainer, Feed, ModalContainer } from './style'
-import { directlinkAd } from '../PromoterHomeAdDetail/data'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import axios from 'axios'
@@ -22,9 +19,10 @@ import { Spinner, useToast } from '@chakra-ui/react'
 import { CgProfile } from 'react-icons/cg'
 import TimeAgo from '../timeAgo'
 import ShareDialogue from '../shareDialogue'
-// import { BackdropContainer, ModalContainer } from '../DiscoveryFolder/ReportModal/ModalStyle'
 import linkFrame from '@/public/assets/linkframe.svg'
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
+import { useContext } from 'react'
+import JobsContext from '@/context/jobsContext'
 
 const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
     const [showReport, setShowReport] = useState([])
@@ -34,8 +32,7 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
     const [showReportModal,setShowReportModal] = useState(false)
     const [showDropdown, setShowDropdown] = useState(false)
     const [listValue, setListValue] = useState('It has gory images')
-    const [isLoading,setIsLoading] = useState(false)
-    const [savedJobs,setSavedJobs] = useState([])
+    const {savedJobs,setSavedJobs,isLoading,setIsLoading} = useContext(JobsContext)
     const [isReportLoading, setIsReportLoading] = useState(null);
     const [showSubmit,setShowSubmit] = useState(true)
     const [showPaste,setShowPaste] = useState(false)
@@ -60,21 +57,6 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
           window.removeEventListener('scroll', handleScroll);
         };
     },[])
-
-    // useEffect(() => {
-    //     const onClickOutside = () => {
-    //         setShowReport(false)
-    //     }
-    //     const handleClickOutside = (event) => {
-    //         if (ref.current && !ref.current.contains(event.target)) {
-    //             onClickOutside && onClickOutside();
-    //         }
-    //     }
-    //     document.addEventListener('click', handleClickOutside, true);
-    //     return () => {
-    //         document.removeEventListener('click', handleClickOutside, true);
-    //     }
-    // }, [])
 
     const ClickedList = (e) =>{
       setListValue(e.target.innerText)
@@ -294,16 +276,6 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
     };
 
   return (
-    // <>
-        //  {savedJobs.length === 0 && isLoading ? (
-        //     <Spinner 
-        //         thickness='4px'
-        //         speed='0.65s'
-        //         emptyColor='gray.200'
-        //         color='#4F00CF'
-        //         size='xl'
-        //     />
-        // ):(
             <>
                 {savedJobs.length === 0 && !isLoading ?(
                     <p>No saved job</p>

@@ -3,7 +3,6 @@ import Image from 'next/image';
 import close from '@/public/assets/close-circle.svg';
 import { PaymentModalContainer } from './mobileWallet.style';
 import { useAddWallet } from '@/hooks/useAddWallet';
-
 const PaymentDetails = (props) => {
   const [bankCode, setBankCode] = useState("");
   const [acctName, setAcctName] = useState("");

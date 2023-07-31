@@ -11,6 +11,8 @@ import Card from '../summary/card';
 import money from '@/public/assets/money-2.svg';
 import AdminWalletStyles from '@/styles/adminWallet';
 import axios from 'axios';
+import { Spinner } from '@chakra-ui/react';
+import AccountEmptyScreen from '@/components/accountEmptyScreen';
 
 const Wallet = (props) => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -102,25 +104,38 @@ const Wallet = (props) => {
       ) : null}
 
       <>     
-        {!props.accountData || props.isLoading ? (
-          <p>Loading</p>
+        {props.accountData.length === 0 && props.isLoading ? (
+          <Spinner 
+          thickness='4px'
+          speed='0.65s'
+          emptyColor='gray.200'
+          color='#4F00CF'
+          size='xl'/>
+          
         ):(
           <>      
-            {props.accountData.length === 0 ?(
-              <p>Add an account</p>
+            {props.accountData.length === 0 && !props.isLoading ?(
+              <AccountEmptyScreen />
             ):(
               renderMappedElements()
             )}
           </>
         )}
       </>
-
-      <div className="buttonContainer">
-        <button onClick={props.onOpenWithdrawProcess}>
-          <Image src={emptyWallet} alt="Wallet Icon" className="img" />
-          <p>Process Withdrawal </p>
-        </button>
-      </div>
+      {props.accountData.length === 0 && !props.isLoading ? (
+        <div className="buttonContainer">
+          <button onClick={props.onOpenPaymentDetailsModal}>
+            <p>Add Account Info </p>
+          </button>
+        </div>
+      ):(
+        <div className="buttonContainer">
+          <button onClick={props.onOpenWithdrawProcess}>
+            <Image src={emptyWallet} alt="Wallet Icon" className="img" />
+            <p>Process Withdrawal </p>
+          </button>
+        </div>
+      )}
       {/* {showDropdown ? <EditWalletDropdown onOpen={props.onOpenPaymentDetailsModal} /> : null} */}
     </WalletStyles>
   );

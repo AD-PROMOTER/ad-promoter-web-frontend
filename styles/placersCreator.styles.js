@@ -187,6 +187,53 @@ export const EmptyCreatorScreen = styled.div`
   align-items: center;
   gap: 0.5625rem;
 
+  .container {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .loading-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.4rem;
+    max-width: 28.3rem;
+    h2 {
+      text-align: center;
+      font-family: Poppins;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 152.2%; /* 42.616px */
+      color: #0d0d0d;
+    }
+    p {
+      text-align: center;
+      font-family: Poppins;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 152.2%; /* 27.396px */
+      color: #333;
+    }
+  }
+
+  button {
+    display: inline-flex;
+    height: 55px;
+    padding: 16px 48px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    background: #4f00cf;
+    color: #fff;
+    text-align: center;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
   > div {
     display: flex;
     flex-direction: column;
@@ -209,6 +256,14 @@ export const EmptyCreatorScreen = styled.div`
       font-style: normal;
       font-weight: 500;
       line-height: 152.2%; /* 1.71225rem */
+    }
+    .grey {
+      color: #9e9e9e;
+      text-align: center;
+      font-size: 1.125rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 152.2%; /* 25.519px */
     }
   }
 `;

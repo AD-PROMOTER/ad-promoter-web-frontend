@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import more from '@/public/assets/ellipsis.svg'
 import vector from '@/public/assets/Vector.svg'
 import cup from '@/public/assets/cupIcon.svg'
@@ -22,6 +22,7 @@ import linkFrame from '@/public/assets/linkframe.svg'
 import { Spinner, useToast } from '@chakra-ui/react'
 import ShareDialogue from '../shareDialogue'
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
+import JobsContext from '@/context/jobsContext'
 
 const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
     const [showReport, setShowReport] = useState([])
@@ -34,8 +35,7 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
     const [showDropdown, setShowDropdown] = useState(false)
     const [listValue, setListValue] = useState('It has gory images')
     const [currentIndex,setCurrentIndex] = useState(0)
-    const [isLoading,setIsLoading] = useState(false)
-    const [recentJobs,setRecentJobs] = useState([])
+    const {recentJobs,setRecentJobs,isLoading,setIsLoading} = useContext(JobsContext)
     const [showSubmit,setShowSubmit] = useState(true)
     const [showPaste,setShowPaste] = useState(false)
     const [inputValue, setInputValue] = useState('');

@@ -13,6 +13,8 @@ import ScrollContainer from 'react-indiana-drag-scroll';
 import RightArrowHead from '@/public/assets/right-arrowHead.svg';
 import TimeAgo from '@/components/timeAgo';
 import { CgProfile } from 'react-icons/cg';
+import WalletEmptyScreen from '@/components/walletEmptyScreen';
+import { Spinner } from '@chakra-ui/react';
 
 const TransactionHistory = ({transactionHistory,isLoading}) => {
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -36,12 +38,18 @@ const TransactionHistory = ({transactionHistory,isLoading}) => {
           </div>
         </button>
       </div>
-      {isLoading ?(
-        <p>Loading...</p>
+      {isLoading && transactionHistory.length === 0 ?(
+        <Spinner 
+        thickness='4px'
+        speed='0.65s'
+        emptyColor='gray.200'
+        color='#4F00CF'
+        size='xl'/>
+        
       ):(
         <>      
           {transactionHistory.length === 0 ? (
-            <div>No Transaction History</div>
+            <WalletEmptyScreen />
           ):(
             <ScrollContainer className="transactionContainer">
               {/* <TransactionDropdown/> */}

@@ -20,12 +20,11 @@ import TimeAgo from '../timeAgo'
 import { Spinner } from '@chakra-ui/react'
 import axios from 'axios'
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
+import JobsContext from '@/context/jobsContext'
+import { useContext } from 'react'
 
 const MobileRecentPlacers = ({handleShowReport,handleAdRemoval,showReport,setShowReport,showReportModal,setShowReportModal,showDropdown,setShowDropdown,isReadMore,setIsReadMore,currentIndex,setCurrentIndex,listValue,setListValue,ClickedList,toggleReadMore,previousImage,nextImage,dashboardEndDate,dashboardStartDate}) => {
-    const [recentJobs,setRecentJobs] = useState([])
-    // const [dashboardStartDate,setDashboardStartDate] = useState('')
-    // const [dashboardEndDate,setDashboardEndDate] = useState('')
-    const [isLoading,setIsLoading] = useState(null)
+    const {recentJobs,setRecentJobs,isLoading,setIsLoading} = useContext(JobsContext)
     const token = useRef('')
     const ref = useRef(null)
 
@@ -56,7 +55,7 @@ const MobileRecentPlacers = ({handleShowReport,handleAdRemoval,showReport,setSho
         if(token.current){
             fetchRecentJobs()
         }
-    },[dashboardEndDate, dashboardStartDate])
+    },[dashboardEndDate, dashboardStartDate, setIsLoading, setRecentJobs])
 
     const toggleDropdown = (index) => {
         const updatedDropdownOpen = [...showReport];

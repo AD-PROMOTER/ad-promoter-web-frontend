@@ -25,6 +25,8 @@ import { CgProfile } from 'react-icons/cg'
 import ShareDialogue from '../shareDialogue'
 import linkFrame from '@/public/assets/linkframe.svg'
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
+import { useContext } from 'react'
+import JobsContext from '@/context/jobsContext'
 
 const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
     const [showReport, setShowReport] = useState([])
@@ -37,8 +39,7 @@ const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,so
     const [showDropdown, setShowDropdown] = useState(false)
     const [listValue, setListValue] = useState('It has gory images')
     const [currentIndex,setCurrentIndex] = useState(0)
-    const [isLoading,setIsLoading] = useState(false)
-    const [recentJobs,setRecentJobs] = useState([])
+    const {recentJobs,setRecentJobs,isLoading,setIsLoading} = useContext(JobsContext)
     const [showSubmit,setShowSubmit] = useState(true)
     const [showPaste,setShowPaste] = useState(false)
     const [inputValue, setInputValue] = useState('');
@@ -76,7 +77,7 @@ const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,so
             Authorization: `Bearer ${token.current}`
           }
         })
-        setRecentJobs((prevData) => [...prevData, ...result.data.data.data]);
+        // setRecentJobs((prevData) => [...prevData, ...result.data.data.data]);
         setPage((prevPage) => prevPage + 1);
         setIsLoading(false)
     }

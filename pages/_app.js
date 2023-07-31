@@ -14,6 +14,7 @@ import { UserProvider } from '../context/userContext';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { SingleAdProvider } from '@/context/singleAdContext';
 import { RecentJobProvider } from '@/context/recentJobContext';
+import JobsContext, { JobsProvider } from '@/context/jobsContext';
 
 const theme = extendTheme({
   styles: {
@@ -57,14 +58,16 @@ function MyApp({ Component, pageProps, router }) {
             <NotificationProvider>
               <PlacersLayout>
                 <SingleAdProvider>
-                  <UserProvider>
-                    <VariableStyle />
-                    <GlobalStyle />
-                    <SanitizeStyle />
-                    <ChakraProvider theme={theme}>
-                      <Component {...pageProps} />
-                    </ChakraProvider>
-                  </UserProvider>
+                  <JobsProvider>
+                    <UserProvider>
+                      <VariableStyle />
+                      <GlobalStyle />
+                      <SanitizeStyle />
+                      <ChakraProvider theme={theme}>
+                        <Component {...pageProps} />
+                      </ChakraProvider>
+                    </UserProvider>
+                  </JobsProvider>
                 </SingleAdProvider>
               </PlacersLayout>
             </NotificationProvider>
@@ -81,14 +84,16 @@ function MyApp({ Component, pageProps, router }) {
           <NotificationProvider>
             <PromoterLayout>
               <RecentJobProvider>
-                <UserProvider>
-                  <VariableStyle />
-                  <GlobalStyle />
-                  <SanitizeStyle />
-                  <ChakraProvider theme={theme}>
-                    <Component {...pageProps} />
-                  </ChakraProvider>
-                </UserProvider>
+                <JobsProvider>
+                  <UserProvider>
+                    <VariableStyle />
+                    <GlobalStyle />
+                    <SanitizeStyle />
+                    <ChakraProvider theme={theme}>
+                      <Component {...pageProps} />
+                    </ChakraProvider>
+                  </UserProvider>
+                </JobsProvider>
               </RecentJobProvider>
             </PromoterLayout>
           </NotificationProvider>
@@ -101,12 +106,14 @@ function MyApp({ Component, pageProps, router }) {
       <TokenContextProvider>
         <SignupProvider>
           <UserProvider>
-            <VariableStyle />
-            <GlobalStyle />
-            <SanitizeStyle />
-            <ChakraProvider theme={theme}>
-              <Component {...pageProps} />
-            </ChakraProvider>
+            <JobsProvider>
+              <VariableStyle />
+              <GlobalStyle />
+              <SanitizeStyle />
+              <ChakraProvider theme={theme}>
+                <Component {...pageProps} />
+              </ChakraProvider>
+            </JobsProvider>
           </UserProvider>
         </SignupProvider>
       </TokenContextProvider>

@@ -38,6 +38,7 @@ import {
   getWeekAgoRange,
 } from '@/utils/formatFilterDate';
 import RecentJobContext from '@/context/recentJobContext';
+import JobsContext from '@/context/jobsContext';
 
 const Index = ({ router }) => {
   const {
@@ -57,7 +58,6 @@ const Index = ({ router }) => {
   const [videosAccepted, setVideosAccepted] = useState('');
   const [pendingWithdrawals, setPendingWithdrawals] = useState('');
   const [adsConverted, setAdsConverted] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [isTabLoading, setIsTabLoading] = useState(false);
   const [clickedFilter, setClickedFilter] = useState('Filter');
   const [clickedSort, setClickedSort] = useState('Sort');
@@ -65,8 +65,8 @@ const Index = ({ router }) => {
   const [dashboardEndDate, setDashboardEndDate] = useState('');
   const [sortStartDate, setSortStartDate] = useState('');
   const [sortEndDate, setSortEndDate] = useState('');
-  const { recentJobs, setRecentJobs } = useContext(RecentJobContext);
   const [profileImage, setProfileImage] = useState('');
+  const {recentJobs,setRecentJobs,savedJobs,setSavedJobs,isLoading,setIsLoading} = useContext(JobsContext)
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-detail'));
@@ -88,7 +88,6 @@ const Index = ({ router }) => {
       if (dashboardEndDate) {
         apiUrl += `&endDate=${dashboardEndDate}`;
       }
-      setIsLoading(true);
       const result = await axios(apiUrl, {
         headers: {
           Authorization: `Bearer ${token.current}`,
@@ -99,7 +98,6 @@ const Index = ({ router }) => {
       setVideosAccepted(result.data.data.noOfVideosAccepted);
       setPendingWithdrawals(result.data.data.pendingWithdrawals);
       setAdsConverted(result.data.data.noOfAdsConverted);
-      setIsLoading(false);
     };
     if (token.current) {
       fetchDashboard();
@@ -432,7 +430,15 @@ const Index = ({ router }) => {
               <>
                 <div className="welcome">
                   <div className="userProfile">
-                    <Image src={profil} alt="profile picture" />
+                  <div style={{ width: '52px', height: '52px' }}>
+                    <Image
+                      src={profileImage}
+                      alt="profile picture"
+                      width={'100%'}
+                      height={'100%'}
+                      style={{objectFit: 'fill', borderRadius: '100px' }}
+                    />
+                  </div>
                     <div className="username">
                       <p>Hi, {userName}</p>
                       <div className="wave">
@@ -468,7 +474,9 @@ const Index = ({ router }) => {
                     </div>
                   ))}
                 </div>
+
                 <div className="sort">
+                  
                   <ScrollIntoView selector="#inView" className="tab-sort">
                     <div onClick={() => setShowRecentJobs(true)}>
                       <p className={showRecentJobs ? 'active-job' : ''}>
@@ -477,6 +485,8 @@ const Index = ({ router }) => {
                     </div>
                     {showRecentJobs && <div className="dash-bottom"></div>}
                   </ScrollIntoView>
+                  
+                  
                   <ScrollIntoView selector="#inView" className="tab-sort">
                     <div onClick={() => setShowRecentJobs(!showRecentJobs)}>
                       <p
@@ -489,13 +499,15 @@ const Index = ({ router }) => {
                       <div className="dash-bottom"></div>
                     )}
                   </ScrollIntoView>
-                  <div
-                    className={showSortDropdown ? 'arrow-sort' : 'no-sort'}
-                    onClick={() => setShowSortDropdown(!showSortDropdown)}
-                  >
-                    <p>Sort</p>
-                    {showSortDropdown ? <ArrowUp /> : <ArrowDown />}
-                  </div>
+                  
+                  
+                    <div
+                      className={showSortDropdown ? 'arrow-sort' : 'no-sort'}
+                      onClick={() => setShowSortDropdown(!showSortDropdown)}
+                    >
+                      <p>Sort</p>
+                      {showSortDropdown ? <ArrowUp /> : <ArrowDown />}
+                    </div>
                   {showSortDropdown && (
                     <ul className="list">
                       <li>Recent</li>
@@ -516,7 +528,13 @@ const Index = ({ router }) => {
           <TabletContainer>
             <div className="welcome">
               <div className="userProfile">
-                <Image src={profile} alt="profile picture" />
+                <Image
+                  src={profileImage}
+                  width={145}
+                  height={134}
+                  style={{borderRadius: '16px'}}
+                  alt="profile picture" 
+                />
                 <div className="username">
                   <p>Hi, {userName}</p>
                   <div className="wave">
@@ -567,14 +585,16 @@ const Index = ({ router }) => {
             </div>
             <div className="sort">
               <div className="tabs">
-                <ScrollIntoView selector="#inView" className="tab-sort">
-                  <div
-                    className={showRecentJobs ? 'active-job' : 'non-active'}
-                    onClick={() => setShowRecentJobs(true)}
-                  >
-                    Recent
-                  </div>
-                </ScrollIntoView>
+              <ScrollIntoView selector="#inView" className="tab-sort">
+                <div
+                  className={showRecentJobs ? 'active-job' : 'non-active'}
+                  onClick={() => setShowRecentJobs(true)}
+                >
+                  Recent
+                </div>
+              </ScrollIntoView>
+               
+                
                 <ScrollIntoView selector="#inView" className="tab-sort">
                   <div
                     className={
@@ -586,13 +606,13 @@ const Index = ({ router }) => {
                   </div>
                 </ScrollIntoView>
               </div>
-              <div
-                className="arrow-sort"
-                onClick={() => setShowSortDropdown(!showSortDropdown)}
-              >
-                <p>Sort</p>
-                {showSortDropdown ? <ArrowUp /> : <ArrowDown />}
-              </div>
+                <div
+                  className="arrow-sort"
+                  onClick={() => setShowSortDropdown(!showSortDropdown)}
+                >
+                  <p>Sort</p>
+                  {showSortDropdown ? <ArrowUp /> : <ArrowDown />}
+                </div>
               {showSortDropdown && (
                 <ul className="list">
                   <li>Recent</li>

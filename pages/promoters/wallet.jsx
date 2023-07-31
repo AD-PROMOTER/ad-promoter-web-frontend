@@ -29,6 +29,7 @@ import axios from 'axios';
 import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from '@/utils/formatFilterDate';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Spinner } from '@chakra-ui/react';
+import AccountEmptyScreen from '@/components/accountEmptyScreen';
 
 const PromoterWallet = () => {
   const [showModal, setShowModal] = useState(false);
@@ -51,7 +52,7 @@ const PromoterWallet = () => {
   const [amountPaid,setAmountPaid] = useState('')
   const [transactionHistory,setTransactionHistory] = useState([])
   const [banks,setBanks] = useState([])
-  const [accountData,setAccountData] = useState()
+  const [accountData,setAccountData] = useState([])
   const [amount, setAmount] = useState('');
   const [selectedBank, setSelectedBank] = useState(null);
   const [selectedBankName, setSelectedBankName] = useState(null);
@@ -64,7 +65,7 @@ const PromoterWallet = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(false);
+      setIsLoading(true);
       try {
         const fetchedBankData = await fetchBanks();
         setBanks(fetchedBankData);
@@ -78,7 +79,7 @@ const PromoterWallet = () => {
       }
     };
 
-    fetchData();
+    fetchData();  
   }, []);
 
   const renderMappedElements = () => {
@@ -118,13 +119,14 @@ const PromoterWallet = () => {
   }
 
   const fetchAccountData = async() =>{
+    // setIsLoading(true);
     const result = await axios(`https://api.ad-promoter.com/api/v1/wallet/fetch-recipient`,{
       headers:{
         Authorization: `Bearer ${token.current}`
       }
     })
     // setAccountData(result.data.data)
-    console.log(result.data.data);
+    // setIsLoading(false);
     return result.data.data
   }
 
@@ -172,6 +174,7 @@ const PromoterWallet = () => {
           Authorization: `Bearer ${token.current}`
         }
       })
+      setIsTransactionHistoryLoading(false)
       setTransactionHistory(result.data.data.data)
     }
     
@@ -349,34 +352,44 @@ const PromoterWallet = () => {
       <div className='add-wallet'>
         <div className='add'>
           <p>Wallet</p>
-          <Image src={plus} alt='plus' onClick={() => setShowPaymentDetailsModal(true)}/>
+          <Image src={plus} alt='add account info icon' onClick={() => setShowPaymentDetailsModal(true)}/>
         </div>
 
         <>     
-          {!accountData || isLoading ? (
-            <p>Loading</p>
+          {accountData.length === 0 && isLoading ? (
+            <Spinner 
+              thickness='4px'
+              speed='0.65s'
+              emptyColor='gray.200'
+              color='#4F00CF'
+              size='xl'/>
           ):(
             <>      
               {accountData.length === 0 ?(
-                <p>Add an account</p>
+                <AccountEmptyScreen />
               ):(
                 renderMappedElements()
               )}
             </>
           )}
         </>
-        
-        <div className='withdrawal' onClick={() => setShowWithdrawProcessModal(true)}>
-          <Image src={emptyWallet} alt='button'/>
-          <p>Process Withdrawal</p>
-        </div>
+        {accountData.length === 0 && !isLoading ? (
+          <div className='withdrawal' onClick={() => setShowPaymentDetailsModal(true)}>
+            <p>Add Account Info</p>
+          </div>
+        ):(
+          <div className='withdrawal' onClick={() => setShowWithdrawProcessModal(true)}>
+            <Image src={emptyWallet} alt='button'/>
+            <p>Process Withdrawal</p>
+          </div>
+        )}
 
       </div>
       <div className='transaction'>
         <p>Transaction History</p>
         <Image src={documentDownload} alt='transaction'/>
       </div>
-      <Transaction transactionHistory={transactionHistory}/>
+      <Transaction isLoading={isTransactionHistoryLoading} transactionHistory={transactionHistory}/>
       {showPaymentDetailsModal && <BackdropContainer onClick={() => setShowPaymentDetailsModal(false)}></BackdropContainer>}
       {showPaymentDetailsModal && <PaymentDetails onOpen={() => setShowSuccessModal(true)} onClose={() => setShowPaymentDetailsModal(false)} banks={banks}/>}
       {showVerificationModal && <BackdropContainer onClick={() => setShowVerificationModal(false)}></BackdropContainer>}
