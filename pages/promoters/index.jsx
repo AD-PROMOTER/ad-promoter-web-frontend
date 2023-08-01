@@ -477,14 +477,14 @@ const Index = ({ router }) => {
 
                 <div className="sort">
                   
-                  <ScrollIntoView selector="#inView" className="tab-sort">
-                    <div onClick={() => setShowRecentJobs(true)}>
-                      <p className={showRecentJobs ? 'active-job' : ''}>
-                        Recent
-                      </p>
-                    </div>
-                    {showRecentJobs && <div className="dash-bottom"></div>}
-                  </ScrollIntoView>
+                    <ScrollIntoView selector="#inView" className="tab-sort">
+                      <div onClick={() => setShowRecentJobs(true)}>
+                        <p className={showRecentJobs ? 'active-job' : ''}>
+                          Recent
+                        </p>
+                      </div>
+                      {showRecentJobs && <div className="dash-bottom"></div>}
+                    </ScrollIntoView>
                   
                   
                   <ScrollIntoView selector="#inView" className="tab-sort">
@@ -518,9 +518,9 @@ const Index = ({ router }) => {
                     </ul>
                   )}
                 </div>
-                <div id="inView">
-                  {showRecentJobs ? <RecentMobile /> : <SavedJobsMobile />}
-                </div>
+                  <div id="inView">
+                    {showRecentJobs ? <RecentMobile /> : <SavedJobsMobile />}
+                  </div>
               </>
             )}
           </MobileCotainer>

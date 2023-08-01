@@ -1,7 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react'
 import Image from "next/image"
 import back from '@/public/assets/back-icon.svg'
-import image from '@/public/assets/Ellipse 3.svg'
 import { NotificationStyle } from './style'
 import { Spinner } from '@chakra-ui/react'
 import { useState } from 'react'
@@ -9,7 +9,7 @@ import { useRef } from 'react'
 import axios from 'axios'
 import NotificationEmptyScreen from '../notificationEmptyScreen'
 
-const Index = ({goBack}) => {
+const Index = ({goBack,setHasNewNotification}) => {
   const [isLoading,setIsLoading] = useState(null)
   const [notificationData,setNotificationData] = useState([])
   const token = useRef()
@@ -20,8 +20,23 @@ const Index = ({goBack}) => {
     if (userToken) {
       token.current = userToken
     }
+  },[]);
 
-    const fetchNotification = async() =>{
+  useEffect(() => {
+    // Fetch initial notifications on component mount
+    fetchNotification();
+
+    // Check for new notifications every 10 seconds
+    const intervalId = setInterval(() => {
+      checkNewNotifications();
+    }, 10000);
+
+    // Clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const fetchNotification = async() =>{
+    try{
       setIsLoading(true)
       const result = await axios(`https://api.ad-promoter.com/api/v1/notifications?page=1&pageSize=10`,{
         headers:{
@@ -30,11 +45,21 @@ const Index = ({goBack}) => {
       })
       setNotificationData(result.data.data.data)
       setIsLoading(false)
+    }catch{
+      console.error('Error fetching notifications:');
     }
-    if(token.current){
-      fetchNotification()
+  }
+
+  const checkNewNotifications = async () => {
+    try {
+      const response = await fetch('https://api.ad-promoter.com/api/v1/notifications?page=1&pageSize=10');
+      const data = await response.json();
+      const hasNew = data.length > notificationData.length;
+      setHasNewNotification(hasNew);
+    } catch (error) {
+      console.error('Error checking new notifications:', error);
     }
-  },[]);
+  };
   return (
     <NotificationStyle>
       <div className='notif'>

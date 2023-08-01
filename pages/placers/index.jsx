@@ -1,17 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   DashboardContainer,
   DashboardSummaryContainer,
   MobilePlacers,
-  RecentAdsContainer,
   StyledHome,
   TabPlacers,
 } from '@/styles/placerHome.styles';
-import profile from '@/public/assets/squared-profile.png';
-import profil from '@/public/assets/Profil.svg';
 import RecentMobile from '@/components/MobilePromoterHome/Recent';
 import SavedJobsMobile from '@/components/MobilePromoterHome/SavedJobs';
 import MobileNotif from '@/components/MobileNotification/index';
 import notif from '@/public/assets/notif.svg';
+import inactiveNotif from '@/public/assets/Inactive notification Icon.svg';
 import Image from 'next/image';
 import hands from '@/public/assets/hands.svg';
 import Placers from '@/public/assets/placers-frame';
@@ -23,14 +22,8 @@ import Trend from '@/public/assets/trending-up';
 import Chevron from '@/public/assets/chevron';
 import ChevronRight from '@/public/assets/chevron-right';
 import ChevronLeft from '@/public/assets/chevron-left';
-import { Line } from 'react-chartjs-2';
-import Chart from 'chart.js/auto';
 import ArrowDown from '@/public/assets/arrow-down';
-// import cup from '@/public/assets/cup.svg'
-import refresh from '@/public/assets/refresh-2.svg';
-import money from '@/public/assets/money-send.svg';
 import { StyledHomeContainer, TabContainer } from '@/styles/promoters/home';
-import Link from 'next/link';
 import { useEffect, useRef, useState, useContext } from 'react';
 import ArrowUp from '@/public/assets/arrow-up';
 import ScrollContainer from 'react-indiana-drag-scroll';
@@ -45,7 +38,6 @@ import vector from '@/public/assets/Vector.svg';
 import arrowUp from '@/public/assets/arrow-up.svg';
 import arrowDown from '@/public/assets/arrow-down.svg';
 import bell from '@/public/assets/notif.svg';
-import adpic from '@/public/assets/adpics.png';
 import UserContext from '@/context/userContext';
 import ScrollIntoView from 'react-scroll-into-view';
 import TimeAgo from '@/components/timeAgo';
@@ -57,6 +49,7 @@ import {
   getTwoWeeksAgoRange,
   getWeekAgoRange,
 } from '@/utils/formatFilterDate';
+import JobsContext from '@/context/jobsContext';
 
 const Index = () => {
   const [showSortDropdown, setShowSortDropdown] = useState(false);
@@ -75,8 +68,6 @@ const Index = () => {
   const [completeAds, setCompleteAds] = useState('');
   const [conversionGrowth, setConversionGrowth] = useState('');
   const { user } = useContext(UserContext);
-  const [recentJobs, setRecentJobs] = useState([]);
-  const [isLoading, setIsLoading] = useState(null);
   const Router = useRouter();
   const [isReportLoading, setIsReportLoading] = useState(null);
   const [clickedFilter, setClickedFilter] = useState('Sort');
@@ -84,6 +75,8 @@ const Index = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dashboardStartDate, setDashboardStartDate] = useState('');
   const [dashboardEndDate, setDashboardEndDate] = useState('');
+  const [hasNewNotification, setHasNewNotification] = useState(false);
+  const {recentJobs,setRecentJobs,isLoading,setIsLoading} = useContext(JobsContext)
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-detail'));
@@ -676,7 +669,7 @@ const Index = () => {
           </StyledHomeContainer>
           <MobilePlacers>
             {showNotif ? (
-              <MobileNotif goBack={() => setShowNotif(false)} />
+              <MobileNotif setHasNewNotification={setHasNewNotification} goBack={() => setShowNotif(false)} />
             ) : (
               <>
                 <div className="welcome">
@@ -699,11 +692,19 @@ const Index = () => {
                     </div>
                   </div>
                   <div className="promo">
-                    <Image
-                      src={notif}
-                      alt="notification"
-                      onClick={() => setShowNotif(true)}
-                    />
+                    {hasNewNotification ? (
+                      <Image
+                        src={notif}
+                        alt="notification"
+                        onClick={() => setShowNotif(true)}
+                      />
+                    ):(
+                      <Image
+                        src={inactiveNotif}
+                        alt="notification"
+                        onClick={() => setShowNotif(true)}
+                      />
+                    )}
                   </div>
                 </div>
                 <h2>Dashboard Summary</h2>
@@ -741,59 +742,62 @@ const Index = () => {
                   </div>
                   <div className="chart"></div>
                 </div>
-                <div className="sort">
-                  <div className="tabs">
-                    <ScrollIntoView selector="#inView" className="tab-sort">
-                      <div
-                        className={showRecentJobs ? 'active-job' : 'non-active'}
-                        onClick={() => setShowRecentJobs(true)}
-                      >
-                        Recent
+                
+                {!isLoading && recentJobs.length!==0 && (
+                  <>                
+                    <div className="sort">
+                      <div className="tabs">
+                        <ScrollIntoView selector="#inView" className="tab-sort">
+                          <div
+                            className={showRecentJobs ? 'active-job' : 'non-active'}
+                            onClick={() => setShowRecentJobs(true)}
+                          >
+                            Recent
+                          </div>
+                        </ScrollIntoView>
                       </div>
-                    </ScrollIntoView>
-                  </div>
-                  <div
-                    className="arrow-sort"
-                    onClick={() => setShowSortDropdown(!showSortDropdown)}
-                  >
-                    <p>Sort</p>
-                    {showSortDropdown ? <ArrowUp /> : <ArrowDown />}
-                  </div>
-                  {showSortDropdown && (
-                    <ul className="list">
-                      <li onClick={handleClickedFilter}>Recent</li>
-                      <li onClick={handleClickedFilter}>Two days ago</li>
-                      <li onClick={handleClickedFilter}>A week ago</li>
-                      <li onClick={handleClickedFilter}>Less than 2 weeks</li>
-                      <li onClick={handleClickedFilter}>Last 30 days</li>
-                    </ul>
-                  )}
-                </div>
-
-                <RecentMobile
-                  dashboardStartDate={dashboardStartDate}
-                  dashboardEndDate={dashboardEndDate}
-                  isLoading={isLoading}
-                  recentJobs={recentJobs}
-                  handleShowReport={handleShowReport}
-                  handleAdRemoval={handleAdRemoval}
-                  showReport={showReport}
-                  setShowReport={setShowReport}
-                  showReportModal={showReportModal}
-                  setShowReportModal={setShowReportModal}
-                  showDropdown={showDropdown}
-                  setShowDropdown={setShowDropdown}
-                  isReadMore={isReadMore}
-                  setIsReadMore={setIsReadMore}
-                  currentIndex={currentIndex}
-                  setCurrentIndex={setCurrentIndex}
-                  listValue={listValue}
-                  setListValue={setListValue}
-                  ClickedList={ClickedList}
-                  toggleReadMore={toggleReadMore}
-                  previousImage={previousImage}
-                  nextImage={nextImage}
-                />
+                      <div
+                        className="arrow-sort"
+                        onClick={() => setShowSortDropdown(!showSortDropdown)}
+                      >
+                        <p>Sort</p>
+                        {showSortDropdown ? <ArrowUp /> : <ArrowDown />}
+                      </div>
+                      {showSortDropdown && (
+                        <ul className="list">
+                          <li onClick={handleClickedFilter}>Recent</li>
+                          <li onClick={handleClickedFilter}>Two days ago</li>
+                          <li onClick={handleClickedFilter}>A week ago</li>
+                          <li onClick={handleClickedFilter}>Less than 2 weeks</li>
+                          <li onClick={handleClickedFilter}>Last 30 days</li>
+                        </ul>
+                      )}
+                    </div>
+                    
+                    <RecentMobile
+                      dashboardStartDate={dashboardStartDate}
+                      dashboardEndDate={dashboardEndDate}
+                      handleShowReport={handleShowReport}
+                      handleAdRemoval={handleAdRemoval}
+                      showReport={showReport}
+                      setShowReport={setShowReport}
+                      showReportModal={showReportModal}
+                      setShowReportModal={setShowReportModal}
+                      showDropdown={showDropdown}
+                      setShowDropdown={setShowDropdown}
+                      isReadMore={isReadMore}
+                      setIsReadMore={setIsReadMore}
+                      currentIndex={currentIndex}
+                      setCurrentIndex={setCurrentIndex}
+                      listValue={listValue}
+                      setListValue={setListValue}
+                      ClickedList={ClickedList}
+                      toggleReadMore={toggleReadMore}
+                      previousImage={previousImage}
+                      nextImage={nextImage}
+                    />
+                  </>
+                )}
               </>
             )}
           </MobilePlacers>
@@ -856,37 +860,43 @@ const Index = () => {
                 <div className="chart"></div>
               </div>
             </div>
-            <div className="sort">
-              <div className="tabs">
-                <ScrollIntoView selector="#inView" className="tab-sort">
-                  <div
-                    className={showRecentJobs ? 'active-job' : 'non-active'}
-                    onClick={() => setShowRecentJobs(true)}
-                  >
-                    Recent
+
+            {!isLoading && recentJobs.length!==0 && (
+              <>              
+                <div className="sort">
+                  <div className="tabs">
+                    <ScrollIntoView selector="#inView" className="tab-sort">
+                      <div
+                        className={showRecentJobs ? 'active-job' : 'non-active'}
+                        onClick={() => setShowRecentJobs(true)}
+                      >
+                        Recent
+                      </div>
+                    </ScrollIntoView>
                   </div>
-                </ScrollIntoView>
-              </div>
-              <div
-                className="arrow-sort"
-                onClick={() => setShowSortDropdown(!showSortDropdown)}
-              >
-                <p>Sort</p>
-                {showSortDropdown ? <ArrowUp /> : <ArrowDown />}
-              </div>
-              {showSortDropdown && (
-                <ul className="list">
-                  <li>Recent</li>
-                  <li>Two days ago</li>
-                  <li>A week ago</li>
-                  <li>Less than 2 weeks</li>
-                  <li>Last 30 days</li>
-                </ul>
-              )}
-            </div>
-            <div id="inView">
-              {showRecentJobs ? <RecentMobile /> : <SavedJobsMobile />}
-            </div>
+                  <div
+                    className="arrow-sort"
+                    onClick={() => setShowSortDropdown(!showSortDropdown)}
+                  >
+                    <p>Sort</p>
+                    {showSortDropdown ? <ArrowUp /> : <ArrowDown />}
+                  </div>
+                  {showSortDropdown && (
+                    <ul className="list">
+                      <li>Recent</li>
+                      <li>Two days ago</li>
+                      <li>A week ago</li>
+                      <li>Less than 2 weeks</li>
+                      <li>Last 30 days</li>
+                    </ul>
+                  )}
+                </div>
+                
+                <div id="inView">
+                  {showRecentJobs ? <RecentMobile /> : <SavedJobsMobile />}
+                </div>
+              </>
+            )}
           </TabPlacers>
         </>
       )}

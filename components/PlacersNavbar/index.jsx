@@ -5,7 +5,6 @@ import { links } from './links';
 import logo from '@/public/assets/newest-logo.png';
 import notif from '@/public/assets/notif.svg';
 import inactiveNotif from '@/public/assets/Inactive notification Icon.svg';
-import profile from '@/public/assets/user-onboard-profile.png';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
@@ -30,9 +29,6 @@ const Index = () => {
 
     if (userToken) {
       token.current = userToken
-    }
-    if(token.current){
-      fetchNotification()
     }
   },[]);
 

@@ -26,7 +26,6 @@ import { useContext } from 'react'
 const MobileRecentPlacers = ({handleShowReport,handleAdRemoval,showReport,setShowReport,showReportModal,setShowReportModal,showDropdown,setShowDropdown,isReadMore,setIsReadMore,currentIndex,setCurrentIndex,listValue,setListValue,ClickedList,toggleReadMore,previousImage,nextImage,dashboardEndDate,dashboardStartDate}) => {
     const {recentJobs,setRecentJobs,isLoading,setIsLoading} = useContext(JobsContext)
     const token = useRef('')
-    const ref = useRef(null)
 
     useEffect(()=>{
         const userToken = JSON.parse(localStorage.getItem("user-token"));
