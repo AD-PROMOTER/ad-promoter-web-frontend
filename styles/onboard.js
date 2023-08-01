@@ -198,6 +198,7 @@ export const StyledMobile = styled.div`
     align-items: center;
     justify-content: space-between;
     margin-top: 3rem;
+    flex-wrap: nowrap;
     p {
       font-weight: 400;
       font-size: 1.3rem;
@@ -209,6 +210,9 @@ export const StyledMobile = styled.div`
       width: 16.4rem;
       height: 0.2rem;
       background: rgba(102, 102, 102, 0.25);
+      @media screen and (max-width: 358px) {
+        width: 12rem;
+      }
     }
   }
   .signup {
