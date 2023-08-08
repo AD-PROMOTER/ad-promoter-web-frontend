@@ -41,11 +41,22 @@ const VisualReq = () => {
                 router.push("/signup/verification")
             }
         }else{
-            if(userVisualReq === 'yes'){
-                router.push("/signup/visualverification")
+            if(user.role){
+                if(userVisualReq === 'yes'){
+                    router.push("/signup/visualverification")
+                }
+                else{
+                    sendOtp(phoneNumber)
+                    router.push("/signup/verification")
+                }
             }
             else{
-                addUserPref(userPref,seeVisualAd,linkValue)
+                if(userVisualReq === 'yes'){
+                    router.push("/signup/visualverification")
+                }
+                else{
+                    addUserPref(userPref,seeVisualAd,linkValue)
+                }
             }
         }
 

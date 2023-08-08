@@ -24,7 +24,7 @@ import ChevronRight from '@/public/assets/chevron-right';
 import ChevronLeft from '@/public/assets/chevron-left';
 import ArrowDown from '@/public/assets/arrow-down';
 import { StyledHomeContainer, TabContainer } from '@/styles/promoters/home';
-import { useEffect, useRef, useState, useContext } from 'react';
+import { useEffect, useRef, useState, useContext, useMemo } from 'react';
 import ArrowUp from '@/public/assets/arrow-up';
 import ScrollContainer from 'react-indiana-drag-scroll';
 import more from '@/public/assets/ellipsis.svg';
@@ -50,8 +50,33 @@ import {
   getWeekAgoRange,
 } from '@/utils/formatFilterDate';
 import JobsContext from '@/context/jobsContext';
+import PlacersChart from '@/components/placersChart';
+import dynamic from 'next/dynamic';
+
+// Function to get the number of weeks in the selected month
+const getWeeksInMonth = (year, month) => {
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  const daysInMonth = lastDay.getDate();
+  const firstDayOfWeek = firstDay.getDay();
+  const lastDayOfWeek = lastDay.getDay();
+  const daysInFirstWeek = 7 - firstDayOfWeek;
+  const daysInLastWeek = 6 - lastDayOfWeek;
+  return Math.ceil((daysInMonth - daysInFirstWeek - daysInLastWeek) / 7) + 2;
+};
 
 const Index = () => {
+  // Initialize the current month and year to the present date
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
+
+  // Shortened month names
+  const monthNames = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  ];
+  
   const [showSortDropdown, setShowSortDropdown] = useState(false);
   const [showRecentJobs, setShowRecentJobs] = useState(true);
   const [showReport, setShowReport] = useState(false);
@@ -77,6 +102,27 @@ const Index = () => {
   const [dashboardEndDate, setDashboardEndDate] = useState('');
   const [hasNewNotification, setHasNewNotification] = useState(false);
   const {recentJobs,setRecentJobs,isLoading,setIsLoading} = useContext(JobsContext)
+  const [currentDateIndex, setCurrentDateIndex] = useState(currentYear * 12 + currentMonth);
+  const [selectedWeek, setSelectedWeek] = useState(1);
+
+  // Function to handle the left arrow click
+  const handleLeftArrowClick = () => {
+    setCurrentDateIndex((prevDateIndex) => prevDateIndex - 1);
+  };
+
+  // Function to handle the right arrow click
+  const handleRightArrowClick = () => {
+    setCurrentDateIndex((prevDateIndex) => prevDateIndex + 1);
+  };
+
+  // Get the current month and year based on the index
+  const getCurrentMonthAndYear = (dateIndex) => {
+    const year = Math.floor(dateIndex / 12);
+    const month = dateIndex % 12;
+    return { year, month };
+  };
+
+  const { year, month } = getCurrentMonthAndYear(currentDateIndex);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-detail'));
@@ -287,6 +333,33 @@ const Index = () => {
       bg: '#FFE2E4',
     },
   ];
+
+    // Get the number of weeks in the selected month
+    const weeksInMonth = useMemo(() => getWeeksInMonth(year, month), [year, month]);
+
+    // Function to handle the week dropdown change
+    const handleWeekChange = (event) => {
+      setSelectedWeek(parseInt(event.target.value));
+    };
+  
+    // Function to get the start and end dates of the selected week
+    const getStartAndEndDates = (year, month, week) => {
+      const firstDay = new Date(year, month, 1);
+      const firstDayOfWeek = firstDay.getDay();
+      const startDate = new Date(firstDay);
+      startDate.setDate(firstDay.getDate() + (week - 1) * 7 - firstDayOfWeek);
+      const endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 6);
+      return { startDate: startDate.toISOString(), endDate: endDate.toISOString() };
+    };
+  
+    // Get the start and end dates of the selected week
+    const { startDate, endDate } = useMemo(() => getStartAndEndDates(year, month, selectedWeek), [
+      year,
+      month,
+      selectedWeek,
+    ]);
+  
   return (
     <>
       {token.current && (
@@ -347,61 +420,27 @@ const Index = () => {
                         <h3>Activity</h3>
                         <div className="time-filter">
                           <div className="time-week">
-                            <h4>Week 1</h4>
-                            <div className="chevron">
-                              <Chevron />
-                            </div>
+                            <select value={selectedWeek} onChange={handleWeekChange}>
+                              {[...Array(weeksInMonth).keys()].map((weekNumber) => (
+                                <option key={weekNumber + 1} value={weekNumber + 1}>
+                                  {`Week ${weekNumber + 1}`}
+                                </option>
+                              ))}
+                            </select>
                           </div>
                           <div className="month-filter">
-                            <ChevronLeft />
-                            <h4>Aug 2021</h4>
-                            <ChevronRight />
+                            <div onClick={handleLeftArrowClick}>
+                              <ChevronLeft />
+                            </div>
+                            <h4>{`${monthNames[month]} ${year}`}</h4>
+                            <div onClick={handleRightArrowClick}>
+                              <ChevronRight />
+                            </div>
                           </div>
                         </div>
                       </div>
                       <div className="dashboard-info-activity-chart">
-                        {/* <Line
-                      data={{
-                        labels: ['S', 'M', 'T', 'W', 'T', 'F','S'],
-                        datasets: [
-                          {
-                            data: [1, 2, 3, 6],
-                            backgroundColor: [
-                              '#fff',
-                            ],
-                            borderColor: [
-                              '#00B068',],
-                            borderWidth: 3,
-                            borderCapStyle: 'round'
-                          },
-                          // {
-                          //   label: 'Quantity',
-                          //   data: [47, 52, 67, 58, 9, 50],
-                          //   backgroundColor: 'orange',
-                          //   borderColor: 'red',
-                          // },
-                        ],
-                      }}
-                      height={400}
-                      width={600}
-                      options={{
-                        maintainAspectRatio: false,
-                        scales: {
-                          yAxes: [
-                            {
-                              ticks: {
-                                beginAtZero: true,
-                              },
-                            },
-                          ],
-                        },
-                        legend: {
-                          labels: {
-                            fontSize: 25,
-                          },
-                        },
-                      }}
-                    /> */}
+                        <PlacersChart />
                       </div>
                     </div>
                   </div>
@@ -728,19 +767,28 @@ const Index = () => {
                     <h3>Activity</h3>
                     <div className="time-filter">
                       <div className="time-week">
-                        <h4>Week 1</h4>
-                        <div className="chevron">
-                          <Chevron />
-                        </div>
+                        <select value={selectedWeek} onChange={handleWeekChange}>
+                          {[...Array(weeksInMonth).keys()].map((weekNumber) => (
+                            <option key={weekNumber + 1} value={weekNumber + 1}>
+                              {`Week ${weekNumber + 1}`}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                       <div className="month-filter">
-                        <ChevronLeft />
-                        <h4>Aug 2021</h4>
-                        <ChevronRight />
+                        <div onClick={handleLeftArrowClick}>
+                          <ChevronLeft />
+                        </div>
+                        <h4>{`${monthNames[month]} ${year}`}</h4>
+                        <div onClick={handleRightArrowClick}>
+                          <ChevronRight />
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="chart"></div>
+                  <div className="chart">
+                    <PlacersChart />
+                  </div>
                 </div>
                 
                 {!isLoading && recentJobs.length!==0 && (
@@ -845,19 +893,28 @@ const Index = () => {
                   <h3>Activity</h3>
                   <div className="time-filter">
                     <div className="time-week">
-                      <h4>Week 1</h4>
-                      <div className="chevron">
-                        <Chevron />
-                      </div>
+                      <select value={selectedWeek} onChange={handleWeekChange}>
+                        {[...Array(weeksInMonth).keys()].map((weekNumber) => (
+                          <option key={weekNumber + 1} value={weekNumber + 1}>
+                            {`Week ${weekNumber + 1}`}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="month-filter">
-                      <ChevronLeft />
-                      <h4>Aug 2021</h4>
-                      <ChevronRight />
+                      <div onClick={handleLeftArrowClick}>
+                        <ChevronLeft />
+                      </div>
+                      <h4>{`${monthNames[month]} ${year}`}</h4>
+                      <div onClick={handleRightArrowClick}>
+                        <ChevronRight />
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="chart"></div>
+                <div className="chart">
+                  <PlacersChart />
+                </div>
               </div>
             </div>
 
@@ -904,4 +961,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default dynamic(() => Promise.resolve(Index), { ssr: false });

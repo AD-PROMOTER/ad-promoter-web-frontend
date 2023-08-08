@@ -325,6 +325,7 @@ export const DashboardSummaryContainer = styled.div`
             align-items: center;
             padding: 0px;
             gap: 4px;
+            max-height: 100%;
             h4 {
               font-weight: 400;
               font-size: 14px;

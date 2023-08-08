@@ -42,7 +42,14 @@ const Visualverification = () => {
                 router.push("/signup/verification")
             }
         }else{
-            addUserPref(userPref,seeVisualAd,linkValue)
+            if(user.role){
+                if(linkValue !== ''){
+                    sendOtp(phoneNumber)
+                    router.push("/signup/verification")
+                }
+            }else{
+                addUserPref(userPref,seeVisualAd,linkValue)
+            }
         }
         
     }

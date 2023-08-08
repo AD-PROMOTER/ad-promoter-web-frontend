@@ -37,10 +37,20 @@ const Preference = () => {
         router.push("/signup/verification")
       }
     }else{
-      if(userPref === 'promoter'){
-        router.push("/signup/visualReq")
-      }else{
-        addUserPref(userPref,seeVisualAd,linkValue)
+      if(user.role){
+        if(userPref === 'promoter'){
+          router.push("/signup/visualReq")
+        }else{
+          sendOtp(phoneNumber)
+          router.push("/signup/verification")
+        }
+      }
+      else{
+        if(userPref === 'promoter'){
+          router.push("/signup/visualReq")
+        }else{
+          addUserPref(userPref,seeVisualAd,linkValue)
+        }
       }
     }
   }

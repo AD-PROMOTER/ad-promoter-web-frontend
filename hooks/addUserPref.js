@@ -56,10 +56,10 @@ export const AddUserPref = () => {
         position: 'bottom-left',
       });
 
-      if (json.user.role === 'placer') {
-        router.push('placers');
-      } else if (json.user.role === 'promoter') {
-        router.push('promoters');
+      if (userPref === 'placer') {
+        router.push('/placers');
+      } else if (userPref === 'promoter') {
+        router.push('/promoters');
       }
     }
   };

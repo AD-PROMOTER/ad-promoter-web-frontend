@@ -31,7 +31,6 @@ export const useSendOtp = () => {
     }
     if (response.ok) {
       setIsLoading(false);
-      console.log(json);
       localStorage.setItem('OTP_INFO', JSON.stringify(json));
     }
   };
