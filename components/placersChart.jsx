@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import Chart from "react-apexcharts";
 import dynamic from 'next/dynamic';
 
 function PlacersChart() {
+  const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+
   const [chartData, setChartData] = useState({
     options: {
       chart: {

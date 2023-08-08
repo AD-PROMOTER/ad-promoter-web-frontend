@@ -50,8 +50,8 @@ import {
   getWeekAgoRange,
 } from '@/utils/formatFilterDate';
 import JobsContext from '@/context/jobsContext';
-import PlacersChart from '@/components/placersChart';
 import dynamic from 'next/dynamic';
+import PlacersChart from '@/components/placersChart';
 
 // Function to get the number of weeks in the selected month
 const getWeeksInMonth = (year, month) => {
