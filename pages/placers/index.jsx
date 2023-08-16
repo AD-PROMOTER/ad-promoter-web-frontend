@@ -648,21 +648,23 @@ const Index = () => {
                     )}
                   </div>
                 </div>
-                <h2>Dashboard Summary</h2>
-                <div className="dashboard">
-                  {summary.map(({ Icon, name, num, bg }) => (
-                    <div
-                      key={name}
-                      className="info"
-                      style={{ backgroundColor: bg }}
-                    >
-                      <div className="amount">
-                        <Icon />
-                        <h3>{name}</h3>
-                        <p>{num}</p>
+                <div className="dashboard-container">
+                  <h2>Dashboard Summary</h2>
+                  <div className="dashboard">
+                    {summary.map(({ Icon, name, num, bg }) => (
+                      <div
+                        key={name}
+                        className="info"
+                        style={{ backgroundColor: bg }}
+                      >
+                        <div className="amount">
+                          <Icon />
+                          <h3>{name}</h3>
+                          <p>{num}</p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
                 <PlacersChart />
                 

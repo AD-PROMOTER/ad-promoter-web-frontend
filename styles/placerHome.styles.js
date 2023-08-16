@@ -552,8 +552,10 @@ export const MobilePlacers = styled.div`
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 2rem;
-  padding-bottom: 10rem;
+  padding-bottom: 8rem;
   display: none;
+  max-width: 425px;
+  width: 100%;
   @media screen and (max-width: 425px) {
     display: block;
   }
@@ -565,7 +567,7 @@ export const MobilePlacers = styled.div`
     justify-content: space-between;
     align-items: center;
     @media screen and (max-width: 400px) {
-      width: 38.5rem;
+      width: 100%;
     }
   }
   .userProfile {
@@ -601,48 +603,56 @@ export const MobilePlacers = styled.div`
     align-items: center;
     gap: 1rem;
   }
-  h2 {
-    font-weight: 600;
-    font-size: 1.6rem;
-    line-height: 2.2rem;
-    letter-spacing: -0.408px;
-    color: #0d0d0d;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-  }
-  .dashboard {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-  }
-  .info {
-    padding-top: 2.4rem;
-    padding-bottom: 2.4rem;
-    padding-left: 1rem;
-    border-radius: 1.2rem;
-    width: 11.8rem;
-  }
-  .amount {
+
+  .dashboard-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-
-    h3 {
-      font-size: 1.4rem;
-      line-height: 2rem;
-      letter-spacing: 0.38px;
-      color: #333333;
+    h2 {
+      font-weight: 600;
+      font-size: 1.6rem;
+      line-height: 2.2rem;
+      letter-spacing: -0.408px;
+      color: #0d0d0d;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+    .dashboard {
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+    }
+    .info {
+      /* padding-top: 2.4rem;
+      padding-bottom: 2.4rem;
+      padding-left: 1rem; */
+      padding: 2.4rem 0;
+      border-radius: 1.2rem;
+      max-width: 11.8rem;
+      width: 100%;
+      display: flex;
       align-items: center;
+      justify-content: center;
+    }
+    .amount {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+
+      h3 {
+        font-size: 1.4rem;
+        line-height: 2rem;
+        letter-spacing: 0.38px;
+        color: #333333;
+        text-align: center;
+      }
     }
   }
   .activity {
-    width: 100vw;
-    height: 324px;
     background: #f5f5f7;
     border-radius: 10px;
-    padding: 2rem;
+    padding: 1rem 0.7rem;
     display: flex;
     flex-direction: column;
     gap: 3rem;
@@ -653,9 +663,10 @@ export const MobilePlacers = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 1rem;
     h3 {
       font-weight: 600;
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       line-height: 2.2rem;
       color: #141522;
     }
@@ -665,17 +676,16 @@ export const MobilePlacers = styled.div`
     flex-direction: row;
     align-items: center;
     padding: 0px;
-    gap: 17px;
     .time-week {
       display: flex;
       flex-direction: row;
       align-items: center;
-      padding: 4px 16px;
+      padding: 4px 4px;
       gap: 8px;
       background: #ffffff;
       border-radius: 4px;
 
-      h4 {
+      select {
         font-weight: 500;
         font-size: 14px;
         line-height: 21px;
@@ -688,7 +698,7 @@ export const MobilePlacers = styled.div`
       flex-direction: row;
       align-items: center;
       padding: 0px;
-      gap: 4px;
+      /* gap: 4px; */
       h4 {
         font-weight: 400;
         font-size: 14px;
