@@ -7,8 +7,8 @@ export const BgContainer = styled.div`
     ),
     url(${(props) => props.image.src});
   width: 100%;
-  /* min-height: 102.4rem; */
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   background-size: cover;
   background-repeat: no-repeat;
   display: flex;
