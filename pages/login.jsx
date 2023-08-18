@@ -8,13 +8,10 @@ import SocialBtn from '@/components/socialMediaBtn/index';
 import google from '@/public/assets/google.svg';
 import fb from '@/public/assets/fb.svg';
 import Button from '@/components/authBtn/index'
-import icon from '@/public/assets/hide-icon.svg'
 import { useRouter } from "next/router"
 import Link from "next/link"
-import { useContext, useState,useEffect, useRef } from "react"
+import { useContext, useState,useEffect } from "react"
 import { BsEyeFill,BsEyeSlashFill } from "react-icons/bs"
-// import Container from '@/components/onBoardBg/index'
-import PreferenceContext from "@/context/signupContext"
 import { useLogin } from "@/hooks/useLogin"
 import { useAuthContext } from "@/hooks/useAuthContext"
 import SignupContext from "@/context/signupContext"
@@ -22,15 +19,11 @@ import { Spinner } from "@chakra-ui/react"
 
 const Login = () => {
   const router = useRouter();
-  const { dispatch } = useAuthContext();
   const [isPasswordShown,setIsPasswordShown] = useState(false)
   const [userEmail,setUserEmail] = useState('')
   const [userPassword,setUserPassword] = useState('')
-  const [token, setToken] = useState("");
-  const [role,setRole] = useState("");
-  const [user,setUser] = useState([])
   const {setIsInputWithValue} = useContext(SignupContext)
-  const {login,error,isLoading} = useLogin()
+  const {login,isLoading} = useLogin()
   
   useEffect(() => {
     if(userEmail !== '' && userPassword !== '' ){
@@ -121,7 +114,7 @@ const Login = () => {
                   onChange={e => setUserPassword(e.target.value)}
                 />
               </div>
-              <div className="error-container">
+              <div style={{cursor: 'pointer'}} onClick={()=>router.push('/password-recovery')} className="error-container">
                 <p>Forgot your password</p>
               </div>
             </div>

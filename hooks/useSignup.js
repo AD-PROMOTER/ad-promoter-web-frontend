@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { useAuthContext } from './useAuthContext';
+import { useRouter } from 'next/router';
+import { useToast } from '@chakra-ui/react';
 
 export const useSignup = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const { dispatch } = useAuthContext();
+  const router = useRouter();
+  const toast = useToast();
 
   const signup = async (
     refId,
@@ -45,7 +49,7 @@ export const useSignup = () => {
       setError('Sign Up failed');
       toast({
         title: json.msg,
-        status: 'warning',
+        status: 'error',
         duration: '5000',
         isClosable: true,
         position: 'bottom-left',
@@ -59,6 +63,7 @@ export const useSignup = () => {
       //update the auth context
       dispatch({ type: 'LOGIN', payload: json });
       setIsLoading(false);
+      router.push('/signup/success');
     }
   };
   return { signup, isLoading, error };

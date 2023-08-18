@@ -1,3 +1,5 @@
+import { useToast } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 export const useSendOtp = () => {
@@ -5,7 +7,8 @@ export const useSendOtp = () => {
   const [otpMsg, setOtpMsg] = useState('');
   const [isLoading, setIsLoading] = useState(null);
   const [refId, setRefId] = useState('');
-
+  const toast = useToast();
+  const router = useRouter();
   const sendOtp = async (phoneNumber) => {
     setIsLoading(true);
 
@@ -23,15 +26,18 @@ export const useSendOtp = () => {
 
     if (!response.ok) {
       setIsLoading(false);
-      setOtpError(json.success);
-      setOtpMsg(json.msg);
-      console.log(json);
-      console.log(otpError);
-      console.log(otpMsg);
+      toast({
+        title: json.msg,
+        status: 'error',
+        duration: '5000',
+        isClosable: true,
+        position: 'bottom-left',
+      });
     }
     if (response.ok) {
       setIsLoading(false);
       localStorage.setItem('OTP_INFO', JSON.stringify(json));
+      router.push('/signup/verification');
     }
   };
   return { sendOtp, isLoading, otpMsg, otpError };

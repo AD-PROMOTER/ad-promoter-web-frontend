@@ -11,6 +11,7 @@ import Close from '@/public/assets/close-icon'
 import { useSendOtp } from "@/hooks/useSendOtp"
 import { useVerification } from "@/hooks/useSmsVerififcation"
 import { useSignup } from "@/hooks/useSignup"
+import { useToast } from "@chakra-ui/react"
 const Verification = () => {
     const router = useRouter();
     const {sendOtp} = useSendOtp()
@@ -21,9 +22,9 @@ const Verification = () => {
     const [input4,setInput4] = useState('')
     const [isOtpWithValue,setIsOtpWithValue] = useState(false)
     const {setOtp,phoneNumber,setRefId,otp,refId,accountName,linkValue,seeVisualAd,email,password,userPref} = useContext(SignupContext)    
-    
+    const toast = useToast();
+
     useEffect(() => {
-        router.prefetch('/signup/success')
         const otpInfo = JSON.parse(localStorage.getItem('OTP_INFO'));
         if (otpInfo) {
             setRefId(otpInfo.data.reference_id);
@@ -38,10 +39,40 @@ const Verification = () => {
 
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault()
         if(input1 && input2 && input3 && input4 && input4 !== ''){
-            signup(refId,otp,phoneNumber,accountName,linkValue,seeVisualAd,email,password,userPref)
+            const response = await fetch(
+                'https://api.ad-promoter.com/api/v1/auth/verify-OTP-password',
+                {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    reference_id: refId,
+                    otp,
+                    phoneNumber,
+                    
+                  }),
+                }
+              );
+              const json = await response.json();
+          
+              if (!response.ok) {
+                setIsLoading(false);
+                setError('Sign Up failed');
+                toast({
+                  title: json.msg,
+                  status: 'error',
+                  duration: '5000',
+                  isClosable: true,
+                  position: 'bottom-left',
+                });
+              }
+              if (response.ok) {
+                //save user to local storage
+                localStorage.setItem('reset-token', JSON.stringify(json.data.resetToken));
+                router.push("/password-recovery/password-change")
+              }
         }
     }
 

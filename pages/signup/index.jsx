@@ -48,8 +48,6 @@ const Index = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     
-    // await signup(email,password,accountName,phoneNumber)
-
     if(phoneNumber && isPossiblePhoneNumber(phoneNumber) && phoneNumber && isValidPhoneNumber(phoneNumber) && phoneNumber && formatPhoneNumber(phoneNumber) && formatPhoneNumberIntl(phoneNumber)){
       phoneRef.current = true
       setPhoneState(true)
@@ -234,11 +232,11 @@ const Index = () => {
       </div>
       <form action="" onSubmit={handleSubmit}>
         <div className="name">
-          <label htmlFor="name">Your name</label>
+          <label htmlFor="mname">Your name</label>
           <input 
             type="text" 
-            id="name"
-            name='name'
+            id="mname"
+            name='mname'
             value={accountName} 
             required
             onChange={(e)=> setAccountName(e.target.value)}
@@ -246,11 +244,11 @@ const Index = () => {
           />
         </div>
         <div className="email">
-          <label htmlFor="email">Your email</label>
+          <label htmlFor="memail">Your email</label>
           <input 
             type="email" 
-            id="email"
-            name='email'
+            id="memail"
+            name='memail'
             required
             value={email}
             onChange={(e)=> setEmail(e.target.value)}
@@ -273,7 +271,7 @@ const Index = () => {
         <div className="password">
           <div className="input-container">
             <div className="label">
-              <label htmlFor="password">Your password</label>
+              <label htmlFor="mpassword">Your password</label>
               <div className="hide" onClick={()=>setIsPasswordShown(!isPasswordShown)}>
                 {isPasswordShown ? (
                   <BsEyeSlashFill style={{color: 'rgba(102,102,102,0.8)'}} />
@@ -290,8 +288,8 @@ const Index = () => {
             <input
               className='input'
               type={isPasswordShown ? "text" : "password"} 
-              id="password"
-              name='password'
+              id="mpassword"
+              name='mpassword'
               required
               value={password}
               onChange={(e)=> setPassword(e.target.value)}
@@ -303,7 +301,7 @@ const Index = () => {
         <div className="password">
           <div className="input-container">
             <div className="label">
-              <label htmlFor="confirmPassword">Confirm password</label>
+              <label htmlFor="mconfirmPassword">Confirm password</label>
               <div className="hide" onClick={()=>setIsConfirmPasswordShown(!isConfirmPasswordShown)}>
                 {isConfirmPasswordShown ? (
                   <BsEyeSlashFill style={{color: 'rgba(102,102,102,0.8)'}} />
@@ -316,14 +314,14 @@ const Index = () => {
                   <p>Show</p>
                 )}
               </div>
-            </div>
+            </div>m
             <input
               className={passwordState ? 'input' : 'invalid'}
               // className= {passwordState.current ? 'input' : 'invalid'} 
               type={isConfirmPasswordShown ? "text" : "password"}
               // type='text' 
-              id="confirmPassword"
-              name='confirmPassword'
+              id="mconfirmPassword"
+              name='mconfirmPassword'
               required
               value={confirmPassword}
               onChange={(e)=> setConfirmPassword(e.target.value)}

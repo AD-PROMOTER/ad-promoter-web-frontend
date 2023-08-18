@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
 export const Overlay = styled.div`
-  width: 795px;
-  height: 830px;
+  max-width: 795px;
+  width: 100%;
+  /* height: 830px; */
   padding: 4rem;
   .content {
     display: flex;

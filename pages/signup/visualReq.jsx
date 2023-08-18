@@ -38,7 +38,6 @@ const VisualReq = () => {
             }
             else{
                 sendOtp(phoneNumber)
-                router.push("/signup/verification")
             }
         }else{
             if(user.role){
@@ -47,7 +46,6 @@ const VisualReq = () => {
                 }
                 else{
                     sendOtp(phoneNumber)
-                    router.push("/signup/verification")
                 }
             }
             else{
