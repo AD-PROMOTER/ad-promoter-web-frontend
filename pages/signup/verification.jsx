@@ -11,10 +11,11 @@ import Close from '@/public/assets/close-icon'
 import { useSendOtp } from "@/hooks/useSendOtp"
 import { useVerification } from "@/hooks/useSmsVerififcation"
 import { useSignup } from "@/hooks/useSignup"
+import { Spinner } from "@chakra-ui/react"
 const Verification = () => {
     const router = useRouter();
-    const {sendOtp} = useSendOtp()
-    const {signup} = useSignup()
+    const {sendOtp,isLoading} = useSendOtp()
+    const {signup,isVerificationLoading} = useSignup()
     const [input1,setInput1] = useState('')
     const [input2,setInput2] = useState('')
     const [input3,setInput3] = useState('')
@@ -156,7 +157,7 @@ const Verification = () => {
                         <p>Didn’t get anything? <span onClick={handleResend}>Resend OTP</span></p>
                     </form>
                 </div>
-                <button onClick={handleSubmit} className={isOtpWithValue ? 'content-btn' : 'inactive'}>Submit</button>
+                <button onClick={handleSubmit} className={isOtpWithValue ? 'content-btn' : 'inactive'}>{isLoading || isVerificationLoading ? <Spinner /> :'Submit'}</button>
             </div>
         </Overlay>
     </BgContainer>
@@ -171,7 +172,7 @@ const Verification = () => {
         </div>
         <h3>OTP Verification</h3>
         <div className="verify">
-            Enter the OTP you received to
+            Enter the OTP you received to <span>{phoneNumber}</span>
         </div>
         <form className="content-input">
             <div className="input-container">
@@ -222,7 +223,7 @@ const Verification = () => {
             </div>
             <p>Didn’t get anything? <span onClick={handleResend}>Resend OTP</span></p>
         </form>
-        <button onClick={handleSubmit} className={isOtpWithValue ? 'content-btn' : 'inactive'}>Submit</button>
+        <button onClick={handleSubmit} className={isOtpWithValue ? 'content-btn' : 'inactive'}>{isLoading || isVerificationLoading ? <Spinner /> :'Submit'}</button>
     </VerificationMobile>
     </>
   )

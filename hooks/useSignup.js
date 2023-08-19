@@ -5,7 +5,7 @@ import { useToast } from '@chakra-ui/react';
 
 export const useSignup = () => {
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(null);
+  const [isVerificationLoading, setIsVerificationLoading] = useState(null);
   const { dispatch } = useAuthContext();
   const router = useRouter();
   const toast = useToast();
@@ -21,7 +21,7 @@ export const useSignup = () => {
     password,
     userPref
   ) => {
-    setIsLoading(true);
+    setIsVerificationLoading(true);
     setError(null);
 
     const response = await fetch(
@@ -45,7 +45,7 @@ export const useSignup = () => {
     const json = await response.json();
 
     if (!response.ok) {
-      setIsLoading(false);
+      setIsVerificationLoading(false);
       setError('Sign Up failed');
       toast({
         title: json.msg,
@@ -62,9 +62,9 @@ export const useSignup = () => {
 
       //update the auth context
       dispatch({ type: 'LOGIN', payload: json });
-      setIsLoading(false);
+      setIsVerificationLoading(false);
       router.push('/signup/success');
     }
   };
-  return { signup, isLoading, error };
+  return { signup, isVerificationLoading, error };
 };

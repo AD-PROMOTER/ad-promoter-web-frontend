@@ -13,11 +13,12 @@ import { useContext, useEffect, useState } from "react"
 import SignupContext from "@/context/signupContext"
 import { useSendOtp } from "@/hooks/useSendOtp"
 import { AddUserPref } from "@/hooks/addUserPref"
+import { Spinner } from "@chakra-ui/react"
 
 const Visualverification = () => {
     const {setIsInputWithValue,linkValue,setLinkValue,userPref,seeVisualAd} = useContext(SignupContext)
     const router = useRouter()
-    const {sendOtp} = useSendOtp()
+    const {sendOtp,isLoading} = useSendOtp()
     const {phoneNumber} = useContext(SignupContext)
     const [user, setUser] = useState(false)
     const {addUserPref} = AddUserPref()
@@ -92,7 +93,7 @@ const Visualverification = () => {
                         </div>
                     </div>
                     <div onClick={handleClick}>
-                        <Button text="Submit"/>
+                        <Button text={isLoading ? <Spinner />:'Submit'}/>
                     </div>
                 </div>
             </StyledContent>
@@ -131,7 +132,7 @@ const Visualverification = () => {
             </div>
         </div>
         <div onClick={handleClick}>
-            <Button text="Submit"/>
+            <Button text={isLoading ? <Spinner />:'Submit'}/>
         </div>
       </div>
     </VerifyVisual>

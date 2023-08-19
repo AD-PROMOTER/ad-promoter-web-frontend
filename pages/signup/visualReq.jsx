@@ -14,8 +14,9 @@ import BackArrow from '@/public/assets/back-arrow'
 import SignupContext from '@/context/signupContext'
 import { useSendOtp } from '@/hooks/useSendOtp'
 import { AddUserPref } from '@/hooks/addUserPref'
+import { Spinner } from '@chakra-ui/react'
 const VisualReq = () => {
-    const {sendOtp} = useSendOtp()
+    const {sendOtp,isLoading} = useSendOtp()
     const {phoneNumber} = useContext(SignupContext)
     const {setIsInputWithValue,userVisualReq,setUserVisualReq,seeVisualAd,setSeeVisualAd,userPref,linkValue} = useContext(SignupContext)
     const router = useRouter();
@@ -165,7 +166,7 @@ const VisualReq = () => {
                             />
                         <label htmlFor='remind'>Remind me later</label>
                     </div>
-                    <Button text='Sign me in' />
+                    <Button text={isLoading ? <Spinner />:'Sign me in'} />
                 </form>
             </div>
         </Overlay>
@@ -215,7 +216,7 @@ const VisualReq = () => {
                 />
             <label htmlFor='remind'>Remind me later</label>
         </div>
-        <Button text='Sign me in' />
+        <Button text={isLoading ? <Spinner />:'Sign me in'} />
     </form>
     </ReqMobile>
     </>

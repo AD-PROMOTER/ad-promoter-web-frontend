@@ -7,16 +7,22 @@ import successMark from '@/public/assets/success-mark.gif'
 import { useContext } from "react";
 import { useRouter } from "next/router"
 import SignupContext from "@/context/signupContext"
+import { useState } from "react"
+import { Spinner } from "@chakra-ui/react"
 const Success = () => {
   const {userPref} = useContext(SignupContext)
   const router = useRouter();
+  const [isLoading,setIsLoading] = useState(false)
  
   const handleSubmit = ()=>{
+    setIsLoading(true)
     if(userPref === 'promoter'){
       router.push('/promoters')
+      setIsLoading(false)
     }
     else{
       router.push('/placers')
+      setIsLoading(false)
     }
   }
   return (
@@ -33,7 +39,7 @@ const Success = () => {
                 alt='success'/>
             </div>
             <p>Congratulations, You have successfully created an account. Click on the link below to go home.</p>
-            <div className="btn" onClick={handleSubmit}>Take me home</div>
+            <div className="btn" onClick={handleSubmit}>{isLoading ? <Spinner />:'Take me home'}</div>
           </div>
       </Overlay>
     </BgContainer>
@@ -48,7 +54,7 @@ const Success = () => {
             alt='success'/>
         </div>
         <p>Congratulations, You have successfully created an account. Click on the link below to go home.</p>
-        <div className="btn" onClick={handleSubmit}>Take me home</div>
+        <div className="btn" onClick={handleSubmit}>{isLoading ? <Spinner />:'Take me home'}</div>
       </div>
     </SuccessMobile>
     </>

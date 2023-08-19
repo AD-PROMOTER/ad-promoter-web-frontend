@@ -20,10 +20,10 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const Index = () => {
   const [isPasswordShown,setIsPasswordShown] = useState(false)
   const [isConfirmPasswordShown,setIsConfirmPasswordShown] = useState(false)
-  const phoneRef = useRef(true)
+  const phoneRef = useRef()
   const [phoneState,setPhoneState] = useState(true)
   const [passwordState,setPasswordState] = useState(true)
-  const passwordRef = useRef(true)
+  const passwordRef = useRef()
   const {setIsInputWithValue,email,setEmail,password,setPassword,confirmPassword,setConfirmPassword,accountName,setAccountName,phoneNumber,setPhoneNumber,} = useContext(SignupContext)
   const {signup,error,isLoading} = useSignup()
   const router = useRouter()
@@ -38,63 +38,66 @@ const Index = () => {
     }
   }, [router, setIsInputWithValue,accountName,email,password,confirmPassword,phoneNumber])
 
-  useEffect(()=>{
-    phoneRef.current = true
-    setPhoneState(true)
-    passwordRef.current = true
-    setPasswordState(true)
-  },[accountName,email,password,confirmPassword,phoneNumber])
+  
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    
-    if(phoneNumber && isPossiblePhoneNumber(phoneNumber) && phoneNumber && isValidPhoneNumber(phoneNumber) && phoneNumber && formatPhoneNumber(phoneNumber) && formatPhoneNumberIntl(phoneNumber)){
-      phoneRef.current = true
-      setPhoneState(true)
-    }
-    else{
-      phoneRef.current = false
-      setPhoneState(false)
+    e.preventDefault();
+  
+    let isPasswordValid = PWD_REGEX.test(password);
+    let isPhoneNumberValid =
+      phoneNumber &&
+      isPossiblePhoneNumber(phoneNumber) &&
+      isValidPhoneNumber(phoneNumber) &&
+      formatPhoneNumber(phoneNumber) &&
+      formatPhoneNumberIntl(phoneNumber);
+  
+    if (isPhoneNumberValid) {
+      phoneRef.current = true;
+      setPhoneState(true);
+    } else {
+      phoneRef.current = false;
+      setPhoneState(false);
       toast({
         title: 'Enter a valid phone number',
         status: 'error',
-        duration: '5000',
+        duration: 5000,
         isClosable: true,
         position: 'bottom-left',
       });
     }
-    if(confirmPassword === password){
-      passwordRef.current = true
-      setPasswordState(true)
-    }else{
-      passwordRef.current = false
-      setPasswordState(false)
+  
+    if (confirmPassword === password) {
+      if (isPasswordValid) {
+        passwordRef.current = true;
+        setPasswordState(true);
+      } else if (!isPasswordValid) {
+        passwordRef.current = false;
+        setPasswordState(false);
+        toast({
+          title: 'Password must be at least 8 characters long, contain a lowercase, contain an uppercase, contain a number and a special character',
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+          position: 'bottom-left',
+        });
+      }
+    } else {
+      passwordRef.current = false;
+      setPasswordState(false);
       toast({
         title: 'Password must match',
         status: 'error',
-        duration: '5000',
+        duration: 5000,
         isClosable: true,
         position: 'bottom-left',
       });
     }
-    if(PWD_REGEX.test(password)){
-      passwordRef.current = true
-      setPasswordState(true)
-    }else{
-      passwordRef.current = false
-      setPasswordState(false)
-      toast({
-        title: 'Password must be at least 8 characters long, contain a lowercase, contain an uppercase, contain a number and a special character',
-        status: 'error',
-        duration: '10000',
-        isClosable: true,
-        position: 'bottom-left',
-      });
+  
+    if (passwordRef.current && phoneRef.current) {
+      router.push('/signup/preference');
     }
-    if(passwordRef.current && phoneRef.current === true) {
-      router.push('/signup/preference')
-    }
-  }
+  };
+  
 
   return (
     <>
@@ -286,7 +289,7 @@ const Index = () => {
               </div>
             </div>
             <input
-              className='input'
+              className={passwordState ? 'input' : 'invalid'}
               type={isPasswordShown ? "text" : "password"} 
               id="mpassword"
               name='mpassword'
@@ -314,7 +317,7 @@ const Index = () => {
                   <p>Show</p>
                 )}
               </div>
-            </div>m
+            </div>
             <input
               className={passwordState ? 'input' : 'invalid'}
               // className= {passwordState.current ? 'input' : 'invalid'} 

@@ -12,11 +12,12 @@ import { useContext } from "react";
 import SignupContext from '@/context/signupContext'
 import { useSendOtp } from '@/hooks/useSendOtp'
 import { AddUserPref } from '@/hooks/addUserPref'
+import { Spinner } from '@chakra-ui/react'
 
 const Preference = () => {
   const {userPref,setUserPref,setIsInputWithValue,seeVisualAd,linkValue} = useContext(SignupContext)
   const router = useRouter();
-  const {sendOtp} = useSendOtp()
+  const {sendOtp,isLoading} = useSendOtp()
   const {phoneNumber} = useContext(SignupContext)
   const [placeAds, setPlaceAds] = useState(false)
   const [promoteAds, setPromoteAds] = useState(false)
@@ -118,7 +119,7 @@ const Preference = () => {
                 />
               <label htmlFor='promote'>Promote ads</label>
             </div>
-            <Button text='Next' />
+            {isLoading ? <Button text={<Spinner />} /> : <Button text='Next' />}
           </form>
         </div>
       </Overlay>
@@ -149,7 +150,8 @@ const Preference = () => {
             />
           <label htmlFor='promote'>Promote ads</label>
         </div>
-        <Button text='Next' />
+        {isLoading ? <Button text={<Spinner />} /> : <Button text='Next' />}
+        
       </form>
     </MobilePref>
     </>

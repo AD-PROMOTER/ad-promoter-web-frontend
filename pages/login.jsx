@@ -51,7 +51,7 @@ const Login = () => {
   return (
     <>
     <BgContainer image={bg}>
-      <Overlay className='overlay'>
+    <Overlay className='overlay'>
         <div className="close" onClick={()=>router.push('/')}>
           <Close />
         </div>
@@ -123,7 +123,7 @@ const Login = () => {
         </div>
       </Overlay>
     </BgContainer>
-    <MobileLogin>
+    {/* <MobileLogin>
       <div className="logo">
         <Image src={logo} alt='ad-promoter logo'/>
         <div className="login">
@@ -181,7 +181,7 @@ const Login = () => {
         </div>
         <Button text={isLoading ? <Spinner /> : 'Log in'} />
       </form>
-    </MobileLogin>
+    </MobileLogin> */}
     </>
   )
 }
