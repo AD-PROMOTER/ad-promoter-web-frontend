@@ -123,7 +123,7 @@ const Login = () => {
         </div>
       </Overlay>
     </BgContainer>
-    {/* <MobileLogin>
+    <MobileLogin>
       <div className="logo">
         <Image src={logo} alt='ad-promoter logo'/>
         <div className="login">
@@ -177,11 +177,11 @@ const Login = () => {
               onChange={e => setUserPassword(e.target.value)}
             />
           </div>
-          <p>Forgot your password</p>
+          <p style={{cursor: 'pointer'}} onClick={()=>router.push('/password-recovery')}>Forgot your password</p>
         </div>
         <Button text={isLoading ? <Spinner /> : 'Log in'} />
       </form>
-    </MobileLogin> */}
+    </MobileLogin>
     </>
   )
 }

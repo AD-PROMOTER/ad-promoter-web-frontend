@@ -11,7 +11,8 @@ import Close from '@/public/assets/close-icon'
 import { useSendOtp } from "@/hooks/useSendOtp"
 import { useVerification } from "@/hooks/useSmsVerififcation"
 import { useSignup } from "@/hooks/useSignup"
-import { useToast } from "@chakra-ui/react"
+import { Spinner, useToast } from "@chakra-ui/react"
+
 const Verification = () => {
     const router = useRouter();
     const {sendOtp} = useSendOtp()
@@ -23,6 +24,7 @@ const Verification = () => {
     const [isOtpWithValue,setIsOtpWithValue] = useState(false)
     const {setOtp,phoneNumber,setRefId,otp,refId,accountName,linkValue,seeVisualAd,email,password,userPref} = useContext(SignupContext)    
     const toast = useToast();
+    const [isLoading,setIsLoading] = useState(false)
 
     useEffect(() => {
         const otpInfo = JSON.parse(localStorage.getItem('OTP_INFO'));
@@ -42,6 +44,7 @@ const Verification = () => {
     const handleSubmit = async(e) => {
         e.preventDefault()
         if(input1 && input2 && input3 && input4 && input4 !== ''){
+            setIsLoading(true)
             const response = await fetch(
                 'https://api.ad-promoter.com/api/v1/auth/verify-OTP-password',
                 {
@@ -69,6 +72,7 @@ const Verification = () => {
                 });
               }
               if (response.ok) {
+                setIsLoading(false)
                 //save user to local storage
                 localStorage.setItem('reset-token', JSON.stringify(json.data.resetToken));
                 router.push("/password-recovery/password-change")
@@ -187,7 +191,7 @@ const Verification = () => {
                         <p>Didn’t get anything? <span onClick={handleResend}>Resend OTP</span></p>
                     </form>
                 </div>
-                <button onClick={handleSubmit} className={isOtpWithValue ? 'content-btn' : 'inactive'}>Submit</button>
+                <button onClick={handleSubmit} className={isOtpWithValue ? 'content-btn' : 'inactive'}>{isLoading ? <Spinner /> : 'Submit'}</button>
             </div>
         </Overlay>
     </BgContainer>
@@ -202,7 +206,7 @@ const Verification = () => {
         </div>
         <h3>OTP Verification</h3>
         <div className="verify">
-            Enter the OTP you received to
+            Enter the OTP you received to {phoneNumber}
         </div>
         <form className="content-input">
             <div className="input-container">
@@ -253,7 +257,7 @@ const Verification = () => {
             </div>
             <p>Didn’t get anything? <span onClick={handleResend}>Resend OTP</span></p>
         </form>
-        <button onClick={handleSubmit} className={isOtpWithValue ? 'content-btn' : 'inactive'}>Submit</button>
+        <button onClick={handleSubmit} className={isOtpWithValue ? 'content-btn' : 'inactive'}>{isLoading ? <Spinner /> : 'Submit'}</button>
     </VerificationMobile>
     </>
   )
