@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 export const AddUserPref = () => {
   const [token, setToken] = useState('');
-  const [isLoading, setIsLoading] = useState('');
+  const [isPrefLoading, setIsPrefLoading] = useState('');
   const toast = useToast();
   const success = useRef();
   const router = useRouter();
@@ -17,7 +17,7 @@ export const AddUserPref = () => {
   }, []);
 
   const addUserPref = async (userPref, seeVisualAd, linkValue, socialLink) => {
-    setIsLoading(true);
+    setIsPrefLoading(true);
 
     const response = await fetch('https://api.ad-promoter.com/api/v1/user', {
       method: 'PATCH',
@@ -37,7 +37,7 @@ export const AddUserPref = () => {
 
     if (!response.ok) {
       success.current = false;
-      setIsLoading(false);
+      setIsPrefLoading(false);
       toast({
         title: json.msg,
         status: 'warning',
@@ -47,7 +47,7 @@ export const AddUserPref = () => {
       });
     }
     if (response.ok) {
-      setIsLoading(false);
+      setIsPrefLoading(false);
       localStorage.setItem('user-detail', JSON.stringify(json.data));
       if (json.data.role === 'placer') {
         router.push('/placers');
@@ -63,5 +63,5 @@ export const AddUserPref = () => {
       });
     }
   };
-  return { addUserPref, isLoading, success };
+  return { addUserPref, isPrefLoading, success };
 };

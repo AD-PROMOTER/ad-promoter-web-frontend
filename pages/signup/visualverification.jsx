@@ -21,7 +21,7 @@ const Visualverification = () => {
     const {sendOtp,isLoading} = useSendOtp()
     const {phoneNumber} = useContext(SignupContext)
     const [user, setUser] = useState(false)
-    const {addUserPref} = AddUserPref()
+    const {addUserPref,isPrefLoading} = AddUserPref()
 
     useEffect(()=>{
         const user = JSON.parse(localStorage.getItem("user-detail"));
@@ -93,7 +93,7 @@ const Visualverification = () => {
                         </div>
                     </div>
                     <div onClick={handleClick}>
-                        <Button text={isLoading ? <Spinner />:'Submit'}/>
+                        <Button text={isLoading || isPrefLoading ? <Spinner />:'Submit'}/>
                     </div>
                 </div>
             </StyledContent>
@@ -132,7 +132,7 @@ const Visualverification = () => {
             </div>
         </div>
         <div onClick={handleClick}>
-            <Button text={isLoading ? <Spinner />:'Submit'}/>
+            <Button text={isLoading || isPrefLoading ? <Spinner />:'Submit'}/>
         </div>
       </div>
     </VerifyVisual>

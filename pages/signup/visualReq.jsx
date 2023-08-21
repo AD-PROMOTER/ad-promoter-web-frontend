@@ -24,7 +24,7 @@ const VisualReq = () => {
     const [no, setNo] = useState(false)
     const [remind, setRemind] = useState(false)
     const [user, setUser] = useState(false)
-    const {addUserPref} = AddUserPref()
+    const {addUserPref,isPrefLoading} = AddUserPref()
 
     useEffect(()=>{
         const user = JSON.parse(localStorage.getItem("user-detail"));
@@ -166,7 +166,7 @@ const VisualReq = () => {
                             />
                         <label htmlFor='remind'>Remind me later</label>
                     </div>
-                    <Button text={isLoading ? <Spinner />:'Sign me in'} />
+                    <Button text={isLoading || isPrefLoading ? <Spinner />:'Sign me in'} />
                 </form>
             </div>
         </Overlay>
@@ -216,7 +216,7 @@ const VisualReq = () => {
                 />
             <label htmlFor='remind'>Remind me later</label>
         </div>
-        <Button text={isLoading ? <Spinner />:'Sign me in'} />
+        <Button text={isLoading || isPrefLoading ? <Spinner />:'Sign me in'} />
     </form>
     </ReqMobile>
     </>

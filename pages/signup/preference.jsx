@@ -22,7 +22,7 @@ const Preference = () => {
   const [placeAds, setPlaceAds] = useState(false)
   const [promoteAds, setPromoteAds] = useState(false)
   const [user, setUser] = useState(false)
-  const {addUserPref} = AddUserPref()
+  const {addUserPref,isPrefLoading} = AddUserPref()
   useEffect(()=>{
     const user = JSON.parse(localStorage.getItem("user-detail"));
     setUser(user)
@@ -119,7 +119,7 @@ const Preference = () => {
                 />
               <label htmlFor='promote'>Promote ads</label>
             </div>
-            {isLoading ? <Button text={<Spinner />} /> : <Button text='Next' />}
+            {isLoading || isPrefLoading ? <Button text={<Spinner />} /> : <Button text='Next' />}
           </form>
         </div>
       </Overlay>
@@ -134,7 +134,7 @@ const Preference = () => {
           <input 
             type="radio" 
             id="place" 
-            value='place' 
+            value='placer' 
             name='pref'
             checked={placeAds}
             />
@@ -144,13 +144,13 @@ const Preference = () => {
           <input 
             type="radio" 
             id="promote" 
-            value='promote' 
+            value='promoter' 
             name='pref'
             checked={promoteAds}
             />
           <label htmlFor='promote'>Promote ads</label>
         </div>
-        {isLoading ? <Button text={<Spinner />} /> : <Button text='Next' />}
+        {isLoading || isPrefLoading ? <Button text={<Spinner />} /> : <Button text='Next' />}
         
       </form>
     </MobilePref>
