@@ -7,6 +7,7 @@ export const AddUserPref = () => {
   const [isLoading, setIsLoading] = useState('');
   const toast = useToast();
   const success = useRef();
+  const router = useRouter();
 
   useEffect(() => {
     const userToken = JSON.parse(localStorage.getItem('user-token'));
