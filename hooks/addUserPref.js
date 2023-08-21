@@ -56,9 +56,9 @@ export const AddUserPref = () => {
         position: 'bottom-left',
       });
 
-      if (userPref === 'placer') {
+      if (json.role === 'placer') {
         router.push('/placers');
-      } else if (userPref === 'promoter') {
+      } else if (json.role === 'promoter') {
         router.push('/promoters');
       }
     }
