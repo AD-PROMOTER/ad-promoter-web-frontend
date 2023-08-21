@@ -43,7 +43,7 @@ const Index = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    let isPasswordValid = PWD_REGEX.test(password);
+    // let isPasswordValid = PWD_REGEX.test(password);
     let isPhoneNumberValid =
       phoneNumber &&
       isPossiblePhoneNumber(phoneNumber) &&
@@ -67,20 +67,8 @@ const Index = () => {
     }
   
     if (confirmPassword === password) {
-      if (isPasswordValid) {
-        passwordRef.current = true;
-        setPasswordState(true);
-      } else if (!isPasswordValid) {
-        passwordRef.current = false;
-        setPasswordState(false);
-        toast({
-          title: 'Password must be at least 8 characters long, contain a lowercase, contain an uppercase, contain a number and a special character',
-          status: 'error',
-          duration: 10000,
-          isClosable: true,
-          position: 'bottom-left',
-        });
-      }
+      passwordRef.current = true;
+      setPasswordState(true);
     } else {
       passwordRef.current = false;
       setPasswordState(false);
@@ -92,6 +80,21 @@ const Index = () => {
         position: 'bottom-left',
       });
     }
+
+    // if (PWD_REGEX.test(password)) {
+    //   passwordRef.current = true;
+    //   setPasswordState(true);
+    // } else {
+    //   passwordRef.current = false;
+    //   setPasswordState(false);
+    //   toast({
+    //     title: 'Password must be at least 8 characters long, contain a lowercase, contain an uppercase, contain a number and a special character',
+    //     status: 'error',
+    //     duration: 10000,
+    //     isClosable: true,
+    //     position: 'bottom-left',
+    //   });
+    // }
   
     if (passwordRef.current && phoneRef.current) {
       router.push('/signup/preference');

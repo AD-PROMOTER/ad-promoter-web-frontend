@@ -18,7 +18,7 @@ export const AddUserPref = () => {
   const addUserPref = async (userPref, seeVisualAd, linkValue, socialLink) => {
     setIsLoading(true);
 
-    const response = await fetch('/api/v1/user', {
+    const response = await fetch('https://api.ad-promoter.com/api/v1/user', {
       method: 'PATCH',
       mode: 'cors',
       cache: 'no-cache',
