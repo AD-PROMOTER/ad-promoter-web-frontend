@@ -51,16 +51,23 @@ export const AddUserPref = () => {
       localStorage.setItem('user-detail', JSON.stringify(json.data));
       if (json.data.role === 'placer') {
         router.push('/placers');
+        toast({
+          title: 'Logged In as a Placer Successfully',
+          status: 'success',
+          duration: '5000',
+          isClosable: true,
+          position: 'bottom-left',
+        });
       } else if (json.data.role === 'promoter') {
         router.push('/promoters');
+        toast({
+          title: 'Logged In as a Promoter Successfully',
+          status: 'success',
+          duration: '5000',
+          isClosable: true,
+          position: 'bottom-left',
+        });
       }
-      toast({
-        title: 'Logged In Successfully',
-        status: 'success',
-        duration: '5000',
-        isClosable: true,
-        position: 'bottom-left',
-      });
     }
   };
   return { addUserPref, isPrefLoading, success };
