@@ -13,6 +13,7 @@ import NotificationContext from '@/context/notificationContext';
 import NotificationContainer from '@/components/Notification/index';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import DefaultPic from '@/public/assets/squared-profile.png'
 
 import { GlobalStyle } from '@/styles/global';
 const Index = () => {
@@ -34,7 +35,11 @@ const Index = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-detail'));
-    setProfileImage(user.profilePicture);
+    if(!user.profilePicture || user.profilePicture === ''){
+      setProfileImage('')
+    }else{
+      setProfileImage(user.profilePicture);
+    }
   }, []);
 
   useEffect(() => {
@@ -128,13 +133,23 @@ const Index = () => {
           {isNotifClicked && <NotificationContainer notificationData={notificationData} isLoading={isLoading} />}
         </div>
         <div style={{ width: '52px', height: '52px' }}>
-          <Image
-            src={profileImage}
-            alt="profile picture"
-            width={'100%'}
-            height={'100%'}
-            style={{objectFit: 'fill', borderRadius: '100px' }}
-          />
+          {profileImage === '' ? (
+            <Image
+              src={DefaultPic}
+              alt="profile picture"
+              width={'100%'}
+              height={'100%'}
+              style={{objectFit: 'fill', borderRadius: '100px' }}
+            />
+          ):(
+            <Image
+              src={profileImage}
+              alt="profile picture"
+              width={'100%'}
+              height={'100%'}
+              style={{objectFit: 'fill', borderRadius: '100px' }}
+            />
+          )}
         </div>
       </div>
     </StyledNavBar>

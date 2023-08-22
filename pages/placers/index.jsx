@@ -17,6 +17,7 @@ import Placers from '@/public/assets/placers-frame';
 import Placer from '@/public/assets/placers-frame.svg';
 import Flash from '@/public/assets/flash';
 import Cup from '@/public/assets/cup';
+import DefaultPic from '@/public/assets/squared-profile.png'
 import cup from '@/public/assets/cupIcon.svg';
 import Trend from '@/public/assets/trending-up';
 import Chevron from '@/public/assets/chevron';
@@ -61,7 +62,7 @@ const Index = () => {
   const [listValue, setListValue] = useState('It has gory images');
   const [userName, setUserName] = useState('');
   const [showNotif, setShowNotif] = useState(false);
-  const [profileImage, setProfileImage] = useState('');
+  const [profileImage, setProfileImage] = useState();
   const token = useRef('');
   const ref = useRef(null);
   const [runningAds, setRunningAds] = useState('');
@@ -82,7 +83,11 @@ const Index = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-detail'));
-    setProfileImage(user.profilePicture);
+    if(!user.profilePicture || user.profilePicture === ''){
+      setProfileImage('')
+    }else{
+      setProfileImage(user.profilePicture);
+    }
     const userToken = JSON.parse(localStorage.getItem('user-token'));
     if (user && userToken && user.role === 'placer') {
       setUserName(user.accountName);
@@ -298,13 +303,23 @@ const Index = () => {
             <StyledHome>
               <DashboardContainer>
                 <div className="welcome">
-                  <Image
-                    src={profileImage}
-                    width={'145px'}
-                    height={'134px'}
-                    style={{borderRadius: '16px'}}
-                    alt="profile picture"
-                  />
+                  {profileImage === '' ? (
+                    <Image
+                      src={DefaultPic}
+                      width={'145px'}
+                      height={'134px'}
+                      style={{borderRadius: '16px'}}
+                      alt="profile picture"
+                    />
+                  ):(
+                    <Image
+                      src={profileImage}
+                      width={'145px'}
+                      height={'134px'}
+                      style={{borderRadius: '16px'}}
+                      alt="profile picture"
+                    />
+                  )}
                  
                   <div className="welcome-text">
                     <h3>Hi, {userName}</h3>
@@ -616,13 +631,23 @@ const Index = () => {
                 <div className="welcome">
                   <div className="userProfile">
                   <div style={{ width: '52px', height: '52px' }}>
-                    <Image
-                      src={profileImage}
-                      alt="profile picture"
-                      width={'100%'}
-                      height={'100%'}
-                      style={{objectFit: 'fill', borderRadius: '100px' }}
-                    />
+                    {profileImage === '' ? (
+                      <Image
+                        src={DefaultPic}
+                        alt="profile picture"
+                        width={'100%'}
+                        height={'100%'}
+                        style={{objectFit: 'fill', borderRadius: '100px' }}
+                      />
+                    ):(
+                      <Image
+                        src={profileImage}
+                        alt="profile picture"
+                        width={'100%'}
+                        height={'100%'}
+                        style={{objectFit: 'fill', borderRadius: '100px' }}
+                      />
+                    )}
                   </div>
                     <div className="username">
                       <p>Hi, {userName}</p>
@@ -730,13 +755,23 @@ const Index = () => {
             <div className="welcome">
               <div className="userProfile">
                 <div className="profile-img" style={{ borderRadius: '45%' }}>
-                  <Image
-                    src={profileImage}
-                    width={'145px'}
-                    height={'134px'}
-                    style={{borderRadius: '16px'}}
-                    alt="profile picture"
-                  />
+                  {profileImage === '' ? (
+                    <Image
+                      src={DefaultPic}
+                      width={'145px'}
+                      height={'134px'}
+                      style={{borderRadius: '16px'}}
+                      alt="profile picture"
+                    />
+                  ):(
+                    <Image
+                      src={profileImage}
+                      width={'145px'}
+                      height={'134px'}
+                      style={{borderRadius: '16px'}}
+                      alt="profile picture"
+                    />
+                  )}
                 </div>
                 <div className="username">
                   <p>Hi, {userName}</p>

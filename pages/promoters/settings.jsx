@@ -11,7 +11,7 @@ import general from '@/public/assets/general-icon.svg';
 import payment from '@/public/assets/cards.svg';
 import logout from '@/public/assets/logout.svg';
 import arrow from '@/public/assets/arrow-right.svg';
-import { MobileSettings } from '@/components/settings/settings.style';
+import { Danger, MobileSettings } from '@/components/settings/settings.style';
 import Profile from '@/components/MobileSettings/Profile';
 import General from '@/components/MobileSettings/General';
 import Notification from '@/components/MobileSettings/Notification';
@@ -19,15 +19,46 @@ import Security from '@/components/MobileSettings/Security';
 import Payment from '@/components/MobileSettings/Payment';
 import Privacy from '@/components/MobileSettings/Privacy';
 import { BackdropContainer } from '@/components/DiscoveryFolder/ReportModal/ModalStyle';
+import DefaultPic from '@/public/assets/squared-profile.png'
+import { AiOutlineCloudUpload } from 'react-icons/ai';
+import { VscClose } from 'react-icons/vsc';
 
 const PromoterSettings = () => {
   const [selected, setSelected] = useState('Settings');
   const [showlogout, setShowlogout] = useState(false);
   const [userName, setUserName] = useState('');
+  const [profileImage, setProfileImage] = useState('');
+  const [profileModal, setProfileModal] = useState(false);
+  const [imageUploaderError, setImageUploaderError] = useState("");
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-detail'));
     setUserName(user.accountName);
   }, []);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user-detail'));
+    if(!user.profilePicture || user.profilePicture === ''){
+      setProfileImage('')
+    }else{
+      setProfileImage(user.profilePicture);
+    }
+  }, []);
+
+  const handleFileInput = async (e) => {
+    const files = e.target.files;
+    const result = await uploadImage(files);
+
+    if(result === "erorr code 500") {
+      setImageUploaderError("Something went wrong while trying to upload image");
+    }
+
+    setImage(result[0])
+
+    setIsChangesMade(true);
+
+    setProfileModal(false);
+  };
 
   const settingsTabs = [
     {
@@ -83,7 +114,28 @@ const PromoterSettings = () => {
         {selected == 'Settings' && (
           <>
             <div className="user-profile">
-              <Image src={profil} alt="profile-picture" />
+              <div style={{ width: '52px', height: '52px' }}>
+                {profileImage === '' ? (
+                  <Image
+                    src={DefaultPic}
+                    onClick={() => setProfileModal(true)}
+                    alt="profile picture"
+                    width={'100%'}
+                    height={'100%'}
+                    style={{objectFit: 'fill', borderRadius: '100px',cursor:'pointer' }}
+                  />
+                ):(
+                  <Image
+                    src={profileImage}
+                    onClick={() => setProfileModal(true)}
+                    alt="profile picture"
+                    width={'100%'}
+                    height={'100%'}
+                    style={{objectFit: 'fill', borderRadius: '100px',cursor:'pointer' }}
+                  />
+                )}
+              </div>
+
               <h2>Hi, {userName}</h2>
               <div className="welcome">
                 <Image src={wave} alt="wave" />

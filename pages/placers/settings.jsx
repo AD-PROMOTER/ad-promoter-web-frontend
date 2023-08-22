@@ -19,6 +19,7 @@ import Security from '@/components/MobileSettings/Security';
 import Payment from '@/components/MobileSettings/Payment';
 import Privacy from '@/components/MobileSettings/Privacy';
 import { BackdropContainer } from '@/components/DiscoveryFolder/ReportModal/ModalStyle';
+import DefaultPic from '@/public/assets/squared-profile.png'
 
 const PlacersSettings = () => {
   const [selected, setSelected] = useState('Settings');
@@ -43,7 +44,11 @@ const PlacersSettings = () => {
       setPhoneNumber(user.phoneNumber);
       setDateOfBirth(user.dateOfBirth);
       setListValue(user.gender);
-      setProfileImage(user.profilePicture);
+      if(!user.profilePicture || user.profilePicture === ''){
+        setProfileImage('')
+      }else{
+        setProfileImage(user.profilePicture);
+      }
     }
   }, [setName, setEmail, setPhoneNumber]);
 
@@ -105,15 +110,27 @@ const PlacersSettings = () => {
         {selected == 'Settings' && (
           <>
             <div className="user-profile">
-              <Image
-                src={profileImage}
-                onClick={() => setProfileModal(true)}
-                alt="Profile"
-                style={{ cursor: 'pointer', borderRadius: '50%' }}
-                height={105}
-                width={105}
-                objectFit="cover"
-              />
+            <div style={{ width: '105px', height: '105px' }}>
+              {profileImage === '' ? (
+                <Image
+                  src={DefaultPic}
+                  onClick={() => setProfileModal(true)}
+                  alt="profile picture"
+                  width={'100%'}
+                  height={'100%'}
+                  style={{objectFit: 'fill', borderRadius: '100px',cursor:'pointer' }}
+                />
+              ):(
+                <Image
+                  src={profileImage}
+                  onClick={() => setProfileModal(true)}
+                  alt="profile picture"
+                  width={'100%'}
+                  height={'100%'}
+                  style={{objectFit: 'fill', borderRadius: '100px',cursor:'pointer' }}
+                />
+              )}
+            </div>
               <h2>Hi, {name}</h2>
               <div className="welcome">
                 <Image src={wave} alt="wave" />

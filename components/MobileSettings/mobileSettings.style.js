@@ -394,18 +394,23 @@ export const GeneralContainer = styled.div`
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 100;
     position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .deactivate-modal {
     background-color: white;
-    z-index: 500;
-    width: 38.8rem;
-    position: fixed;
+    /* z-index: 500; */
+    max-width: 38.8rem;
+    width: 90%;
+    /* position: fixed;
     top: 10%;
-    left: 3%;
-    padding: 3.2rem 2.4rem;
+    left: 3%; */
+    padding: 1rem;
+    /* padding: 3.2rem 2.4rem; */
     box-shadow: 1.65263px 3.30526px 26.4421px rgba(0, 0, 0, 0.05);
     border-radius: 16px;
-    @media screen and (max-width: 400px) {
+    /* @media screen and (max-width: 400px) {
       width: 35rem;
       left: 5%;
       top: 5%;
@@ -414,7 +419,7 @@ export const GeneralContainer = styled.div`
       width: 33rem;
       left: 5%;
       top: 5%;
-    }
+    } */
   }
 
   .unordered-list {
@@ -458,6 +463,7 @@ export const GeneralContainer = styled.div`
     flex-direction: column;
     gap: 1.5rem;
     align-items: flex-start;
+    position: relative;
     @media screen and (max-width: 376px) {
       gap: 0.8rem;
     }
@@ -495,6 +501,9 @@ export const GeneralContainer = styled.div`
     box-shadow: 4px 4px 12px rgba(39, 58, 123, 0.25);
     border-radius: 12px;
     width: 100%;
+    position: absolute;
+    top: 100%;
+    z-index: 100;
     cursor: pointer;
     li {
       border-bottom: 0.5px solid #dbd8fc;
@@ -524,13 +533,13 @@ export const GeneralContainer = styled.div`
       color: #333333;
     }
     textarea {
-      padding: 1.6rem 2rem;
+      /* padding: 1.6rem 2rem; */
       border: 1px solid #f5f5f7;
       border-radius: 1rem;
       width: 100%;
-      height: 16.5rem;
+      /* height: 16.5rem; */
       @media screen and (max-width: 376px) {
-        height: 14rem;
+        /* height: 14rem; */
       }
       &::placeholder {
         font-weight: 500;

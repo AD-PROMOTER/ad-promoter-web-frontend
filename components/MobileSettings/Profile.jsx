@@ -7,6 +7,7 @@ import { ProfileContainer } from './mobileSettings.style';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { Danger } from '../settings/settings.style';
 import uploadImage from '@/helper/imageUploader';
+import DefaultPic from '@/public/assets/squared-profile.png'
 
 const Profile = ({ handleBack }) => {
   const [name, setName] = useState('');
@@ -42,7 +43,11 @@ const Profile = ({ handleBack }) => {
       setPhoneNumber(user.phoneNumber);
       setDateOfBirth(user.dateOfBirth);
       setListValue(user.gender);
-      setProfileImage(user.profilePicture);
+      if(!user.profilePicture || user.profilePicture === ''){
+        setProfileImage('')
+      }else{
+        setProfileImage(user.profilePicture);
+      }
     }
   }, [setName, setEmail, setPhoneNumber]);
 
@@ -144,15 +149,27 @@ const Profile = ({ handleBack }) => {
         <h3>Profile</h3>
       </div>
       <div className="picture-change">
-        <Image
-          src={profileImage}
-          alt="Profile image"
-          onClick={() => setProfileModal(true)}
-          style={{ cursor: 'pointer', borderRadius: '50%' }}
-          height={105}
-          width={105}
-          objectFit="cover"
-        />
+        <div style={{ width: '105px', height: '105px' }}>
+          {profileImage === '' ? (
+            <Image
+              src={DefaultPic}
+              alt="Profile image"
+              onClick={() => setProfileModal(true)}
+              style={{objectFit: 'fill', borderRadius: '100px',cursor:'pointer' }}
+              height={'100%'}
+              width={'100%'}
+            />
+          ):(
+            <Image
+              src={profileImage}
+              alt="Profile image"
+              onClick={() => setProfileModal(true)}
+              style={{objectFit: 'fill', borderRadius: '100px',cursor:'pointer' }}
+              height={'100%'}
+              width={'100%'}
+            />
+          )}
+        </div>
         <p>Profile Picture</p>
       </div>
       {profileModal && (

@@ -1,8 +1,10 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { StyledGeneral, Button, DangerButton, Danger } from "../settings.style"
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import Image from "next/image"
+import { Spinner, useToast } from "@chakra-ui/react"
+import { useRouter } from "next/router"
 
 const General = () => {
     const [clicked, setClicked] = useState(false);
@@ -15,6 +17,58 @@ const General = () => {
     const [showDropdown, setShowDropdown] = useState(false)
     const [showDeactivationDropdown, setShowDeactivationDropdown] = useState(false)
     const [isChangesMade, setIsChangesMade] = useState(false)
+    const [userToken,setUserToken] = useState('')
+    const [id,setId] = useState('')
+    const [isLoading,setIsLoading] = useState()
+    const toast = useToast();
+    const router = useRouter()
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user-detail'));
+        const token = JSON.parse(localStorage.getItem('user-token'));
+        setUserToken(token);
+        if (user) {
+          setId(user._id);
+        }
+      }, []);
+    const handleDeactivate = async() =>{
+        setIsLoading(true);
+
+        const response = await fetch(
+          `https://api.ad-promoter.com/api/v1/user/${id}`,
+          {
+            method: 'DELETE',
+            headers: { 
+                'Content-Type': 'application/json', 
+                Authorization: `Bearer ${userToken}`,
+            },
+          }
+        );
+        const json = await response.json();
+    
+        if (!response.ok) {
+          setIsLoading(false);
+          toast({
+            title: json.msg,
+            status: 'error',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+          });
+        }
+        if (response.ok) {
+          setIsLoading(false);
+          toast({
+            title: 'Account Deactivated Successfully',
+            status: 'success',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+          });
+          router.push('/');
+        }
+    }
+    
     const ClickedList = (e) =>{
         setListValue(e.target.innerText)
         setIsChangesMade(true)
@@ -127,7 +181,7 @@ const General = () => {
                                 />
                             </div>
                         </div>
-                        <div className="deactivate-modal-btn">Delete account permanently</div>
+                        <div onClick={handleDeactivate} className="deactivate-modal-btn">{isLoading ? <Spinner /> : 'Delete account permanently'}</div>
                     </div>
                 </div>
             )}
@@ -137,67 +191,3 @@ const General = () => {
 }
 
 export default General
-
-
-
-
-
-
-
-
-
-
-
-// { deactivate && <div className="blurred-modal-container">
-//                 { deactivate && <div className="blurred" onClick={() => setDeactivate(false)} />}
-
-//                 { deactivate && <div className="modal">
-//                     <div className="text">
-//                         <div className="top">
-//                             <div className="top-text">
-//                                 <h2> Account Deactivation </h2> 
-//                                 <p> What happens when you deactivate your account? </p>  
-//                             </div>
-                        
-//                             <ul>
-//                                 <li> Your profile and Progress won’t be shown on AD-Promoter anymore. </li>
-//                                 <li> Pending withdrawals will be cancelled. </li>
-//                                 <li> You will lose all your revenues. Withdraw your revenue before deactivating your account. </li>
-//                             </ul>
-//                         </div>
-//                         {/* <div className="others"> */}
-//                         <div className="others-1">
-//                             <h3 className="reason">I'm leaving because...</h3>
-//                             <div className='dropdown' onClick={() => setShowDeactivationDropdown(!showDeactivationDropdown)}>
-//                                 <p className='inputText'>{deactivationListValue}</p>
-//                             </div>
-//                             {showDeactivationDropdown && (
-//                                 <ul className="">
-//                                     <li onClick={ClickedDeactivationList}>I need to change my username</li>
-//                                     <li onClick={ClickedDeactivationList}>The charges are getting higher</li>
-//                                     <li onClick={ClickedDeactivationList}>--- Nothing</li>
-//                                     <li onClick={ClickedDeactivationList}>Can't disclose my reason</li>
-//                                 </ul>
-//                             )}
-//                         </div>
-
-//                         <div className="more">
-//                             <p className="reason"> Tell us more ( Optional ) </p>
-//                             <textarea
-//                                 rows={10}
-//                                 placeholder='Help us become better'
-//                                 value={userInput}
-//                                 onChange={(e) => setUserInput(e.target.value)}
-//                             />
-//                         </div>
-//                         {/* </div> */}
-//                     </div>
-//                     <div className="control">
-//                         <Danger>
-//                             Delete account
-//                         </Danger>
-//                     </div>
-                    
-//                 </div> }
-//             </div> }
-

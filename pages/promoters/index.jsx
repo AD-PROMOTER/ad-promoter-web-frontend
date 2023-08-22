@@ -39,6 +39,7 @@ import {
 } from '@/utils/formatFilterDate';
 import RecentJobContext from '@/context/recentJobContext';
 import JobsContext from '@/context/jobsContext';
+import DefaultPic from '@/public/assets/squared-profile.png'
 
 const Index = ({ router }) => {
   const {
@@ -71,7 +72,11 @@ const Index = ({ router }) => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-detail'));
     const userToken = JSON.parse(localStorage.getItem('user-token'));
-    setProfileImage(user.profilePicture);
+    if(!user.profilePicture || user.profilePicture === ''){
+      setProfileImage('')
+    }else{
+      setProfileImage(user.profilePicture);
+    }
 
     if (user && userToken && user.role === 'promoter') {
       setUserName(user.accountName);
@@ -297,13 +302,23 @@ const Index = ({ router }) => {
               <ScrollContainer className="home-dashboard">
                 <div className="welcome">
                   <div className="profile-img">
-                    <Image
-                      src={profileImage}
-                      width={145}
-                      height={134}
-                      style={{borderRadius: '16px'}}
-                      alt="profile picture"
-                    />
+                    {profileImage === '' ? (
+                      <Image
+                        src={DefaultPic}
+                        width={145}
+                        height={134}
+                        style={{borderRadius: '16px'}}
+                        alt="profile picture"
+                      />
+                    ):(
+                      <Image
+                        src={profileImage}
+                        width={145}
+                        height={134}
+                        style={{borderRadius: '16px'}}
+                        alt="profile picture"
+                      />
+                    )}
                   </div>
 
                   <div className="user-details">
@@ -431,6 +446,15 @@ const Index = ({ router }) => {
                 <div className="welcome">
                   <div className="userProfile">
                   <div style={{ width: '52px', height: '52px' }}>
+                    {profileImage === '' ? (
+                      <Image
+                        src={DefaultPic}
+                        alt="profile picture"
+                        width={'100%'}
+                        height={'100%'}
+                        style={{objectFit: 'fill', borderRadius: '100px' }}
+                      />
+                    ):(
                     <Image
                       src={profileImage}
                       alt="profile picture"
@@ -438,6 +462,7 @@ const Index = ({ router }) => {
                       height={'100%'}
                       style={{objectFit: 'fill', borderRadius: '100px' }}
                     />
+                    )}
                   </div>
                     <div className="username">
                       <p>Hi, {userName}</p>
@@ -528,13 +553,23 @@ const Index = ({ router }) => {
           <TabletContainer>
             <div className="welcome">
               <div className="userProfile">
-                <Image
-                  src={profileImage}
-                  width={145}
-                  height={134}
-                  style={{borderRadius: '16px'}}
-                  alt="profile picture" 
-                />
+                {profileImage === '' ? (
+                  <Image
+                    src={DefaultPic}
+                    width={145}
+                    height={134}
+                    style={{borderRadius: '16px'}}
+                    alt="profile picture" 
+                  />
+                ):(
+                  <Image
+                    src={profileImage}
+                    width={145}
+                    height={134}
+                    style={{borderRadius: '16px'}}
+                    alt="profile picture" 
+                  />
+                )}
                 <div className="username">
                   <p>Hi, {userName}</p>
                   <div className="wave">

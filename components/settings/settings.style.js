@@ -448,7 +448,7 @@ const StyledGeneral = styled.form`
   .modal-bg {
     position: fixed;
     width: 100%;
-    height: 120%;
+    height: 100%;
     top: 0;
     bottom: 0;
     left: 0;
@@ -463,9 +463,7 @@ const StyledGeneral = styled.form`
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      /* width: 693px;
-  height: 723px; */
-      padding: 4.8rem;
+      padding: 2rem 4.8rem;
       gap: 4.8rem;
       background: #ffffff;
       z-index: 500;
@@ -522,6 +520,7 @@ const StyledGeneral = styled.form`
           align-items: flex-start;
           gap: 1rem;
           width: 52.7rem;
+          position: relative;
           h3 {
             font-weight: 600;
             font-size: 1.4rem;
@@ -556,6 +555,9 @@ const StyledGeneral = styled.form`
             border-radius: 12px;
             width: 100%;
             cursor: pointer;
+            position: absolute;
+            top: 100%;
+            z-index: 100;
             li {
               border-bottom: 0.5px solid #dbd8fc;
               font-weight: 500;

@@ -5,6 +5,7 @@ export const Overlay = styled.div`
   width: 100%;
   /* height: 830px; */
   padding: 4rem;
+  margin: 4rem 0;
   .content {
     display: flex;
     flex-direction: column;

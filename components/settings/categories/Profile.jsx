@@ -10,6 +10,7 @@ import arrowUp from '@/public/assets/arrow-up.svg';
 import arrowDown from '@/public/assets/arrow-down.svg';
 import profile from '@/public/assets/user-onboard-profile.png';
 import uploadImage from '@/helper/imageUploader';
+import DefaultPic from '@/public/assets/squared-profile.png'
 
 const Profile = () => {
   const [name, setName] = useState('');
@@ -37,7 +38,11 @@ const Profile = () => {
       setPhoneNumber(user.phoneNumber);
       setDateOfBirth(user.dateOfBirth);
       setListValue(user.gender);
-      setProfileImage(user.profilePicture)
+      if(!user.profilePicture || user.profilePicture === ''){
+        setProfileImage('')
+      }else{
+        setProfileImage(user.profilePicture);
+      }
     }
   }, [setName, setEmail, setPhoneNumber]);
 
@@ -145,15 +150,27 @@ const Profile = () => {
       <div className="profile-image">
         <p> Profile picture </p>
         <div className="image-wrapper">
-          <Image
-            src={profileImage}
-            onClick={() => setProfileModal(true)}
-            alt="Profile"
-            style={{ cursor: 'pointer', borderRadius: '50%' }}
-            height={105}
-            width={105}
-            objectFit="cover"
-          />
+          {profileImage === '' ? (
+            <Image
+              src={DefaultPic}
+              onClick={() => setProfileModal(true)}
+              alt="Profile"
+              style={{ cursor: 'pointer', borderRadius: '50%' }}
+              height={105}
+              width={105}
+              objectFit="cover"
+            />
+          ):(
+            <Image
+              src={profileImage}
+              onClick={() => setProfileModal(true)}
+              alt="Profile"
+              style={{ cursor: 'pointer', borderRadius: '50%' }}
+              height={105}
+              width={105}
+              objectFit="cover"
+            />
+          )}
           <div className="upload-icon">
             <Image
               src={upload}

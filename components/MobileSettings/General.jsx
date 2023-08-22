@@ -1,21 +1,74 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import Image from 'next/image'
 import back from '@/public/assets/back-icon.svg'
 import { GeneralContainer } from './mobileSettings.style'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
+import { useRouter } from 'next/router'
+import { Spinner, useToast } from '@chakra-ui/react'
 
 const General = ({handleBack}) => {
   const [clicked, setClicked] = useState(false);
     const [selected, setSelected] = useState(true);
     const [deactivate, setDeactivate] = useState(false);
-    // const [deactivationReason, setDeactivationReason] = useState('I need to change my username');
     const [userInput, setUserInput] = useState('');
     const [listValue, setListValue] = useState('English ( Default )')
     const [deactivationListValue, setDeactivationListValue] = useState('I want to change my username')
     const [showDropdown, setShowDropdown] = useState(false)
     const [showDeactivationDropdown, setShowDeactivationDropdown] = useState(false)
     const [isChangesMade, setIsChangesMade] = useState(false)
+    const [userToken,setUserToken] = useState('')
+    const [id,setId] = useState('')
+    const [isLoading,setIsLoading] = useState()
+    const toast = useToast();
+    const router = useRouter()
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user-detail'));
+        const token = JSON.parse(localStorage.getItem('user-token'));
+        setUserToken(token);
+        if (user) {
+          setId(user._id);
+        }
+    }, []);
+
+      const handleDeactivate = async() =>{
+        setIsLoading(true);
+
+        const response = await fetch(
+          `https://api.ad-promoter.com/api/v1/user/${id}`,
+          {
+            method: 'DELETE',
+            headers: { 
+                'Content-Type': 'application/json', 
+                Authorization: `Bearer ${userToken}`,
+            },
+          }
+        );
+        const json = await response.json();
+    
+        if (!response.ok) {
+          setIsLoading(false);
+          toast({
+            title: json.msg,
+            status: 'error',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+          });
+        }
+        if (response.ok) {
+          setIsLoading(false);
+          toast({
+            title: 'Account Deactivated Successfully',
+            status: 'success',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+          });
+          router.push('/');
+        }
+    }
     const ClickedList = (e) =>{
         setListValue(e.target.innerText)
         setIsChangesMade(true)
@@ -77,46 +130,48 @@ const General = ({handleBack}) => {
           </div>
         </div>
       </div>
-      <div className='deactivate'>Deactivate account</div>
+
       <div className='delete' onClick={() => setDeactivate(true)}>Delete account permanently</div>
-      {deactivate && <div className="modal-backdrop" onClick={() =>setDeactivate(false)}></div>}
+      {/* {deactivate && <div className="modal-backdrop" onClick={() =>setDeactivate(false)}></div>} */}
       {deactivate && (
-        <div className="deactivate-modal" onClick={e => e.stopPropagation()} >
-            <div className="text-head">
-              <h3>Account Deactivation</h3>
-              <p>What happens when you deactivate your account?</p>
-            </div>
-            <div className='unordered-list'>
-              <li>Your profile and Progress won’t be shown on AD-Promoter anymore.</li>
-              <li>Pending withdrawals will be cancelled</li>
-              <li>You will lose all your revenues. Withdraw your revenue before deactivating your account.</li>
-            </div>
-            <div className="text-select">
-                <h3>I’m leaving because....</h3>
-                <div className="dropdown" onClick={() => setShowDeactivationDropdown(!showDeactivationDropdown)}>
-                    <p>{deactivationListValue}</p>
-                    {showDeactivationDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
-                </div>
-                {showDeactivationDropdown && (
-                    <ul className="list-dropdown">
-                        <li onClick={ClickedDeactivationList}>I want to change my username</li>
-                        <li onClick={ClickedDeactivationList}>It has gory images</li>
-                        <li onClick={ClickedDeactivationList}>Nothing</li>
-                        <li onClick={ClickedDeactivationList}>Other</li>
-                    </ul>
-                )}
-            </div>
-            <div className="message">
-                <h3>Tell us more (Optional)</h3>
-                <textarea 
-                    name="message" 
-                    id="message" 
-                    placeholder="Help us become better"
-                    value={userInput}
-                    onChange={(e) => setUserInput(e.target.value)}
-                />
-            </div>
-          <div className="modal-btn">Delete account permanently</div>
+        <div className="modal-backdrop" onClick={() =>setDeactivate(false)}>
+          <div className="deactivate-modal" onClick={e => e.stopPropagation()} >
+              <div className="text-head">
+                <h3>Account Deactivation</h3>
+                <p>What happens when you deactivate your account?</p>
+              </div>
+              <div className='unordered-list'>
+                <li>Your profile and Progress won’t be shown on AD-Promoter anymore.</li>
+                <li>Pending withdrawals will be cancelled</li>
+                <li>You will lose all your revenues. Withdraw your revenue before deactivating your account.</li>
+              </div>
+              <div className="text-select">
+                  <h3>I’m leaving because....</h3>
+                  <div className="dropdown" onClick={() => setShowDeactivationDropdown(!showDeactivationDropdown)}>
+                      <p>{deactivationListValue}</p>
+                      {showDeactivationDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
+                  </div>
+                  {showDeactivationDropdown && (
+                      <ul className="list-dropdown">
+                          <li onClick={ClickedDeactivationList}>I want to change my username</li>
+                          <li onClick={ClickedDeactivationList}>It has gory images</li>
+                          <li onClick={ClickedDeactivationList}>Nothing</li>
+                          <li onClick={ClickedDeactivationList}>Other</li>
+                      </ul>
+                  )}
+              </div>
+              <div className="message">
+                  <h3>Tell us more (Optional)</h3>
+                  <textarea 
+                      name="message" 
+                      id="message" 
+                      placeholder="Help us become better"
+                      value={userInput}
+                      onChange={(e) => setUserInput(e.target.value)}
+                  />
+              </div>
+            <div onClick={handleDeactivate} className="modal-btn">{isLoading ? <Spinner /> : 'Delete account permanently'}</div>
+          </div>
         </div>
       )}
 
