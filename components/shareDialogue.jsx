@@ -24,9 +24,9 @@ const fadeIn = keyframes`
 const ShareDialogueContainer = styled.div`
   /* display: ${(props) => (props.open ? 'block' : 'none')}; */
   position: absolute;
-  top: 60%;
-  left: 60%;
-  width: 70%;
+  top: 40%;
+  left: 70%;
+  width: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
   padding: 2rem;

@@ -88,11 +88,8 @@ export const useCreateAds = () => {
       // {<LandingPage data={json.data.ad}/>}
       setData(json.data.ad);
       localStorage.setItem('landingData', JSON.stringify(json.data.ad));
-      if (advertType === 'detail') {
-        router.push(`/landing/${encodeURIComponent(productName)}`);
-      } else {
-        router.push(json.data.paymentDetails.url);
-      }
+
+      router.push(json.data.paymentDetails.url);
     }
   };
   return { createAd, data, isLoading, error, msg, redirect, data };

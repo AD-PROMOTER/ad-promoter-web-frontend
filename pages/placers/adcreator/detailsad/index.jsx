@@ -31,6 +31,7 @@ const Detailsad = () => {
     setImageURLs,
     cta,
     setCta,
+    images, setImages
   } = useContext(AdPlacerContext);
   const token = useRef('');
   const [tagValue, setTagValue] = useState('');
@@ -38,7 +39,6 @@ const Detailsad = () => {
   const [showModal, setShowModal] = useState(false);
   const submitButtonRef = useRef(null);
   const [awaitingPreview, setAwaitingPreview] = useState();
-  const [images, setImages] = useState([]);
   const toast = useToast();
 
   useEffect(() => {

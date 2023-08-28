@@ -135,7 +135,7 @@ export const Feed = styled.div`
           box-shadow: var(--shadow-1);
           background-color: var(--white);
           position: absolute;
-          top: 0;
+          top: 100%;
           right: 0;
           width: 22rem;
 
@@ -171,7 +171,7 @@ export const Feed = styled.div`
           box-shadow: var(--shadow-1);
           background-color: var(--white);
           position: absolute;
-          /* top: 2%; */
+          top: 100%;
           right: 0;
           width: 20rem;
           li {
@@ -249,6 +249,18 @@ export const Feed = styled.div`
         color: var(--light-gray-1);
         font-size: 1.4rem;
       }
+      @media (max-width: 425px) {
+        gap: 5rem;
+        .recAim {
+          font-size: 1.3rem;
+        }
+        .recPara {
+          font-size: 1.1rem;
+        }
+      }
+      @media (max-width: 320px) {
+        gap: 2rem;
+      }
     }
     .desc {
       display: flex;
@@ -267,6 +279,18 @@ export const Feed = styled.div`
       .para {
         color: var(--light-gray-1);
         font-size: 1.4rem;
+      }
+      @media (max-width: 425px) {
+        gap: 5rem;
+        .aim {
+          font-size: 1.3rem;
+        }
+        .para {
+          font-size: 1.1rem;
+        }
+      }
+      @media (max-width: 320px) {
+        gap: 2rem;
       }
     }
     .recProduct {
@@ -606,7 +630,8 @@ export const MobileDiscovery = styled.div`
       padding-left: 5rem;
       border-radius: 0.8rem;
       border: 1px solid #dbd8fc;
-      width: 39rem;
+      max-width: 39rem;
+      width: 100%;
       font-size: 1.2rem;
       line-height: 1.6rem;
     }
@@ -619,9 +644,9 @@ export const MobileDiscovery = styled.div`
       display: flex;
       align-items: center;
       gap: 1rem;
-      @media screen and (max-width: 378px) {
+      /* @media screen and (max-width: 378px) {
         right: 0rem;
-      }
+      } */
 
       p {
         font-size: 1.1rem;

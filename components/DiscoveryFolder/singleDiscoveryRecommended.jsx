@@ -23,7 +23,7 @@ import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-ico
 
 
 const SingleDiscoveryRecommended = ({recommendedJobs,fetchRecommended,isLoading}) => {
-  const [showReport, setShowReport] = useState([])
+  const [showReport, setShowReport] = useState({})
     const toast = useToast()
     const ref = useRef(null)
     const token = useRef('')
@@ -37,7 +37,7 @@ const SingleDiscoveryRecommended = ({recommendedJobs,fetchRecommended,isLoading}
     const [showSubmit,setShowSubmit] = useState(true)
     const [showPaste,setShowPaste] = useState(false)
     const [inputValue, setInputValue] = useState('');
-    const [showDialogue, setShowDialogue] = useState(false);
+    const [showDialogue, setShowDialogue] = useState({});
 
   useEffect(()=>{
     const userToken = JSON.parse(localStorage.getItem("user-token"));
@@ -89,24 +89,12 @@ const ClickedList = (e) =>{
     setInputValue(event.target.value);
 };
 
-const handleOpenDialogue = () => {
-  setShowDialogue(!showDialogue);
+const handleOpenDialogue = (itemId) => {
+  setShowDialogue((prevState) => ({
+      ...prevState,
+      [itemId]: !prevState[itemId]
+  }));
 };
-
-  // useEffect(() => {
-  //   const onClickOutside = () => {
-  //     setShowReport(false)
-  //   }
-  //     const handleClickOutside = (event) => {
-  //         if (ref.current && !ref.current.contains(event.target)) {
-  //             onClickOutside && onClickOutside();
-  //         }
-  //     }
-  //     document.addEventListener('click', handleClickOutside, true);
-  //     return () => {
-  //         document.removeEventListener('click', handleClickOutside, true);
-  //     }
-  // }, [])
 
   const handleShowPaste = () => {
     setShowSubmit(false)
@@ -298,10 +286,11 @@ const handleReport = async (id,report) =>{
     }
 }
 
-const toggleDropdown = (index) => {
-  const updatedDropdownOpen = [...showReport];
-  updatedDropdownOpen[index] = !updatedDropdownOpen[index];
-  setShowReport(updatedDropdownOpen);
+const toggleDropdown = (itemId) => {
+  setShowReport((prevState) => ({
+      ...prevState,
+      [itemId]: !prevState[itemId]
+  }));
 };
 
   return (
@@ -447,7 +436,7 @@ const toggleDropdown = (index) => {
                           <Image src={copyLink} alt=""/>
                         </div>
                       )}
-                      <div className='recIcons' onClick={handleOpenDialogue}>
+                      <div className='recIcons' onClick={()=>handleOpenDialogue(item.id)}>
                         <Image src={exportLink} alt=""/>
                       </div>
                       <div className='recIcons' onClick={()=>handleJobSave(item.id)}>

@@ -28,10 +28,11 @@ const Visualad = () => {
     setContainAdultContent,
     imageURLs,
     setImageURLs,
+    images, setImages
   } = useContext(AdPlacerContext);
   const [tagValue, setTagValue] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [images, setImages] = useState([]);
+  // const [images, setImages] = useState([]);
   const [awaitingPreview, setAwaitingPreview] = useState();
   const toast = useToast();
 

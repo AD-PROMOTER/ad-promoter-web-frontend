@@ -22,7 +22,7 @@ import { BackdropContainer, ModalContainer } from '../PromoterHomeAdDetail/style
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
 
 const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
-    const [showReport, setShowReport] = useState([])
+    const [showReport, setShowReport] = useState({})
     const [showDropdown, setShowDropdown] = useState(false)
     const [showPaste, setShowPaste] = useState(false)
     const [showSubmit, setShowSubmit] = useState(true)
@@ -33,9 +33,10 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
     const token = useRef('')
     const toast = useToast()
     const [currentIndex,setCurrentIndex] = useState(0)
-    const [showDialogue, setShowDialogue] = useState(false);
+    const [showDialogue, setShowDialogue] = useState({});
     const [showReportModal,setShowReportModal] = useState(false)
     const [listValue, setListValue] = useState('It has gory images')
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     useEffect(()=>{
         const userToken = JSON.parse(localStorage.getItem("user-token"));
@@ -43,10 +44,10 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
             token.current = userToken
         }
 
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-          window.removeEventListener('scroll', handleScroll);
-        };
+        // window.addEventListener('scroll', handleScroll);
+        // return () => {
+        //   window.removeEventListener('scroll', handleScroll);
+        // };
     },[])
 
     useEffect(() => {
@@ -86,14 +87,23 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
         };
     }, []);
 
-    const handleScroll = () => {
-        if (
-          window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-          !isLoading
-        ) {
-          fetchFeed();
-        }
-    };
+    // useEffect(() => {
+    //     window.addEventListener('click', handleClickOutside);
+    //     return () => {
+    //         window.removeEventListener('click', handleClickOutside);
+    //     };
+    // }, []);
+
+    
+
+    // const handleScroll = () => {
+    //     if (
+    //       window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+    //       !isLoading
+    //     ) {
+    //       fetchFeed();
+    //     }
+    // };
 
     // Function to add tags to the local storage
     const addTagsToLocalStorage = (tags) => {
@@ -118,9 +128,12 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
         addTagsToLocalStorage(tags);
     };
 
-  const handleOpenDialogue = () => {
-    setShowDialogue(!showDialogue);
-};
+    const handleOpenDialogue = (itemId) => {
+        setShowDialogue((prevState) => ({
+            ...prevState,
+            [itemId]: !prevState[itemId]
+        }));
+    };
 
   const handleCloseDialogue = () => {
     setShowDialogue(false);
@@ -284,11 +297,42 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
         setShowReport(false)
     }
 
-    const toggleDropdown = (index) => {
-        const updatedDropdownOpen = [...showReport];
-        updatedDropdownOpen[index] = !updatedDropdownOpen[index];
-        setShowReport(updatedDropdownOpen);
+    const toggleDropdown = (itemId) => {
+        setShowReport((prevState) => ({
+            ...prevState,
+            [itemId]: !prevState[itemId]
+        }));
     };
+
+    const closeDropdown = () => {
+        setShowReport({});
+    };
+
+    const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                // closeDropdown();
+            }
+        };
+
+        window.addEventListener('click', handleClickOutside);
+        return () => {
+            window.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
+
+    // const closeDropdown = () => {
+    //     setShowReport([]);
+    // };
+
+    // const handleClickOutside = (event) => {
+    //     // Use a reference to the dot element to check if the click is outside
+    //     if (!dropdownRef.current || !dropdownRef.current.contains(event.target)) {
+    //         closeDropdown();
+    //     }
+    // };
 
     const handleDownload = async (imageLinks) => {
         try {
@@ -377,12 +421,16 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                             <div className='type'>
                                 <div className='more'>
                                     <div className='direct'>{item.type + ' ad'}</div>
-                                    <div className='dot' onClick={() => toggleDropdown(item.id)}>
-                                        <Image src={more} alt="more"/>
-                                        {showReport[item.id] && (<ul>
-                                            <li onClick={handleShowReport}>Report this advert</li>
-                                            <li onClick={()=>handleAdRemoval(item.id)}>Remove from feed</li>
-                                        </ul>)}
+                                    <div className='dot'  ref={dropdownRef}>
+                                        <div onClick={() => toggleDropdown(item.id)}>
+                                            <Image src={more} alt="more"/>
+                                        </div>
+                                        {showReport[item.id] && (
+                                            <ul>
+                                                <li onClick={handleShowReport}>Report this advert</li>
+                                                <li onClick={()=>handleAdRemoval(item.id)}>Remove from feed</li>
+                                            </ul>
+                                        )}
                                     </div>
                                 </div>
                                 
@@ -405,7 +453,7 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                                 {isReadMore ? " Read more" : " Show less"}
                                             </span>
                                         ):(
-                                        <p></p>
+                                        <></>
                                         )}
                                     </p>
                                 </div>
@@ -510,7 +558,7 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                                 <Image src={copyLink} alt=""/>
                                             </div>
                                         )}
-                                        <div className='icons' onClick={() => {handleOpenDialogue; handleAdInteraction(item.tags)}}>
+                                        <div className='icons' onClick={()=>{handleOpenDialogue(item.id); handleAdInteraction(item.tags)}}>
                                             <Image src={exportLink} alt=""/>
                                         </div>
                                         <div className='icons' onClick={()=>{handleJobSave(item.id); handleAdInteraction(item.tags)}}>
@@ -519,7 +567,7 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                     </div>
                                 </div>      
                             </div>
-                            {showDialogue && <ShareDialogue shareLink={item.promotedLink} />}
+                            {showDialogue[item.id] && <ShareDialogue shareLink={item.promotedLink} />}
                             {showReportModal && (
                                 <BackdropContainer onClick={()=>setShowReportModal(false)}>
                                     <ModalContainer onClick={e => e.stopPropagation()}>
