@@ -211,9 +211,11 @@ export const Feed = styled.div`
   gap: 1.6rem;
   background-color: var(--white);
   border-radius: 1rem;
+  position: relative;
   @media (min-width: 768px) and (max-width: 1024px) {
     display: block;
     width: 100%;
+    position: relative;
   }
 
   .product-summary {
@@ -252,7 +254,7 @@ export const Feed = styled.div`
             box-shadow: var(--shadow-1);
             background-color: var(--white);
             position: absolute;
-            top: 0;
+            top: 100%;
             right: 0;
             width: 20rem;
             li {

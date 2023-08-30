@@ -26,7 +26,7 @@ import { useContext } from 'react'
 import JobsContext from '@/context/jobsContext'
 
 const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
-    const [showReport, setShowReport] = useState([])
+    const [showReport, setShowReport] = useState({})
     const ref = useRef(null)
     const token = useRef('')
     const [isReportLoading, setIsReportLoading] = useState(null);
@@ -42,6 +42,26 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
     const toast = useToast()
     const [showDialogue, setShowDialogue] = useState(false);
     const [page, setPage] = useState(1);
+    const dropdownRefs = useRef({});
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            for (const itemId in dropdownRefs.current) {
+                if(showReport[itemId]){
+                    setShowReport(false)
+                }
+            }
+        };
+
+        window.addEventListener('click', handleClickOutside);
+        return () => {
+            window.removeEventListener('click', handleClickOutside);
+        };
+    }, [showReport]);
+
+    const assignDropdownRef = (itemId, ref) => {
+        dropdownRefs.current[itemId] = ref;
+    };
 
     useEffect(()=>{
         const userToken = JSON.parse(localStorage.getItem("user-token"));
@@ -52,11 +72,6 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
         if(token.current){
             fetchSavedJobs()
         }
-
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-          window.removeEventListener('scroll', handleScroll);
-        };
     },[])
 
     const fetchSavedJobs = async() =>{
@@ -73,20 +88,9 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
             Authorization: `Bearer ${token.current}`
           }
         })
-        setSavedJobs((prevData) => [...prevData, ...result.data.data.data.data]);
-        // setPage((prevPage) => prevPage + 1);
-        // setSavedJobs(result.data.data.data.data)
+        setSavedJobs(result.data.data.data.data)
         setIsLoading(false)
     }
-
-    const handleScroll = () => {
-        if (
-          window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-          !isLoading
-        ) {
-          fetchSavedJobs();
-        }
-    };
 
     const ClickedList = (e) =>{
       setListValue(e.target.innerText)
@@ -96,12 +100,11 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
         setIsReadMore(!isReadMore);
     };
 
-    const handleOpenDialogue = () => {
-        setShowDialogue(!showDialogue);
-    };
-    
-    const handleCloseDialogue = () => {
-        setShowDialogue(false);
+    const handleOpenDialogue = (itemId) => {
+        setShowDialogue((prevState) => ({
+            ...prevState,
+            [itemId]: !prevState[itemId]
+        }));
     };
 
     const handleJobSave = async(id) =>{
@@ -129,18 +132,6 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
     const handleShowPaste = () =>{
         setShowSubmit(false)
         setShowPaste(true)
-    }
-
-    const goToPrevious = () =>{
-        visualAd.map(({productImg})=>{
-            currentIndex > 0 ? setCurrentIndex(currentIndex - 1) : setCurrentIndex(productImg.length -1)
-        })
-    }
-
-    const goToNext = () =>{
-        visualAd.map(({productImg})=>{
-            currentIndex <  productImg.length -1 ? setCurrentIndex(currentIndex + 1) : setCurrentIndex(0) 
-        })
     }
 
     const handleCopyLink = (link) => {
@@ -329,10 +320,17 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
             }
         }
 
-        const toggleDropdown = (index) => {
-            const updatedDropdownOpen = [...showReport];
-            updatedDropdownOpen[index] = !updatedDropdownOpen[index];
-            setShowReport(updatedDropdownOpen);
+        const toggleDropdown = (itemId) => {
+            setShowReport((prevState) => ({
+                ...prevState,
+                [itemId]: !prevState[itemId]
+            }));
+        };
+    
+        const handleButtonClick = (event, itemId) => {
+            // Prevent event propagation for the specific button
+            event.stopPropagation();
+            toggleDropdown(itemId); // Toggle the dropdown without affecting the global click event
         };
 
   return (          
@@ -347,8 +345,10 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                 <div className="product-summary-head">
                                     <div className="ad-type-container">
                                         <div className="adtype">{item.type}</div>
-                                        <div className='dot' onClick={()=> toggleDropdown(item.id)}>
-                                            <Image src={more} alt="more"/>
+                                        <div className='dot' ref={(ref) => assignDropdownRef(item.id, ref)} onClick={() => toggleDropdown(item.id)}>
+                                            <div onClick={(e) => handleButtonClick(e, item.id)}>
+                                                <Image src={more} alt="more"/>
+                                            </div>
                                             {showReport[item.id] && (<ul>
                                                 <li onClick={handleShowReport}>Report this advert</li>
                                                 <li onClick={()=>handleAdRemoval(item.id)}>Remove from feed</li>
@@ -481,7 +481,7 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                                 <Image src={copyLink} alt=""/>
                                             </div>
                                         )}
-                                        <div className='icons' onClick={handleOpenDialogue}>
+                                        <div className='icons' onClick={()=>handleOpenDialogue(item.id)}>
                                             <Image src={exportLink} alt=""/>
                                         </div>
                                         <div className='icons' onClick={()=>handleJobSave(item.id)}>
@@ -489,7 +489,7 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                         </div>
                                 </div>
                             </div>
-                            {showDialogue && <ShareDialogue shareLink={item.promotedLink} />}
+                            {showDialogue[item.id] && <ShareDialogue shareLink={item.promotedLink} />}
                             {showReportModal && (
                                 <BackdropContainer onClick={()=>setShowReportModal(false)}>
                                     <ModalContainer onClick={e => e.stopPropagation()}>

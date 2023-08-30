@@ -26,6 +26,26 @@ import { useContext } from 'react'
 const MobileRecentPlacers = ({handleShowReport,handleAdRemoval,showReport,setShowReport,showReportModal,setShowReportModal,showDropdown,setShowDropdown,isReadMore,setIsReadMore,currentIndex,setCurrentIndex,listValue,setListValue,ClickedList,toggleReadMore,previousImage,nextImage,dashboardEndDate,dashboardStartDate}) => {
     const {recentJobs,setRecentJobs,isLoading,setIsLoading} = useContext(JobsContext)
     const token = useRef('')
+    const dropdownRefs = useRef({});
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            for (const itemId in dropdownRefs.current) {
+                if(showReport[itemId]){
+                    setShowReport(false)
+                }
+            }
+        };
+
+        window.addEventListener('click', handleClickOutside);
+        return () => {
+            window.removeEventListener('click', handleClickOutside);
+        };
+    }, [setShowReport, showReport]);
+
+    const assignDropdownRef = (itemId, ref) => {
+        dropdownRefs.current[itemId] = ref;
+    };
 
     useEffect(()=>{
         const userToken = JSON.parse(localStorage.getItem("user-token"));
@@ -56,54 +76,20 @@ const MobileRecentPlacers = ({handleShowReport,handleAdRemoval,showReport,setSho
         }
     },[dashboardEndDate, dashboardStartDate, setIsLoading, setRecentJobs])
 
-    const toggleDropdown = (index) => {
-        const updatedDropdownOpen = [...showReport];
-        updatedDropdownOpen[index] = !updatedDropdownOpen[index];
-        setShowReport(updatedDropdownOpen);
+    const toggleDropdown = (itemId) => {
+        setShowReport((prevState) => ({
+            ...prevState,
+            [itemId]: !prevState[itemId]
+        }));
+    };
+      
+    const handleButtonClick = (event, itemId) => {
+        // Prevent event propagation for the specific button
+        event.stopPropagation();
+        toggleDropdown(itemId); // Toggle the dropdown without affecting the global click event
     };
 
-    // useEffect(() => {
-    //     const onClickOutside = () => {
-    //         setShowReport(false)
-    //         setIsToSubmit(false)
-    //     }
-    //     const handleClickOutside = (event) => {
-    //         if (ref.current && !ref.current.contains(event.target)) {
-    //             onClickOutside && onClickOutside();
-    //         }
-    //     }
-    //     document.addEventListener('click', handleClickOutside, true);
-    //     return () => {
-    //         document.removeEventListener('click', handleClickOutside, true);
-    //     }
-    // }, [setShowReport])
-
-    // const handleClickedFilter = (e) =>{
-    //     setClickedFilter(e.target.innerText)
-  
-    //     if(e.target.innerText === 'Recent'){
-    //       setDashboardStartDate('')
-    //       setDashboardEndDate('')
-    //     }
-    //     if(e.target.innerText === 'A week ago'){
-    //       const { startOfWeek, endOfWeek } = getWeekAgoRange();
-    //       setDashboardStartDate(startOfWeek)
-    //       setDashboardEndDate(endOfWeek)
-    //     }
-    //     if(e.target.innerText === 'Less than 2 weeks'){
-    //       const { startOfWeek, endOfWeek } = getTwoWeeksAgoRange();
-    //       setDashboardStartDate(startOfWeek)
-    //       setDashboardEndDate(endOfWeek)
-    //     }
-    //     if(e.target.innerText === 'Last 30 days'){
-    //       const { startOfWeek, endOfWeek } = getThirtyDaysAgoRange();
-    //       setDashboardStartDate(startOfWeek)
-    //       setDashboardEndDate(endOfWeek)
-    //     }
-  
-    //     setShowSortDropdown(false)
-    // }
-
+    
   return (
     <>
         {recentJobs.length === 0 && isLoading ? (
@@ -126,17 +112,14 @@ const MobileRecentPlacers = ({handleShowReport,handleAdRemoval,showReport,setSho
                                     <div className="product-summary-head">
                                         <div className="ad-type-container">
                                             <div className="adtype">{item.type}</div>
-                                            <div className='dot' onClick={() => toggleDropdown(item.id)}>
-                                                {showReport[item.id] ? (<ul>
-                                                    <li onClick={handleShowReport}>
-                                                        <Image src={info} alt='info'/>
-                                                        <p>Report this advert</p>
-                                                    </li>
-                                                    <li onClick={()=>handleAdRemoval(item.id)}>
-                                                        <Image src={remove} alt='remove'/>
-                                                        <p>Remove from feed</p>
-                                                    </li>
-                                                </ul>) : <Image src={more} alt="more"/>}
+                                            <div className='dot' ref={(ref) => assignDropdownRef(item.id, ref)} onClick={() => toggleDropdown(item.id)}>
+                                                <div onClick={(e) => handleButtonClick(e, item.id)}>
+                                                    <Image src={more} alt="more"/>
+                                                </div>
+                                                {showReport[item.id] && (<ul>
+                                                    <li onClick={handleShowReport}>Report this advert</li>
+                                                    <li onClick={()=>handleAdRemoval(item.id)}>Remove from feed</li>
+                                                </ul>)}
                                             </div>
                                         </div>
                                         <div className="business-name-container">

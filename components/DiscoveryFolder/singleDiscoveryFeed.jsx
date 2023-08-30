@@ -20,6 +20,7 @@ import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import { BackdropContainer, ModalContainer } from '../PromoterHomeAdDetail/styles'
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
+import { id } from 'date-fns/locale'
 
 const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
     const [showReport, setShowReport] = useState({})
@@ -36,18 +37,12 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
     const [showDialogue, setShowDialogue] = useState({});
     const [showReportModal,setShowReportModal] = useState(false)
     const [listValue, setListValue] = useState('It has gory images')
-    const [isModalOpen, setIsModalOpen] = useState(false)
 
     useEffect(()=>{
         const userToken = JSON.parse(localStorage.getItem("user-token"));
         if (userToken) {
             token.current = userToken
         }
-
-        // window.addEventListener('scroll', handleScroll);
-        // return () => {
-        //   window.removeEventListener('scroll', handleScroll);
-        // };
     },[])
 
     useEffect(() => {
@@ -86,24 +81,6 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
           clearInterval(interval);
         };
     }, []);
-
-    // useEffect(() => {
-    //     window.addEventListener('click', handleClickOutside);
-    //     return () => {
-    //         window.removeEventListener('click', handleClickOutside);
-    //     };
-    // }, []);
-
-    
-
-    // const handleScroll = () => {
-    //     if (
-    //       window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-    //       !isLoading
-    //     ) {
-    //       fetchFeed();
-    //     }
-    // };
 
     // Function to add tags to the local storage
     const addTagsToLocalStorage = (tags) => {
@@ -304,16 +281,21 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
         }));
     };
 
-    const closeDropdown = () => {
-        setShowReport({});
+    const handleButtonClick = (event, itemId) => {
+        // Prevent event propagation for the specific button
+        event.stopPropagation();
+        toggleDropdown(itemId); // Toggle the dropdown without affecting the global click event
     };
 
-    const dropdownRef = useRef(null);
+
+    const dropdownRefs = useRef({});
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                // closeDropdown();
+            for (const itemId in dropdownRefs.current) {
+                if(showReport[itemId]){
+                    setShowReport(false)
+                }
             }
         };
 
@@ -321,18 +303,11 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
         return () => {
             window.removeEventListener('click', handleClickOutside);
         };
-    }, []);
+    }, [showReport]);
 
-    // const closeDropdown = () => {
-    //     setShowReport([]);
-    // };
-
-    // const handleClickOutside = (event) => {
-    //     // Use a reference to the dot element to check if the click is outside
-    //     if (!dropdownRef.current || !dropdownRef.current.contains(event.target)) {
-    //         closeDropdown();
-    //     }
-    // };
+    const assignDropdownRef = (itemId, ref) => {
+        dropdownRefs.current[itemId] = ref;
+    };
 
     const handleDownload = async (imageLinks) => {
         try {
@@ -421,8 +396,8 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                             <div className='type'>
                                 <div className='more'>
                                     <div className='direct'>{item.type + ' ad'}</div>
-                                    <div className='dot'  ref={dropdownRef}>
-                                        <div onClick={() => toggleDropdown(item.id)}>
+                                    <div className='dot' ref={(ref) => assignDropdownRef(item.id, ref)} onClick={() => toggleDropdown(item.id)}>
+                                        <div onClick={(e) => handleButtonClick(e, item.id)}>
                                             <Image src={more} alt="more"/>
                                         </div>
                                         {showReport[item.id] && (

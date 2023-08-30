@@ -260,7 +260,7 @@ export const Feed = styled.div`
             box-shadow: var(--shadow-1);
             background-color: var(--white);
             position: absolute;
-            top: 0;
+            top: 100%;
             right: 0;
             width: 20rem;
             li {

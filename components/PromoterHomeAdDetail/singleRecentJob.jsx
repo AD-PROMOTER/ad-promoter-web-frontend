@@ -25,7 +25,7 @@ import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-ico
 import JobsContext from '@/context/jobsContext'
 
 const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
-    const [showReport, setShowReport] = useState([])
+    const [showReport, setShowReport] = useState({})
     const toast = useToast()
     const ref = useRef(null)
     const token = useRef('')
@@ -41,6 +41,26 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
     const [inputValue, setInputValue] = useState('');
     const [showDialogue, setShowDialogue] = useState(false);
     const [page, setPage] = useState(1);
+    const dropdownRefs = useRef({});
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            for (const itemId in dropdownRefs.current) {
+                if(showReport[itemId]){
+                    setShowReport(false)
+                }
+            }
+        };
+
+        window.addEventListener('click', handleClickOutside);
+        return () => {
+            window.removeEventListener('click', handleClickOutside);
+        };
+    }, [showReport]);
+
+    const assignDropdownRef = (itemId, ref) => {
+        dropdownRefs.current[itemId] = ref;
+    };
 
     useEffect(() => {
         const userToken = JSON.parse(localStorage.getItem("user-token"));
@@ -51,11 +71,6 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
         if(token.current){
             fetchRecentJobs()
         }
-
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-          window.removeEventListener('scroll', handleScroll);
-        };
     }, []);
 
 
@@ -73,21 +88,10 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
             Authorization: `Bearer ${token.current}`
           }
         })
-        setRecentJobs((prevData) => [...prevData, ...result.data.data.data]);
-        setPage((prevPage) => prevPage + 1);
+        setRecentJobs(result.data.data.data)
         setIsLoading(false)
     }
-
-    const handleScroll = () => {
-        if (
-          window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-          !isLoading
-        ) {
-          fetchRecentJobs();
-        }
-    };
     
-
     const ClickedList = (e) =>{
       setListValue(e.target.innerText)
       setShowDropdown(false)
@@ -111,8 +115,11 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
         });
     }
 
-    const handleOpenDialogue = () => {
-        setShowDialogue(!showDialogue);
+    const handleOpenDialogue = (itemId) => {
+        setShowDialogue((prevState) => ({
+            ...prevState,
+            [itemId]: !prevState[itemId]
+        }));
     };
     
 
@@ -315,10 +322,17 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
             }
         }
 
-        const toggleDropdown = (index) => {
-            const updatedDropdownOpen = [...showReport];
-            updatedDropdownOpen[index] = !updatedDropdownOpen[index];
-            setShowReport(updatedDropdownOpen);
+        const toggleDropdown = (itemId) => {
+            setShowReport((prevState) => ({
+                ...prevState,
+                [itemId]: !prevState[itemId]
+            }));
+          };
+          
+        const handleButtonClick = (event, itemId) => {
+            // Prevent event propagation for the specific button
+            event.stopPropagation();
+            toggleDropdown(itemId); // Toggle the dropdown without affecting the global click event
         };
     
   return (
@@ -332,9 +346,11 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                         <div className="product-summary">
                             <div className="product-summary-head">
                                 <div className="ad-type-container">
-                                    <div className="adtype">{item.type}</div>
-                                    <div className='dot' onClick={()=> toggleDropdown(item.id)}>
-                                        <Image src={more} alt="more"/>
+                                    <div className="adtype">{item.type + ' Ad'}</div>
+                                    <div className='dot' ref={(ref) => assignDropdownRef(item.id, ref)} onClick={() => toggleDropdown(item.id)}>
+                                        <div onClick={(e) => handleButtonClick(e, item.id)}>
+                                            <Image src={more} alt="more"/>
+                                        </div>
                                         {showReport[item.id] && (<ul>
                                             <li onClick={handleShowReport}>Report this advert</li>
                                             <li onClick={()=>handleAdRemoval(item.id)}>Remove from feed</li>
@@ -468,7 +484,7 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                         <Image src={copyLink} alt=""/>
                                     </div>
                                 )}
-                                <div className='icons' onClick={handleOpenDialogue}>
+                                <div className='icons' onClick={()=>handleOpenDialogue(item.id)}>
                                     <Image src={exportLink} alt=""/>
                                 </div>
                                 <div className='icons' onClick={()=>handleJobSave(item.id)}>
@@ -476,7 +492,7 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                 </div>
                             </div>
                         </div>
-                        {showDialogue && <ShareDialogue shareLink={item.promotedLink}  />}
+                        {showDialogue[item.id] && <ShareDialogue shareLink={item.promotedLink}  />}
                         {showReportModal && (
                             <BackdropContainer onClick={()=>setShowReportModal(false)}>
                                 <ModalContainer onClick={e => e.stopPropagation()}>

@@ -43,8 +43,29 @@ const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,so
     const [showSubmit,setShowSubmit] = useState(true)
     const [showPaste,setShowPaste] = useState(false)
     const [inputValue, setInputValue] = useState('');
-    const [showDialogue, setShowDialogue] = useState(false);
+    const [showDialogue, setShowDialogue] = useState({});
     const [page, setPage] = useState(1);
+    const dropdownRefs = useRef({});
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            for (const itemId in dropdownRefs.current) {
+                if(showReport[itemId]){
+                    setShowReport(false)
+                }
+            }
+        };
+
+        window.addEventListener('click', handleClickOutside);
+        return () => {
+            window.removeEventListener('click', handleClickOutside);
+        };
+    }, [showReport]);
+
+    const assignDropdownRef = (itemId, ref) => {
+        dropdownRefs.current[itemId] = ref;
+    };
+
 
     useEffect(() => {
         const userToken = JSON.parse(localStorage.getItem("user-token"));
@@ -56,10 +77,6 @@ const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,so
             fetchRecentJobs()
         }
 
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-          window.removeEventListener('scroll', handleScroll);
-        };
     }, []);
 
 
@@ -78,20 +95,11 @@ const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,so
           }
         })
         // setRecentJobs((prevData) => [...prevData, ...result.data.data.data]);
-        setPage((prevPage) => prevPage + 1);
+        // setPage((prevPage) => prevPage + 1);
+        setRecentJobs(result.data.data.data)
         setIsLoading(false)
     }
-
-    const handleScroll = () => {
-        if (
-          window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-          !isLoading
-        ) {
-          fetchRecentJobs();
-        }
-    };
     
-
     const ClickedList = (e) =>{
       setListValue(e.target.innerText)
       setShowDropdown(false)
@@ -115,15 +123,13 @@ const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,so
         });
     }
 
-    const handleOpenDialogue = () => {
-        setShowDialogue(!showDialogue);
+    const handleOpenDialogue = (itemId) => {
+        setShowDialogue((prevState) => ({
+            ...prevState,
+            [itemId]: !prevState[itemId]
+        }));
     };
     
-
-    const handleChange = (event) => {
-        setInputValue(event.target.value);
-    };
-
     const goToPrevious = () =>{
         visualAd.map(({productImg})=>{
             currentIndex > 0 ? setCurrentIndex(currentIndex - 1) : setCurrentIndex(productImg.length -1)
@@ -319,10 +325,17 @@ const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,so
             }
         }
 
-        const toggleDropdown = (index) => {
-            const updatedDropdownOpen = [...showReport];
-            updatedDropdownOpen[index] = !updatedDropdownOpen[index];
-            setShowReport(updatedDropdownOpen);
+        const toggleDropdown = (itemId) => {
+            setShowReport((prevState) => ({
+                ...prevState,
+                [itemId]: !prevState[itemId]
+            }));
+        };
+          
+        const handleButtonClick = (event, itemId) => {
+            // Prevent event propagation for the specific button
+            event.stopPropagation();
+            toggleDropdown(itemId); // Toggle the dropdown without affecting the global click event
         };
 
   return (
@@ -347,17 +360,14 @@ const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,so
                                     <div className="product-summary-head">
                                         <div className="ad-type-container">
                                             <div className="adtype">{item.type}</div>
-                                            <div className='dot' onClick={() => toggleDropdown(item.id)}>
-                                                {showReport[item.id] ? (<ul>
-                                                    <li onClick={handleShowReport}>
-                                                        <Image src={info} alt='info'/>
-                                                        <p>Report this advert</p>
-                                                    </li>
-                                                    <li onClick={()=>handleAdRemoval(item.id)}>
-                                                        <Image src={remove} alt='remove'/>
-                                                        <p>Remove from feed</p>
-                                                    </li>
-                                                </ul>) : <Image src={more} alt="more"/>}
+                                            <div className='dot' ref={(ref) => assignDropdownRef(item.id, ref)} onClick={() => toggleDropdown(item.id)}>
+                                                <div onClick={(e) => handleButtonClick(e, item.id)}>
+                                                    <Image src={more} alt="more"/>
+                                                </div>
+                                                {showReport[item.id] && (<ul>
+                                                    <li onClick={handleShowReport}>Report this advert</li>
+                                                    <li onClick={()=>handleAdRemoval(item.id)}>Remove from feed</li>
+                                                </ul>)}
                                             </div>
                                         </div>
                                         <div className="business-name-container">
@@ -487,7 +497,7 @@ const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,so
                                                 <Image src={copyLink} alt=""/>
                                             </div>
                                         )}
-                                        <div className='icons' onClick={handleOpenDialogue}>
+                                        <div className='icons' onClick={()=>handleOpenDialogue(item.id)}>
                                             <Image src={exportLink} alt=""/>
                                         </div>
                                         <div className='icons' onClick={()=>handleJobSave(item.id)}>
@@ -495,7 +505,7 @@ const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,so
                                         </div>
                                     </div>
                                 </div>
-                                {showDialogue && <ShareDialogue shareLink={item.promotedLink}  />}
+                                {showDialogue[item.id] && <ShareDialogue shareLink={item.promotedLink}  />}
                                 {showReportModal && (
                                     <BackdropContainer onClick={()=>setShowReportModal(false)}>
                                         <ModalContainer onClick={e => e.stopPropagation()}>

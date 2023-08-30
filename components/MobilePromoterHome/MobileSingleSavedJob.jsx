@@ -25,7 +25,7 @@ import { useContext } from 'react'
 import JobsContext from '@/context/jobsContext'
 
 const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
-    const [showReport, setShowReport] = useState([])
+    const [showReport, setShowReport] = useState({})
     const ref = useRef(null)
     const token = useRef('')
     const [isReadMore, setIsReadMore] = useState(true);
@@ -41,6 +41,26 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
     const toast = useToast()
     const [showDialogue, setShowDialogue] = useState(false);
     const [page, setPage] = useState(1);
+    const dropdownRefs = useRef({});
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            for (const itemId in dropdownRefs.current) {
+                if(showReport[itemId]){
+                    setShowReport(false)
+                }
+            }
+        };
+
+        window.addEventListener('click', handleClickOutside);
+        return () => {
+            window.removeEventListener('click', handleClickOutside);
+        };
+    }, [showReport]);
+
+    const assignDropdownRef = (itemId, ref) => {
+        dropdownRefs.current[itemId] = ref;
+    };
 
     useEffect(()=>{
         const userToken = JSON.parse(localStorage.getItem("user-token"));
@@ -51,11 +71,6 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
         if(token.current){
             fetchSavedJobs()
         }
-
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-          window.removeEventListener('scroll', handleScroll);
-        };
     },[])
 
     const ClickedList = (e) =>{
@@ -81,19 +96,11 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
             Authorization: `Bearer ${token.current}`
             }
         })
-        setSavedJobs((prevData) => [...prevData, ...result.data.data.data.data]);
-        setPage((prevPage) => prevPage + 1);
+        // setSavedJobs((prevData) => [...prevData, ...result.data.data.data.data]);
+        // setPage((prevPage) => prevPage + 1);
+        setSavedJobs(result.data.data.data.data)
         setIsLoading(false)
     }
-
-    const handleScroll = () => {
-        if (
-          window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-          !isLoading
-        ) {
-          fetchSavedJobs();
-        }
-    };
 
     const handleShowReport = () =>{
         setShowReportModal(true)
@@ -186,8 +193,11 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
           });
     };
 
-    const handleOpenDialogue = () => {
-        setShowDialogue(!showDialogue);
+    const handleOpenDialogue = (itemId) => {
+        setShowDialogue((prevState) => ({
+            ...prevState,
+            [itemId]: !prevState[itemId]
+        }));
     };
 
     const handleJobSave = async(id) =>{
@@ -269,10 +279,17 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
         );
     };
 
-    const toggleDropdown = (index) => {
-        const updatedDropdownOpen = [...showReport];
-        updatedDropdownOpen[index] = !updatedDropdownOpen[index];
-        setShowReport(updatedDropdownOpen);
+    const toggleDropdown = (itemId) => {
+        setShowReport((prevState) => ({
+            ...prevState,
+            [itemId]: !prevState[itemId]
+        }));
+      };
+      
+    const handleButtonClick = (event, itemId) => {
+        // Prevent event propagation for the specific button
+        event.stopPropagation();
+        toggleDropdown(itemId); // Toggle the dropdown without affecting the global click event
     };
 
   return (
@@ -287,17 +304,14 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                                     <div className="product-summary-head">
                                         <div className="ad-type-container">
                                             <div className="adtype">{item.type}</div>
-                                            <div className='dot' onClick={() => toggleDropdown(item.id)}>
-                                                {showReport[item.id] ? (<ul>
-                                                    <li onClick={handleShowReport}>
-                                                        <Image src={info} alt="info"/>
-                                                        <p>Report this advert</p>
-                                                    </li>
-                                                    <li onClick={()=>handleAdRemoval(item.id)}>
-                                                        <Image src={remove} alt='remove'/>
-                                                        <p>Remove from feed</p>
-                                                    </li>
-                                                </ul>) : <Image src={more} alt="more"/>}
+                                            <div className='dot' ref={(ref) => assignDropdownRef(item.id, ref)} onClick={() => toggleDropdown(item.id)}>
+                                                <div onClick={(e) => handleButtonClick(e, item.id)}>
+                                                    <Image src={more} alt="more"/>
+                                                </div>
+                                                {showReport[item.id] && (<ul>
+                                                    <li onClick={handleShowReport}>Report this advert</li>
+                                                    <li onClick={()=>handleAdRemoval(item.id)}>Remove from feed</li>
+                                                </ul>)}
                                             </div>
                                         </div>
                                         <div className="business-name-container">
@@ -426,7 +440,7 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                                                 <Image src={copyLink} alt=""/>
                                             </div>
                                         )}
-                                        <div className='icons' onClick={handleOpenDialogue}>
+                                        <div className='icons' onClick={()=>handleOpenDialogue(item.id)}>
                                             <Image src={exportLink} alt=""/>
                                         </div>
                                         <div className='icons' onClick={()=>handleJobSave(item.id)}>
@@ -434,7 +448,7 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                                         </div>
                                     </div>
                                 </div>
-                                {showDialogue && <ShareDialogue shareLink={item.promotedLink} />}
+                                {showDialogue[item.id] && <ShareDialogue shareLink={item.promotedLink} />}
                                 {showReportModal && (
                                     <BackdropContainer onClick={()=>setShowReportModal(false)}>
                                         <ModalContainer onClick={e => e.stopPropagation()}>

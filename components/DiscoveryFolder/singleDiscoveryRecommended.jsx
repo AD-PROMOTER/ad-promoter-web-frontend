@@ -38,6 +38,26 @@ const SingleDiscoveryRecommended = ({recommendedJobs,fetchRecommended,isLoading}
     const [showPaste,setShowPaste] = useState(false)
     const [inputValue, setInputValue] = useState('');
     const [showDialogue, setShowDialogue] = useState({});
+    const dropdownRefs = useRef({});
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            for (const itemId in dropdownRefs.current) {
+                if(showReport[itemId]){
+                    setShowReport(false)
+                }
+            }
+        };
+
+        window.addEventListener('click', handleClickOutside);
+        return () => {
+            window.removeEventListener('click', handleClickOutside);
+        };
+    }, [showReport]);
+
+    const assignDropdownRef = (itemId, ref) => {
+        dropdownRefs.current[itemId] = ref;
+    };
 
   useEffect(()=>{
     const userToken = JSON.parse(localStorage.getItem("user-token"));
@@ -293,6 +313,12 @@ const toggleDropdown = (itemId) => {
   }));
 };
 
+const handleButtonClick = (event, itemId) => {
+  // Prevent event propagation for the specific button
+  event.stopPropagation();
+  toggleDropdown(itemId); // Toggle the dropdown without affecting the global click event
+};
+
   return (
         <>
           {recommendedJobs.length === 0 && !isLoading ?(
@@ -304,8 +330,10 @@ const toggleDropdown = (itemId) => {
                 <div className='type'>
                   <div className='recAd'>
                     <div className='recDirect'>{item.type + ' ad'}</div>
-                    <div className='recDot' onClick={() => toggleDropdown(item.id)}>
-                      <Image src={more} alt="more"/>
+                    <div className='recDot' ref={(ref) => assignDropdownRef(item.id, ref)} onClick={() => toggleDropdown(item.id)}>
+                      <div onClick={(e) => handleButtonClick(e, item.id)}>
+                        <Image src={more} alt="more"/>
+                      </div>
                       {showReport[item.id] && (<ul>
                         <li onClick={handleShowReport}>Report this advert</li>
                         <li onClick={()=>handleAdRemoval(item.id)}>Remove from feed</li>
@@ -444,7 +472,7 @@ const toggleDropdown = (itemId) => {
                       </div>
                     </div>
                   </div>
-                  {showDialogue && <ShareDialogue shareLink={item.promotedLink}  />}
+                  {showDialogue[item.id] && <ShareDialogue shareLink={item.promotedLink}  />}
                                 {showReportModal && (
                                     <BackdropContainer onClick={()=>setShowReportModal(false)}>
                                         <ModalContainer onClick={e => e.stopPropagation()}>
