@@ -35,7 +35,6 @@ const Settings = (props) => {
     setUserDetails(userDetails);
     const userToken = JSON.parse(window.localStorage.getItem('user-token'));
     setUserToken(userToken);
-    console.log(userToken, userDetails);
   }, []);
 
   return (

@@ -67,7 +67,7 @@ const Security = ({ handleBack }) => {
         const data = await response.json();
         toast({
           title: 'Password Updated',
-          status: 'sucess',
+          status: 'success',
           duration: '5000',
           isClosable: true,
           position: 'bottom-left',
@@ -140,29 +140,7 @@ const Security = ({ handleBack }) => {
             required
           />
         </div>
-        <div className="email-field">
-          <label htmlFor="email">Another email</label>
-          <input
-            type="email"
-            name="email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value), setIsChangesMade(true);
-            }}
-          />
-        </div>
-        <div className="line"></div>
-        <div className="email-field">
-          <label htmlFor="email">SMS recovery</label>
-          <input
-            type="email"
-            name="email"
-            value={recovery}
-            onChange={(e) => {
-              setRecovery(e.target.value), setIsChangesMade(true);
-            }}
-          />
-        </div>
+        
         <div className='submit'>
           <button
             type="submit"

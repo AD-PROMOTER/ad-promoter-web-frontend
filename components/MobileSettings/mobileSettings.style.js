@@ -681,7 +681,7 @@ export const NotifContainer = styled.div`
 `;
 
 export const SecurityContainer = styled.div`
-  padding-top: 2rem;
+  padding-top: 1rem;
 
   .security {
     display: flex;

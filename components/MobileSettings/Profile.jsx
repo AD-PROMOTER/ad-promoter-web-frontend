@@ -8,8 +8,10 @@ import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { Danger } from '../settings/settings.style';
 import uploadImage from '@/helper/imageUploader';
 import DefaultPic from '@/public/assets/squared-profile.png'
+import { Spinner, useToast } from '@chakra-ui/react';
 
 const Profile = ({ handleBack }) => {
+  const toast = useToast()
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -22,6 +24,8 @@ const Profile = ({ handleBack }) => {
   const [dateOfBirth, setDateOfBirth] = useState();
   const [imageUploaderError, setImageUploaderError] = useState('');
   const [image, setImage] = useState();
+  const [isPictureUploadLoading, setIsPictureUploadLoading] = useState(false);
+  const [isProfileUpdateLoading, setIsProfileUpdateLoading] = useState(false);
 
   const ClickedList = (e) => {
     setListValue(e.target.innerText);
@@ -41,7 +45,12 @@ const Profile = ({ handleBack }) => {
       setName(user.accountName);
       setEmail(user.email);
       setPhoneNumber(user.phoneNumber);
-      setDateOfBirth(user.dateOfBirth);
+      const dateObject = new Date(user.dateOfBirth);
+      const year = dateObject.getUTCFullYear();
+      const month = String(dateObject.getUTCMonth() + 1).padStart(2, '0');
+      const day = String(dateObject.getUTCDate()).padStart(2, '0');
+      const formatted = `${year}-${month}-${day}`;
+      setDateOfBirth(formatted);
       setListValue(user.gender);
       if(!user.profilePicture || user.profilePicture === ''){
         setProfileImage('')
@@ -67,6 +76,7 @@ const Profile = ({ handleBack }) => {
 
   const handleFileInput = async (e) => {
     const files = e.target.files;
+    setIsPictureUploadLoading(true)
     const result = await uploadImage(files);
 
     if (result === 'erorr code 500') {
@@ -76,6 +86,8 @@ const Profile = ({ handleBack }) => {
     }
 
     setImage(result[0]);
+
+    setIsPictureUploadLoading(false)
 
     setIsChangesMade(true);
 
@@ -92,8 +104,9 @@ const Profile = ({ handleBack }) => {
     if (phoneNumber) userDetails.phoneNumber = phoneNumber;
     if (listValue) userDetails.gender = listValue.toLowerCase();
     if (image) userDetails.profilePicture = image;
-    if (email) userDetails.dateOfBirth = dateOfBirth;
+    if (dateOfBirth) userDetails.dateOfBirth = dateOfBirth;
 
+    setIsProfileUpdateLoading(true)
     const response = await fetch(
       'https://api.ad-promoter.com/api/v1/user/',
       {
@@ -109,17 +122,20 @@ const Profile = ({ handleBack }) => {
     try {
       if (response.status === 401) {
         throw new Error('Unauthorized');
+        setIsProfileUpdateLoading(false)
       }
 
       if (response.status === 500) {
-        throw new Error('Could not update password please try again');
+        throw new Error('Could not update profile please try again');
+        setIsProfileUpdateLoading(false)
       }
 
       if (response.status === 200) {
         const data = await response.json();
+        setIsProfileUpdateLoading(false)
         toast({
-          title: 'Password Updated',
-          status: 'sucess',
+          title: 'Profile Updated',
+          status: 'success',
           duration: '5000',
           isClosable: true,
           position: 'bottom-left',
@@ -128,6 +144,7 @@ const Profile = ({ handleBack }) => {
         window.location.reload();
       }
     } catch (error) {
+      setIsProfileUpdateLoading(false)
       toast({
         title: `${error.message}`,
         status: 'warning',
@@ -150,7 +167,7 @@ const Profile = ({ handleBack }) => {
       </div>
       <div className="picture-change">
         <div style={{ width: '105px', height: '105px' }}>
-          {profileImage === '' ? (
+          {profileImage === '' && !image ? (
             <Image
               src={DefaultPic}
               alt="Profile image"
@@ -161,7 +178,7 @@ const Profile = ({ handleBack }) => {
             />
           ):(
             <Image
-              src={profileImage}
+              src={image ? image : profileImage}
               alt="Profile image"
               onClick={() => setProfileModal(true)}
               style={{objectFit: 'fill', borderRadius: '100px',cursor:'pointer' }}
@@ -190,7 +207,7 @@ const Profile = ({ handleBack }) => {
             <label>Upload new photo</label>
           </div>
           <div className="cancel" onClick={() => setProfileModal(false)}>
-            Cancel
+            {isPictureUploadLoading ? 'Uploading' : 'Cancel'}
           </div>
         </div>
       )}
@@ -237,10 +254,10 @@ const Profile = ({ handleBack }) => {
           <input
             type="date"
             name="date"
-            placeholder="DD/MM/YYYY"
+            placeholder="YYYY/MM/DD"
             className="date"
             value={dateOfBirth}
-            onChange={() => setDateOfBirth(e.target.value)}
+            onChange={(e) => {setDateOfBirth(e.target.value), setIsChangesMade(true);}}
           />
         </div>
         <div className="form-field">
@@ -271,9 +288,9 @@ const Profile = ({ handleBack }) => {
         <div className="discard">Discard</div>
         <div
           className={isChangesMade ? 'save' : 'inactive'}
-          onClick={handleSaveChanges}
+          onClick={handleSubmit}
         >
-          Save Changes
+          {isProfileUpdateLoading ? <Spinner /> : 'Save Changes'}
         </div>
       </div>
     </ProfileContainer>

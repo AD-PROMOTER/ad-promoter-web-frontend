@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import back from '@/public/assets/back-icon.svg';
 import { NotifContainer } from './mobileSettings.style';
-import { useToast } from '@chakra-ui/react';
+import { Spinner, useToast } from '@chakra-ui/react';
+import { Button } from '../settings/settings.style';
 
 const Notification = ({ handleBack }) => {
   const userDetails = JSON.parse(window.localStorage.getItem('user-detail'));
@@ -13,9 +14,7 @@ const Notification = ({ handleBack }) => {
   const [desktop, setDesktop] = useState(userDetails.desktopNotification);
   const [others, setOthers] = useState(userDetails.NotifyOffers);
   const [isChangesMade, setIsChangesMade] = useState(false);
-
-  console.log(desktop, others)
-
+  const [isChangesUpdating, setIsChangesUpdating] = useState(false);
   const toast = useToast();
 
   const handleSubmit = async (e) => {
@@ -28,8 +27,7 @@ const Notification = ({ handleBack }) => {
       NotifyOffers: others,
     };
 
-    console.log(notificationSettings);
-
+    setIsChangesUpdating(true)
     const response = await fetch('https://api.ad-promoter.com/api/v1/user/', {
       method: 'PATCH',
       headers: {
@@ -42,21 +40,22 @@ const Notification = ({ handleBack }) => {
     try {
       if (response.status === 401) {
         throw new Error('Unauthorized');
+        setIsChangesUpdating(false)
       }
 
       if (response.status === 500) {
         throw new Error(
           'Could not update Notification settings please try again'
         );
+        setIsChangesUpdating(false)
       }
 
       if (response.status === 200) {
-        console.log('edited');
         const data = await response.json();
-        console.log(data);
+        setIsChangesUpdating(false)
         toast({
           title: 'Notification Settings Updated',
-          status: 'sucess',
+          status: 'success',
           duration: '5000',
           isClosable: true,
           position: 'bottom-left',
@@ -65,7 +64,7 @@ const Notification = ({ handleBack }) => {
         window.location.reload();
       }
     } catch (error) {
-      console.log(error);
+      setIsChangesUpdating(false)
       toast({
         title: `${error.message}`,
         status: 'warning',
@@ -193,6 +192,12 @@ const Notification = ({ handleBack }) => {
             <span> Notify me on all offers </span>
           </li>
         </ul>
+
+        <div className="controls">
+          <Button className={isChangesMade ? '' : 'inactive'}>
+            {isChangesUpdating ? <Spinner /> : 'Save changes' }
+          </Button>
+        </div>
       </form>
     </NotifContainer>
   );
