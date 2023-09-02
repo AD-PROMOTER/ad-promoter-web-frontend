@@ -83,13 +83,15 @@ export const useCreateAds = () => {
       setIsLoading(false);
     }
     if (response.ok) {
-      console.log(json);
       setIsLoading(false);
-      // {<LandingPage data={json.data.ad}/>}
       setData(json.data.ad);
-      localStorage.setItem('landingData', JSON.stringify(json.data.ad));
 
+      // if(advertType === 'detail'){
+      //   router.push(`/ad/${json.data.ad._id}`);
+      // }else{
       router.push(json.data.paymentDetails.url);
+      // }
+      localStorage.setItem('landingData', JSON.stringify(json.data.ad._id));
     }
   };
   return { createAd, data, isLoading, error, msg, redirect, data };

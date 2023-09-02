@@ -13,8 +13,10 @@ export function AdPlacerProvider({ children }) {
   const [visitors, setVisitors] = useState('');
   const [images, setImages] = useState([]);
   const [imageURLs, setImageURLs] = useState([]);
-  const [cta, setCta] = useState('');
-  const [redirectUrl, setRedirectUrl] = useState('/placers/adcreator/success');
+  const [cta, setCta] = useState('Buy now');
+  const [redirectUrl, setRedirectUrl] = useState(
+    'https://api.ad-promoter.com/api/v1/ads/verify-payment-hook'
+  );
   return (
     <AdPlacerContext.Provider
       value={{
