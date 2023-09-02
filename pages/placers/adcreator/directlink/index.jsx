@@ -29,7 +29,7 @@ const Directlink = () => {
     }
     
     const handlePush = () =>{
-        if(productName&&productDescription&&webAddress !== ''){
+        if(productName&&productDescription&&webAddress&&tags.length !== 0){
             router.push('directlink/conversion')
         }else{
             toast({

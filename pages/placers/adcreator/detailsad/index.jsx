@@ -91,7 +91,7 @@ const Detailsad = () => {
   };
 
   const handlePush = () => {
-    if (productName && productDescription && webAddress !== '') {
+    if (productName && productDescription && webAddress && images.length !== 0 && tags.length !== 0 && cta !== 'Select a conversion button') {
       router.push('detailsad/conversion');
     } else {
       toast({

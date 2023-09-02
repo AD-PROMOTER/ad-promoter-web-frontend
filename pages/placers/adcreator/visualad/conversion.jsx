@@ -45,14 +45,14 @@ const Conversion = () => {
 
         <div className="modal">
             <div className="modal-head">
-                <h4>Creating a Details Advert</h4>
+                <h4>Creating a Visual Advert</h4>
                 <p>Use the Ad-Converter to determine the pricing</p>
             </div>
 
             <div className="modal-body">
                 <div className="modal-body-item-container">
                     <div className="text">
-                        <h4>Details Advert Rate</h4>
+                        <h4>Visual Advert Rate</h4>
                         <h3>₦50/Conversion</h3>
                     </div>
                     <div className="conversions">

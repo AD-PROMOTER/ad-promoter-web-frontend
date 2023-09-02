@@ -52,7 +52,7 @@ const Visualad = () => {
   };
 
   const handlePush = () => {
-    if (productName && productDescription && webAddress !== '') {
+    if (productName && productDescription && webAddress && images.length !== 0 && tags.length !== 0) {
       router.push('visualad/conversion');
     } else {
       toast({
@@ -158,7 +158,7 @@ const Visualad = () => {
           </div>
 
           <div className="product-tag">
-            <label htmlFor="poductTag">3. Project tags (Up to 5)</label>
+            <label htmlFor="poductTag">4. Project tags (Up to 5)</label>
             <div className="tag-input">
               <div className="tag-container">
                 {tags.map((tag, index) => (
@@ -181,7 +181,7 @@ const Visualad = () => {
 
           <div className="product-link">
             <label htmlFor="productLink">
-              4. Paste a web address (where you want to direct your customers
+              5. Paste a web address (where you want to direct your customers
               to)
             </label>
             <div className="paste-input">
@@ -205,7 +205,7 @@ const Visualad = () => {
           </div>
 
           <div className="product-content">
-            <label htmlFor="productContent">5. Content</label>
+            <label htmlFor="productContent">6. Content</label>
             <div className="checkbox">
               <input
                 type="checkbox"

@@ -13,7 +13,7 @@ export function AdPlacerProvider({ children }) {
   const [visitors, setVisitors] = useState('');
   const [images, setImages] = useState([]);
   const [imageURLs, setImageURLs] = useState([]);
-  const [cta, setCta] = useState('Buy now');
+  const [cta, setCta] = useState('');
   const [redirectUrl, setRedirectUrl] = useState('/placers/adcreator/success');
   return (
     <AdPlacerContext.Provider
