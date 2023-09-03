@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import UserTagBlue from '@/public/assets/user-tag-blue';
 import Link from 'next/link';
-import { Spinner } from '@chakra-ui/react';
+import { Spinner, useToast } from '@chakra-ui/react';
 import Del from '@/public/assets/del.svg';
 
 const AdPage = () => {
@@ -14,13 +14,18 @@ const AdPage = () => {
   const { id } = router.query;
   const [data, setData] = useState(null);
   const [promotedLink, setPromotedLink] = useState('');
+  const [token, setToken] = useState('');
+  const toast = useToast();
 
   useEffect(() => {
     const userToken = JSON.parse(localStorage.getItem('user-token'));
     if (userToken) {
+      setToken(userToken);
       // Fetch the ad data using the route ID
       if (id) {
         fetchData();
+      } else {
+        router.push('/login');
       }
     } else {
       router.push('/login');
@@ -30,7 +35,12 @@ const AdPage = () => {
   const handlePromoteAd = async () => {
     try {
       const response = await fetch(
-        `https://api.ad-promoter.com/api/v1/promotion/promote/${id}`
+        `https://api.ad-promoter.com/api/v1/promotion/promote/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (response.ok) {
         const data = await response.json();
@@ -38,6 +48,13 @@ const AdPage = () => {
         console.log(data.promotionRef);
       }
     } catch (error) {
+      toast({
+        title: error,
+        status: 'error',
+        duration: '5000',
+        isClosable: true,
+        position: 'bottom-left',
+      });
       console.error('Error promoting ad:', error);
     }
   };
@@ -45,7 +62,12 @@ const AdPage = () => {
   const handleCountClick = async (ref) => {
     try {
       const response = await fetch(
-        `https://api.ad-promoter.com/api/v1/ads/conversion/${ref}`
+        `https://api.ad-promoter.com/api/v1/ads/conversion/${ref}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (response.ok) {
         const data = await response.json();
@@ -53,6 +75,13 @@ const AdPage = () => {
         console.log(promotedLink);
       }
     } catch (error) {
+      toast({
+        title: error,
+        status: 'error',
+        duration: '5000',
+        isClosable: true,
+        position: 'bottom-left',
+      });
       console.error('Error promoting ad:', error);
     }
   };
@@ -60,7 +89,12 @@ const AdPage = () => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `https://api.ad-promoter.com/api/v1/ads/${id}`
+        `https://api.ad-promoter.com/api/v1/ads/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (response.ok) {
         const data = await response.json();
@@ -76,6 +110,13 @@ const AdPage = () => {
       }
     } catch (error) {
       console.error('Error fetching ad data:', error);
+      toast({
+        title: error,
+        status: 'error',
+        duration: '5000',
+        isClosable: true,
+        position: 'bottom-left',
+      });
     }
   };
 
