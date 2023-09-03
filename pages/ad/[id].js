@@ -66,6 +66,7 @@ const AdPage = () => {
         const data = await response.json();
         if (data.type === 'detail') {
           setData(data);
+          setPromotedLink(data.promotedLink);
           console.log(data);
         } else {
           handlePromoteAd();
@@ -147,10 +148,7 @@ const AdPage = () => {
                 {data.CTAButtonDesign && (
                   <div className="desc-item">
                     <h3>Conversion Button</h3>
-                    <div
-                      className="btn"
-                      onClick={() => router.push(data.promotedLink)}
-                    >
+                    <div className="btn" onClick={handlePromoteAd}>
                       {data.CTAButtonDesign}
                     </div>
                   </div>
