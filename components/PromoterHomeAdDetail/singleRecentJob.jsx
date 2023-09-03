@@ -480,7 +480,7 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                         <Image src={download} alt=""/>
                                     </div>
                                 ):(
-                                    <div className='icons' onClick={()=>handleCopyLink(item.promotedLink)}>
+                                    <div className='icons' onClick={()=>handleCopyLink(`https://app.ad-promoter.com/ad/${item.id}`)}>
                                         <Image src={copyLink} alt=""/>
                                     </div>
                                 )}
@@ -492,7 +492,7 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                 </div>
                             </div>
                         </div>
-                        {showDialogue[item.id] && <ShareDialogue shareLink={item.promotedLink}  />}
+                        {showDialogue[item.id] && <ShareDialogue shareLink={`https://app.ad-promoter.com/ad/${item.id}`}  />}
                         {showReportModal && (
                             <BackdropContainer onClick={()=>setShowReportModal(false)}>
                                 <ModalContainer onClick={e => e.stopPropagation()}>

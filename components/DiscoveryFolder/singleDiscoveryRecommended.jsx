@@ -460,7 +460,7 @@ const handleButtonClick = (event, itemId) => {
                           <Image src={download} alt=""/>
                         </div>
                       ):(
-                        <div className='recIcons' onClick={()=>handleCopyLink(item.promotedLink)}>
+                        <div className='recIcons' onClick={()=>handleCopyLink(`https://app.ad-promoter.com/ad/${item.id}`)}>
                           <Image src={copyLink} alt=""/>
                         </div>
                       )}
@@ -472,7 +472,7 @@ const handleButtonClick = (event, itemId) => {
                       </div>
                     </div>
                   </div>
-                  {showDialogue[item.id] && <ShareDialogue shareLink={item.promotedLink}  />}
+                  {showDialogue[item.id] && <ShareDialogue shareLink={`https://app.ad-promoter.com/ad/${item.id}`}  />}
                                 {showReportModal && (
                                     <BackdropContainer onClick={()=>setShowReportModal(false)}>
                                         <ModalContainer onClick={e => e.stopPropagation()}>

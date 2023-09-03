@@ -529,7 +529,7 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                                 <Image src={download} alt=""/>
                                             </div>
                                         ):(
-                                            <div className='icons' onClick={()=>{handleCopyLink(item.promotedLink); handleAdInteraction(item.tags)}}>
+                                            <div className='icons' onClick={()=>{handleCopyLink(`https://app.ad-promoter.com/ad/${item.id}`); handleAdInteraction(item.tags)}}>
                                                 <Image src={copyLink} alt=""/>
                                             </div>
                                         )}
@@ -542,7 +542,7 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                     </div>
                                 </div>      
                             </div>
-                            {showDialogue[item.id] && <ShareDialogue shareLink={item.promotedLink} />}
+                            {showDialogue[item.id] && <ShareDialogue shareLink={`https://app.ad-promoter.com/ad/${item.id}`} />}
                             {showReportModal && (
                                 <BackdropContainer onClick={()=>setShowReportModal(false)}>
                                     <ModalContainer onClick={e => e.stopPropagation()}>

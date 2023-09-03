@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // pages/ad/[id].js
 import { LandingPageContainer } from '@/styles/landingPageStyle';
 import Image from 'next/image';
@@ -12,36 +13,70 @@ const AdPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const [data, setData] = useState(null);
+  const [promotedLink, setPromotedLink] = useState('');
 
   useEffect(() => {
     const userToken = JSON.parse(localStorage.getItem('user-token'));
     if (userToken) {
       // Fetch the ad data using the route ID
       if (id) {
-        // Replace this with your data retrieval logic
-        // You should fetch the data from your database or cache
-        // based on the provided route ID
-        const fetchData = async () => {
-          try {
-            const response = await fetch(
-              `https://api.ad-promoter.com/api/v1/ads/${id}`
-            );
-            if (response.ok) {
-              const data = await response.json();
-              setData(data);
-              console.log(data);
-            }
-          } catch (error) {
-            console.error('Error fetching ad data:', error);
-          }
-        };
-
         fetchData();
       }
     } else {
       router.push('/login');
     }
   }, [id, router]);
+
+  const handlePromoteAd = async () => {
+    try {
+      const response = await fetch(
+        `https://api.ad-promoter.com/api/v1/promotion/promote/${id}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        handleCountClick(data.promotionRef);
+        console.log(data.promotionRef);
+      }
+    } catch (error) {
+      console.error('Error promoting ad:', error);
+    }
+  };
+
+  const handleCountClick = async (ref) => {
+    try {
+      const response = await fetch(
+        `https://api.ad-promoter.com/api/v1/ads/conversion/${ref}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        router.push(promotedLink);
+        console.log(promotedLink);
+      }
+    } catch (error) {
+      console.error('Error promoting ad:', error);
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        `https://api.ad-promoter.com/api/v1/ads/${id}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        if (data.type === 'detail') {
+          setData(data);
+          console.log(data);
+        } else {
+          handlePromoteAd();
+          setPromotedLink(data.promotedLink);
+          console.log(data.promotedLink);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching ad data:', error);
+    }
+  };
 
   return (
     <>
