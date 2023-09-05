@@ -2,6 +2,9 @@ import styled from 'styled-components';
 
 export const LandingPageContainer = styled.div`
   padding: 2rem 5rem;
+  @media (max-width: 425px) {
+    padding: 1rem;
+  }
   .container {
     display: flex;
     flex-direction: column;
@@ -39,12 +42,23 @@ export const LandingPageContainer = styled.div`
         align-items: center;
         gap: 10rem;
         width: 100%;
+        @media (max-width: 768px) {
+          gap: 8rem;
+        }
+        @media (max-width: 425px) {
+          /* gap: 3rem; */
+          flex-wrap: wrap;
+          padding: 1rem;
+        }
         .ad-type {
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
           gap: 0.8rem;
+          /* @media (max-width:425px){
+            width: 25%;
+          } */
           .head {
             display: flex;
             flex-direction: row;
@@ -61,6 +75,9 @@ export const LandingPageContainer = styled.div`
               align-items: center;
               text-align: center;
               color: #5c85ff;
+              /* @media (max-width:425px){
+                font-size: .8rem;
+              } */
             }
           }
           p {
@@ -73,6 +90,9 @@ export const LandingPageContainer = styled.div`
             align-items: center;
             text-align: center;
             color: #5c85ff;
+            /* @media (max-width:425px){
+              font-size: .8rem;
+            } */
           }
         }
       }
