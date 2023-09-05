@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 // pages/ad/[id].js
 import { LandingPageContainer } from '@/styles/landingPageStyle';
 import Image from 'next/image';
@@ -12,8 +11,11 @@ import Del from '@/public/assets/del.svg';
 const AdPage = () => {
   const router = useRouter();
   const { id } = router.query;
+  const { ref } = router.query;
+  const [isAdFetchLoading, setIsAdFetchLoading] = useState(null);
+  const [isAdCountLoading, setIsAdCountLoading] = useState(null);
   const [data, setData] = useState(null);
-  const [promotedLink, setPromotedLink] = useState('');
+  // const [promotedLink, setPromotedLink] = useState('');
   const [token, setToken] = useState('');
   const toast = useToast();
 
@@ -21,102 +23,77 @@ const AdPage = () => {
     const userToken = JSON.parse(localStorage.getItem('user-token'));
     if (userToken) {
       setToken(userToken);
-      // Fetch the ad data using the route ID
+
       if (id) {
         fetchData();
-      } else {
-        router.push('/login');
       }
     } else {
       router.push('/login');
     }
   }, [id, router]);
 
-  const handlePromoteAd = async () => {
-    try {
-      const response = await fetch(
-        `https://api.ad-promoter.com/api/v1/promotion/promote/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.ok) {
-        const data = await response.json();
-        handleCountClick(data.promotionRef);
-        console.log(data.promotionRef);
+  const handleCountClick = async (promotedLink) => {
+    setIsAdCountLoading(true);
+    const response = await fetch(
+      `https://api.ad-promoter.com/api/v1/ads/conversion/${ref}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    } catch (error) {
-      toast({
-        title: error,
-        status: 'error',
-        duration: '5000',
-        isClosable: true,
-        position: 'bottom-left',
-      });
-      console.error('Error promoting ad:', error);
-    }
-  };
+    );
+    const res = await response.text();
 
-  const handleCountClick = async (ref) => {
-    try {
-      const response = await fetch(
-        `https://api.ad-promoter.com/api/v1/ads/conversion/${ref}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.ok) {
-        const data = await response.json();
-        router.push(promotedLink);
-        console.log(promotedLink);
-      }
-    } catch (error) {
+    if (!response.ok) {
+      setIsAdCountLoading(false);
       toast({
-        title: error,
+        title: error.message,
         status: 'error',
         duration: '5000',
         isClosable: true,
         position: 'bottom-left',
       });
-      console.error('Error promoting ad:', error);
+      throw new Error(`Failed to fetch data for ad ${id}`);
+    }
+    if (response.ok) {
+      setIsAdCountLoading(false);
+      if (promotedLink.startsWith('https://')) {
+        router.push(promotedLink);
+      } else {
+        router.push(`https://${promotedLink}`);
+      }
     }
   };
 
   const fetchData = async () => {
-    try {
-      const response = await fetch(
-        `https://api.ad-promoter.com/api/v1/ads/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.ok) {
-        const data = await response.json();
-        if (data.type === 'detail') {
-          setData(data);
-          setPromotedLink(data.promotedLink);
-          console.log(data);
-        } else {
-          handlePromoteAd();
-          setPromotedLink(data.promotedLink);
-          console.log(data.promotedLink);
-        }
+    const response = await fetch(
+      `https://api.ad-promoter.com/api/v1/ads/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    } catch (error) {
-      console.error('Error fetching ad data:', error);
+    );
+    const res = await response.json();
+
+    if (!response.ok) {
       toast({
-        title: error,
+        title: `Error fetching ad data: ${error.message}`,
         status: 'error',
-        duration: '5000',
+        duration: 5000,
         isClosable: true,
         position: 'bottom-left',
       });
+      throw new Error(`Failed to fetch data for ad ${id}`);
+    }
+
+    if (response.ok) {
+      if (res.type === 'detail') {
+        setData(res);
+        console.log(res);
+      } else {
+        handleCountClick(res.promotedLink);
+      }
     }
   };
 
@@ -189,7 +166,10 @@ const AdPage = () => {
                 {data.CTAButtonDesign && (
                   <div className="desc-item">
                     <h3>Conversion Button</h3>
-                    <div className="btn" onClick={handlePromoteAd}>
+                    <div
+                      className="btn"
+                      onClick={() => handleCountClick(data.promotedLink)}
+                    >
                       {data.CTAButtonDesign}
                     </div>
                   </div>
@@ -219,7 +199,9 @@ const AdPage = () => {
           </div>
         </LandingPageContainer>
       ) : (
-        <Spinner />
+        <div>
+          <Spinner />
+        </div>
       )}
     </>
   );

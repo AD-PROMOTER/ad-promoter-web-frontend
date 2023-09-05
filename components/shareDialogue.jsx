@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled, { keyframes }  from 'styled-components';
 import { FiTwitter, FiFacebook } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 import { useRouter } from 'next/router';
+import { useToast } from '@chakra-ui/react';
 
 const ShareButton = styled.button`
   padding: 8px;
@@ -46,23 +47,130 @@ const Icon = styled.div`
 
 const ShareDialogueContent = styled.div``;
 
-const ShareDialogue = ({shareLink}) => {
+const ShareDialogue = ({id}) => {
   // const shareLink = window.location.href;
   const router = useRouter();
+  const token = useRef()
+  const toast = useToast()
 
-  const shareToTwitter = () => {
-    const shareUrl = `https://twitter.com/share?url=${encodeURIComponent(shareLink)}`;
-    window.open(shareUrl, '_blank');
+  useEffect(() => {
+  const userToken = JSON.parse(localStorage.getItem("user-token"));
+  if (userToken) {
+    token.current = userToken
+  }
+}, []);
+
+  const shareToTwitter = async() => {
+      const response = await fetch(
+        `https://api.ad-promoter.com/api/v1/promotion/promote/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token.current}`,
+          },
+        }
+      );
+      const data = await response.json();
+
+      if(!response.ok){
+        toast({
+          title: `Failed to share link:, ${data.msg}`,
+          status: "error",
+          duration: "5000",
+          isClosable: true,
+          position: "bottom-left",
+          size: "lg"
+        });
+        // throw new Error(data.msg);
+      }
+      if (response.ok) {
+        const shareLink = `https://app.ad-promoter.com/ad/${id}?ref=${data.promotionRef}`;
+        const shareUrl = `https://twitter.com/share?url=${encodeURIComponent(shareLink)}`;
+        window.open(shareUrl, '_blank');
+        toast({
+            title: 'Sharing Link!',
+            status: "success",
+            duration: "5000",
+            isClosable: true,
+            position: "bottom-left",
+            size: "lg"
+        });
+      }
+    
   };
 
-  const shareToFacebook = () => {
-    const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareLink)}`;
-    window.open(shareUrl, '_blank');
+  const shareToFacebook = async () => {
+    const response = await fetch(
+      `https://api.ad-promoter.com/api/v1/promotion/promote/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token.current}`,
+        },
+      }
+    );
+    const data = await response.json();
+
+    if(!response.ok){
+      toast({
+        title: `Failed to share link:, ${data.msg}`,
+        status: "error",
+        duration: "5000",
+        isClosable: true,
+        position: "bottom-left",
+        size: "lg"
+      });
+      // throw new Error(data.msg);
+    }
+    if (response.ok) {
+      const shareLink = `https://app.ad-promoter.com/ad/${id}?ref=${data.promotionRef}`;
+      const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareLink)}`;
+      window.open(shareUrl, '_blank');
+      toast({
+          title: 'Sharing Link!',
+          status: "success",
+          duration: "5000",
+          isClosable: true,
+          position: "bottom-left",
+          size: "lg"
+      });
+    }
+    
   };
 
-  const shareToWhatsApp = () => {
-    const shareUrl = `whatsapp://send?text=${encodeURIComponent(shareLink)}`;
-    window.open(shareUrl, '_blank');
+  const shareToWhatsApp = async() => {
+    const response = await fetch(
+      `https://api.ad-promoter.com/api/v1/promotion/promote/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token.current}`,
+        },
+      }
+    );
+    const data = await response.json();
+
+    if(!response.ok){
+      toast({
+        title: `Failed to share link:, ${data.msg}`,
+        status: "error",
+        duration: "5000",
+        isClosable: true,
+        position: "bottom-left",
+        size: "lg"
+      });
+      // throw new Error(data.msg);
+    }
+    if (response.ok) {
+      const shareLink = `https://app.ad-promoter.com/ad/${id}?ref=${data.promotionRef}`;
+      const shareUrl = `whatsapp://send?text=${encodeURIComponent(shareLink)}`;
+      window.open(shareUrl, '_blank');
+      toast({
+          title: 'Sharing Link!',
+          status: "success",
+          duration: "5000",
+          isClosable: true,
+          position: "bottom-left",
+          size: "lg"
+      });
+    }
   };
 
   return (

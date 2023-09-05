@@ -168,31 +168,58 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
         }
     };
 
-    const handleCopyLink = (link) => {
-        navigator.clipboard.writeText(link)
-          .then(() => {
+    const handleCopyLink = async(id) => {
+        try {
+            const response = await fetch(
+              `https://api.ad-promoter.com/api/v1/promotion/promote/${id}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token.current}`,
+                },
+              }
+            );
+            const data = await response.json();
+      
+            if(!response.ok){
+              throw new Error(data.msg);
+            }
+            if (response.ok) {
+                navigator.clipboard.writeText(`https://app.ad-promoter.com/ad/${id}?ref=${data.promotionRef}`)
+                .then(() => {
+                    toast({
+                        title: 'Link copied to clipboard!',
+                        status: "success",
+                        duration: "5000",
+                        isClosable: true,
+                        position: "bottom-left",
+                        size: "lg"
+                    });
+                })
+                .catch((error) => {
+                    console.error('Failed to copy link:', error);
+                    toast({
+                        title: 'Failed to copy link:', error,
+                        status: "error",
+                        duration: "5000",
+                        isClosable: true,
+                        position: "bottom-left",
+                        size: "lg"
+                    });
+                    });
+                    // handleCountClick(data.promotionRef);
+            }
+        } catch (error) {
+            console.error('Error fetching ad data:', error);
             toast({
-                title: 'Link copied to clipboard!',
-                status: "success",
-                duration: "5000",
-                isClosable: true,
-                position: "bottom-left",
-                size: "lg"
+              title: error.message, // Display the error message
+              status: 'error',
+              duration: 5000,
+              isClosable: true,
+              position: 'bottom-left',
             });
-          })
-          .catch((error) => {
-            console.error('Failed to copy link:', error);
-            toast({
-                title: 'Failed to copy link:', error,
-                status: "error",
-                duration: "5000",
-                isClosable: true,
-                position: "bottom-left",
-                size: "lg"
-            });
-          });
+          }
+        
     };
-
     const handleOpenDialogue = (itemId) => {
         setShowDialogue((prevState) => ({
             ...prevState,
@@ -292,6 +319,48 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
         toggleDropdown(itemId); // Toggle the dropdown without affecting the global click event
     };
 
+    const handleVisualSubmit = async (id,link) =>{
+        const data = {
+            adID: id,
+            link: link
+        };
+        const response = await fetch(
+            `https://api.ad-promoter.com/api/v1/promotion/visual`,
+            {
+              method: 'POST',
+              headers: { 
+                    Authorization: `Bearer ${token.current}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }
+          );
+        const json = await response.json();
+      
+        if (!response.ok) {
+        toast({
+            title: json.msg,
+            status: "error",
+            duration: "5000",
+            isClosable: true,
+            position: "bottom-left",
+            size: "lg"
+            });
+            setInputValue('')
+        }
+        if (response.ok) {
+            setInputValue('')
+            toast({
+            title: 'Link Submitted',
+            status: "success",
+            duration: "5000",
+            isClosable: true,
+            position: "bottom-left",
+            size: "lg"
+            });
+        }
+    }
+
   return (
             <>
                 {savedJobs.length === 0 && !isLoading ?(
@@ -382,39 +451,46 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                                     <div className='submit-image-container'>
                                         <div className="product-img-container">
                                             <div className='carousel-container'>
-                                                <div onClick={() => previousImage(item.images)} className='left-arrow'>
-                                                    <BsFillArrowLeftCircleFill />
-                                                </div>
+                                                {item.images.length > 1 &&(
+                                                    <div onClick={() => previousImage(item.images)} className='left-arrow'>
+                                                        <BsFillArrowLeftCircleFill />
+                                                    </div>
+                                                )}
                                                 <div className='img-container' style={{borderRadius:'36px'}}>
                                                     <Image src={item.images[currentIndex]} alt='product' width={360} height={236}/>
                                                 </div>
-                                                <div onClick={() => nextImage(item.images)} className='right-arrow'>
-                                                    <BsFillArrowRightCircleFill />
-                                                </div>
+                                                {item.images.length > 1 &&(
+                                                    <div onClick={() => nextImage(item.images)} className='right-arrow'>
+                                                        <BsFillArrowRightCircleFill />
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
-                                        <div className='submit' ref={ref}>
-                                            {showSubmit && <button  onClick={handleShowPaste}>Submit</button>}
-                                            {showPaste && (
-                                                <form className='paste' onSubmit={(e)=>e.preventDefault()}>
-                                                    <div className='pasteLink'>
-                                                        <Image src={linkFrame} alt=""/>
-                                                    </div>
-                                                  
-                                                        <button onClick={() => handleVisualSubmit(item.id,inputValue)} className='pasteButton'>
-                                                            Submit
-                                                        </button>
 
-                                                    <input 
-                                                        type="text"
-                                                        id="inputValue"
-                                                        name="inputValue"
-                                                        onChange={handleChange}
-                                                        value={inputValue}
-                                                    />
-                                                </form>
-                                            )}
-                                        </div>
+                                        {item.type === 'visual'&&(
+                                            <div className='submit' ref={ref}>
+                                                {showSubmit && <button  onClick={handleShowPaste}>Submit</button>}
+                                                {showPaste && (
+                                                    <form className='paste' onSubmit={(e)=>e.preventDefault()}>
+                                                        <div className='pasteLink'>
+                                                            <Image src={linkFrame} alt=""/>
+                                                        </div>
+                                                    
+                                                            <button onClick={() => handleVisualSubmit(item.id,inputValue)} className='pasteButton'>
+                                                                Submit
+                                                            </button>
+
+                                                        <input 
+                                                            type="text"
+                                                            id="inputValue"
+                                                            name="inputValue"
+                                                            onChange={handleChange}
+                                                            value={inputValue}
+                                                        />
+                                                    </form>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                 )}
 
@@ -431,12 +507,12 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                                         <p>Posted <TimeAgo dateTime={item.dateCreated}/></p>
                                     </div>
                                     <div className="share-container">
-                                        {item.images.length !==0 ? (
+                                        {item.type === 'visual' ? (
                                             <div className='icons' onClick={() => handleDownload(item.images)}>
                                                 <Image src={download} alt=""/>
                                             </div>
                                         ):(
-                                            <div className='icons' onClick={()=>handleCopyLink(`https://app.ad-promoter.com/ad/${item.id}`)}>
+                                            <div className='icons' onClick={()=>handleCopyLink(item.id)}>
                                                 <Image src={copyLink} alt=""/>
                                             </div>
                                         )}
@@ -448,7 +524,7 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                                         </div>
                                     </div>
                                 </div>
-                                {showDialogue[item.id] && <ShareDialogue shareLink={`https://app.ad-promoter.com/ad/${item.id}`} />}
+                                {showDialogue[item.id] && <ShareDialogue id={item.id} />}
                                 {showReportModal && (
                                     <BackdropContainer onClick={()=>setShowReportModal(false)}>
                                         <ModalContainer onClick={e => e.stopPropagation()}>

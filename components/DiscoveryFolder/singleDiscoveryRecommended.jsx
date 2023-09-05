@@ -121,29 +121,57 @@ const handleOpenDialogue = (itemId) => {
     setShowPaste(true)
 }
 
-const handleCopyLink = (link) => {
-  navigator.clipboard.writeText(link)
-    .then(() => {
+const handleCopyLink = async(id) => {
+  try {
+      const response = await fetch(
+        `https://api.ad-promoter.com/api/v1/promotion/promote/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token.current}`,
+          },
+        }
+      );
+      const data = await response.json();
+
+      if(!response.ok){
+        throw new Error(data.msg);
+      }
+      if (response.ok) {
+          navigator.clipboard.writeText(`https://app.ad-promoter.com/ad/${id}?ref=${data.promotionRef}`)
+          .then(() => {
+              toast({
+                  title: 'Link copied to clipboard!',
+                  status: "success",
+                  duration: "5000",
+                  isClosable: true,
+                  position: "bottom-left",
+                  size: "lg"
+              });
+          })
+          .catch((error) => {
+              console.error('Failed to copy link:', error);
+              toast({
+                  title: 'Failed to copy link:', error,
+                  status: "error",
+                  duration: "5000",
+                  isClosable: true,
+                  position: "bottom-left",
+                  size: "lg"
+              });
+              });
+              // handleCountClick(data.promotionRef);
+      }
+  } catch (error) {
+      console.error('Error fetching ad data:', error);
       toast({
-          title: 'Link copied to clipboard!',
-          status: "success",
-          duration: "5000",
-          isClosable: true,
-          position: "bottom-left",
-          size: "lg"
+        title: error.message, // Display the error message
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-left',
       });
-    })
-    .catch((error) => {
-      console.error('Failed to copy link:', error);
-      toast({
-          title: 'Failed to copy link:', error,
-          status: "error",
-          duration: "5000",
-          isClosable: true,
-          position: "bottom-left",
-          size: "lg"
-      });
-    });
+    }
+  
 };
 
 const handleReport = async (id,report) =>{
@@ -269,40 +297,44 @@ const handleReport = async (id,report) =>{
   };
 
   const handleVisualSubmit = async (id,link) =>{
+    const data = {
+      adID: id,
+      link: link
+    };
     const response = await fetch(
         `https://api.ad-promoter.com/api/v1/promotion/visual`,
         {
           method: 'POST',
           headers: { 
-                Authorization: `Bearer ${token.current}`
+                Authorization: `Bearer ${token.current}`,
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                adID: id,
-                link: link
-            })
+            body: JSON.stringify(data)
         }
       );
     const json = await response.json();
   
     if (!response.ok) {
-    toast({
+      toast({
         title: json.msg,
         status: "error",
         duration: "5000",
         isClosable: true,
         position: "bottom-left",
         size: "lg"
-        });
+      });
+      setInputValue('')
     }
     if (response.ok) {
         toast({
-        title: json.msg,
+        title: 'Link Submitted',
         status: "success",
         duration: "5000",
         isClosable: true,
         position: "bottom-left",
         size: "lg"
         });
+        setInputValue('')
     }
 }
 
@@ -406,39 +438,45 @@ const handleButtonClick = (event, itemId) => {
                     <>
                       <div className='product-img-container'>
                         <div className='carousel-container'>
-                          <div onClick={() => previousImage(item.images)} className='left-arrow' style={{width: '20px'}}>
+                          {item.images.length > 1 &&(
+                            <div onClick={() => previousImage(item.images)} className='left-arrow' style={{width: '20px'}}>
                               <BsFillArrowLeftCircleFill />
-                          </div>
+                            </div>
+                          )}
                           <div className='img-container' style={{borderRadius:'36px'}}>
                             <Image src={item.images[currentIndex]} alt='product' width={360} height={236}/>
                           </div>
-                          <div onClick={() => nextImage(item.images)} className='right-arrow' style={{width: '20px'}}>
-                            <BsFillArrowRightCircleFill />
-                          </div>
+                          {item.images.length > 1 &&(
+                            <div onClick={() => nextImage(item.images)} className='right-arrow' style={{width: '20px'}}>
+                              <BsFillArrowRightCircleFill />
+                            </div>
+                          )}
                         </div>
                       </div>
-                  
-                      <div className='recSubmit' ref={ref}>
-                        {showSubmit && <button onClick={handleShowPaste}>Submit</button>}
-                        {showPaste && (
-                          <div>
-                            <div className='recPaste'>
-                              <div className='recPasteLink'>
-                                <Image src={linkFrame} alt=""/>
+                      
+                      {item.type === 'visual'&&(
+                        <div className='recSubmit' ref={ref}>
+                          {showSubmit && <button onClick={handleShowPaste}>Submit</button>}
+                          {showPaste && (
+                            <div>
+                              <div className='recPaste'>
+                                <div className='recPasteLink'>
+                                  <Image src={linkFrame} alt=""/>
+                                </div>
+                                <div onClick={() => handleVisualSubmit(item.id,inputValue)} className='recPasteButton'>
+                                  Submit
+                                </div>
+                                <input 
+                                  type="text"
+                                  id="inputValue"
+                                  name="inputValue"
+                                  onChange={(e)=>setInputValue(e.target.value)}
+                                  value={inputValue}/>
                               </div>
-                              <div onClick={() => handleVisualSubmit(item.id,inputValue)} className='recPasteButton'>
-                                Submit
-                              </div>
-                              <input 
-                                type="text"
-                                id="inputValue"
-                                name="inputValue"
-                                onChange={(e)=>setInputValue(e.target.value)}
-                                value={inputValue}/>
                             </div>
-                          </div>
-                        )}
-                      </div>
+                          )}
+                        </div>
+                      )}
                     </>
                   )}
 
@@ -455,12 +493,12 @@ const handleButtonClick = (event, itemId) => {
                       <p>Posted <TimeAgo dateTime={item.dateCreated}/></p>
                     </div>
                     <div className='recPost'>
-                      {item.images.length !==0 ? (
+                      {item.type === 'visual' ? (
                         <div className='recIcons' onClick={() => handleDownload(item.images)}>
                           <Image src={download} alt=""/>
                         </div>
                       ):(
-                        <div className='recIcons' onClick={()=>handleCopyLink(`https://app.ad-promoter.com/ad/${item.id}`)}>
+                        <div className='recIcons' onClick={()=>handleCopyLink(item.id)}>
                           <Image src={copyLink} alt=""/>
                         </div>
                       )}
@@ -472,7 +510,7 @@ const handleButtonClick = (event, itemId) => {
                       </div>
                     </div>
                   </div>
-                  {showDialogue[item.id] && <ShareDialogue shareLink={`https://app.ad-promoter.com/ad/${item.id}`}  />}
+                  {showDialogue[item.id] && <ShareDialogue id={item.id}  />}
                                 {showReportModal && (
                                     <BackdropContainer onClick={()=>setShowReportModal(false)}>
                                         <ModalContainer onClick={e => e.stopPropagation()}>

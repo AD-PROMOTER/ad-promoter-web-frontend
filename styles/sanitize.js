@@ -497,8 +497,8 @@ select,
 summary,
 textarea,
 [tabindex] {
-  -ms-touch-action: manipulation; /* 1 */
-  touch-action: manipulation; /* 2 */
+  /* -ms-touch-action: manipulation; 
+  touch-action: manipulation;  */
 }
 
 /**

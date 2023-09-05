@@ -189,15 +189,19 @@ const MobileRecentPlacers = ({handleShowReport,handleAdRemoval,showReport,setSho
                                     ):(
                                     <div className="product-img-container">
                                     <div className='carousel-container'>
-                                        <div onClick={() => previousImage(item.images)} className='left-arrow' style={{width: '20px'}}>
-                                            <BsFillArrowLeftCircleFill />
-                                        </div>
+                                        {item.images.length > 1 &&(
+                                            <div onClick={() => previousImage(item.images)} className='left-arrow' style={{width: '20px'}}>
+                                                <BsFillArrowLeftCircleFill />
+                                            </div>
+                                        )}
                                         <div className='img-container'>
                                             <Image src={item.images[currentIndex]} alt='product' width={360} height={236}/>
                                         </div>
-                                        <div onClick={() => nextImage(item.images)} className='right-arrow' style={{width: '20px'}}>
-                                            <BsFillArrowRightCircleFill />
-                                        </div>
+                                        {item.images.length > 1 &&(
+                                            <div onClick={() => nextImage(item.images)} className='right-arrow' style={{width: '20px'}}>
+                                                <BsFillArrowRightCircleFill />
+                                            </div>
+                                        )}
                                     </div>
                                     </div>
                                 )}

@@ -528,7 +528,7 @@ export const Feed = styled.div`
         align-items: center;
         .copy-icon {
           margin-right: -4rem;
-          z-index: 10;
+          /* z-index: 10; */
         }
         .input {
           input {
@@ -608,7 +608,7 @@ export const Feed = styled.div`
           border-radius: 0.8rem;
           background: var(--light-gray-3);
           border: 2px solid #ffffff;
-          color: white;
+          /* color: white; */
           /* width: 47.376rem; */
           /* width: 100%; */
           height: 5.6rem;
