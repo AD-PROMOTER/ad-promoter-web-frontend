@@ -1,12 +1,20 @@
 // pages/ad/[id].js
-import { LandingPageContainer } from '@/styles/landingPageStyle';
+import {
+  LandingPageContainer,
+  RedirectContainer,
+} from '@/styles/landingPageStyle';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import UserTagBlue from '@/public/assets/user-tag-blue';
 import Link from 'next/link';
 import { Spinner, useToast } from '@chakra-ui/react';
-import Del from '@/public/assets/del.svg';
+import Bg from '@/public/assets/landing-bg.png';
+import sign from '@/public/assets/sign.svg';
+import {
+  BsFillArrowLeftCircleFill,
+  BsFillArrowRightCircleFill,
+} from 'react-icons/bs';
 
 const AdPage = () => {
   const router = useRouter();
@@ -14,10 +22,10 @@ const AdPage = () => {
   const { ref } = router.query;
   const [isAdFetchLoading, setIsAdFetchLoading] = useState(null);
   const [isAdCountLoading, setIsAdCountLoading] = useState(null);
-  const [data, setData] = useState(null);
-  // const [promotedLink, setPromotedLink] = useState('');
+  const [data, setData] = useState();
   const [token, setToken] = useState('');
   const toast = useToast();
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     const userToken = JSON.parse(localStorage.getItem('user-token'));
@@ -97,111 +105,83 @@ const AdPage = () => {
     }
   };
 
+  const nextImage = (images) => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const previousImage = (images) => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
   return (
     <>
       {data ? (
-        <LandingPageContainer>
-          <div className="container">
-            <div className="header">
-              <h1>{data.productName}</h1>
-              {/* <Image src={Del} alt="del" /> */}
+        <LandingPageContainer image={Bg}>
+          <div className="modal">
+            <h1>{data.productName}</h1>
+
+            <div className="product-details">
+              {data.images.length > 0 && (
+                <div className="carousel-container">
+                  {data.images.length > 1 && (
+                    <div
+                      onClick={() => previousImage(data.images)}
+                      className="left-arrow"
+                      style={{ width: '20px' }}
+                    >
+                      <BsFillArrowLeftCircleFill />
+                    </div>
+                  )}
+
+                  <div className="img-container">
+                    <Image
+                      src={data.images[currentIndex]}
+                      alt="product image"
+                      width={456.223}
+                      height={229.013}
+                      style={{ borderRadius: '21.639px' }}
+                    />
+                  </div>
+
+                  {data.images.length > 1 && (
+                    <div
+                      onClick={() => previousImage(data.images)}
+                      className="right-arrow"
+                      style={{ width: '20px' }}
+                    >
+                      <BsFillArrowRightCircleFill />
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="product-description">
+                <h3>Product description:</h3>
+                <p>{data.description}</p>
+              </div>
             </div>
 
-            <div className="body">
-              <div className="ad-banner">
-                <div className="ad-type">
-                  <div className="head">
-                    <UserTagBlue />
-                    <h3>Advert Type</h3>
-                  </div>
-                  <p>{data.type}</p>
-                </div>
+            <button onClick={() => handleCountClick(data.promotedLink)}>
+              {isAdCountLoading ? <Spinner /> : data.CTAButtonDesign}
+            </button>
 
-                <div className="ad-type">
-                  <div className="head">
-                    <UserTagBlue />
-                    <h3>Aim</h3>
-                  </div>
-                  <p>{data.target} Conversions</p>
-                </div>
-
-                <div className="ad-type">
-                  <div className="head">
-                    <UserTagBlue />
-                    <h3>Achieved</h3>
-                  </div>
-                  <p>{data.conversions} Conversions</p>
-                </div>
-
-                <div className="ad-type">
-                  <div className="head">
-                    <UserTagBlue />
-                    <h3>Price</h3>
-                  </div>
-                  <p>{data.rate}/Conversion</p>
-                </div>
-              </div>
-
-              <div className="desc">
-                <div className="desc-item">
-                  <h3>Product Description</h3>
-                  <p>{data.description}</p>
-                </div>
-
-                {data.images.length > 0 && (
-                  <div className="desc-item">
-                    <h3>Product Images</h3>
-                    {data.images.map((image) => (
-                      <Image
-                        key={image}
-                        src={image}
-                        alt=""
-                        width={310.77}
-                        height={156}
-                      />
-                    ))}
-                  </div>
-                )}
-
-                {data.CTAButtonDesign && (
-                  <div className="desc-item">
-                    <h3>Conversion Button</h3>
-                    <div
-                      className="btn"
-                      onClick={() => handleCountClick(data.promotedLink)}
-                    >
-                      {data.CTAButtonDesign}
-                    </div>
-                  </div>
-                )}
-
-                <div className="desc-item">
-                  <h3>Company Web Address</h3>
-                  <Link href={data.promotedLink}>
-                    <a>{data.promotedLink}</a>
-                  </Link>
-                </div>
-
-                {/* <div className="desc-item">
-                  <h3>Nudity Awareness</h3>
-                  <div className="checkbox">
-                    <input type="checkbox" />
-                    <p>This advert contains adult content</p>
-                  </div>
-                </div> */}
-
-                <div className="desc-item">
-                  <h3>Total Advert Amount</h3>
-                  <p>₦{data.budget}</p>
-                </div>
+            <div className="sign-container">
+              <div className="sign">
+                <Image src={sign} alt="ad-promototer logo" />
+                <p>Powered by AD-Promoter</p>
               </div>
             </div>
           </div>
         </LandingPageContainer>
       ) : (
-        <div>
+        <RedirectContainer>
+          <p>You are being redirected please kindly wait</p>
           <Spinner />
-        </div>
+        </RedirectContainer>
       )}
     </>
   );
