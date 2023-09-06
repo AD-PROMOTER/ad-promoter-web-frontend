@@ -3,7 +3,8 @@ import styled from 'styled-components';
 export const SingleAdContainer = styled.div`
   background-color: var(--bg);
   width: 100%;
-  height: 100%;
+  max-height: 800px;
+  /* overflow: auto; */
   padding-top: 3rem;
   padding-bottom: 3rem;
   display: flex;
@@ -20,9 +21,19 @@ export const SingleAdContainer = styled.div`
     padding: 4rem;
     gap: 3.6rem;
     max-width: 74.2rem;
-    max-height: 67.3rem;
+    width: 100%;
+    /* max-height: 67.3rem; */
+    overflow-y: auto;
     margin: auto;
     position: relative;
+    @media (max-width: 425px) {
+      max-width: 35rem;
+      padding: 2rem;
+      max-height: 44rem;
+    }
+    @media (max-width: 780px) {
+      max-height: 38rem;
+    }
     .back {
       position: absolute;
       right: 3%;
@@ -50,9 +61,13 @@ export const SingleAdContainer = styled.div`
         padding: 2.4rem;
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
         gap: 8rem;
+        @media (max-width: 425px) {
+          padding: 0.8rem;
+        }
         .ad-type {
           display: flex;
           flex-direction: column;
@@ -97,6 +112,7 @@ export const SingleAdContainer = styled.div`
         flex-direction: column;
         align-items: flex-start;
         gap: 4rem;
+
         &-item {
           display: flex;
           flex-direction: column;
@@ -124,7 +140,7 @@ export const SingleAdContainer = styled.div`
             align-items: center;
             letter-spacing: -0.011em;
             color: #404040;
-            width: 80%;
+            width: 100%;
           }
           .btn {
             display: flex;

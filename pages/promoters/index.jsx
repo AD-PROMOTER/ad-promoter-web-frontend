@@ -40,6 +40,7 @@ import {
 import RecentJobContext from '@/context/recentJobContext';
 import JobsContext from '@/context/jobsContext';
 import DefaultPic from '@/public/assets/squared-profile.png'
+import useDraggableScroll from 'use-draggable-scroll';
 
 const Index = ({ router }) => {
   const {
@@ -67,6 +68,8 @@ const Index = ({ router }) => {
   const [sortStartDate, setSortStartDate] = useState('');
   const [sortEndDate, setSortEndDate] = useState('');
   const [profileImage, setProfileImage] = useState('');
+  const ref = useRef(null);
+  const { onMouseDown } = useDraggableScroll(ref, { direction: 'vertical' });
   const {recentJobs,setRecentJobs,savedJobs,setSavedJobs,isLoading,setIsLoading} = useContext(JobsContext)
 
   useEffect(() => {
@@ -423,7 +426,7 @@ const Index = ({ router }) => {
                     </ul>
                   )}
                 </div>
-                <ScrollContainer className="tab-body">
+                <div ref={ref} onMouseDown={onMouseDown} className="tab-body">
                   {isTabOne && (
                     <Recent
                       sortStartDate={sortStartDate}
@@ -433,7 +436,7 @@ const Index = ({ router }) => {
                     />
                   )}
                   {isTabTwo && <SavedJobs />}
-                </ScrollContainer>
+                </div>
               </TabContainer>
             </StyledHome>
           </StyledHomeContainer>

@@ -26,6 +26,7 @@ import { StyledHomeContainer, TabContainer } from '@/styles/promoters/home';
 import { useEffect, useRef, useState, useContext, useMemo } from 'react';
 import ArrowUp from '@/public/assets/arrow-up';
 import ScrollContainer from 'react-indiana-drag-scroll';
+import useDraggableScroll from 'use-draggable-scroll';
 import more from '@/public/assets/ellipsis.svg';
 import {
   BackdropContainer,
@@ -78,6 +79,8 @@ const Index = () => {
   const [dashboardEndDate, setDashboardEndDate] = useState('');
   const [hasNewNotification, setHasNewNotification] = useState(false);
   const {recentJobs,setRecentJobs,isLoading,setIsLoading} = useContext(JobsContext)
+  const scrollRef = useRef(null);
+  const { onMouseDown } = useDraggableScroll(scrollRef, { direction: 'vertical' });
 
   
 
@@ -405,7 +408,7 @@ const Index = () => {
                       {recentJobs.length === 0 ? (
                         <p>No Recent Job</p>
                       ) : (
-                        <ScrollContainer className="tab-body">
+                        <div ref={scrollRef} onMouseDown={onMouseDown} className="tab-body">
                           {recentJobs.map((item) => (
                             <Feed
                               bg={
@@ -615,7 +618,7 @@ const Index = () => {
                               )}
                             </Feed>
                           ))}
-                        </ScrollContainer>
+                        </div>
                       )}
                     </>
                   )}

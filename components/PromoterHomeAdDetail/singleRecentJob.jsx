@@ -456,22 +456,24 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                         )}
                                     </div>
                                 </div>
-
+                                
                                 {item.type === 'visual'&&(
                                     <div className='submit'>
                                         {showSubmit && <button className='btn' onClick={togglePaste}>Submit</button>}
                                         {showPaste && (
+                                            
                                             <form className='paste' onSubmit={(e)=>e.preventDefault()}>
                                                 <div className='pasteLink'>
                                                     <Image src={linkFrame} alt=""/>
                                                 </div>
-                                                <input 
+                                                <input type="text" />
+                                                {/* <input 
                                                     type="text"
                                                     id="inputValue"
                                                     name="inputValue"
                                                     onChange={(e)=>setInputValue(e.target.value)}
                                                     value={inputValue}
-                                                />
+                                                /> */}
                                                 <button onClick={() => handleVisualSubmit(item.id,inputValue)} className='pasteButton'>
                                                     Submit
                                                 </button>
