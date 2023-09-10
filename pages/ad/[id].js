@@ -28,17 +28,11 @@ const AdPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const userToken = JSON.parse(localStorage.getItem('user-token'));
-    if (userToken) {
-      setToken(userToken);
-
-      if (id) {
-        fetchData();
-      }
-    } else {
-      router.push('/login');
+    if (id) {
+      fetchData();
     }
-  }, [id, router]);
+    
+  }, [id]);
 
   const handleCountClick = async (promotedLink) => {
     setIsAdCountLoading(true);
@@ -149,7 +143,7 @@ const AdPage = () => {
 
                   {data.images.length > 1 && (
                     <div
-                      onClick={() => previousImage(data.images)}
+                      onClick={() => nextImage(data.images)}
                       className="right-arrow"
                       style={{ width: '20px' }}
                     >

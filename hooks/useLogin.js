@@ -21,7 +21,7 @@ export const useLogin = () => {
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json',  },
         body: JSON.stringify({
           email,
           password,
