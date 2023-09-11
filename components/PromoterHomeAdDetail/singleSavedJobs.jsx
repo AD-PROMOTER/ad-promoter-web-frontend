@@ -368,7 +368,7 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
   return (          
             <>
             {savedJobs.length && !isLoading === 0 ?(
-                <p>No saved job</p>
+                <p>Your recent adverts will appear here</p>
             ):(
                 <>                
                     {[...savedJobs].reverse().map((item) => (
@@ -441,10 +441,12 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                         <Image src={vector} alt="vector"/>
                                         <h4>Achieved</h4>
                                     </div>
-                                    {item.type === 'detail' || 'direct-link' ?(
+                                    {item.type === 'detail' ? (
                                         <p>{item.conversions} Visitors</p>
-                                        ):(
-                                        <p>{item.conversions} Videos</p>
+                                    ) : item.type === 'direct-link' ? (
+                                        <p>{item.clicks} Visitors</p>
+                                    ) : (
+                                        <p>{item.approvedVideos} Videos</p>
                                     )}
                                 </div>
                             </div>

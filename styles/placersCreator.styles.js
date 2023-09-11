@@ -1529,6 +1529,13 @@ export const StyledDirectLinkSummary = styled.div`
     padding: 0;
   }
 
+  .back-arrow {
+    position: absolute;
+    left: 3%;
+    top: 3%;
+    cursor: pointer;
+  }
+
   .modal {
     background: #ffffff;
     box-shadow: 0px 1px 4px rgba(103, 127, 214, 0.15);
@@ -1540,6 +1547,7 @@ export const StyledDirectLinkSummary = styled.div`
     width: 742px;
     padding-top: 3rem;
     padding-bottom: 6rem;
+    position: relative;
     @media screen and (max-width: 425px) {
       width: 100%;
       box-shadow: none;

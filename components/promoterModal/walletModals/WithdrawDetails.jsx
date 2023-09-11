@@ -6,6 +6,7 @@ import { formatCurrency } from '@/utils/formatCurrency';
 import { useState } from 'react';
 import ButtonStyles from '@/components/promoterButton/styles';
 import { useEffect } from 'react';
+import { useToast } from '@chakra-ui/react';
 
 const WithdrawDetailsModal = (props) => {
   const {onOpenWithdrawProcess, onCloseWithdrawDetails} = props;
@@ -13,6 +14,7 @@ const WithdrawDetailsModal = (props) => {
   const [isLoading,setIsLoading] = useState(null)
   const [token,setToken] = useState('')
   const [userId,setUserId] = useState('')
+  const toast = useToast();
 
   useEffect(() => {
     const userToken = JSON.parse(localStorage.getItem('user-token'));
@@ -55,11 +57,17 @@ const WithdrawDetailsModal = (props) => {
       const json = await response.json();
   
       if (!response.ok) {
-        success.current = false
         setIsLoading(false)
-        props.setWithdrawConfirmed(false)
-        props.onOpenWithdrawModal()
-        props.onCloseModal()
+        // props.setWithdrawConfirmed(false)
+        // props.onOpenWithdrawModal()
+        // props.onCloseModal()
+        toast({
+          title: json.msg,
+          status: 'error',
+          duration: '5000',
+          isClosable: true,
+          position: 'bottom-left',
+        });
       }
       if (response.ok) {
         setIsLoading(false)

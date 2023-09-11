@@ -384,7 +384,7 @@ const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,so
         ):(
             <>
                 {recentJobs.length === 0 ?(
-                    <p>No Recent Job</p>
+                    <p>Your recent adverts will appear here</p>
                 ):(
                     <>
                         {recentJobs.map((item) => (
@@ -457,11 +457,13 @@ const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,so
                                             <Image src={vector} alt="vector"/>
                                             <h4>Achieved</h4>
                                         </div>
-                                        {item.type === 'detail' || 'direct-link' ?(
-                                        <p>{item.conversions} Visitors</p>
-                                        ):(
-                                        <p>{item.conversions} Videos</p>
-                                    )}
+                                        {item.type === 'detail' ? (
+                                            <p>{item.conversions} Visitors</p>
+                                        ) : item.type === 'direct-link' ? (
+                                            <p>{item.clicks} Visitors</p>
+                                        ) : (
+                                            <p>{item.approvedVideos} Videos</p>
+                                        )}
                                     </div>
                                 </div>
 

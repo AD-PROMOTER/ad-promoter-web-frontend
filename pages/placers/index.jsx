@@ -406,7 +406,7 @@ const Index = () => {
                   ) : (
                     <>
                       {recentJobs.length === 0 ? (
-                        <p>No Recent Job</p>
+                        <p>Your recent adverts will appear here</p>
                       ) : (
                         <div ref={scrollRef} onMouseDown={onMouseDown} className="tab-body">
                           {recentJobs.map((item) => (
@@ -504,10 +504,12 @@ const Index = () => {
                                     <Image src={vector} alt="vector" />
                                     <h4>Achieved</h4>
                                   </div>
-                                  {item.type === 'detail' || 'direct-link' ? (
+                                  {item.type === 'detail' ? (
                                     <p>{item.conversions} Visitors</p>
+                                  ) : item.type === 'direct-link' ? (
+                                      <p>{item.clicks} Visitors</p>
                                   ) : (
-                                    <p>{item.conversions} Videos</p>
+                                      <p>{item.approvedVideos} Videos</p>
                                   )}
                                 </div>
                               </div>

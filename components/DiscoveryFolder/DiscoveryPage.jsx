@@ -71,7 +71,6 @@ const DiscoveryPage = () => {
       })
       // setFeed((prevData) => [...prevData, ...result.data.data]);
       setFeed(result.data.data)
-      console.log(result.data.data);
       // setPage((prevPage) => prevPage + 1);
       setIsLoading(false)
       setSearchTag('')

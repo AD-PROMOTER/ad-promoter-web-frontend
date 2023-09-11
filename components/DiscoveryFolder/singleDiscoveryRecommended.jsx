@@ -354,7 +354,7 @@ const handleButtonClick = (event, itemId) => {
   return (
         <>
           {recommendedJobs.length === 0 && !isLoading ?(
-            <p>No Recommended Jobs</p>
+            <p>Your recommended adverts will appear here</p>
           ):(
             <>        
               {[...recommendedJobs].reverse().map((item) => (
@@ -424,10 +424,12 @@ const handleButtonClick = (event, itemId) => {
                         <Image src={vector} alt="vector"/>
                         <p>Achieved</p>
                       </div>
-                      {item.type === 'detail' || 'direct-link' ?(
-                        <p className='recPara'>{item.conversions} Visitors</p>
-                        ):(
-                        <p className='recPara'>{item.conversions} Videos</p>
+                      {item.type === 'detail' ? (
+                        <p>{item.conversions} Visitors</p>
+                      ) : item.type === 'direct-link' ? (
+                        <p>{item.clicks} Visitors</p>
+                      ) : (
+                        <p>{item.approvedVideos} Videos</p>
                       )}
                     </div>
                   </div>

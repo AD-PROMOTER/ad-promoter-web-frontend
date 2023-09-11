@@ -63,8 +63,8 @@ const handleClick = () =>{
           {/* <div className="loading">Loading...</div> */}
           <div className="funds">
             <div className="funds__header">
-              <h2>Withdraw Funds</h2>
-              <p>Please review your withdrawal details</p>
+              <h2>Withdrawal Successful</h2>
+              {/* <p>Please review your withdrawal details</p> */}
             </div>
             <p className="funds__message">
               Withdrawal was Sucessful. Check your mail for transaction

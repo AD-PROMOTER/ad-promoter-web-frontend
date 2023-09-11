@@ -416,7 +416,7 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
   return (   
             <>
                 {feed.length && !isLoading === 0 ?(
-                    <p>Nothing in your feed</p>
+                    <p>Your feed will appear here</p>
                 ):(
                     <>
                         {[...feed].reverse().map((item) => (
@@ -490,10 +490,12 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                             <Image src={vector} alt="vector"/>
                                             <p>Achieved</p>
                                         </div>
-                                        {item.type === 'detail' || 'direct-link' ?(
-                                            <p className='para'>{item.conversions} Visitors</p>
-                                        ):(
-                                            <p className='para'>{item.conversions} Videos</p>
+                                        {item.type === 'detail' ? (
+                                            <p>{item.conversions} Visitors</p>
+                                        ) : item.type === 'direct-link' ? (
+                                            <p>{item.clicks} Visitors</p>
+                                        ) : (
+                                            <p>{item.approvedVideos} Videos</p>
                                         )}
                                     </div>
                                 </div>
