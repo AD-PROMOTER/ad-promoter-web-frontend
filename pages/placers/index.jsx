@@ -505,11 +505,11 @@ const Index = () => {
                                     <h4>Achieved</h4>
                                   </div>
                                   {item.type === 'detail' ? (
-                                    <p>{item.conversions} Visitors</p>
+                                    <p>{item.achieved} Visitors</p>
                                   ) : item.type === 'direct-link' ? (
-                                      <p>{item.clicks} Visitors</p>
+                                      <p>{item.achieved} Visitors</p>
                                   ) : (
-                                      <p>{item.approvedVideos} Videos</p>
+                                      <p>{item.achieved} Videos</p>
                                   )}
                                 </div>
                               </div>
@@ -840,7 +840,28 @@ const Index = () => {
                 </div>
                 
                 <div id="inView">
-                  {showRecentJobs ? <RecentMobile /> : <SavedJobsMobile />}
+                    <RecentMobile
+                      dashboardStartDate={dashboardStartDate}
+                      dashboardEndDate={dashboardEndDate}
+                      handleShowReport={handleShowReport}
+                      handleAdRemoval={handleAdRemoval}
+                      showReport={showReport}
+                      setShowReport={setShowReport}
+                      showReportModal={showReportModal}
+                      setShowReportModal={setShowReportModal}
+                      showDropdown={showDropdown}
+                      setShowDropdown={setShowDropdown}
+                      isReadMore={isReadMore}
+                      setIsReadMore={setIsReadMore}
+                      currentIndex={currentIndex}
+                      setCurrentIndex={setCurrentIndex}
+                      listValue={listValue}
+                      setListValue={setListValue}
+                      ClickedList={ClickedList}
+                      toggleReadMore={toggleReadMore}
+                      previousImage={previousImage}
+                      nextImage={nextImage}
+                    />
                 </div>
               </>
             )}

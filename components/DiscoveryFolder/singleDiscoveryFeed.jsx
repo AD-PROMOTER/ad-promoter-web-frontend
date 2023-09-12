@@ -450,7 +450,7 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                 </div>
                                 <div className='product'>
                                     <p>
-                                        {isReadMore ? item.description.slice(0, 156) : item.desc}
+                                        {isReadMore ? item.description.slice(0, 156) : item.description}
                                         {item.description.length > 156 ? (
                                             <span onClick={toggleReadMore}>
                                                 {isReadMore ? " Read more" : " Show less"}
@@ -491,11 +491,11 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                             <p>Achieved</p>
                                         </div>
                                         {item.type === 'detail' ? (
-                                            <p>{item.conversions} Visitors</p>
+                                            <p>{item.achieved} Visitors</p>
                                         ) : item.type === 'direct-link' ? (
-                                            <p>{item.clicks} Visitors</p>
+                                            <p>{item.achieved} Visitors</p>
                                         ) : (
-                                            <p>{item.approvedVideos} Videos</p>
+                                            <p>{item.achieved} Videos</p>
                                         )}
                                     </div>
                                 </div>

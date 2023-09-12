@@ -15,8 +15,6 @@ const DiscoveryJob = ({clickShow,isLoading,recommendedJobs,fetchRecommended}) =>
     <DiscoveryContainer>
       <div ref={ref} onMouseDown={onMouseDown} className="scroll-container">
         <SingleDiscoveryRecommended isLoading={isLoading} recommendedJobs={recommendedJobs} fetchRecommended={fetchRecommended} click={clickShow}/>
-        {/* <VisualAdRec click={clickShow}/>
-        <DetailedAdRec click={clickShow}/> */}
       </div>
     </DiscoveryContainer>
   )

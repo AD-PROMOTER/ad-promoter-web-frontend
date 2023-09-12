@@ -89,6 +89,7 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
           }
         })
         setRecentJobs(result.data.data.data)
+        console.log(result.data.data.data);
         setIsLoading(false)
     }
     
@@ -428,11 +429,11 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                     <h4>Achieved</h4>
                                 </div>
                                 {item.type === 'detail' ? (
-                                    <p>{item.conversions} Visitors</p>
+                                    <p>{item.achieved} Visitors</p>
                                 ) : item.type === 'direct-link' ? (
-                                    <p>{item.clicks} Visitors</p>
+                                    <p>{item.achieved} Visitors</p>
                                 ) : (
-                                    <p>{item.approvedVideos} Videos</p>
+                                    <p>{item.achieved} Videos</p>
                                 )}
 
                             </div>

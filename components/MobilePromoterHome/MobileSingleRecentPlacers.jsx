@@ -177,11 +177,11 @@ const MobileRecentPlacers = ({handleShowReport,handleAdRemoval,showReport,setSho
                                             <h4>Achieved</h4>
                                         </div>
                                         {item.type === 'detail' ? (
-                                            <p>{item.conversions} Visitors</p>
+                                            <p>{item.achieved} Visitors</p>
                                         ) : item.type === 'direct-link' ? (
-                                            <p>{item.clicks} Visitors</p>
+                                            <p>{item.achieved} Visitors</p>
                                         ) : (
-                                            <p>{item.approvedVideos} Videos</p>
+                                            <p>{item.achieved} Videos</p>
                                         )}
                                     </div>
                                 </div>
