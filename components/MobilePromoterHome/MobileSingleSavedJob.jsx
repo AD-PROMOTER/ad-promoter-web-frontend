@@ -364,7 +364,7 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
   return (
             <>
                 {savedJobs.length === 0 && !isLoading ?(
-                    <p>No saved job</p>
+                    <p>Your saved adverts will appear here</p>
                 ):(
                     <>            
                         {[...savedJobs].reverse().map((item) => (
@@ -437,10 +437,12 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                                             <Image src={vector} alt="vector"/>
                                             <h4>Achieved</h4>
                                         </div>
-                                        {item.type === 'detail' || 'direct-link' ?(
-                                            <p>{item.conversions} Visitors</p>
-                                        ):(
-                                            <p>{item.conversions} Videos</p>
+                                        {item.type === 'detail' ? (
+                                            <p>{item.achieved} Visitors</p>
+                                        ) : item.type === 'direct-link' ? (
+                                            <p>{item.achieved} Visitors</p>
+                                        ) : (
+                                            <p>{item.achieved} Videos</p>
                                         )}
                                     </div>
                                 </div>

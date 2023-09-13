@@ -416,7 +416,7 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
   return (   
             <>
                 {feed.length && !isLoading === 0 ?(
-                    <p>Nothing in your feed</p>
+                    <p>Your feed will appear here</p>
                 ):(
                     <>
                         {[...feed].reverse().map((item) => (
@@ -450,7 +450,7 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                 </div>
                                 <div className='product'>
                                     <p>
-                                        {isReadMore ? item.description.slice(0, 156) : item.desc}
+                                        {isReadMore ? item.description.slice(0, 156) : item.description}
                                         {item.description.length > 156 ? (
                                             <span onClick={toggleReadMore}>
                                                 {isReadMore ? " Read more" : " Show less"}
@@ -490,10 +490,12 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
                                             <Image src={vector} alt="vector"/>
                                             <p>Achieved</p>
                                         </div>
-                                        {item.type === 'detail' || 'direct-link' ?(
-                                            <p className='para'>{item.conversions} Visitors</p>
-                                        ):(
-                                            <p className='para'>{item.conversions} Videos</p>
+                                        {item.type === 'detail' ? (
+                                            <p>{item.achieved} Visitors</p>
+                                        ) : item.type === 'direct-link' ? (
+                                            <p>{item.achieved} Visitors</p>
+                                        ) : (
+                                            <p>{item.achieved} Videos</p>
                                         )}
                                     </div>
                                 </div>

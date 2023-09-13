@@ -7,6 +7,7 @@ import Img2 from '@/public/assets/Component 21.jpg'
 import Image from 'next/image'
 import { useCreateAds } from '@/hooks/useCreateAds'
 import AdPlacerContext from '@/context/adPlacerContext'
+import BackArrow from '@/public/assets/back-arrow'
 const Summary = () => {
     const router = useRouter()
     const [token ,setToken] = useState('')
@@ -27,6 +28,9 @@ const Summary = () => {
   return (
     <StyledDirectLinkSummary>
         <div className="modal">
+            <div className='back-arrow'>
+                <BackArrow />
+            </div>
             <div className="head">
                 <h4>Summary</h4>
                 <p>Confirm all the details you have provided and click “Run Advert” to publish.</p>

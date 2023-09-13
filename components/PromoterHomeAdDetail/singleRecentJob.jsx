@@ -89,6 +89,7 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
           }
         })
         setRecentJobs(result.data.data.data)
+        console.log(result.data.data.data);
         setIsLoading(false)
     }
     
@@ -354,7 +355,7 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
   return (
     <>
         {recentJobs.length === 0 && !isLoading ?(
-            <p>No Recent Job</p>
+            <p>Your recent adverts will appear here</p>
         ):(
             <>            
                 {[...recentJobs].reverse().map((item) => (
@@ -427,11 +428,14 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                     <Image src={vector} alt="vector"/>
                                     <h4>Achieved</h4>
                                 </div>
-                                {item.type === 'detail' || 'direct-link' ?(
-                                    <p>{item.conversions} Visitors</p>
-                                ):(
-                                    <p>{item.conversions} Videos</p>
+                                {item.type === 'detail' ? (
+                                    <p>{item.achieved} Visitors</p>
+                                ) : item.type === 'direct-link' ? (
+                                    <p>{item.achieved} Visitors</p>
+                                ) : (
+                                    <p>{item.achieved} Videos</p>
                                 )}
+
                             </div>
                         </div>
                         

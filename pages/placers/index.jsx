@@ -406,7 +406,7 @@ const Index = () => {
                   ) : (
                     <>
                       {recentJobs.length === 0 ? (
-                        <p>No Recent Job</p>
+                        <p>Your recent adverts will appear here</p>
                       ) : (
                         <div ref={scrollRef} onMouseDown={onMouseDown} className="tab-body">
                           {recentJobs.map((item) => (
@@ -504,10 +504,12 @@ const Index = () => {
                                     <Image src={vector} alt="vector" />
                                     <h4>Achieved</h4>
                                   </div>
-                                  {item.type === 'detail' || 'direct-link' ? (
-                                    <p>{item.conversions} Visitors</p>
+                                  {item.type === 'detail' ? (
+                                    <p>{item.achieved} Visitors</p>
+                                  ) : item.type === 'direct-link' ? (
+                                      <p>{item.achieved} Visitors</p>
                                   ) : (
-                                    <p>{item.conversions} Videos</p>
+                                      <p>{item.achieved} Videos</p>
                                   )}
                                 </div>
                               </div>
@@ -838,7 +840,28 @@ const Index = () => {
                 </div>
                 
                 <div id="inView">
-                  {showRecentJobs ? <RecentMobile /> : <SavedJobsMobile />}
+                    <RecentMobile
+                      dashboardStartDate={dashboardStartDate}
+                      dashboardEndDate={dashboardEndDate}
+                      handleShowReport={handleShowReport}
+                      handleAdRemoval={handleAdRemoval}
+                      showReport={showReport}
+                      setShowReport={setShowReport}
+                      showReportModal={showReportModal}
+                      setShowReportModal={setShowReportModal}
+                      showDropdown={showDropdown}
+                      setShowDropdown={setShowDropdown}
+                      isReadMore={isReadMore}
+                      setIsReadMore={setIsReadMore}
+                      currentIndex={currentIndex}
+                      setCurrentIndex={setCurrentIndex}
+                      listValue={listValue}
+                      setListValue={setListValue}
+                      ClickedList={ClickedList}
+                      toggleReadMore={toggleReadMore}
+                      previousImage={previousImage}
+                      nextImage={nextImage}
+                    />
                 </div>
               </>
             )}

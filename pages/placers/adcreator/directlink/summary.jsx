@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import AdPlacerContext from '@/context/adPlacerContext'
 import { formatCurrencyWithoutStyle } from '@/utils/formatCurrency'
 import { useCreateAds } from '@/hooks/useCreateAds'
+import BackArrow from '@/public/assets/back-arrow'
 const Summary = () => {
     const router = useRouter()
     const {productName,redirectUrl,cta,visitors,productDescription,webAddress,amount,advertType,tags,containAdultContent,images} = useContext(AdPlacerContext)
@@ -22,6 +23,9 @@ const Summary = () => {
   return (
     <StyledDirectLinkSummary>
         <div className="modal">
+            <div onClick={()=>router.back()} className='back-arrow'>
+                <BackArrow />
+            </div>
             <div className="head">
                 <h4>Summary</h4>
                 <p>Confirm all the details you have provided and click “Run Advert” to publish.</p>
