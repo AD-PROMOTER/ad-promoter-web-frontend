@@ -75,7 +75,8 @@ const AdPage = () => {
 
   const fetchData = async () => {
     const response = await fetch(
-      `https://api.ad-promoter.com/api/v1/ads/${id}`,
+      `https://api.ad-promoter.com/api/v1/ads/${id}?ref=${ref}
+      `,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -98,7 +99,6 @@ const AdPage = () => {
     if (response.ok) {
       if (res.type === 'detail') {
         setData(res);
-        console.log(res);
       } else {
         handleCountClick(res.promotedLink);
       }

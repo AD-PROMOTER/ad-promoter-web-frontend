@@ -84,6 +84,7 @@ const Discovery = ({router}) => {
       }
     })
     setFeed(result.data.data);
+    console.log(result.data.data);
     // setFeed((prevData) => [...prevData, ...result.data.data]);
     // setPage((prevPage) => prevPage + 1);
     // setFeed(result.data.data)
