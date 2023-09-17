@@ -231,6 +231,12 @@ export const WithdrawalDetailsStyles = styled.div`
       position: absolute;
       right: 0;
     }
+    .close-icon {
+      position: absolute;
+      left: 0;
+      top: 0%;
+      cursor: pointer;
+    }
   }
 
   .withdrawal {
@@ -307,7 +313,7 @@ export const WithdrawalFundsStyles = styled.div`
     }
   }
 
-  .loading {
+  .success {
     text-align: center;
     margin-top: 0.6rem;
     width: 135.3px;
@@ -335,6 +341,9 @@ export const WithdrawalFundsStyles = styled.div`
       font-size: 1rem;
       text-align: center;
       margin-top: 1.8rem;
+      text-align: center;
+      width: 80%;
+      margin: 0 auto;
     }
 
     &__withdrawal {

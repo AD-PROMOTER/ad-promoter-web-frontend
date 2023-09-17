@@ -59,7 +59,8 @@ const Index = ({ router }) => {
   const [adsPromoted, setAdsPromoted] = useState('');
   const [videosAccepted, setVideosAccepted] = useState('');
   const [pendingWithdrawals, setPendingWithdrawals] = useState('');
-  const [adsConverted, setAdsConverted] = useState([]);
+  const [adsConverted, setAdsConverted] = useState('');
+  const [noVisitors, setNoVisitors] = useState('');
   const [isTabLoading, setIsTabLoading] = useState(false);
   const [clickedFilter, setClickedFilter] = useState('Filter');
   const [clickedSort, setClickedSort] = useState('Sort');
@@ -106,6 +107,7 @@ const Index = ({ router }) => {
       setVideosAccepted(result.data.data.noOfVideosAccepted);
       setPendingWithdrawals(result.data.data.pendingWithdrawals);
       setAdsConverted(result.data.data.noOfAdsConverted);
+      setNoVisitors(result.data.data.noOfVisitors)
     };
     if (token.current) {
       fetchDashboard();
@@ -175,12 +177,6 @@ const Index = ({ router }) => {
       bg: '#FFE2C7',
     },
     {
-      icon: money,
-      name: 'No of jobs recieved',
-      price: '0',
-      bg: 'rgba(87, 159, 190, 0.2)',
-    },
-    {
       icon: card,
       name: 'No. of Ads Promoted',
       price: `${adsPromoted}`,
@@ -195,7 +191,7 @@ const Index = ({ router }) => {
     {
       icon: chart,
       name: 'No. of Visitors',
-      price: '0',
+      price: `${noVisitors}`,
       bg: '#FFE2E4',
     },
     {
@@ -219,12 +215,6 @@ const Index = ({ router }) => {
       bg: '#FFE2C7',
     },
     {
-      icon: money,
-      name: 'No of jobs recieved',
-      price: '0',
-      bg: 'rgba(87, 159, 190, 0.2)',
-    },
-    {
       icon: card,
       name: 'No. of Ads Promoted',
       price: `${adsPromoted}`,
@@ -239,7 +229,7 @@ const Index = ({ router }) => {
     {
       icon: chart,
       name: 'No. of Visitors',
-      price: '0',
+      price: `${noVisitors}`,
       bg: '#FFE2E4',
     },
     {
@@ -265,12 +255,6 @@ const Index = ({ router }) => {
       bg: '#FFE2C7',
     },
     {
-      icon: money,
-      name: 'No of jobs recieved',
-      price: '0',
-      bg: 'rgba(87, 159, 190, 0.2)',
-    },
-    {
       icon: card,
       name: 'No. of Ads Promoted',
       price: `${adsPromoted}`,
@@ -285,7 +269,7 @@ const Index = ({ router }) => {
     {
       icon: chart,
       name: 'No. of Visitors',
-      price: '0',
+      price: `${noVisitors}`,
       bg: '#FFE2E4',
     },
     {

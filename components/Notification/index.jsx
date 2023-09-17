@@ -8,6 +8,8 @@ import axios from "axios"
 import { GlobalStyle } from "@/styles/global"
 import NotificationEmptyScreen from "../notificationEmptyScreen"
 import { ButtonSpinner } from "@chakra-ui/react"
+import DefaultPic from '@/public/assets/squared-profile.png'
+
 const Index = ({notificationData,isLoading}) => {
   const { isNotifClicked,setIsNotifClicked } = useContext(NotificationContext)
   
@@ -28,7 +30,7 @@ const Index = ({notificationData,isLoading}) => {
               <ButtonSpinner 
               thickness='4px'
               speed='0.65s'
-              emptyColor='gray.200'
+              emptycolor='gray.200'
               color='#4F00CF'
               size='xl'
               />
@@ -42,7 +44,19 @@ const Index = ({notificationData,isLoading}) => {
                   {notificationData.map((item)=> (
                     <div className="notification-modal-body-item" key={item._id}>
                       <div className="notification-modal-body-item-textContainer">
-                        <Image style={{borderRadius: '50%'}} src={item.sender?.profilePicture} alt='notification image' width={'48px'} height={'48px'}/>
+                        {item.sender?.profilePicture ? (
+                          <Image style={{borderRadius: '50%'}} src={item.sender?.profilePicture} alt='notification image' width={'48px'} height={'48px'}/>
+                        ):(
+                          <div style={{ width: '52px', height: '52px' }}>
+                            <Image
+                              src={DefaultPic}
+                              alt="profile picture"
+                              width={'100%'}
+                              height={'100%'}
+                              style={{objectFit: 'fill', borderRadius: '100px' }}
+                            />
+                          </div>
+                        )}
                         <div className="notification-modal-body-item-textContainer-text">
                           <div className="notification-modal-body-item-textContainer-text-head">
                             <h3>{item.title}</h3>

@@ -96,7 +96,6 @@ function PlacersChart() {
             },
           ],
         }));
-        console.log(fetchedData);
         } catch (error) {
         console.error('Error fetching data:', error);
       }

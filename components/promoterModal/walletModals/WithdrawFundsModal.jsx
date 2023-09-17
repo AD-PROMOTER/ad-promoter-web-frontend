@@ -6,8 +6,22 @@ import Button from '@/components/promoterButton/Button';
 import { WithdrawalFundsStyles } from './styles';
 import close from '@/public/assets/close-circle.svg';
 import SuccessMark from '@/public/assets/success-mark.gif'
+import Fail from '@/public/assets/fail.gif'
 import { formatCurrency } from '@/utils/formatCurrency';
+import { useEffect } from 'react';
 const WithdrawFundsModal = (props) => {
+  const [token,setToken] = useState('')
+  const [userId,setUserId] = useState('')
+  const [isLoading,setIsLoading] = useState(null)
+
+  useEffect(() => {
+    const userToken = JSON.parse(localStorage.getItem('user-token'));
+    const userId = JSON.parse(localStorage.getItem('user-detail'))
+    if (userToken) {
+      setToken(userToken);
+      setUserId(userId._id)
+    }
+  },[]);
   
   const withdraw = async(amount,userId) =>{
     setIsLoading(true)
@@ -28,20 +42,19 @@ const WithdrawFundsModal = (props) => {
     const json = await response.json();
 
     if (!response.ok) {
-      success.current = false
       setIsLoading(false)
       props.setWithdrawConfirmed(false)
-      props.onOpenWithdrawModal()
-      props.onCloseModal()
+      // props.onOpenWithdrawModal()
+      // props.onCloseModal()
     }
     if (response.ok) {
       setIsLoading(false)
       if(json.success){
        props.setWithdrawConfirmed(true)
-       if(props.withdrawConfirmed){
-          props.onOpenWithdrawModal()
-          props.onCloseModal()
-        }
+      //  if(props.withdrawConfirmed){
+      //     props.onOpenWithdrawModal()
+      //     props.onCloseModal()
+      //   }
       }
     }
 
@@ -60,11 +73,15 @@ const handleClick = () =>{
               <Image src={close} alt="Exit icon" />
             </button>
           </div>
+
+          <div className='success'>
+            <Image src={SuccessMark} alt='success'/>
+          </div>
           {/* <div className="loading">Loading...</div> */}
           <div className="funds">
             <div className="funds__header">
-              <h2>Withdrawal Successful</h2>
-              {/* <p>Please review your withdrawal details</p> */}
+              <h2>Withdraw Funds</h2>
+              <p>Please review your withdrawal details</p>
             </div>
             <p className="funds__message">
               Withdrawal was Sucessful. Check your mail for transaction
@@ -118,17 +135,18 @@ const handleClick = () =>{
               <Image src={close} alt="Exit icon" />
             </button>
           </div>
-          {/* <div className="loading">
-            <Image src={SuccessMark} alt='success'/>
-          </div> */}
+          <div className="success">
+            <Image src={Fail} alt='fail'/>
+          </div>
           <div className="funds">
             <div className="funds__header">
               <h2>Withdraw Funds</h2>
-              <p>Please review your withdrawal details</p>
+              {/* <p>Please review your withdrawal details</p> */}
             </div>
             <p className="funds__message">
             Withdrawal was not completed. Please try again or contact <span style={{color: "#7194ff"}}>Customer Support</span> for more details.
             </p>
+            <p className="funds__message"><span style={{fontWeight:'bold'}}>Note:</span> review your withdrawal details and also check if you have enough withdrawable funds</p>
             <div className="funds__withdrawal">
               <hr />
               <div className="summary">
@@ -167,7 +185,7 @@ const handleClick = () =>{
               <button className="cancel" onClick={props.onClose}>
                 Cancel
               </button>
-              <button className="confirm" onClick={handleClick}>Confirm and Withdraw</button>
+              <button className="confirm" onClick={handleClick}>{isLoading ? 'Withdrawing' : 'Confirm and Withdraw'}</button>
             </div>
           </div>
           <hr />

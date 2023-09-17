@@ -7,6 +7,9 @@ import { useState } from 'react';
 import ButtonStyles from '@/components/promoterButton/styles';
 import { useEffect } from 'react';
 import { useToast } from '@chakra-ui/react';
+// import CloseIcon from '@/public/assets/close-icon';
+// import  from '@/public/assets/close-circle-1.svg';
+import CloseCircle from '@/public/assets/close-circle.svg';
 
 const WithdrawDetailsModal = (props) => {
   const {onOpenWithdrawProcess, onCloseWithdrawDetails} = props;
@@ -58,16 +61,16 @@ const WithdrawDetailsModal = (props) => {
   
       if (!response.ok) {
         setIsLoading(false)
-        // props.setWithdrawConfirmed(false)
-        // props.onOpenWithdrawModal()
-        // props.onCloseModal()
-        toast({
-          title: json.msg,
-          status: 'error',
-          duration: '5000',
-          isClosable: true,
-          position: 'bottom-left',
-        });
+        props.setWithdrawConfirmed(false)
+        props.onOpenWithdrawModal()
+        props.onCloseModal()
+        // toast({
+        //   title: json.msg,
+        //   status: 'error',
+        //   duration: '5000',
+        //   isClosable: true,
+        //   position: 'bottom-left',
+        // });
       }
       if (response.ok) {
         setIsLoading(false)
@@ -85,13 +88,20 @@ const WithdrawDetailsModal = (props) => {
   const handleClick = () =>{
    withdraw(props.amount,userId)
   }
-  
+
+  const closeModal = () =>{
+    props.onCloseModal()
+  }
+
   return (
     <ModalContainer>
       <WithdrawalDetailsStyles>
         <div className="header">
-            <h2>Withdrawal Details</h2>
-            <button onClick={toggleModals}>Edit</button>
+          <h2>Withdrawal Details</h2>
+          <button onClick={toggleModals}>Edit</button>
+          <div onClick={closeModal} className="close-icon">
+            <Image src={CloseCircle} alt=''/>
+          </div>
         </div>
         <div className="withdrawal">
           <hr />

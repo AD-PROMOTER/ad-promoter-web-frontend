@@ -15,6 +15,9 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { SingleAdProvider } from '@/context/singleAdContext';
 import { RecentJobProvider } from '@/context/recentJobContext';
 import JobsContext, { JobsProvider } from '@/context/jobsContext';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 const theme = extendTheme({
   styles: {
@@ -35,6 +38,22 @@ const theme = extendTheme({
 });
 
 function MyApp({ Component, pageProps, router }) {
+  const [user, setUser] = useState();
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user-detail'));
+
+    if (user.role === 'promoter') {
+      setUser(user.role);
+      router.push('/promoters');
+    } else if (user.role === 'placer') {
+      setUser(user.role);
+      router.push('/placers');
+    } else {
+      setUser('');
+      router.push('/');
+    }
+  }, [router]);
+
   if (router.pathname.startsWith('/admin')) {
     return (
       <AuthContextProvider>

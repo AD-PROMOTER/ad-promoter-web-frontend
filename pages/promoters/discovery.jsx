@@ -57,6 +57,17 @@ const Discovery = ({router}) => {
       }
   },[])
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+        setShowDropdown(false)
+    };
+
+    window.addEventListener('click', handleClickOutside);
+    return () => {
+        window.removeEventListener('click', handleClickOutside);
+    };
+}, []);
+
   const fetchFeed = async() =>{
     let apiUrl = `https://api.ad-promoter.com/api/v1/ads/personal?page=${page}&pageSize=10`;
     if (startDate) {
@@ -129,10 +140,10 @@ const Discovery = ({router}) => {
       if(e.target.innerText === 'Visual Ads'){
         setAdType('visual')
       }
-      if(e.target.innerText === 'Detailed Ads'){
+      if(e.target.innerText === 'Details Ads'){
         setAdType('detail')
       }
-      if(e.target.innerText === 'Detailed Ads'){
+      if(e.target.innerText === 'Details Ads'){
         setAdType('detail')
       }
       if(e.target.innerText === 'A week ago'){
@@ -184,19 +195,19 @@ const Discovery = ({router}) => {
             <div className="search-icon">
               <Image src={search} alt="search"/>
             </div>
-            <div className='filter' onClick={() => setShowDropdown(!showDropdown)}>
+            <div className='filter' onClick={(e) => {setShowDropdown(!showDropdown); e.stopPropagation()}}>
               <p>{clickedFilter}</p>
               {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
             </div>
             <input name='search' id='search' value={searchTag} onKeyDown={handleSearch} onChange={(e)=>setSearchTag(e.target.value)} placeholder='Search ad niche...'/>
           </div>
           {showDropdown && (
-            <ul>
+            <ul onClick={(e)=>e.stopPropagation()}>
               <li onClick={handleFilterSelect}>Recent</li>
               <li onClick={handleFilterSelect}>Popular</li>
               <li onClick={handleFilterSelect}>Link-only Ads</li>
               <li onClick={handleFilterSelect}>Visual Ads</li>
-              <li onClick={handleFilterSelect}>Detailed Ads</li>
+              <li onClick={handleFilterSelect}>Details Ads</li>
               <li onClick={handleFilterSelect}>A week ago</li>
               <li onClick={handleFilterSelect}>Less than 2 weeks</li>
               <li onClick={handleFilterSelect}>Last 30 days</li>
@@ -250,16 +261,16 @@ const Discovery = ({router}) => {
                     </span>
                     <input placeholder='Search ad niche...'/>
                 </div>  
-                <div className='select' onClick={() => setShowDropdown(!showDropdown)}>
+                <div className='select' onClick={(e) => {setShowDropdown(!showDropdown); e.stopPropagation()}}>
                     <div>Filter</div>
                     {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
                     {showDropdown && (
-                    <ul>
+                    <ul onClick={(e)=> e.stopPropagation()}>
                         <li>Recent</li>
                         <li>Popular</li>
                         <li>Link-only Ads</li>
                         <li>Visual Ads</li>
-                        <li>Detailed Ads</li>
+                        <li>Details Ads</li>
                         <li>A week ago</li>
                         <li>Less than 2 weeks</li>
                         <li>Last 30 days</li>

@@ -170,7 +170,7 @@ const Adcreator = () => {
                           <Image src={refresh} alt='achieved icon'/>
                           <p>Achieved</p>
                         </div>
-                        <p>{conversions}</p>
+                        <p>{achieved}</p>
                       </div>
       
                       <div className="price">

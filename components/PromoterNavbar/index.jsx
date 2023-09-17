@@ -69,14 +69,18 @@ const Index = () => {
       })
       setNotificationData(result.data.data.data)
       setIsLoading(false)
-    }catch{
-      console.error('Error fetching notifications:');
+    }catch(error){
+      console.error('Error fetching notifications:',error);
     }
   }
 
   const checkNewNotifications = async () => {
     try {
-      const response = await fetch('https://api.ad-promoter.com/api/v1/notifications?page=1&pageSize=10');
+      const response = await fetch('https://api.ad-promoter.com/api/v1/notifications?page=1&pageSize=10',{
+        headers:{
+          Authorization: `Bearer ${token.current}`
+        }
+      });
       const data = await response.json();
       const hasNew = data.length > notificationData.length;
       setHasNewNotification(hasNew);
