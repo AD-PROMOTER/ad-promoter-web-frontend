@@ -64,7 +64,7 @@ export const SingleAdContainer = styled.div`
         flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
-        gap: 8rem;
+        gap: 6rem;
         @media (max-width: 425px) {
           padding: 0.8rem;
         }

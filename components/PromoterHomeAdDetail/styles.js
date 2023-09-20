@@ -387,7 +387,7 @@ export const Feed = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 4rem 0px;
-    gap: 6rem;
+    gap: 2rem;
 
     @media screen and (max-width: ${size.tablet}) {
       width: 100%;

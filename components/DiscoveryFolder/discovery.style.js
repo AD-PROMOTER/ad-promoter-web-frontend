@@ -232,10 +232,9 @@ export const Feed = styled.div`
     .recDesc {
       display: flex;
       align-items: center;
-      gap: 10rem;
+      justify-content: space-between;
       margin-top: 5rem;
       font-size: 1.5rem;
-      /* color: red; */
       .recAim {
         display: flex;
         align-items: center;

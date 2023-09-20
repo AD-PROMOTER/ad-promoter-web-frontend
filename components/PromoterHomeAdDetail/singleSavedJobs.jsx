@@ -419,10 +419,12 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                         <Image src={currency} alt="currency"/>
                                         <h4>Price</h4>
                                     </div>
-                                    {item.type === 'detail' || 'direct-link' ?(
-                                        <p>#25/Visitor</p>
-                                        ):(
-                                        <p>#50/Video</p>
+                                    {item.type === 'detail' ? (
+                                        <p>₦50/Conv.</p>
+                                    ): item.type === 'direct-link'? (
+                                        <p>₦25/Visitor</p>
+                                    ):(
+                                        <p>₦5,000/Video</p>
                                     )}
                                 </div>
                                 <div className="aim">
@@ -430,9 +432,11 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                         <Image src={cup} alt="cup"/>
                                         <h4>Aim</h4>
                                     </div>
-                                    {item.type === 'detail' || 'direct-link' ?(
+                                    {item.type === 'detail' ? (
+                                        <p>{item.target} Conv.</p>
+                                    ): item.type === 'direct-link'? (
                                         <p>{item.target} Visitors</p>
-                                        ):(
+                                    ):(
                                         <p>{item.target} Videos</p>
                                     )}                                
                                 </div>
@@ -442,7 +446,7 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                         <h4>Achieved</h4>
                                     </div>
                                     {item.type === 'detail' ? (
-                                        <p>{item.achieved} Visitors</p>
+                                        <p>{item.achieved} Conv.</p>
                                     ) : item.type === 'direct-link' ? (
                                         <p>{item.achieved} Visitors</p>
                                     ) : (

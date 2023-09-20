@@ -72,7 +72,7 @@ const Adcreator = () => {
    const handleSetAdId = async(id,ref) =>{
     const res = await fetch(`https://api.ad-promoter.com/api/v1/ads/${id}`);
     const data = await res.json();
-    setAdData(data)
+    setAdData(data.data)
     router.push({
       pathname: `/placers/adcreator/${id}`,
     });
@@ -137,8 +137,8 @@ const Adcreator = () => {
           <>        
             {activeAds.length > 0 ? (
               <div className="creator-body">
-                {[...activeAds].reverse().map(({productName,type,target,achieved,price,adStatus,bg,_id,conversions,paymentRef})=>(
-                  <div className="item" key={_id}>
+                {[...activeAds].reverse().map(({productName,type,target,achieved,price,adStatus,bg,id,conversions,paymentRef})=>(
+                  <div className="item" key={id}>
                     <div className="item-details">
                       <div className="product-name">
                         <div>
@@ -162,7 +162,13 @@ const Adcreator = () => {
                           <Image src={cup} alt='cup'/>
                           <p>Aim</p>
                         </div>
-                        <p>{target + ' Visitors'}</p>
+                        {type === 'detail' ? (
+                          <p>{target} Conversions</p>
+                        ): type === 'direct-link'? (
+                          <p>{target} Visitors</p>
+                        ):(
+                          <p>{target} Videos</p>
+                        )}
                       </div>
       
                       <div className="achieved">
@@ -178,10 +184,12 @@ const Adcreator = () => {
                           <Image src={money} alt='money'/>
                           <p>Price</p>
                         </div>
-                        {type === 'detail' || type === 'direct-link' ? (
+                        {type === 'detail' ? (
+                          <p>₦50/Conversion</p>
+                        ): type === 'direct-link'? (
                           <p>₦25/Visitor</p>
                         ):(
-                          <p>₦50/Video</p>
+                          <p>₦5,000/Video</p>
                         )}
                       </div>
       
@@ -194,7 +202,7 @@ const Adcreator = () => {
                       </div>
       
                     </div>
-                    <div onClick={() => handleSetAdId(_id,paymentRef)} className="cta">View</div>
+                    <div onClick={() => handleSetAdId(id,paymentRef)} className="cta">View</div>
                   </div>
                 ))}
               </div>
@@ -276,8 +284,8 @@ const Adcreator = () => {
           <>
             {activeAds.length > 0 ? (
               <div className="body">
-                {[...activeAds].reverse().map(({productName,type,target,achieved,price,adStatus,bg,_id,conversions,paymentRef})=>(
-                  <div key={_id} className="creator">
+                {[...activeAds].reverse().map(({productName,type,target,achieved,price,adStatus,bg,id,conversions,paymentRef})=>(
+                  <div key={id} className="creator">
                     <div className="product">
                       <h3>{productName}</h3>
                       <p style={adStatus === 'incomplete' ? {backgroundColor:'#ED9005'} : adStatus === 'completed' ? {backgroundColor:'#00B068'}: adStatus === 'paused' ? {backgroundColor: '#EB1E1E'}:{backgroundColor: '#5C85FF'}}>{adStatus}</p>
@@ -288,10 +296,12 @@ const Adcreator = () => {
                           <Image src={money} alt="money"/>
                           <p>Price</p>
                         </div>
-                        {type === 'detail' || type === 'direct-link' ? (
+                        {type === 'detail' ? (
+                          <h4>₦50/Visitor</h4>
+                        ): type === 'direct-link'? (
                           <h4>₦25/Visitor</h4>
                         ):(
-                          <h4>₦50/Video</h4>
+                          <h4>₦5,000/Video</h4>
                         )}
                       </div>
                       <div className="type">
@@ -299,14 +309,20 @@ const Adcreator = () => {
                           <Image src={cup} alt="money"/>
                           <p>Aim</p>
                         </div>
-                        <h4>{target + ' Visitors'}</h4>
+                        {type === 'detail' ? (
+                          <h4>{target} Conversions</h4>
+                        ): type === 'direct-link'? (
+                          <h4>{target} Visitors</h4>
+                        ):(
+                          <h4>{target} Videos</h4>
+                        )}
                       </div>
                       <div className="type">
                         <div className="icon">
                           <Image src={refresh} alt="money"/>
-                          <p>Conversion</p>
+                          <p>Achieved</p>
                         </div>
-                        <h4>{conversions}</h4>
+                        <h4>{achieved}</h4>
                       </div>
                       <div className="type">
                         <div className="icon">
@@ -316,7 +332,7 @@ const Adcreator = () => {
                         <h4>{type}</h4>
                       </div>
                     </div>
-                    <div onClick={() => handleSetAdId(_id,paymentRef)} className="view">
+                    <div onClick={() => handleSetAdId(id,paymentRef)} className="view">
                       View
                     </div>
                   </div>

@@ -77,6 +77,7 @@ const Detailsad = () => {
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter' || event.key === 'Next') {
+      event.preventDefault();
       if (tagValue) {
         setTags((prevTags) => [...prevTags, tagValue]);
         setTagValue('');

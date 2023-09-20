@@ -13,15 +13,15 @@ const Conversion = () => {
     const toast = useToast()
 
     useEffect(()=>{
-        setVisitors(amount/50)
+        setVisitors(amount/5000)
     })
 
     const handlePush = () =>{
-        if(amount >= 1000){
+        if(amount >= 5000){
             router.push('summary')
         }else{
             toast({
-                title: 'Amount must not be less than 1,000',
+                title: 'Amount must not be less than 5,000',
                 status: "error",
                 duration: "5000",
                 isClosable: true,
@@ -53,7 +53,7 @@ const Conversion = () => {
                 <div className="modal-body-item-container">
                     <div className="text">
                         <h4>Visual Advert Rate</h4>
-                        <h3>₦50/Conversion</h3>
+                        <h3>₦5000/Conversion</h3>
                     </div>
                     <div className="conversions">
                         <div className="head">

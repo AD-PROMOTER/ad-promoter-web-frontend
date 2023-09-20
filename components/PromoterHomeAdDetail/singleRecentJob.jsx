@@ -406,10 +406,12 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                     <Image src={currency} alt="currency"/>
                                     <h4>Price</h4>
                                 </div>
-                                {item.type === 'detail' || 'direct-link' ?(
-                                    <p>#25/Visitor</p>
+                                {item.type === 'detail' ? (
+                                    <p>₦50/Conversion</p>
+                                ): item.type === 'direct-link'? (
+                                    <p>₦25/Visitor</p>
                                 ):(
-                                    <p>#50/Video</p>
+                                    <p>₦5,000/Video</p>
                                 )}
                             </div>
                             <div className="aim">
@@ -417,7 +419,9 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                     <Image src={cup} alt="cup"/>
                                     <h4>Aim</h4>
                                 </div>
-                                {item.type === 'detail' || 'direct-link' ?(
+                                {item.type === 'detail' ? (
+                                    <p>{item.target} Conversions</p>
+                                ): item.type === 'direct-link'? (
                                     <p>{item.target} Visitors</p>
                                 ):(
                                     <p>{item.target} Videos</p>
@@ -429,7 +433,7 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                     <h4>Achieved</h4>
                                 </div>
                                 {item.type === 'detail' ? (
-                                    <p>{item.achieved} Visitors</p>
+                                    <p>{item.achieved} Conversions</p>
                                 ) : item.type === 'direct-link' ? (
                                     <p>{item.achieved} Visitors</p>
                                 ) : (

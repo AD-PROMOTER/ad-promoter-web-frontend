@@ -38,21 +38,21 @@ const theme = extendTheme({
 });
 
 function MyApp({ Component, pageProps, router }) {
-  const [user, setUser] = useState();
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user-detail'));
+  // const [user, setUser] = useState();
+  // useEffect(() => {
+  //   const user = JSON.parse(localStorage.getItem('user-detail'));
 
-    if (user.role === 'promoter') {
-      setUser(user.role);
-      router.push('/promoters');
-    } else if (user.role === 'placer') {
-      setUser(user.role);
-      router.push('/placers');
-    } else {
-      setUser('');
-      router.push('/');
-    }
-  }, [router]);
+  //   if (user.role === 'promoter') {
+  //     setUser(user.role);
+  //     router.push('/promoters');
+  //   } else if (user.role === 'placer') {
+  //     setUser(user.role);
+  //     router.push('/placers');
+  //   } else {
+  //     setUser('');
+  //     router.push('/');
+  //   }
+  // }, [router]);
 
   if (router.pathname.startsWith('/admin')) {
     return (

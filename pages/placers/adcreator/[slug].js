@@ -9,28 +9,27 @@ import { useContext } from 'react';
 import SingleAdContext from '@/context/singleAdContext';
 import { useRouter } from 'next/router';
 import { CiPlay1 } from 'react-icons/ci';
-import { useToast } from '@chakra-ui/react';
+import { Spinner, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
 const SingleAd = () => {
-  const {
-    query: { id },
-  } = useRouter();
   const { adData, setAdData } = useContext(SingleAdContext);
   const router = useRouter();
+  const { id } = router.query;
   const toast = useToast();
 
   useEffect(() => {
-    const handleSetAdId = async () => {
-      const res = await fetch(`https://api.ad-promoter.com/api/v1/ads/${id}`);
-      const data = await res.json();
-      setAdData(data);
-    };
     if (id) {
       handleSetAdId();
     }
-  }, [id, setAdData]);
+  }, [id]);
+
+  const handleSetAdId = async () => {
+    const res = await fetch(`https://api.ad-promoter.com/api/v1/ads/${id}`);
+    const data = await res.json();
+    setAdData(data.data);
+  };
 
   const handlePause = async () => {
     const response = await fetch(
@@ -99,7 +98,7 @@ const SingleAd = () => {
   };
   return (
     <>
-      {adData && (
+      {adData ? (
         <SingleAdContainer>
           <div className="white-container">
             <div className="back" onClick={() => router.back()}>
@@ -121,7 +120,13 @@ const SingleAd = () => {
                     <UserTagBlue />
                     <h3>Aim</h3>
                   </div>
-                  <p>{adData.target} Conversions</p>
+                  {adData.type === 'detail' ? (
+                    <p>{adData.target} Conversions</p>
+                  ) : adData.type === 'direct-link' ? (
+                    <p>{adData.target} Visitors</p>
+                  ) : (
+                    <p>{adData.target} Videos</p>
+                  )}
                 </div>
 
                 <div className="ad-type">
@@ -129,7 +134,13 @@ const SingleAd = () => {
                     <UserTagBlue />
                     <h3>Achieved</h3>
                   </div>
-                  <p>{adData.conversions} Conversions</p>
+                  {adData.type === 'detail' ? (
+                    <p>{adData.achieved} Conversions</p>
+                  ) : adData.type === 'direct-link' ? (
+                    <p>{adData.achieved} Visitors</p>
+                  ) : (
+                    <p>{adData.achieved} Videos</p>
+                  )}
                 </div>
 
                 <div className="ad-type">
@@ -137,7 +148,9 @@ const SingleAd = () => {
                     <UserTagBlue />
                     <h3>Price</h3>
                   </div>
-                  {adData.type === 'detail' || 'direct-link' ? (
+                  {adData.type === 'detail' ? (
+                    <p>#{adData.rate}/Conversion</p>
+                  ) : adData.type === 'direct-link' ? (
                     <p>#{adData.rate}/Visitor</p>
                   ) : (
                     <p>#{adData.rate}/Video</p>
@@ -212,6 +225,8 @@ const SingleAd = () => {
             </>
           )}
         </SingleAdContainer>
+      ) : (
+        <Spinner />
       )}
     </>
   );

@@ -401,10 +401,12 @@ const handleButtonClick = (event, itemId) => {
                         <Image src={currency} alt="currency"/>
                         <p>Price</p>
                       </div>
-                      {item.type === 'detail' || 'direct-link' ?(
-                        <p className='recPara'>#25/Visitor</p>
+                      {item.type === 'detail' ? (
+                        <p>₦50/Conversion</p>
+                      ): item.type === 'direct-link'? (
+                        <p>₦25/Visitor</p>
                       ):(
-                        <p className='recPara'>#50/Video</p>
+                        <p>₦5,000/Video</p>
                       )}
                     </div>
                     <div>
@@ -412,10 +414,12 @@ const handleButtonClick = (event, itemId) => {
                         <Image src={cup} alt="cup"/>
                         <p>Aim</p>
                       </div>
-                      {item.type === 'detail' || 'direct-link' ?(
-                        <p className='recPara'>{item.target} Visitors</p>
-                        ):(
-                        <p className='recPara'>{item.target} Videos</p>
+                      {item.type === 'detail' ? (
+                        <p>{item.target} Conversions</p>
+                      ): item.type === 'direct-link'? (
+                        <p>{item.target} Visitors</p>
+                      ):(
+                        <p>{item.target} Videos</p>
                       )}
                     </div>
 
@@ -425,7 +429,7 @@ const handleButtonClick = (event, itemId) => {
                         <p>Achieved</p>
                       </div>
                       {item.type === 'detail' ? (
-                        <p>{item.achieved} Visitors</p>
+                        <p>{item.achieved} Conversions</p>
                       ) : item.type === 'direct-link' ? (
                         <p>{item.achieved} Visitors</p>
                       ) : (

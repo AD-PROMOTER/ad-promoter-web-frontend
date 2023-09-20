@@ -72,29 +72,32 @@ export const StyledCreator = styled.div`
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    /* margin-top: 6rem; */
     width: 100%;
     .item {
       display: flex;
-      flex-direction: row;
       justify-content: space-between;
       align-items: center;
       padding: 2.4rem;
-      gap: 6.5rem;
+      gap: 20rem;
       background: #ffffff;
       border-radius: 1.6rem;
+      @media screen and (max-width: 1024px) {
+        gap: 3rem;
+      }
       @media screen and (max-width: 768px) {
         padding: 2.4rem 1rem;
+        gap: 2rem;
       }
       &-details {
         display: flex;
         align-items: flex-start;
-        gap: 8rem;
+        justify-content: space-between;
+        flex-grow: 1;
         @media screen and (max-width: 1024px) {
           gap: 6rem;
         }
         @media screen and (max-width: 768px) {
-          gap: 2.3rem;
+          gap: 0rem;
         }
         .product-name,
         .ad-type,
