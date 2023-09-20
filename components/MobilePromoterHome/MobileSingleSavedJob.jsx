@@ -430,7 +430,7 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                                         </div>
                                         {item.type === 'detail' ? (
                                             <p>{item.target} Conversions</p>
-                                        ): itemtype === 'direct-link'? (
+                                        ): item.type === 'direct-link'? (
                                             <p>{item.target} Visitors</p>
                                         ):(
                                             <p>{item.target} Videos</p>

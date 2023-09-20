@@ -388,7 +388,7 @@ const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,so
                 ):(
                     <>
                         {recentJobs.map((item) => (
-                            <Feed bg={item.type === 'direct-link' ? '#0594FB': item.type === 'detail' ? 'var(--yellow)':'var(--green)'} key={item._id}>
+                            <Feed bg={item.type === 'direct-link' ? '#0594FB': item.type === 'detail' ? 'var(--yellow)':'var(--green)'} key={item.id}>
                                 <div className="product-summary">
                                     <div className="product-summary-head">
                                         <div className="ad-type-container">
