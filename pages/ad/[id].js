@@ -58,9 +58,13 @@ const AdPage = () => {
     }
     if (response.ok) {
       setIsAdCountLoading(false);
-      if (promotedLink.startsWith('https://')) {
+      if (
+        promotedLink &&
+        typeof promotedLink === 'string' &&
+        promotedLink.startsWith('https://')
+      ) {
         router.push(promotedLink);
-      } else {
+      } else if (promotedLink && typeof promotedLink === 'string') {
         router.push(`https://${promotedLink}`);
       }
     }
@@ -90,10 +94,10 @@ const AdPage = () => {
     }
 
     if (response.ok) {
-      if (res.type === 'detail') {
-        setData(res);
+      if (res.data.type === 'detail') {
+        setData(res.data);
       } else {
-        handleCountClick(res.promotedLink);
+        handleCountClick(res.data.promotedLink);
       }
     }
   };
@@ -136,6 +140,7 @@ const AdPage = () => {
                       alt="product image"
                       width={456.223}
                       height={229.013}
+                      priority
                       style={{ borderRadius: '21.639px' }}
                     />
                   </div>
@@ -159,7 +164,7 @@ const AdPage = () => {
             </div>
 
             <button onClick={() => handleCountClick(data.promotedLink)}>
-              {isAdCountLoading ? <Spinner /> : data.CTAButtonDesign}
+              {isAdCountLoading ? <Spinner /> : data.cta}
             </button>
 
             <div className="sign-container">

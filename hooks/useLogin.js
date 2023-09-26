@@ -2,18 +2,19 @@ import { useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 import { useAuthContext } from './useAuthContext';
+import axios from 'axios';
+import { useContext } from 'react';
+import { AuthContext } from '@/context/authContext';
 
 export const useLogin = () => {
-  const error = useRef(null);
-  const msg = useRef('');
   const [isLoading, setIsLoading] = useState(false);
-  const { dispatch } = useAuthContext();
+  // const { setAuth } = useAuthContext();
+  const { setAuth } = useContext(AuthContext);
   const toast = useToast();
   const router = useRouter();
 
   const login = async (email, password) => {
     setIsLoading(true);
-
     const response = await fetch(
       'https://api.ad-promoter.com/api/v1/auth/signin',
       {
@@ -42,12 +43,13 @@ export const useLogin = () => {
       setIsLoading(false);
     }
     if (response.ok) {
-      error.current = json.success;
       //save user to local storage
-      localStorage.setItem('user-token', JSON.stringify(json.token));
-      localStorage.setItem('user-detail', JSON.stringify(json.user));
+      localStorage.setItem('user-token', JSON.stringify(json?.token));
+      localStorage.setItem('user-detail', JSON.stringify(json?.user));
+
       //update the auth context
-      dispatch({ type: 'LOGIN', payload: json });
+      setAuth(json);
+
       setIsLoading(false);
       toast({
         title: 'Logged In Successfully',
@@ -63,6 +65,5 @@ export const useLogin = () => {
       }
     }
   };
-  // console.log(isLoading);
-  return { login, isLoading, error, msg };
+  return { login, isLoading };
 };
