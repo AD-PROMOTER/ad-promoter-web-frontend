@@ -9,8 +9,6 @@ import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import search from '@/public/assets/search.svg'
 import Link from "next/link"
-import Recent from "@/components/MobilePromoterHome/Recent"
-import SavedJobs from "@/components/MobilePromoterHome/SavedJobs"
 import ArrowDown from "@/public/assets/arrow-down"
 import ArrowUp from "@/public/assets/arrow-up"
 import DiscoveryJob from "@/components/DiscoveryFolder/DiscoveryJob"
@@ -55,7 +53,7 @@ const Discovery = ({router}) => {
           fetchFeed()
           fetchRecommended()
       }
-  },[])
+  },[recent,popular,adType,searchTag,endDate,startDate])
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -95,10 +93,6 @@ const Discovery = ({router}) => {
       }
     })
     setFeed(result.data.data);
-    console.log(result.data.data);
-    // setFeed((prevData) => [...prevData, ...result.data.data]);
-    // setPage((prevPage) => prevPage + 1);
-    // setFeed(result.data.data)
     setIsLoading(false)
     setSearchTag('')
   }
@@ -114,6 +108,15 @@ const Discovery = ({router}) => {
     if (endDate) {
       apiUrl += `&endDate=${endDate}`;
     }
+    if (adType) {
+      apiUrl += `&adType=${adType}`;
+    }
+    if (recent) {
+      apiUrl += `&recent=${recent}`;
+    }
+    if (popular) {
+      apiUrl += `&popular=${popular}`;
+    }
     setIsRecLoading(true)
     const result = await axios(apiUrl,{
       headers:{
@@ -121,8 +124,6 @@ const Discovery = ({router}) => {
       }
     })
     setRecommendedJobs(result.data.data.data);
-    // setRecommendedJobs((prevData) => [...prevData, ...result.data.data.data]);
-    // setRecPage((prevPage) => prevPage + 1);
     setIsRecLoading(false)
   }
 
@@ -139,9 +140,6 @@ const Discovery = ({router}) => {
       }
       if(e.target.innerText === 'Visual Ads'){
         setAdType('visual')
-      }
-      if(e.target.innerText === 'Details Ads'){
-        setAdType('detail')
       }
       if(e.target.innerText === 'Details Ads'){
         setAdType('detail')
@@ -169,9 +167,7 @@ const Discovery = ({router}) => {
           if(!searchTag){
               return
           }else{
-              // setSearchTag(event.target.value)
-              fetchFeed(searchTag)
-              // fetchRecommended(searchTag)
+            fetchFeed(searchTag)
           }
       }
   }
@@ -186,9 +182,6 @@ const Discovery = ({router}) => {
         {showReport && <Modal />}
         <MobileDiscovery>
           <div className="back-disc">
-            {/* <div>
-              <Image src={back} alt='back'/>
-            </div> */}
             <h3>Discovery</h3>
           </div>
           <div className="search-filter">
@@ -262,18 +255,18 @@ const Discovery = ({router}) => {
                     <input placeholder='Search ad niche...'/>
                 </div>  
                 <div className='select' onClick={(e) => {setShowDropdown(!showDropdown); e.stopPropagation()}}>
-                    <div>Filter</div>
+                    <div>{clickedFilter}</div>
                     {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
                     {showDropdown && (
                     <ul onClick={(e)=> e.stopPropagation()}>
-                        <li>Recent</li>
-                        <li>Popular</li>
-                        <li>Link-only Ads</li>
-                        <li>Visual Ads</li>
-                        <li>Details Ads</li>
-                        <li>A week ago</li>
-                        <li>Less than 2 weeks</li>
-                        <li>Last 30 days</li>
+                        <li onClick={handleFilterSelect}>Recent</li>
+                        <li onClick={handleFilterSelect}>Popular</li>
+                        <li onClick={handleFilterSelect}>Link-only Ads</li>
+                        <li onClick={handleFilterSelect}>Visual Ads</li>
+                        <li onClick={handleFilterSelect}>Details Ads</li>
+                        <li onClick={handleFilterSelect}>A week ago</li>
+                        <li onClick={handleFilterSelect}>Less than 2 weeks</li>
+                        <li onClick={handleFilterSelect}>Last 30 days</li>
                     </ul>
                 )}
                 </div>

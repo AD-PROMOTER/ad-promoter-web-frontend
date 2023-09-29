@@ -272,30 +272,13 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                 }
         }
 
-        const handleDownload = async (imageLinks) => {
-            try {
-              for (let i = 0; i < imageLinks.length; i++) {
-                const imageUrl = imageLinks[i];
-                const filename = `image${i + 1}`;
-        
-                const response = await fetch('/api/convert-to-jpeg', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({ imageUrl, filename })
-                });
-        
-                const blob = await response.blob();
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = `${filename}.jpg`;
-                link.click();
-                URL.revokeObjectURL(link.href);
-            }
-            } catch (error) {
-              console.error('Error downloading images:', error);
-            }
+        const handleDownload = (url) => {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'image.jpg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         };
 
         const nextImage = (images) => {

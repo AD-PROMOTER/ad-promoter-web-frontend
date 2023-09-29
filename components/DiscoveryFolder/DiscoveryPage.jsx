@@ -41,7 +41,7 @@ const DiscoveryPage = () => {
             fetchFeed()
             fetchRecommended()
         }
-    },[])
+    },[recent,popular,adType,searchTag,endDate,startDate])
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -80,9 +80,7 @@ const DiscoveryPage = () => {
           Authorization: `Bearer ${token.current}`
         }
       })
-      // setFeed((prevData) => [...prevData, ...result.data.data]);
       setFeed(result.data.data)
-      // setPage((prevPage) => prevPage + 1);
       setIsLoading(false)
       setSearchTag('')
     }
@@ -98,6 +96,15 @@ const DiscoveryPage = () => {
       if (endDate) {
         apiUrl += `&endDate=${endDate}`;
       }
+      if (adType) {
+        apiUrl += `&adType=${adType}`;
+      }
+      if (recent) {
+        apiUrl += `&recent=${recent}`;
+      }
+      if (popular) {
+        apiUrl += `&popular=${popular}`;
+      }
       setIsRecLoading(true)
       const result = await axios(apiUrl,{
         headers:{
@@ -105,8 +112,6 @@ const DiscoveryPage = () => {
         }
       })
       setRecommendedJobs(result.data.data.data);
-      // setRecommendedJobs((prevData) => [...prevData, ...result.data.data.data]);
-      // setRecPage((prevPage) => prevPage + 1);
       setIsRecLoading(false)
     }
 
@@ -123,9 +128,6 @@ const DiscoveryPage = () => {
         }
         if(e.target.innerText === 'Visual Ads'){
           setAdType('visual')
-        }
-        if(e.target.innerText === 'Details Ads'){
-          setAdType('detail')
         }
         if(e.target.innerText === 'Details Ads'){
           setAdType('detail')
@@ -153,9 +155,7 @@ const DiscoveryPage = () => {
             if(!searchTag){
                 return
             }else{
-                // setSearchTag(event.target.value)
                 fetchFeed(searchTag)
-                // fetchRecommended(searchTag)
             }
         }
     }
@@ -186,14 +186,14 @@ const DiscoveryPage = () => {
                     {showDropdown ? <Image src={arrowDown} alt=""/> : <Image src={arrowUp} alt=""/>}
                     {showDropdown && (
                     <ul onClick={(e)=>e.stopPropagation()}>
-                        <li onClick={handleFilterSelect}>Recent</li>
-                        <li onClick={handleFilterSelect}>Popular</li>
-                        <li onClick={handleFilterSelect}>Link-only Ads</li>
-                        <li onClick={handleFilterSelect}>Visual Ads</li>
-                        <li onClick={handleFilterSelect}>Details Ads</li>
-                        <li onClick={handleFilterSelect}>A week ago</li>
-                        <li onClick={handleFilterSelect}>Less than 2 weeks</li>
-                        <li onClick={handleFilterSelect}>Last 30 days</li>
+                      <li onClick={handleFilterSelect}>Recent</li>
+                      <li onClick={handleFilterSelect}>Popular</li>
+                      <li onClick={handleFilterSelect}>Link-only Ads</li>
+                      <li onClick={handleFilterSelect}>Visual Ads</li>
+                      <li onClick={handleFilterSelect}>Details Ads</li>
+                      <li onClick={handleFilterSelect}>A week ago</li>
+                      <li onClick={handleFilterSelect}>Less than 2 weeks</li>
+                      <li onClick={handleFilterSelect}>Last 30 days</li>
                     </ul>
                 )}
                 </div>

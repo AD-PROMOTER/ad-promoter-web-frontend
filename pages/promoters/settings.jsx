@@ -9,7 +9,7 @@ import security from '@/public/assets/security-user.svg';
 import profile from '@/public/assets/user-tag-icon.svg';
 import general from '@/public/assets/general-icon.svg';
 import payment from '@/public/assets/cards.svg';
-import logout from '@/public/assets/logout.svg';
+import logoutArrow from '@/public/assets/logout.svg';
 import arrow from '@/public/assets/arrow-right.svg';
 import { Danger, MobileSettings } from '@/components/settings/settings.style';
 import Profile from '@/components/MobileSettings/Profile';
@@ -22,6 +22,8 @@ import { BackdropContainer } from '@/components/DiscoveryFolder/ReportModal/Moda
 import DefaultPic from '@/public/assets/squared-profile.png'
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { VscClose } from 'react-icons/vsc';
+import { useLogout } from '@/hooks/useLogout';
+import { useRouter } from 'next/router';
 
 const PromoterSettings = () => {
   const [selected, setSelected] = useState('Settings');
@@ -30,15 +32,17 @@ const PromoterSettings = () => {
   const [profileImage, setProfileImage] = useState('');
   const [profileModal, setProfileModal] = useState(false);
   const [imageUploaderError, setImageUploaderError] = useState("");
+  const { logout } = useLogout();
+  const router = useRouter()
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-detail'));
-    setUserName(user.accountName);
+    setUserName(user?.accountName);
   }, []);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-detail'));
-    if(!user.profilePicture || user.profilePicture === ''){
+    if(!user?.profilePicture || user?.profilePicture === ''){
       setProfileImage('')
     }else{
       setProfileImage(user.profilePicture);
@@ -157,7 +161,7 @@ const PromoterSettings = () => {
                 </div>
               ))}
               <div className="logout" onClick={() => setShowlogout(true)}>
-                <Image src={logout} alt="logout" />
+                <Image src={logoutArrow} alt="logout" />
                 <p>Log out</p>
               </div>
             </div>
@@ -183,7 +187,7 @@ const PromoterSettings = () => {
                   <div className="cancel" onClick={() => setShowlogout(false)}>
                     Cancel
                   </div>
-                  <div className="proceed">Logout</div>
+                  <button onClick={() => {logout(), router.push('/')}} className="proceed">Logout</button>
                 </div>
               </div>
             )}

@@ -5,11 +5,7 @@ import {
   TabContainer,
   TabletContainer,
 } from '@/styles/promoters/home';
-// import profile from '@/public/assets/home-profile.svg'
-import profile from '@/public/assets/squared-profile.png';
 import wave from '@/public/assets/wave-hands.svg';
-import filter from '@/public/assets/filter-icon.svg';
-import profil from '@/public/assets/Profil.svg';
 import Image from 'next/image';
 import money from '@/public/assets/money.svg';
 import wallet from '@/public/assets/empty-wallet-change.svg';
@@ -19,14 +15,13 @@ import RecentMobile from '../../components/MobilePromoterHome/Recent';
 import SavedJobsMobile from '../../components/MobilePromoterHome/SavedJobs';
 import Recent from '@/components/PromoterHomeAdDetail/recent';
 import SavedJobs from '@/components/PromoterHomeAdDetail/savedJobs';
-import sort from '@/public/assets/sort.svg';
 import Link from 'next/link';
 import promo from '@/public/assets/pr.svg';
 import notif from '@/public/assets/notif.svg';
 import { useRouter, withRouter } from 'next/router';
 import ArrowDown from '@/public/assets/arrow-down';
 import ArrowUp from '@/public/assets/arrow-up';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import userStatus from '@/public/assets/promoters-logo.svg';
 import MobileNotif from '@/components/MobileNotification/index';
 import ScrollContainer from 'react-indiana-drag-scroll';
@@ -37,8 +32,6 @@ import {
   getTwoWeeksAgoRange,
   getWeekAgoRange,
 } from '@/utils/formatFilterDate';
-import RecentJobContext from '@/context/recentJobContext';
-import JobsContext from '@/context/jobsContext';
 import DefaultPic from '@/public/assets/squared-profile.png'
 import useDraggableScroll from 'use-draggable-scroll';
 
@@ -71,7 +64,6 @@ const Index = ({ router }) => {
   const [profileImage, setProfileImage] = useState('');
   const ref = useRef(null);
   const { onMouseDown } = useDraggableScroll(ref, { direction: 'vertical' });
-  const {recentJobs,setRecentJobs,savedJobs,setSavedJobs,isLoading,setIsLoading} = useContext(JobsContext)
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-detail'));

@@ -1,5 +1,5 @@
 import AdminNavbar from '@/components/AdminNavbar/index'
-const PromoterLayout = ({ children }) => {
+const AdminLayout = ({ children }) => {
     return (
       <div>
         <AdminNavbar />
@@ -8,5 +8,5 @@ const PromoterLayout = ({ children }) => {
     );
   };
   
-  export default PromoterLayout;
+  export default AdminLayout;
   

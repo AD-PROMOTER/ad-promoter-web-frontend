@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import { useAuthContext } from './useAuthContext';
 import { useRouter } from 'next/router';
 import { useToast } from '@chakra-ui/react';
 
 export const useSignup = () => {
   const [error, setError] = useState(null);
   const [isVerificationLoading, setIsVerificationLoading] = useState(null);
-  const { dispatch } = useAuthContext();
   const router = useRouter();
   const toast = useToast();
 

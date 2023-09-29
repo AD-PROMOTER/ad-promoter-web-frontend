@@ -36,7 +36,7 @@ const Index = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-detail'));
-    if(!user.profilePicture || user.profilePicture === ''){
+    if(!user?.profilePicture || user?.profilePicture === ''){
       setProfileImage('')
     }else{
       setProfileImage(user.profilePicture);

@@ -5,8 +5,6 @@ import { links } from './links';
 import logo from '@/public/assets/newest-logo.png';
 import notif from '@/public/assets/notif.svg';
 import inactiveNotif from '@/public/assets/Inactive notification Icon.svg';
-// import profile from '@/public/assets/Profil.svg'
-import profile from '@/public/assets/user-onboard-profile.png';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
@@ -39,10 +37,10 @@ const Index = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-detail'));
-    if(!user.profilePicture || user.profilePicture === ''){
+    if(!user?.profilePicture || user?.profilePicture === ''){
       setProfileImage('')
     }else{
-      setProfileImage(user.profilePicture);
+      setProfileImage(user?.profilePicture);
     }
   }, []);
 

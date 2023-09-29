@@ -1,23 +1,14 @@
-import PromoterLayout from '@/components/PromoterLayout';
 import { GlobalStyle } from '@/styles/global';
 import { SanitizeStyle } from '@/styles/sanitize';
 import { VariableStyle } from '@/styles/variables';
 import { AdPlacerProvider } from '@/context/adPlacerContext';
 import { SignupProvider } from '@/context/signupContext';
 import { NotificationProvider } from '@/context/notificationContext';
-import { DiscoveryGlobalStyle } from '@/styles/discoveryGlobal';
-import AdminLayout from '@/components/AdminLayout';
 import { AuthContextProvider } from '@/context/authContext';
-import PlacersLayout from '@/components/PlacersLayout';
-import { TokenContextProvider } from '@/context/tokenContext';
-import { UserProvider } from '../context/userContext';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { SingleAdProvider } from '@/context/singleAdContext';
-import { RecentJobProvider } from '@/context/recentJobContext';
-import JobsContext, { JobsProvider } from '@/context/jobsContext';
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { JobsProvider } from '@/context/jobsContext';
+import Layout from '@/components/Layout';
 
 const theme = extendTheme({
   styles: {
@@ -37,105 +28,27 @@ const theme = extendTheme({
   },
 });
 
-function MyApp({ Component, pageProps, router }) {
-  // const [user, setUser] = useState();
-  // useEffect(() => {
-  //   const user = JSON.parse(localStorage.getItem('user-detail'));
-
-  //   if (user.role === 'promoter') {
-  //     setUser(user.role);
-  //     router.push('/promoters');
-  //   } else if (user.role === 'placer') {
-  //     setUser(user.role);
-  //     router.push('/placers');
-  //   } else {
-  //     setUser('');
-  //     router.push('/');
-  //   }
-  // }, [router]);
-
-  if (router.pathname.startsWith('/admin')) {
-    return (
-      <AuthContextProvider>
-        <NotificationProvider>
-          <AdminLayout>
-            <VariableStyle />
-            <GlobalStyle />
-            <SanitizeStyle />
-            <Component {...pageProps} />
-          </AdminLayout>
-        </NotificationProvider>
-      </AuthContextProvider>
-    );
-  }
-
-  if (router.pathname.startsWith('/placers')) {
-    return (
-      <AuthContextProvider>
-        <TokenContextProvider>
-          <AdPlacerProvider>
-            <NotificationProvider>
-              <PlacersLayout>
-                <SingleAdProvider>
-                  <JobsProvider>
-                    <UserProvider>
-                      <VariableStyle />
-                      <GlobalStyle />
-                      <SanitizeStyle />
-                      <ChakraProvider theme={theme}>
-                        <Component {...pageProps} />
-                      </ChakraProvider>
-                    </UserProvider>
-                  </JobsProvider>
-                </SingleAdProvider>
-              </PlacersLayout>
-            </NotificationProvider>
-          </AdPlacerProvider>
-        </TokenContextProvider>
-      </AuthContextProvider>
-    );
-  }
-
-  if (router.pathname.startsWith('/promoters')) {
-    return (
-      <AuthContextProvider>
-        <TokenContextProvider>
-          <NotificationProvider>
-            <PromoterLayout>
-              <RecentJobProvider>
-                <JobsProvider>
-                  <UserProvider>
-                    <VariableStyle />
-                    <GlobalStyle />
-                    <SanitizeStyle />
-                    <ChakraProvider theme={theme}>
-                      <Component {...pageProps} />
-                    </ChakraProvider>
-                  </UserProvider>
-                </JobsProvider>
-              </RecentJobProvider>
-            </PromoterLayout>
-          </NotificationProvider>
-        </TokenContextProvider>
-      </AuthContextProvider>
-    );
-  }
+function MyApp({ Component, pageProps }) {
   return (
     <AuthContextProvider>
-      <TokenContextProvider>
-        <SignupProvider>
-          <UserProvider>
+      <SignupProvider>
+        <SingleAdProvider>
+          <AdPlacerProvider>
             <JobsProvider>
-              <VariableStyle />
-              <GlobalStyle />
-              <SanitizeStyle />
-              <ChakraProvider theme={theme}>
-                <Component {...pageProps} />
-              </ChakraProvider>
+              <NotificationProvider>
+                <VariableStyle />
+                <GlobalStyle />
+                <SanitizeStyle />
+                <ChakraProvider theme={theme}>
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
+                </ChakraProvider>
+              </NotificationProvider>
             </JobsProvider>
-          </UserProvider>
-        </SignupProvider>
-      </TokenContextProvider>
+          </AdPlacerProvider>
+        </SingleAdProvider>
+      </SignupProvider>
     </AuthContextProvider>
   );
 }

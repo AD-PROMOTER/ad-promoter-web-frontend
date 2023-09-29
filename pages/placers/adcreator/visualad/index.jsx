@@ -37,7 +37,7 @@ const Visualad = () => {
   const toast = useToast();
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter' || event.key === 'Next') {
+    if (event.key === 'Enter') {
       event.preventDefault();
       if (tagValue) {
         setTags((prevTags) => [...prevTags, tagValue]);

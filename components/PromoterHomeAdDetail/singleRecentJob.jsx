@@ -27,7 +27,6 @@ import JobsContext from '@/context/jobsContext'
 const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
     const [showReport, setShowReport] = useState({})
     const toast = useToast()
-    const ref = useRef(null)
     const token = useRef('')
     const [isReportLoading, setIsReportLoading] = useState(null);
     const [isReadMore, setIsReadMore] = useState(true);
@@ -40,7 +39,6 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
     const [showPaste,setShowPaste] = useState(false)
     const [inputValue, setInputValue] = useState('');
     const [showDialogue, setShowDialogue] = useState(false);
-    const [page, setPage] = useState(1);
     const dropdownRefs = useRef({});
 
     useEffect(() => {
@@ -271,30 +269,13 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
             }
         }
 
-        const handleDownload = async (imageLinks) => {
-            try {
-              for (let i = 0; i < imageLinks.length; i++) {
-                const imageUrl = imageLinks[i];
-                const filename = `image${i + 1}`;
-        
-                const response = await fetch('/api/convert-to-jpeg', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({ imageUrl, filename })
-                });
-        
-                const blob = await response.blob();
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = `${filename}.jpg`;
-                link.click();
-                URL.revokeObjectURL(link.href);
-              }
-            } catch (error) {
-              console.error('Error downloading images:', error);
-            }
+        const handleDownload = (url) => {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'image.jpg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         };
 
         const handleVisualSubmit = async (id,link) =>{

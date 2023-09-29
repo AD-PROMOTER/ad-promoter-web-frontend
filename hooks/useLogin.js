@@ -1,15 +1,11 @@
 import { useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useRef, useState } from 'react';
-import { useAuthContext } from './useAuthContext';
-import axios from 'axios';
-import { useContext } from 'react';
-import { AuthContext } from '@/context/authContext';
+import { useState } from 'react';
+import useAuth from './useAuth';
 
 export const useLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
-  // const { setAuth } = useAuthContext();
-  const { setAuth } = useContext(AuthContext);
+  const { setAuth } = useAuth();
   const toast = useToast();
   const router = useRouter();
 

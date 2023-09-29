@@ -38,7 +38,6 @@ import vector from '@/public/assets/Vector.svg';
 import arrowUp from '@/public/assets/arrow-up.svg';
 import arrowDown from '@/public/assets/arrow-down.svg';
 import bell from '@/public/assets/notif.svg';
-import UserContext from '@/context/userContext';
 import ScrollIntoView from 'react-scroll-into-view';
 import TimeAgo from '@/components/timeAgo';
 import axios from 'axios';
@@ -69,10 +68,9 @@ const Index = () => {
   const [runningAds, setRunningAds] = useState('');
   const [completeAds, setCompleteAds] = useState('');
   const [conversionGrowth, setConversionGrowth] = useState('');
-  const { user } = useContext(UserContext);
   const Router = useRouter();
   const [isReportLoading, setIsReportLoading] = useState(null);
-  const [clickedFilter, setClickedFilter] = useState('Sort');
+  const [ setClickedFilter] = useState('Sort');
   const toast = useToast();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dashboardStartDate, setDashboardStartDate] = useState('');
@@ -86,7 +84,7 @@ const Index = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-detail'));
-    if(!user.profilePicture || user.profilePicture === ''){
+    if(!user?.profilePicture || user?.profilePicture === ''){
       setProfileImage('')
     }else{
       setProfileImage(user.profilePicture);
@@ -95,8 +93,6 @@ const Index = () => {
     if (user && userToken && user.role === 'placer') {
       setUserName(user.accountName);
       token.current = userToken;
-    } else {
-      Router.push('/login');
     }
 
     if (token.current) {
@@ -109,7 +105,6 @@ const Index = () => {
       ])
         .then(([resDashboardData]) => Promise.all([resDashboardData.json()]))
         .then(([dataDashboardData]) => {
-          // console.log(dataDashboardData.data);
           setRunningAds(dataDashboardData.data.adCount.runningAds);
           setCompleteAds(dataDashboardData.data.adCount.completedAds);
           setConversionGrowth(dataDashboardData.data.conversionRate);
@@ -299,8 +294,7 @@ const Index = () => {
   ];
   
   return (
-    <>
-      {token.current && (
+   
         <>
           <StyledHomeContainer>
             <StyledHome>
@@ -497,7 +491,7 @@ const Index = () => {
                                   </div>
                                   {item.type === 'detail' ? (
                                     <p>{item.target} Conversions</p>
-                                  ): type === 'direct-link'? (
+                                  ): item.type === 'direct-link'? (
                                     <p>{item.target} Visitors</p>
                                   ):(
                                     <p>{item.target} Videos</p>
@@ -871,8 +865,7 @@ const Index = () => {
             )}
           </TabPlacers>
         </>
-      )}
-    </>
+     
   );
 };
 

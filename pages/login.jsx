@@ -13,7 +13,7 @@ import Link from "next/link"
 import { useContext, useState,useEffect } from "react"
 import { BsEyeFill,BsEyeSlashFill } from "react-icons/bs"
 import { useLogin } from "@/hooks/useLogin"
-import { useAuthContext } from "@/hooks/useAuthContext"
+import { useAuthContext } from "@/hooks/useAuth"
 import SignupContext from "@/context/signupContext"
 import { Spinner } from "@chakra-ui/react"
 
