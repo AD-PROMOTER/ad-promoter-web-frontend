@@ -32,7 +32,7 @@ const AdPage = () => {
     if (id) {
       fetchData();
     }
-  }, [fetchData, id]);
+  }, [id]);
 
   const handleCountClick = async (promotedLink) => {
     setIsAdCountLoading(true);

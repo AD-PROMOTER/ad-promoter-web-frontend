@@ -24,7 +24,7 @@ const SingleAd = () => {
     if (id) {
       handleSetAdId();
     }
-  }, [handleSetAdId, id]);
+  }, [id]);
 
   const handleSetAdId = async () => {
     const res = await fetch(`https://api.ad-promoter.com/api/v1/ads/${id}`);
