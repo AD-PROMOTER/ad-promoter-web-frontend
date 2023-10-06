@@ -15,14 +15,22 @@ const Directlink = () => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
-          if (event.target.tagName !== 'INPUT') {
             event.preventDefault();
             event.stopPropagation();
             if (tagValue) {
               setTags((prevTags) => [...prevTags, tagValue]);
               setTagValue('');
             }
-          }
+          
+        }
+    };
+
+    const handleAddTagClick = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (tagValue) {
+          setTags((prevTags) => [...prevTags, tagValue]);
+          setTagValue('');
         }
     };
       
@@ -103,7 +111,7 @@ const Directlink = () => {
                 </div>
 
                 <div className="product-tag">
-                    <label htmlFor="poductTag">3. Project tags (Up to 5)</label>
+                    <label htmlFor="poductTag">3. Project tags (Up to 5) {tagValue && (<button onClick={handleAddTagClick} className='tag-btn'>Add Tag</button>)}</label>
                     <div className="tag-input">
                         <div className="tag-container">
                             {tags.map((tag,index)=>(

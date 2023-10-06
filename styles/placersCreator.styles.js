@@ -761,6 +761,24 @@ export const StyledDirectLink = styled.div`
           line-height: 20px;
           letter-spacing: -0.011em;
           color: #333333;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          gap: 0.8rem;
+          .tag-btn {
+            display: none;
+            @media (max-width: 768px) {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              padding: 7px 17px;
+              background: #4f00cf;
+              border-radius: 12px;
+              font-weight: 500;
+              font-size: 14px;
+              color: #ffffff;
+            }
+          }
         }
         .tag-input {
           padding: 1.6rem;
