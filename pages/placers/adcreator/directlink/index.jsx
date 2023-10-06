@@ -14,7 +14,7 @@ const Directlink = () => {
     const toast = useToast()
 
     const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' || event.key === 'Next' || event.key === 'Go') {
             event.preventDefault();
             event.stopPropagation();
             if(tagValue){
