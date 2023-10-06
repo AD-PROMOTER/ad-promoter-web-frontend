@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { SingleAdContainer } from '@/styles/singleAd';
 import React from 'react';
 import UserTagBlue from '@/public/assets/user-tag-blue';
@@ -23,7 +24,7 @@ const SingleAd = () => {
     if (id) {
       handleSetAdId();
     }
-  }, [id]);
+  }, [handleSetAdId, id]);
 
   const handleSetAdId = async () => {
     const res = await fetch(`https://api.ad-promoter.com/api/v1/ads/${id}`);

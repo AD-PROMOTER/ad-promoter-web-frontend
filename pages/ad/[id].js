@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // pages/ad/[id].js
 import {
   LandingPageContainer,
@@ -31,7 +32,7 @@ const AdPage = () => {
     if (id) {
       fetchData();
     }
-  }, [id]);
+  }, [fetchData, id]);
 
   const handleCountClick = async (promotedLink) => {
     setIsAdCountLoading(true);
