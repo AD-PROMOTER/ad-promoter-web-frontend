@@ -2,10 +2,15 @@ import React from 'react'
 import SingleSavedJobs from './singleSavedJobs'
 import { Container } from './styles'
 
-const SavedJobs = () => {
+const SavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
   return (
     <Container>
-      <SingleSavedJobs />
+      <SingleSavedJobs 
+        sortStartDate={sortStartDate}
+        setSortStartDate={setSortStartDate}
+        setSortEndDate={setSortEndDate}
+        sortEndDate={sortEndDate}
+      />
     </Container>
   )
 }

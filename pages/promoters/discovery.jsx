@@ -18,6 +18,7 @@ import Modal from "@/components/DiscoveryFolder/ReportModal/Modal"
 import axios from "axios"
 import DiscoveryEmptyScreen from "@/components/discoveryEmptyScreen"
 import SearchEmptyScreen from "@/components/failedSearch"
+import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from "@/utils/formatFilterDate"
 
 
 const Discovery = ({router}) => {
@@ -53,7 +54,7 @@ const Discovery = ({router}) => {
           fetchFeed()
           fetchRecommended()
       }
-  },[recent,popular,adType,searchTag,endDate,startDate])
+  },[recent,popular,adType,endDate,startDate])
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -168,6 +169,7 @@ const Discovery = ({router}) => {
               return
           }else{
             fetchFeed(searchTag)
+            fetchRecommended(searchTag)
           }
       }
   }

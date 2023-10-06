@@ -48,33 +48,31 @@ const PlacersActivities = () => {
         id.current = user._id
       }
 
-      const fetchActivities = async() =>{
-        let apiUrl = `https://api.ad-promoter.com/api/v1/activities/all/${id.current}?page=${pageNumber}&pageSize=${activitiesPerPage}`;
-      if (dashboardStartDate) {
-        apiUrl += `&startDate=${dashboardStartDate}`;
-      }
-      if (dashboardEndDate) {
-        apiUrl += `&endDate=${dashboardEndDate}`;
-      }
-        setIsLoading(true)
-        const result = await axios(apiUrl,{
-          headers:{
-            Authorization: `Bearer ${token.current}`
-          }
-        })
-        setActivities(result.data.data.data);
-        console.log(result.data.data.data);
-        setTotalActivities(result.data.data.total)
-        setIsLoading(false)
-      }
-
       if(id.current){
         fetchActivities()
       }
     },[dashboardStartDate,dashboardEndDate,pageNumber])
 
+    const fetchActivities = async() =>{
+      let apiUrl = `https://api.ad-promoter.com/api/v1/activities/all/${id.current}?page=${pageNumber}&pageSize=${activitiesPerPage}`;
+    if (dashboardStartDate) {
+      apiUrl += `&startDate=${dashboardStartDate}`;
+    }
+    if (dashboardEndDate) {
+      apiUrl += `&endDate=${dashboardEndDate}`;
+    }
+      setIsLoading(true)
+      const result = await axios(apiUrl,{
+        headers:{
+          Authorization: `Bearer ${token.current}`
+        }
+      })
+      setActivities(result.data.data.data);
+      console.log(result.data.data.data);
+      setTotalActivities(result.data.data.total)
+      setIsLoading(false)
+    }
     
-
     const changeToLocalTIme = (utc) =>{
       const date = new Date(utc);
       const localTime = date.toLocaleString(); // adjust to local time zone
@@ -168,7 +166,6 @@ const PlacersActivities = () => {
             {showDropdown && (
                 <ul>
                   <li onClick={handleFilterText}>Recent</li>
-                  <li onClick={handleFilterText}>Popular</li>
                   <li onClick={handleFilterText}>A week ago</li>
                   <li onClick={handleFilterText}>Less than 2 weeks</li>
                   <li onClick={handleFilterText}>Last 30 days</li>

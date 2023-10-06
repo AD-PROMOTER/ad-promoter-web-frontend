@@ -60,16 +60,12 @@ export const StyledNav = styled.nav`
 
 export const StyledContent = styled.div`
   display: flex;
-  /* justify-content: center; */
+  justify-content: center;
   align-items: center;
-  /* height: 100%; */
 
   .onboard-image {
-    /* height: 100%; */
     img {
-      /* height: 200%; */
       width: 100%;
-      /* height: 100%; */
     }
   }
   .onboard-text-container {
@@ -79,7 +75,6 @@ export const StyledContent = styled.div`
     gap: 5.6rem;
     width: 46rem;
     margin: auto;
-    height: 73.8rem;
     &-head {
       display: flex;
       flex-direction: column;

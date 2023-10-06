@@ -77,7 +77,7 @@ const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,so
             fetchRecentJobs()
         }
 
-    }, []);
+    }, [sortEndDate,sortStartDate]);
 
 
     const fetchRecentJobs = async() =>{
@@ -94,8 +94,6 @@ const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,so
             Authorization: `Bearer ${token.current}`
           }
         })
-        // setRecentJobs((prevData) => [...prevData, ...result.data.data.data]);
-        // setPage((prevPage) => prevPage + 1);
         setRecentJobs(result.data.data.data)
         setIsLoading(false)
     }
@@ -406,7 +404,7 @@ const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,so
                                                     {isReadMore ? " Read more" : " Show less"}
                                                 </span>
                                             ):(
-                                            <p></p>
+                                            <></>
                                             )}
                                         </p>
                                     </div>

@@ -72,7 +72,6 @@ const PromoterWallet = () => {
 
         const fetchedAccountData = await fetchAccountData();
         setAccountData(fetchedAccountData);
-
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -91,7 +90,6 @@ const PromoterWallet = () => {
         <div
         key={item.id}
         className="bank"
-        // className={selectedBank === item.id ? 'container bank1 clicked': 'container bank1'}
         onClick={()=>setSelectedBank(item.id)}
         style={{ backgroundColor: selectedBank === item.id && '#DCE4FF', border: selectedBank === item.id ? '0.2rem solid var(--light-blue)' : '0.145rem solid #DCE4FF' }}
         >
@@ -114,19 +112,16 @@ const PromoterWallet = () => {
   async function fetchBanks() {
     const response = await fetch('https://nigerianbanks.xyz/');
     const data = await response.json();
-    // setBanks(data);
     return data
   }
 
   const fetchAccountData = async() =>{
-    // setIsLoading(true);
     const result = await axios(`https://api.ad-promoter.com/api/v1/wallet/fetch-recipient`,{
       headers:{
         Authorization: `Bearer ${token.current}`
       }
     })
-    // setAccountData(result.data.data)
-    // setIsLoading(false);
+    console.log(result.data.data);
     return result.data.data
   }
 
@@ -178,7 +173,6 @@ const PromoterWallet = () => {
       setTransactionHistory(result.data.data.data)
     }
     
-    // fetchAccountData()
     fetchTransactionHistory()
   },[])
 

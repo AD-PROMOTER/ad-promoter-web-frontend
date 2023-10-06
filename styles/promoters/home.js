@@ -2,10 +2,11 @@ import styled from 'styled-components';
 import { size } from '../breakpoints';
 
 export const StyledHomeContainer = styled.div`
-  /* height: 100vh; */
-  /* background: #ffffff; */
   height: 100vh;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @media screen and (max-width: ${size.tablet}) {
     padding-left: 25%;
@@ -24,7 +25,6 @@ export const StyledHome = styled.div`
   display: flex;
   gap: 3.18rem;
   height: 100%;
-  /* margin: auto; */
 
   .home-dashboard {
     display: flex;

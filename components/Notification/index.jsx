@@ -60,9 +60,9 @@ const Index = ({notificationData,isLoading}) => {
                         <div className="notification-modal-body-item-textContainer-text">
                           <div className="notification-modal-body-item-textContainer-text-head">
                             <h3>{item.title}</h3>
-                            {!item.isRead && (
+                            {/* {!item.isRead && (
                               <div className="red-circle"></div>
-                            )}
+                            )} */}
                           </div>
                           <div className="notification-modal-body-item-textContainer-text-info">
                             <p>{item.body}</p>

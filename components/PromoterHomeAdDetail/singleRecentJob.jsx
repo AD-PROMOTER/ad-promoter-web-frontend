@@ -69,7 +69,7 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
         if(token.current){
             fetchRecentJobs()
         }
-    }, []);
+    }, [sortStartDate,sortEndDate]);
 
 
     const fetchRecentJobs = async() =>{
@@ -87,7 +87,6 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
           }
         })
         setRecentJobs(result.data.data.data)
-        console.log(result.data.data.data);
         setIsLoading(false)
     }
     
@@ -375,7 +374,7 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
                                             {isReadMore ? " Read more" : " Show less"}
                                         </span>
                                     ):(
-                                    <p></p>
+                                    <></>
                                     )}
                                 </p>
                             </div>

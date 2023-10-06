@@ -71,7 +71,7 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
         if(token.current){
             fetchSavedJobs()
         }
-    },[])
+    },[sortStartDate,sortEndDate])
 
     const ClickedList = (e) =>{
       setListValue(e.target.innerText)
@@ -96,8 +96,6 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
             Authorization: `Bearer ${token.current}`
             }
         })
-        // setSavedJobs((prevData) => [...prevData, ...result.data.data.data.data]);
-        // setPage((prevPage) => prevPage + 1);
         setSavedJobs(result.data.data.data.data)
         setIsLoading(false)
     }

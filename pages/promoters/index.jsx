@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   MobileCotainer,
   StyledHome,
@@ -81,30 +82,31 @@ const Index = ({ router }) => {
       Router.push('/login');
     }
 
-    const fetchDashboard = async () => {
-      let apiUrl = 'https://api.ad-promoter.com/api/v1/user/dashboard';
-      if (dashboardStartDate) {
-        apiUrl += `?startDate=${dashboardStartDate}`;
-      }
-      if (dashboardEndDate) {
-        apiUrl += `&endDate=${dashboardEndDate}`;
-      }
-      const result = await axios(apiUrl, {
-        headers: {
-          Authorization: `Bearer ${token.current}`,
-        },
-      });
-      setTotalBalance(result.data.data.totalBalance);
-      setAdsPromoted(result.data.data.adsPromoted);
-      setVideosAccepted(result.data.data.noOfVideosAccepted);
-      setPendingWithdrawals(result.data.data.pendingWithdrawals);
-      setAdsConverted(result.data.data.noOfAdsConverted);
-      setNoVisitors(result.data.data.noOfVisitors)
-    };
     if (token.current) {
       fetchDashboard();
     }
   }, [Router, dashboardEndDate, dashboardStartDate, setUserName]);
+
+  const fetchDashboard = async () => {
+    let apiUrl = 'https://api.ad-promoter.com/api/v1/user/dashboard';
+    if (dashboardStartDate) {
+      apiUrl += `?startDate=${dashboardStartDate}`;
+    }
+    if (dashboardEndDate) {
+      apiUrl += `&endDate=${dashboardEndDate}`;
+    }
+    const result = await axios(apiUrl, {
+      headers: {
+        Authorization: `Bearer ${token.current}`,
+      },
+    });
+    setTotalBalance(result.data.data.totalBalance);
+    setAdsPromoted(result.data.data.adsPromoted);
+    setVideosAccepted(result.data.data.noOfVideosAccepted);
+    setPendingWithdrawals(result.data.data.pendingWithdrawals);
+    setAdsConverted(result.data.data.noOfAdsConverted);
+    setNoVisitors(result.data.data.noOfVisitors)
+  };
 
   const handleFilterSelect = (e) => {
     setClickedFilter(e.target.innerText);
@@ -411,7 +413,14 @@ const Index = ({ router }) => {
                       sortEndDate={sortEndDate}
                     />
                   )}
-                  {isTabTwo && <SavedJobs />}
+                  {isTabTwo && 
+                    <SavedJobs 
+                      sortStartDate={sortStartDate}
+                      setSortStartDate={setSortStartDate}
+                      setSortEndDate={setSortEndDate}
+                      sortEndDate={sortEndDate} 
+                    />
+                  }
                 </div>
               </TabContainer>
             </StyledHome>
@@ -514,16 +523,28 @@ const Index = ({ router }) => {
                     </div>
                   {showSortDropdown && (
                     <ul className="list">
-                      <li>Recent</li>
-                      <li>Two days ago</li>
-                      <li>A week ago</li>
-                      <li>Less than 2 weeks</li>
-                      <li>Last 30 days</li>
+                      <li onClick={handleSortSelect}>Recent</li>
+                      <li onClick={handleSortSelect}>A week ago</li>
+                      <li onClick={handleSortSelect}>Less than 2 weeks</li>
+                      <li onClick={handleSortSelect}>Last 30 days</li>
                     </ul>
                   )}
                 </div>
                   <div id="inView">
-                    {showRecentJobs ? <RecentMobile /> : <SavedJobsMobile />}
+                    {showRecentJobs ? 
+                      <RecentMobile 
+                        sortStartDate={sortStartDate}
+                        setSortStartDate={setSortStartDate}
+                        setSortEndDate={setSortEndDate}
+                        sortEndDate={sortEndDate}
+                      /> : 
+                      <SavedJobsMobile 
+                        sortStartDate={sortStartDate}
+                        setSortStartDate={setSortStartDate}
+                        setSortEndDate={setSortEndDate}
+                        sortEndDate={sortEndDate}
+                      />
+                    }
                   </div>
               </>
             )}
@@ -566,17 +587,17 @@ const Index = ({ router }) => {
                 className="filter"
                 onClick={() => setShowDropdown(!showDropdown)}
               >
-                <p>Filter</p>
+                <p>{clickedFilter}</p>
                 <div className="arrow-drop">
                   {showDropdown ? <ArrowUp /> : <ArrowDown />}
                 </div>
               </div>
               {showDropdown && (
                 <ul>
-                  <li>Recent</li>
-                  <li>A week ago</li>
-                  <li>Less than 2 weeks</li>
-                  <li>Last 30 days</li>
+                  <li onClick={handleFilterSelect}>Recent</li>
+                  <li onClick={handleFilterSelect}>A week ago</li>
+                  <li onClick={handleFilterSelect}>Less than 2 weeks</li>
+                  <li onClick={handleFilterSelect}>Last 30 days</li>
                 </ul>
               )}
             </div>
@@ -629,16 +650,28 @@ const Index = ({ router }) => {
                 </div>
               {showSortDropdown && (
                 <ul className="list">
-                  <li>Recent</li>
-                  <li>Two days ago</li>
-                  <li>A week ago</li>
-                  <li>Less than 2 weeks</li>
-                  <li>Last 30 days</li>
+                  <li onClick={handleSortSelect}>Recent</li>
+                  <li onClick={handleSortSelect}>A week ago</li>
+                  <li onClick={handleSortSelect}>Less than 2 weeks</li>
+                  <li onClick={handleSortSelect}>Last 30 days</li>
                 </ul>
               )}
             </div>
             <div id="inView">
-              {showRecentJobs ? <RecentMobile /> : <SavedJobsMobile />}
+              {showRecentJobs ? 
+                <RecentMobile 
+                  sortStartDate={sortStartDate}
+                  setSortStartDate={setSortStartDate}
+                  setSortEndDate={setSortEndDate}
+                  sortEndDate={sortEndDate}
+                /> : 
+                <SavedJobsMobile 
+                  sortStartDate={sortStartDate}
+                  setSortStartDate={setSortStartDate}
+                  setSortEndDate={setSortEndDate}
+                  sortEndDate={sortEndDate}
+                />
+              }
             </div>
           </TabletContainer>
         </>

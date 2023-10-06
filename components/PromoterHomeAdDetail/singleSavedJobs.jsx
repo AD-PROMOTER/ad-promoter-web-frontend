@@ -72,7 +72,7 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
         if(token.current){
             fetchSavedJobs()
         }
-    },[])
+    },[sortStartDate,sortEndDate])
 
     const fetchSavedJobs = async() =>{
         let apiUrl = `https://api.ad-promoter.com/api/v1/user/saved-jobs?page=1&pageSize=10`;

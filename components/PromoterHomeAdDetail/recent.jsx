@@ -5,10 +5,15 @@ import { Container } from './styles'
 import VisualAd from './VisualAd'
 import SingleRecentJob from './singleRecentJob'
 
-const recent = () => {
+const recent = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
   return (
     <Container>
-      <SingleRecentJob />
+      <SingleRecentJob 
+        sortStartDate={sortStartDate}
+        setSortStartDate={setSortStartDate}
+        setSortEndDate={setSortEndDate}
+        sortEndDate={sortEndDate}
+      />
     </Container>
   )
 }

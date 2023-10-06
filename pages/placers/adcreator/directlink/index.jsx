@@ -16,6 +16,7 @@ const Directlink = () => {
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
+            event.stopPropagation();
             if(tagValue){
                 setTags(prevTags => [...prevTags, tagValue]);
                 setTagValue('')

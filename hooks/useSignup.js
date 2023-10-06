@@ -59,7 +59,7 @@ export const useSignup = () => {
       localStorage.setItem('user-detail', JSON.stringify(json.user));
 
       //update the auth context
-      dispatch({ type: 'LOGIN', payload: json });
+      // dispatch({ type: 'LOGIN', payload: json });
       setIsVerificationLoading(false);
       router.push('/signup/success');
     }

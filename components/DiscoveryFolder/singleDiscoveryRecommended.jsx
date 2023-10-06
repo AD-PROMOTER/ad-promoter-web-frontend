@@ -374,7 +374,7 @@ const handleButtonClick = (event, itemId) => {
                               {isReadMore ? " Read more" : " Show less"}
                           </span>
                       ):(
-                          <p></p>
+                          <></>
                       )}
                     </p>
                   </div>

@@ -414,10 +414,6 @@ export const ModalBackground = styled.div`
   }
 
   .file-modal {
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* align-items: center;
-    justify-content: center; */
     padding: 1.5rem;
     gap: 4rem;
     background: var(--white);
@@ -474,6 +470,10 @@ export const ModalBackground = styled.div`
       width: 2.2rem;
       cursor: pointer;
     }
+  }
+
+  body.modal {
+    overflow: hidden;
   }
 
   .modal {

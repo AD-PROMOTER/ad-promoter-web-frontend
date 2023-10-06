@@ -13,7 +13,7 @@ const Layout = ({ children }) => {
   
   if (router.pathname.startsWith('/placers')) {
     return (
-      // <RequireAuth>
+      // <RequireAuth >
         <StyledLayout>
           <div className="desktop-nav">
             <PlacersNavbar />

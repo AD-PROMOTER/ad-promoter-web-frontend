@@ -23,16 +23,18 @@ const fadeIn = keyframes`
 `;
 
 const ShareDialogueContainer = styled.div`
-  /* display: ${(props) => (props.open ? 'block' : 'none')}; */
   position: absolute;
-  top: 40%;
-  left: 70%;
+  bottom: 10%;
+  right: 2%;
   width: 50%;
-  transform: translate(-50%, -50%);
   background-color: #fff;
   padding: 2rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   animation: ${fadeIn} 0.5s ease-in-out;
+
+ @media (max-width: 768px) {
+    bottom: 25%;
+ }  
 `;
 
 const SocialIcon = styled.div`
