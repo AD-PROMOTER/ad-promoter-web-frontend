@@ -76,7 +76,7 @@ const Detailsad = () => {
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter' || event.key === 'Next' || event.key === 'Go') {
+    if (event.key === 'Enter'|| event.code === 'Enter') {
       event.preventDefault();
       event.stopPropagation();
       if (tagValue) {
