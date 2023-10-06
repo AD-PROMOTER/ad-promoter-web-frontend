@@ -14,15 +14,18 @@ const Directlink = () => {
     const toast = useToast()
 
     const handleKeyDown = (event) => {
-        if (event.key === 'Enter' || event.code === 'Enter') {
+        if (event.key === 'Enter') {
+          if (event.target.tagName !== 'INPUT') {
             event.preventDefault();
             event.stopPropagation();
-            if(tagValue){
-                setTags(prevTags => [...prevTags, tagValue]);
-                setTagValue('')
+            if (tagValue) {
+              setTags((prevTags) => [...prevTags, tagValue]);
+              setTagValue('');
             }
+          }
         }
     };
+      
 
     const deleteTag = index => {
         setTags(oldValues => {

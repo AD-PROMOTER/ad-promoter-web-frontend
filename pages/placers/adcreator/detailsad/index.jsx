@@ -76,15 +76,18 @@ const Detailsad = () => {
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter'|| event.code === 'Enter') {
-      event.preventDefault();
-      event.stopPropagation();
-      if (tagValue) {
-        setTags((prevTags) => [...prevTags, tagValue]);
-        setTagValue('');
+    if (event.key === 'Enter') {
+      if (event.target.tagName !== 'INPUT') {
+        event.preventDefault();
+        event.stopPropagation();
+        if (tagValue) {
+          setTags((prevTags) => [...prevTags, tagValue]);
+          setTagValue('');
+        }
       }
     }
   };
+  
 
   const deleteTag = (index) => {
     setTags((oldValues) => {
