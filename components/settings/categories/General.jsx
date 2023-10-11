@@ -5,6 +5,7 @@ import arrowDown from '@/public/assets/arrow-down.svg'
 import Image from "next/image"
 import { Spinner, useToast } from "@chakra-ui/react"
 import { useRouter } from "next/router"
+import axios from "@/pages/api/axios"
 
 const General = () => {
     const [clicked, setClicked] = useState(false);
@@ -31,43 +32,50 @@ const General = () => {
           setId(user._id);
         }
       }, []);
-    const handleDeactivate = async() =>{
+      const handleDeactivate = async () => {
         setIsLoading(true);
-
-        const response = await fetch(
-          `https://api.ad-promoter.com/api/v1/user/${id}`,
-          {
-            method: 'DELETE',
-            headers: { 
-                'Content-Type': 'application/json', 
-                Authorization: `Bearer ${userToken}`,
+      
+        try {
+          const response = await axios.delete(`/api/v1/user/${id}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${userToken}`,
             },
+          });
+      
+          if (response.status === 200) {
+            setIsLoading(false);
+            toast({
+              title: 'Account Deactivated Successfully',
+              status: 'success',
+              duration: '5000',
+              isClosable: true,
+              position: 'bottom-left',
+            });
+            router.push('/');
+          } else {
+            setIsLoading(false);
+            const json = response.data;
+            toast({
+              title: json.msg,
+              status: 'error',
+              duration: '5000',
+              isClosable: true,
+              position: 'bottom-left',
+            });
           }
-        );
-        const json = await response.json();
-    
-        if (!response.ok) {
+        } catch (error) {
+          console.error('Error deactivating account:', error);
           setIsLoading(false);
           toast({
-            title: json.msg,
+            title: 'Error deactivating account',
             status: 'error',
             duration: '5000',
             isClosable: true,
             position: 'bottom-left',
-          });
+          });        
         }
-        if (response.ok) {
-          setIsLoading(false);
-          toast({
-            title: 'Account Deactivated Successfully',
-            status: 'success',
-            duration: '5000',
-            isClosable: true,
-            position: 'bottom-left',
-          });
-          router.push('/');
-        }
-    }
+    };
     
     const ClickedList = (e) =>{
         setListValue(e.target.innerText)

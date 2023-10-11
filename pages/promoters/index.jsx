@@ -27,7 +27,6 @@ import userStatus from '@/public/assets/promoters-logo.svg';
 import MobileNotif from '@/components/MobileNotification/index';
 import ScrollContainer from 'react-indiana-drag-scroll';
 import ScrollIntoView from 'react-scroll-into-view';
-import axios from 'axios';
 import {
   getThirtyDaysAgoRange,
   getTwoWeeksAgoRange,
@@ -35,6 +34,8 @@ import {
 } from '@/utils/formatFilterDate';
 import DefaultPic from '@/public/assets/squared-profile.png'
 import useDraggableScroll from 'use-draggable-scroll';
+import axios from '../api/axios';
+import { useToast } from '@chakra-ui/react';
 
 const Index = ({ router }) => {
   const {
@@ -64,6 +65,7 @@ const Index = ({ router }) => {
   const [sortEndDate, setSortEndDate] = useState('');
   const [profileImage, setProfileImage] = useState('');
   const ref = useRef(null);
+  const toast = useToast();
   const { onMouseDown } = useDraggableScroll(ref, { direction: 'vertical' });
 
   useEffect(() => {
@@ -88,24 +90,46 @@ const Index = ({ router }) => {
   }, [Router, dashboardEndDate, dashboardStartDate, setUserName]);
 
   const fetchDashboard = async () => {
-    let apiUrl = 'https://api.ad-promoter.com/api/v1/user/dashboard';
+    let apiUrl = '/api/v1/user/dashboard';
+  
+    if (dashboardStartDate || dashboardEndDate) {
+      apiUrl += '?';
+    }
+  
     if (dashboardStartDate) {
-      apiUrl += `?startDate=${dashboardStartDate}`;
+      apiUrl += `startDate=${dashboardStartDate}`;
     }
+  
     if (dashboardEndDate) {
-      apiUrl += `&endDate=${dashboardEndDate}`;
+      apiUrl += `${dashboardStartDate ? '&' : ''}endDate=${dashboardEndDate}`;
     }
-    const result = await axios(apiUrl, {
-      headers: {
-        Authorization: `Bearer ${token.current}`,
-      },
-    });
-    setTotalBalance(result.data.data.totalBalance);
-    setAdsPromoted(result.data.data.adsPromoted);
-    setVideosAccepted(result.data.data.noOfVideosAccepted);
-    setPendingWithdrawals(result.data.data.pendingWithdrawals);
-    setAdsConverted(result.data.data.noOfAdsConverted);
-    setNoVisitors(result.data.data.noOfVisitors)
+  
+    try {
+      const response = await axios.get(apiUrl, {
+        headers: {
+          Authorization: `Bearer ${token.current}`,
+        },
+      });
+  
+      const data = response.data.data;
+  
+      setTotalBalance(data.totalBalance);
+      setAdsPromoted(data.adsPromoted);
+      setVideosAccepted(data.noOfVideosAccepted);
+      setPendingWithdrawals(data.pendingWithdrawals);
+      setAdsConverted(data.noOfAdsConverted);
+      setNoVisitors(data.noOfVisitors);
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Unable to fetch dashboard data',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-left',
+        size: 'lg',
+      });
+    }
   };
 
   const handleFilterSelect = (e) => {

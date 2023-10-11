@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '@/pages/api/axios';
 
 const uploadImage = async (files) => {
   let imageURLs = [];
@@ -9,15 +9,11 @@ const uploadImage = async (files) => {
     formData.append('files', files[i]);
   }
 
-  const response = await axios.post(
-    'https://api.ad-promoter.com/api/v1/fileUpload/image',
-    formData,
-    {
-      headers: {
-        Authorization: `Bearer ${userToken}`,
-      },
-    }
-  );
+  const response = await axios.post('/api/v1/fileUpload/image', formData, {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  });
 
   try {
     if (response.status === 500) {

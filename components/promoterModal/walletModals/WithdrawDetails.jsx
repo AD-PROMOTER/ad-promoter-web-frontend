@@ -7,9 +7,8 @@ import { useState } from 'react';
 import ButtonStyles from '@/components/promoterButton/styles';
 import { useEffect } from 'react';
 import { useToast } from '@chakra-ui/react';
-// import CloseIcon from '@/public/assets/close-icon';
-// import  from '@/public/assets/close-circle-1.svg';
 import CloseCircle from '@/public/assets/close-circle.svg';
+import axios from '@/pages/api/axios';
 
 const WithdrawDetailsModal = (props) => {
   const {onOpenWithdrawProcess, onCloseWithdrawDetails} = props;
@@ -41,49 +40,64 @@ const WithdrawDetailsModal = (props) => {
     }
   };
 
-  const withdraw = async(amount,userId) =>{
-      setIsLoading(true)
-      const response = await fetch('https://api.ad-promoter.com/api/v1/payouts/create', {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
+const withdraw = async (amount, userId) => {
+  try {
+    setIsLoading(true);
+
+    const response = await axios.post(
+      '/api/v1/payouts/create',
+      {
+        amount: amount,
+        recipient: userId,
+      },
+      {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          "amount": amount,
-          "recipient": userId
-        }),
-      });
-      const json = await response.json();
-  
-      if (!response.ok) {
-        setIsLoading(false)
-        props.setWithdrawConfirmed(false)
-        props.onOpenWithdrawModal()
-        props.onCloseModal()
-        // toast({
-        //   title: json.msg,
-        //   status: 'error',
-        //   duration: '5000',
-        //   isClosable: true,
-        //   position: 'bottom-left',
-        // });
       }
-      if (response.ok) {
-        setIsLoading(false)
-        if(json.success){
-         props.setWithdrawConfirmed(true)
-         if(props.withdrawConfirmed){
-            props.onOpenWithdrawModal()
-            props.onCloseModal()
-          }
-        }
-      }
+    );
 
+    if (response.status === 200) {
+      const json = response.data;
+      setIsLoading(false);
+
+      if (json.success) {
+        props.setWithdrawConfirmed(true);
+
+        if (props.withdrawConfirmed) {
+          props.onOpenWithdrawModal();
+          props.onCloseModal();
+        }
+      } else {
+        props.setWithdrawConfirmed(false);
+        props.onOpenWithdrawModal();
+        props.onCloseModal();
+      }
+    } else {
+      setIsLoading(false);
+      toast({
+        title: 'Something went wrong',
+        status: 'error',
+        duration: '5000',
+        isClosable: true,
+        position: 'bottom-left',
+        size: 'lg',
+      });    
+    }
+  } catch (error) {
+    console.error('Error withdrawing funds:', error);
+    setIsLoading(false);
+    toast({
+      title: 'Something went wrong',
+      status: 'error',
+      duration: '5000',
+      isClosable: true,
+      position: 'bottom-left',
+      size: 'lg',
+    });   
   }
+};
 
   const handleClick = () =>{
    withdraw(props.amount,userId)

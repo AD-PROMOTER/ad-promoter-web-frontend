@@ -24,7 +24,6 @@ const Summary = () => {
 
     const handlePush = () =>{
         createAd(productName,redirectUrl,productDescription,tags,advertType,cta,images,webAddress,amount,containAdultContent)
-        // router.push('/placers/adcreator/success')
     }
   return (
     <StyledDirectLinkSummary>

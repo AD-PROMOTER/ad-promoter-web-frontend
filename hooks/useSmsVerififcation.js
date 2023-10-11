@@ -1,3 +1,4 @@
+import axios from '@/pages/api/axios';
 import { useState } from 'react';
 
 export const useVerification = () => {
@@ -8,32 +9,28 @@ export const useVerification = () => {
   const sendVerification = async (refId, otp, phoneNumber) => {
     setIsVerifyLoading(true);
     setVerifyError(null);
-    // console.log(user.data.accessToken);
 
-    const response = await fetch(
-      'https://api.ad-promoter.com/api/v1/auth/verify-OTP-password',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          reference_id: refId,
-          otp,
-          phoneNumber,
-        }),
+    try {
+      const response = await axios.post('/api/v1/auth/verify-OTP-password', {
+        reference_id: refId,
+        otp,
+        phoneNumber,
+      });
+
+      const json = response.data;
+
+      if (response.status === 200) {
+        console.log(json);
+        console.log('Code sent');
+      } else {
+        console.log(json);
+        console.log('Code not sent');
       }
-    );
-    const json = await response.json();
-
-    if (!response.ok) {
-      console.log(json);
-      console.log('code not sent');
-    }
-    if (response.ok) {
-      console.log(json);
-      console.log('code sent');
+    } catch (error) {
+      console.error('Error sending verification code:', error);
+      // Handle errors here if needed.
     }
   };
+
   return { sendVerification, isVerifyLoading, verifyError, verifyMsg };
 };

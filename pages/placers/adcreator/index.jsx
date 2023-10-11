@@ -16,13 +16,13 @@ import ArrowRight from "@/public/assets/arrow-right"
 import CloseCircle from "@/public/assets/close-circle"
 import { useRouter } from "next/router"
 import AdPlacerContext from "@/context/adPlacerContext"
-import axios from "axios"
-import { Spinner } from "@chakra-ui/react"
+import { Spinner, useToast } from "@chakra-ui/react"
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import SingleAdContext from "@/context/singleAdContext"
 import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from "@/utils/formatFilterDate"
 import AdCreatorEmptyScreen from "@/components/adCreatorEmptyScreen"
+import axios from "@/pages/api/axios"
 
 const Adcreator = () => {
   const [toPlace,setToPlace] = useState(false)
@@ -37,7 +37,7 @@ const Adcreator = () => {
   const {setAdData} = useContext(SingleAdContext)
   const [dashboardStartDate,setDashboardStartDate] = useState('')
   const [dashboardEndDate,setDashboardEndDate] = useState('')
-
+  const toast = useToast()
   useEffect(()=>{
     const user = JSON.parse(localStorage.getItem("user-detail"));
     const userToken = JSON.parse(localStorage.getItem("user-token"));
@@ -46,37 +46,69 @@ const Adcreator = () => {
     id.current = user._id
     }
 
-    const fetchActiveAds = async() =>{
-      let apiUrl = `https://api.ad-promoter.com/api/v1/ads/all/user-ads/${id.current}?active=true`;
+    const fetchActiveAds = async () => {
+      let apiUrl = `/api/v1/ads/all/user-ads/${id.current}?active=true`;
+    
       if (dashboardStartDate) {
         apiUrl += `&startDate=${dashboardStartDate}`;
       }
+    
       if (dashboardEndDate) {
         apiUrl += `&endDate=${dashboardEndDate}`;
       }
-      setIsLoading(true)
-      const result = await axios(apiUrl,{
-        headers:{
-          Authorization: `Bearer ${token.current}`
-        }
-      })
-      setActiveAds(result.data.data);
-      setIsLoading(false)
-    }
+    
+      setIsLoading(true);
+    
+      try {
+        const response = await axios.get(apiUrl, {
+          headers: {
+            Authorization: `Bearer ${token.current}`,
+          },
+        });
+    
+        setActiveAds(response.data.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+        setIsLoading(false);
+        toast({
+          title: 'An Error occured while fetching active Ad',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-left',
+          size: 'lg',
+        });
+      }
+    };
 
     if(id.current){
       fetchActiveAds()
     }
-  },[dashboardEndDate, dashboardStartDate, id, token])
+  },[dashboardEndDate, dashboardStartDate, id, toast, token])
 
-   const handleSetAdId = async(id,ref) =>{
-    const res = await fetch(`https://api.ad-promoter.com/api/v1/ads/${id}`);
-    const data = await res.json();
-    setAdData(data.data)
-    router.push({
-      pathname: `/placers/adcreator/${id}`,
-    });
-   }
+  const handleSetAdId = async (id, ref) => {
+    try {
+      const response = await axios.get(`https://api.ad-promoter.com/api/v1/ads/${id}`);
+      const data = response.data.data;
+      setAdData(data);
+  
+      router.push({
+        pathname: `/placers/adcreator/${id}`,
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'An Error occured while fetching Ad details',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-left',
+        size: 'lg',
+      });
+    }
+  };
+  
 
   const handlePlace = () =>{
     setToPlace(!toPlace)

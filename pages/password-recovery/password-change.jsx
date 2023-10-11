@@ -49,38 +49,49 @@ const PasswordChange = () => {
         if(isPasswordValid){
           if (confirmPassword === password) {
             setIsLoading(true)
-            const response = await fetch(
-                `https://api.ad-promoter.com/api/v1/auth/change-password/${token}`,
-                {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    password,
-                    confirmPassword
-                  }),
-                }
-            );
-            const json = await response.json();
-            if (!response.ok) {
-              setIsLoading(false)
+            try{
+              const response = await fetch(
+                  `https://api.ad-promoter.com/api/v1/auth/change-password/${token}`,
+                  {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      password,
+                      confirmPassword
+                    }),
+                  }
+              );
+              const json = await response.json();
+              if (!response.ok) {
+                setIsLoading(false)
+                  toast({
+                    title: json.msg,
+                    status: 'error',
+                    duration: '5000',
+                    isClosable: true,
+                    position: 'bottom-left',
+                  });
+              }
+              if (response.ok) {
+                setIsLoading(false)
                 toast({
-                  title: json.msg,
-                  status: 'error',
+                  title: 'Password changed successfully',
+                  status: 'success',
                   duration: '5000',
                   isClosable: true,
                   position: 'bottom-left',
                 });
-            }
-            if (response.ok) {
+                router.push("/login")
+              }
+            }catch(error){
               setIsLoading(false)
               toast({
-                title: 'Password changed successfully',
-                status: 'success',
+                title: 'Unable to process data',
+                status: 'error',
                 duration: '5000',
                 isClosable: true,
                 position: 'bottom-left',
               });
-              router.push("/login")
             }
             }else{
               setPasswordState(false);

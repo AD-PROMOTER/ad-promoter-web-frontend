@@ -13,6 +13,7 @@ import { CiPlay1 } from 'react-icons/ci';
 import { Spinner, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import axios from '@/pages/api/axios';
 
 const SingleAd = () => {
   const { adData, setAdData } = useContext(SingleAdContext);
@@ -27,23 +28,14 @@ const SingleAd = () => {
   }, [id]);
 
   const handleSetAdId = async () => {
-    const res = await fetch(`https://api.ad-promoter.com/api/v1/ads/${id}`);
-    const data = await res.json();
-    setAdData(data.data);
-  };
-
-  const handlePause = async () => {
-    const response = await fetch(
-      `https://api.ad-promoter.com/api/v1/ads/update-status?id=${adData._id}&status=paused`,
-      {
-        method: 'PUT',
-      }
-    );
-    const json = await response.json();
-
-    if (!response.ok) {
+    try {
+      const response = await axios.get(`/api/v1/ads/${id}`);
+      const data = response.data.data;
+      setAdData(data);
+    } catch (error) {
+      console.error(error);
       toast({
-        title: json.msg,
+        title: 'Unable to fetch Data',
         status: 'error',
         duration: '5000',
         isClosable: true,
@@ -51,52 +43,88 @@ const SingleAd = () => {
         size: 'lg',
       });
     }
-
-    if (response.ok) {
-      setAdData(json.data);
-      toast({
-        title: 'Ad Paused',
-        status: 'success',
-        duration: '5000',
-        isClosable: true,
-        position: 'bottom-left',
-        size: 'lg',
-      });
-    }
   };
 
-  const handleResume = async () => {
-    const response = await fetch(
-      `https://api.ad-promoter.com/api/v1/ads/update-status?id=${adData._id}&status=incomplete`,
-      {
-        method: 'PUT',
+  const handlePause = async (adId) => {
+    try {
+      const response = await axios.put(
+        `/api/v1/ads/update-status?id=${adId}&status=paused`
+      );
+      const json = response.data;
+
+      if (response.status === 200) {
+        setAdData(json.data);
+        toast({
+          title: 'Ad Paused',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-left',
+          size: 'lg',
+        });
+      } else {
+        toast({
+          title: json.msg,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-left',
+          size: 'lg',
+        });
       }
-    );
-    const json = await response.json();
-
-    if (!response.ok) {
+    } catch (error) {
+      console.error(error);
       toast({
-        title: json.msg,
+        title: 'An Error occurred while pausing ad',
         status: 'error',
-        duration: '5000',
-        isClosable: true,
-        position: 'bottom-left',
-        size: 'lg',
-      });
-    }
-
-    if (response.ok) {
-      setAdData(json.data);
-      toast({
-        title: 'Ad is now on',
-        status: 'success',
-        duration: '5000',
+        duration: 5000,
         isClosable: true,
         position: 'bottom-left',
         size: 'lg',
       });
     }
   };
+
+  const handleResume = async (adId) => {
+    try {
+      const response = await axios.put(
+        `/api/v1/ads/update-status?id=${adId}&status=incomplete`
+      );
+      const json = response.data;
+
+      if (response.status === 200) {
+        setAdData(json.data);
+        toast({
+          title: 'Ad is now on',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-left',
+          size: 'lg',
+        });
+      } else {
+        toast({
+          title: json.msg,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-left',
+          size: 'lg',
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'An Error occured while resuming Ad',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-left',
+        size: 'lg',
+      });
+    }
+  };
+
   return (
     <>
       {adData ? (
@@ -213,12 +241,18 @@ const SingleAd = () => {
           {!adData.completed && (
             <>
               {adData.adStatus !== 'paused' ? (
-                <div onClick={handlePause} className="pause-btn">
+                <div
+                  onClick={() => handlePause(adData.id)}
+                  className="pause-btn"
+                >
                   <Image src={Pause} alt="pause button" />
                   <p>Pause Advert</p>
                 </div>
               ) : (
-                <div onClick={handleResume} className="pause-btn">
+                <div
+                  onClick={() => handleResume(adData.id)}
+                  className="pause-btn"
+                >
                   <CiPlay1 color="#fff" size="24px" />
                   <p>Resume Advert</p>
                 </div>

@@ -4,6 +4,7 @@ import back from '@/public/assets/back-icon.svg';
 import { NotifContainer } from './mobileSettings.style';
 import { Spinner, useToast } from '@chakra-ui/react';
 import { Button } from '../settings/settings.style';
+import axios from '@/pages/api/axios';
 
 const Notification = ({ handleBack }) => {
   const userDetails = JSON.parse(window.localStorage.getItem('user-detail'));
@@ -19,40 +20,35 @@ const Notification = ({ handleBack }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const notificationSettings = {
       browserNotification: browser,
       emailNotification: email,
       desktopNotification: desktop,
       NotifyOffers: others,
     };
-
-    setIsChangesUpdating(true)
-    const response = await fetch('https://api.ad-promoter.com/api/v1/user/', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(notificationSettings),
-    });
-
+  
+    setIsChangesUpdating(true);
+  
     try {
+      const response = await axios.patch('/api/v1/user/', notificationSettings, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
       if (response.status === 401) {
         throw new Error('Unauthorized');
-        setIsChangesUpdating(false)
       }
-
+  
       if (response.status === 500) {
-        throw new Error(
-          'Could not update Notification settings please try again'
-        );
-        setIsChangesUpdating(false)
+        throw new Error('Could not update Notification settings, please try again');
       }
-
+  
       if (response.status === 200) {
-        const data = await response.json();
-        setIsChangesUpdating(false)
+        const data = response.data;
+        setIsChangesUpdating(false);
         toast({
           title: 'Notification Settings Updated',
           status: 'success',
@@ -64,16 +60,16 @@ const Notification = ({ handleBack }) => {
         window.location.reload();
       }
     } catch (error) {
-      setIsChangesUpdating(false)
+      setIsChangesUpdating(false);
       toast({
-        title: `${error.message}`,
+        title: `${'Something went wrong'}`,
         status: 'warning',
         duration: '5000',
         isClosable: true,
         position: 'top-left',
       });
     }
-
+  
     setIsChangesMade(false);
   };
 

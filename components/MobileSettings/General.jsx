@@ -6,6 +6,7 @@ import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import { useRouter } from 'next/router'
 import { Spinner, useToast } from '@chakra-ui/react'
+import axios from '@/pages/api/axios'
 
 const General = ({handleBack}) => {
   const [clicked, setClicked] = useState(false);
@@ -32,22 +33,23 @@ const General = ({handleBack}) => {
         }
     }, []);
 
-      const handleDeactivate = async() =>{
-        setIsLoading(true);
-
-        const response = await fetch(
-          `https://api.ad-promoter.com/api/v1/user/${id}`,
+    const handleDeactivate = async () => {
+      setIsLoading(true);
+    
+      try {
+        const response = await axios.delete(
+          `/api/v1/user/${id}`,
           {
-            method: 'DELETE',
-            headers: { 
-                'Content-Type': 'application/json', 
-                Authorization: `Bearer ${userToken}`,
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${userToken}`,
             },
           }
         );
-        const json = await response.json();
     
-        if (!response.ok) {
+        const json = response.data;
+    
+        if (!response.status === 200) {
           setIsLoading(false);
           toast({
             title: json.msg,
@@ -56,8 +58,7 @@ const General = ({handleBack}) => {
             isClosable: true,
             position: 'bottom-left',
           });
-        }
-        if (response.ok) {
+        } else {
           setIsLoading(false);
           toast({
             title: 'Account Deactivated Successfully',
@@ -68,7 +69,19 @@ const General = ({handleBack}) => {
           });
           router.push('/');
         }
-    }
+      } catch (error) {
+        console.error('Error deactivating account:', error);
+        setIsLoading(false);
+        toast({
+          title: 'Error deactivating account',
+          status: 'error',
+          duration: '5000',
+          isClosable: true,
+          position: 'bottom-left',
+          size: 'lg',
+        });
+      }
+    };
     const ClickedList = (e) =>{
         setListValue(e.target.innerText)
         setIsChangesMade(true)

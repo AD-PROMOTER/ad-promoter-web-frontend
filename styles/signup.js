@@ -5,6 +5,10 @@ export const Overlay = styled.div`
     height: 81.1rem; */
   margin: 2rem 0;
   padding: 3rem 13rem;
+
+  .error {
+    color: red;
+  }
   .content {
     display: flex;
     flex-direction: column;
@@ -169,6 +173,9 @@ export const SignupMobile = styled.div`
   padding-top: 2rem;
   @media screen and (max-width: 425px) {
     display: block;
+  }
+  .error {
+    color: red;
   }
   .logo {
     text-align: center;

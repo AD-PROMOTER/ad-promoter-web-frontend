@@ -1,4 +1,5 @@
 import LandingPage from '@/components/LandingPage';
+import axios from '@/pages/api/axios';
 import { useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -35,18 +36,10 @@ export const useCreateAds = () => {
     setIsLoading(true);
     setError(null);
 
-    const response = await fetch(
-      'https://api.ad-promoter.com/api/v1/ads/create',
-      {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
+    try {
+      const response = await axios.post(
+        '/api/v1/ads/create',
+        {
           productName,
           redirectUrl,
           description: productDescription,
@@ -57,42 +50,55 @@ export const useCreateAds = () => {
           promotedLink: webAddress,
           budget: amount,
           isNfsw: containAdultContent,
-        }),
-      }
-    );
-    const json = await response.json();
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    if (!response.ok) {
-      if (json.msg === 'type must be a valid enum value') {
-        toast({
-          title: 'Pick an advert type',
-          status: 'error',
-          duration: '5000',
-          isClosable: true,
-          position: 'bottom-left',
-        });
+      const json = response.data;
+
+      if (!response.status === 200) {
+        if (json.msg === 'type must be a valid enum value') {
+          toast({
+            title: 'Pick an advert type',
+            status: 'error',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+          });
+        } else {
+          toast({
+            title: json.msg,
+            status: 'error',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+          });
+        }
+        setIsLoading(false);
       } else {
-        toast({
-          title: json.msg,
-          status: 'error',
-          duration: '5000',
-          isClosable: true,
-          position: 'bottom-left',
-        });
-      }
-      setIsLoading(false);
-    }
-    if (response.ok) {
-      setIsLoading(false);
-      setData(json.data.ad);
+        setIsLoading(false);
+        setData(json.data.ad);
 
-      // if(advertType === 'detail'){
-      //   router.push(`/ad/${json.data.ad._id}`);
-      // }else{
-      router.push(json.data.paymentDetails.url);
-      // }
-      localStorage.setItem('landingData', JSON.stringify(json.data.ad._id));
+        router.push(json.data.paymentDetails.url);
+        localStorage.setItem('landingData', JSON.stringify(json.data.ad._id));
+      }
+    } catch (error) {
+      console.error('Error creating ad:', error);
+      setIsLoading(false);
+      toast({
+        title: 'Error creating ad',
+        status: 'error',
+        duration: '5000',
+        isClosable: true,
+        position: 'bottom-left',
+      });
     }
   };
+
   return { createAd, data, isLoading, error, msg, redirect, data };
 };

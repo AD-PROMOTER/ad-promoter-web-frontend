@@ -8,20 +8,18 @@ import currency from '@/public/assets/money-send.svg'
 import download from '@/public/assets/downloadIcon3.svg'
 import archive from '@/public/assets/shareIcon1.svg'
 import exportLink from '@/public/assets/bookmarkIcon1.svg'
-// import { Feed } from '@/components/DiscoveryFolder/discovery.style'
 import Image from 'next/image'
 import Copy from '@/public/assets/copy-icon'
-// import { directlinkAd } from '@/components/DiscoveryFolder/data'
 import { BackdropContainer, Feed, ModalContainer } from './style'
 import { directlinkAd, visualAd } from '../PromoterHomeAdDetail/data'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
 import TimeAgo from '../timeAgo'
 import { Spinner } from '@chakra-ui/react'
-import axios from 'axios'
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
 import JobsContext from '@/context/jobsContext'
 import { useContext } from 'react'
+import axios from '@/pages/api/axios'
 
 const MobileRecentPlacers = ({handleShowReport,handleAdRemoval,showReport,setShowReport,showReportModal,setShowReportModal,showDropdown,setShowDropdown,isReadMore,setIsReadMore,currentIndex,setCurrentIndex,listValue,setListValue,ClickedList,toggleReadMore,previousImage,nextImage,dashboardEndDate,dashboardStartDate}) => {
     const {recentJobs,setRecentJobs,isLoading,setIsLoading} = useContext(JobsContext)
@@ -53,23 +51,43 @@ const MobileRecentPlacers = ({handleShowReport,handleAdRemoval,showReport,setSho
             token.current = userToken
         }
     
-        const fetchRecentJobs = async() =>{
-          let apiUrl = `https://api.ad-promoter.com/api/v1/ads/recent-ads?page=1&pageSize=10`;
-          if (dashboardStartDate) {
-            apiUrl += `&startDate=${dashboardStartDate}`;
-          }
-          if (dashboardEndDate) {
-            apiUrl += `&endDate=${dashboardEndDate}`;
-          }
-          setIsLoading(true)
-          const result = await axios(apiUrl,{
-            headers:{
-              Authorization: `Bearer ${token.current}`
+        const fetchRecentJobs = async () => {
+            let apiUrl = '/api/v1/ads/recent-ads?page=1&pageSize=10';
+          
+            if (dashboardStartDate) {
+              apiUrl += `&startDate=${dashboardStartDate}`;
             }
-          })
-          setRecentJobs(result.data.data.data)
-          setIsLoading(false)
-        }
+            if (dashboardEndDate) {
+              apiUrl += `&endDate=${dashboardEndDate}`;
+            }
+          
+            setIsLoading(true);
+          
+            try {
+              const response = await axios.get(apiUrl, {
+                headers: {
+                  Authorization: `Bearer ${token.current}`,
+                },
+              });
+          
+              const result = response.data;
+          
+              setRecentJobs(result.data.data);
+          
+              setIsLoading(false);
+            } catch (error) {
+              console.error('Error fetching recent jobs:', error);
+              setIsLoading(false);
+              toast({
+                title: 'Unable to fetch feed',
+                status: "error",
+                duration: "5000",
+                isClosable: true,
+                position: "bottom-left",
+                size: "lg"
+                });
+            }
+        };
     
         if(token.current){
             fetchRecentJobs()

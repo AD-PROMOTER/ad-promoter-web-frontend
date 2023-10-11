@@ -4,6 +4,7 @@ import back from '@/public/assets/back-icon.svg';
 import { SecurityContainer } from './mobileSettings.style';
 import { useToast } from '@chakra-ui/react';
 import { Button } from '../settings/settings.style';
+import axios from '@/pages/api/axios';
 
 const Security = ({ handleBack }) => {
   const [value, setValue] = useState('alanByte003');
@@ -35,36 +36,31 @@ const Security = ({ handleBack }) => {
 
   const updatePassword = async (e) => {
     e.preventDefault();
-
+  
     const passwordDetails = {
       previousPasssword: value,
       newPassword: newValue,
       confirmNewPassword: confirmValue,
     };
-
-    const response = fetch(
-      'https://api.ad-promoter.com/api/v1/user/change-password',
-      {
-        method: 'POST',
+  
+    try {
+      const response = await axios.post('/api/v1/user/change-password', passwordDetails, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(passwordDetails),
-      }
-    );
-
-    try {
+      });
+  
       if (response.status === 401) {
         throw new Error('Unauthorized');
       }
-
+  
       if (response.status === 500) {
-        throw new Error('Could not update password please try again');
+        throw new Error('Could not update password, please try again');
       }
-
+  
       if (response.status === 201) {
-        const data = await response.json();
+        const data = response.data;
         toast({
           title: 'Password Updated',
           status: 'success',
@@ -76,7 +72,7 @@ const Security = ({ handleBack }) => {
     } catch (error) {
       console.log(error);
       toast({
-        title: `${error.message}`,
+        title: `${'Something went wrong'}`,
         status: 'warning',
         duration: '5000',
         isClosable: true,

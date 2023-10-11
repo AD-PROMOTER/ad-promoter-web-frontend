@@ -9,6 +9,7 @@ import { Danger } from '../settings/settings.style';
 import uploadImage from '@/helper/imageUploader';
 import DefaultPic from '@/public/assets/squared-profile.png'
 import { Spinner, useToast } from '@chakra-ui/react';
+import axios from '@/pages/api/axios';
 
 const Profile = ({ handleBack }) => {
   const toast = useToast()
@@ -96,43 +97,37 @@ const Profile = ({ handleBack }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     let userDetails = {};
-
+  
     if (email) userDetails.email = email;
     if (name) userDetails.accountName = name;
     if (phoneNumber) userDetails.phoneNumber = phoneNumber;
     if (listValue) userDetails.gender = listValue.toLowerCase();
     if (image) userDetails.profilePicture = image;
     if (dateOfBirth) userDetails.dateOfBirth = dateOfBirth;
-
-    setIsProfileUpdateLoading(true)
-    const response = await fetch(
-      'https://api.ad-promoter.com/api/v1/user/',
-      {
-        method: 'PATCH',
+  
+    setIsProfileUpdateLoading(true);
+  
+    try {
+      const response = await axios.patch('/api/v1/user/', userDetails, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify(userDetails),
-      }
-    );
-
-    try {
+      });
+  
       if (response.status === 401) {
         throw new Error('Unauthorized');
-        setIsProfileUpdateLoading(false)
       }
-
+  
       if (response.status === 500) {
-        throw new Error('Could not update profile please try again');
-        setIsProfileUpdateLoading(false)
+        throw new Error('Could not update profile, please try again');
       }
-
+  
       if (response.status === 200) {
-        const data = await response.json();
-        setIsProfileUpdateLoading(false)
+        const data = response.data;
+        setIsProfileUpdateLoading(false);
         toast({
           title: 'Profile Updated',
           status: 'success',
@@ -140,20 +135,20 @@ const Profile = ({ handleBack }) => {
           isClosable: true,
           position: 'bottom-left',
         });
-        window.localStorage.setItem("user-detail", JSON.stringify(data.data))
+        window.localStorage.setItem('user-detail', JSON.stringify(data.data));
         window.location.reload();
       }
     } catch (error) {
-      setIsProfileUpdateLoading(false)
+      setIsProfileUpdateLoading(false);
       toast({
-        title: `${error.message}`,
+        title: `${'Something went wrong'}`,
         status: 'warning',
         duration: '5000',
         isClosable: true,
         position: 'top-left',
       });
     }
-
+  
     setIsChangesMade(false);
   };
 

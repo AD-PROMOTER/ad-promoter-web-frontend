@@ -9,7 +9,6 @@ const Modal = () => {
     const [listValue, setListValue] = useState('It has gory images')
     const ClickedList = (e) =>{
       setListValue(e.target.innerText)
-      console.log(listValue);
     }
   return (
     <ModalContainer>

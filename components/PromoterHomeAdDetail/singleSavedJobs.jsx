@@ -16,7 +16,6 @@ import { BackdropContainer, Feed, ModalContainer } from './styles'
 import { directlinkAd } from './data'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
-import axios from 'axios'
 import { CgProfile } from 'react-icons/cg'
 import TimeAgo from '../timeAgo'
 import linkFrame from '@/public/assets/linkframe.svg'
@@ -24,6 +23,7 @@ import ShareDialogue from '../shareDialogue'
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
 import { useContext } from 'react'
 import JobsContext from '@/context/jobsContext'
+import axios from '@/pages/api/axios'
 
 const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
     const [showReport, setShowReport] = useState({})
@@ -74,24 +74,55 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
         }
     },[sortStartDate,sortEndDate])
 
-    const fetchSavedJobs = async() =>{
-        let apiUrl = `https://api.ad-promoter.com/api/v1/user/saved-jobs?page=1&pageSize=10`;
-        if (sortStartDate) {
+    const fetchSavedJobs = async () => {
+        try {
+          let apiUrl = `/api/v1/user/saved-jobs?page=1&pageSize=10`;
+      
+          if (sortStartDate) {
             apiUrl += `&startDate=${sortStartDate}`;
           }
+      
           if (sortEndDate) {
             apiUrl += `&endDate=${sortEndDate}`;
           }
-        setIsLoading(true)
-        const result = await axios(apiUrl,{
-          headers:{
-            Authorization: `Bearer ${token.current}`
+      
+          setIsLoading(true);
+      
+          const response = await axios.get(apiUrl, {
+            headers: {
+              Authorization: `Bearer ${token.current}`,
+            },
+          });
+      
+          if (response.status === 200) {
+            const result = response.data;
+            setSavedJobs(result.data.data.data);
+            console.log(result);
+            setIsLoading(false);
+          } else {
+            setIsLoading(false);
+            toast({
+                title: 'Unable to fetch saved jobs',
+                status: 'error',
+                duration: '5000',
+                isClosable: true,
+                position: 'bottom-left',
+                size: 'lg',
+            });
           }
-        })
-        setSavedJobs(result.data.data.data.data)
-        setIsLoading(false)
-    }
-
+        } catch (error) {
+          console.error('Error fetching saved jobs:', error);
+          setIsLoading(false);
+          toast({
+            title: 'Unable to fetch saved jobs',
+            status: 'error',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+            });
+        }
+    };
     const ClickedList = (e) =>{
       setListValue(e.target.innerText)
       setShowDropdown(false)
@@ -107,23 +138,41 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
         }));
     };
 
-    const handleJobSave = async(id) =>{
-        const result = await axios(`https://api.ad-promoter.com/api/v1/user/save-job/${id}`,{
-          headers:{
-            Authorization: `Bearer ${token.current}`,
-          },
-          method: "PUT"
-        })
-        console.log(result.data)
-        toast({
-            title: result.data.data,
-            status: result.data.success ? "success" : "error",
-            duration: "5000",
+    const handleJobSave = async (id) => {
+        try {
+          const response = await axios.put(
+            `/api/v1/user/save-job/${id}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token.current}`,
+              },
+            }
+          );
+      
+          console.log(response.data);
+      
+          toast({
+            title: response.data.data,
+            status: response.data.success ? 'success' : 'error',
+            duration: '5000',
             isClosable: true,
-            position: "bottom-left",
-            size: "lg"
-        });
-    }
+            position: 'bottom-left',
+            size: 'lg',
+          });
+        } catch (error) {
+          console.error('Error saving job:', error);
+          toast({
+            title: 'Error saving job',
+            status: 'error',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+          });
+        }
+    };
+
 
     const handleChange = (event) => {
         setInputValue(event.target.value);
@@ -134,57 +183,44 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
         setShowPaste(true)
     }
 
-    const handleCopyLink = async(id) => {
+    const handleCopyLink = async (id) => {
         try {
-            const response = await fetch(
-              `https://api.ad-promoter.com/api/v1/promotion/promote/${id}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token.current}`,
-                },
-              }
-            );
-            const data = await response.json();
+          const response = await axios.get(
+            `/api/v1/promotion/promote/${id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token.current}`,
+              },
+            }
+          );
       
-            if(!response.ok){
-              throw new Error(data.msg);
-            }
-            if (response.ok) {
-                navigator.clipboard.writeText(`https://app.ad-promoter.com/ad/${id}?ref=${data.promotionRef}`)
-                .then(() => {
-                    toast({
-                        title: 'Link copied to clipboard!',
-                        status: "success",
-                        duration: "5000",
-                        isClosable: true,
-                        position: "bottom-left",
-                        size: "lg"
-                    });
-                })
-                .catch((error) => {
-                    console.error('Failed to copy link:', error);
-                    toast({
-                        title: 'Failed to copy link:', error,
-                        status: "error",
-                        duration: "5000",
-                        isClosable: true,
-                        position: "bottom-left",
-                        size: "lg"
-                    });
-                    });
-                    // handleCountClick(data.promotionRef);
-            }
-        } catch (error) {
-            console.error('Error fetching ad data:', error);
-            toast({
-              title: error.message, // Display the error message
-              status: 'error',
-              duration: 5000,
-              isClosable: true,
-              position: 'bottom-left',
-            });
+          const data = response.data;
+      
+          if (!response.status === 200) {
+            throw new Error(data.msg);
           }
-        
+      
+          navigator.clipboard.writeText(`${data.uniqueLink}${data.promotionRef}`);
+      
+          toast({
+            title: 'Link copied to clipboard!',
+            status: 'success',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+          });
+        } catch (error) {
+          console.error('Error copying link:', error);
+          toast({
+            title: 'Failed to copy link',
+            status: 'error',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+          });
+        }
     };
 
 
@@ -193,160 +229,196 @@ const SingleSavedJobs = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
         setShowReport(false)
     }
 
-    const handleReport = async (id,report) =>{
-        setIsReportLoading(true)
-        const response = await fetch(
-            'https://api.ad-promoter.com/api/v1/reports/create',
+    const handleReport = async (id, report) => {
+        try {
+          setIsReportLoading(true);
+      
+          const response = await axios.post(
+            '/api/v1/reports/create',
             {
-              method: 'POST',
-              headers: { 
-                    'Content-Type': 'application/json', 
-                    Authorization: `Bearer ${token.current}`
-                },
-              body: JSON.stringify({
-                adsId: id,
-                report: report
-              }),
+              adsId: id,
+              report: report,
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token.current}`,
+              },
             }
           );
-          const json = await response.json();
       
-          if (!response.ok) {
-            setIsReportLoading(false);
-            setShowReportModal(false)
+          const json = response.data;
+      
+          if (!response.status === 200) {
             toast({
                 title: json.msg,
-                status: "error",
-                duration: "5000",
+                status: 'error',
+                duration: '5000',
                 isClosable: true,
-                position: "bottom-left",
-                size: "lg"
-            });
+                position: 'bottom-left',
+                size: 'lg',
+              });
           }
-          if (response.ok) {
-              setIsReportLoading(false);
-              setShowReportModal(false)
-              toast({
+      
+          setIsReportLoading(false);
+          setShowReportModal(false);
+      
+          toast({
+            title: json.msg,
+            status: 'success',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+          });
+        } catch (error) {
+          setIsReportLoading(false);
+          setShowReportModal(false);
+      
+          toast({
+            title: 'Error reporting ad',
+            status: 'error',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+          });
+        }
+    };
+
+
+    const handleAdRemoval = async (id) => {
+        try {
+          const response = await axios.delete(
+            `/api/v1/ads/${id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token.current}`,
+              },
+            }
+          );
+      
+          const json = response.data;
+      
+          if (!response.status === 200) {
+            toast({
                 title: json.msg,
-                status: "success",
-                duration: "5000",
+                status: 'error',
+                duration: '5000',
                 isClosable: true,
-                position: "bottom-left",
-                size: "lg"
-            });
+                position: 'bottom-left',
+                size: 'lg',
+              });
+            throw new Error(json.msg);
           }
-    }
-
-        const handleAdRemoval = async(id) =>{
-            const response = await fetch(
-                `https://api.ad-promoter.com/api/v1/ads/${id}`,
-                {
-                  method: 'DELETE',
-                  headers: { 
-                        Authorization: `Bearer ${token.current}`
-                    },
-                }
-              );
-              const json = await response.json();
-          
-              if (!response.ok) {
-                    toast({
-                        title: json.msg,
-                        status: "error",
-                        duration: "5000",
-                        isClosable: true,
-                        position: "bottom-left",
-                        size: "lg"
-                    });
-                }
-                if (response.ok) {
-                    fetchSavedJobs()
-                    toast({
-                        title: json.msg,
-                        status: "success",
-                        duration: "5000",
-                        isClosable: true,
-                        position: "bottom-left",
-                        size: "lg"
-                    });
-                }
+      
+          fetchRecentJobs();
+      
+          toast({
+            title: json.msg,
+            status: 'success',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+          });
+        } catch (error) {
+          toast({
+            title: 'Something went wrong',
+            status: 'error',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+          });
         }
+    };
 
-        const handleDownload = (url) => {
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'image.jpg';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        };
+    const handleDownload = (url) => {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'image.jpg';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    };
 
-        const nextImage = (images) => {
-            setCurrentIndex((prevIndex) =>
-              prevIndex === images.length - 1 ? 0 : prevIndex + 1
-            );
-        };
-        
-        const previousImage = (images) => {
-            setCurrentIndex((prevIndex) =>
-            prevIndex === 0 ? images.length - 1 : prevIndex - 1
-            );
-        };
-
-        const handleVisualSubmit = async (id,link) =>{
-            const data = {
-                adID: id,
-                link: link
-            };
-            const response = await fetch(
-                `https://api.ad-promoter.com/api/v1/promotion/visual`,
-                {
-                  method: 'POST',
-                  headers: { 
-                        Authorization: `Bearer ${token.current}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                }
-              );
-            const json = await response.json();
-          
-            if (!response.ok) {
-                toast({
-                title: json.msg,
-                status: "error",
-                duration: "5000",
-                isClosable: true,
-                position: "bottom-left",
-                size: "lg"
-                });
-                setInputValue('')
-            }
-            if (response.ok) {
-                toast({
-                title: 'Link Submitted',
-                status: "success",
-                duration: "5000",
-                isClosable: true,
-                position: "bottom-left",
-                size: "lg"
-                });
-                setInputValue('')
-            }
-        }
-
-        const toggleDropdown = (itemId) => {
-            setShowReport((prevState) => ({
-                ...prevState,
-                [itemId]: !prevState[itemId]
-            }));
-        };
+    const nextImage = (images) => {
+        setCurrentIndex((prevIndex) =>
+            prevIndex === images.length - 1 ? 0 : prevIndex + 1
+        );
+    };
     
-        const handleButtonClick = (event, itemId) => {
-            // Prevent event propagation for the specific button
-            event.stopPropagation();
-            toggleDropdown(itemId); // Toggle the dropdown without affecting the global click event
-        };
+    const previousImage = (images) => {
+        setCurrentIndex((prevIndex) =>
+        prevIndex === 0 ? images.length - 1 : prevIndex - 1
+        );
+    };
+
+        const handleVisualSubmit = async (id, link) => {
+        try {
+          const data = {
+            adID: id,
+            link: link,
+          };
+      
+          const response = await axios.post(
+            '/api/v1/promotion/visual',
+            data,
+            {
+              headers: {
+                Authorization: `Bearer ${token.current}`,
+              },
+            }
+          );
+      
+          if (response.status === 200) {
+            setInputValue('');
+            toast({
+              title: 'Link Submitted',
+              status: 'success',
+              duration: '5000',
+              isClosable: true,
+              position: 'bottom-left',
+              size: 'lg',
+            });
+          } else {
+            const json = response.data;
+            toast({
+              title: json.message,
+              status: 'error',
+              duration: '5000',
+              isClosable: true,
+              position: 'bottom-left',
+              size: 'lg',
+            });
+            setInputValue('');
+          }
+        } catch (error) {
+          console.error('Error submitting visual promotion:', error);
+          toast({
+            title: 'An error occurred while submitting the visual promotion.',
+            status: 'error',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+          });
+        }
+    };
+
+    const toggleDropdown = (itemId) => {
+        setShowReport((prevState) => ({
+            ...prevState,
+            [itemId]: !prevState[itemId]
+        }));
+    };
+
+    const handleButtonClick = (event, itemId) => {
+        // Prevent event propagation for the specific button
+        event.stopPropagation();
+        toggleDropdown(itemId); // Toggle the dropdown without affecting the global click event
+    };
 
   return (          
             <>

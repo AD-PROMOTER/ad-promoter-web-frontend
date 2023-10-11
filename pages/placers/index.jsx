@@ -7,7 +7,6 @@ import {
   TabPlacers,
 } from '@/styles/placerHome.styles';
 import RecentMobile from '@/components/MobilePromoterHome/Recent';
-import SavedJobsMobile from '@/components/MobilePromoterHome/SavedJobs';
 import MobileNotif from '@/components/MobileNotification/index';
 import notif from '@/public/assets/notif.svg';
 import inactiveNotif from '@/public/assets/Inactive notification Icon.svg';
@@ -20,12 +19,10 @@ import Cup from '@/public/assets/cup';
 import DefaultPic from '@/public/assets/squared-profile.png'
 import cup from '@/public/assets/cupIcon.svg';
 import Trend from '@/public/assets/trending-up';
-import Chevron from '@/public/assets/chevron';
 import ArrowDown from '@/public/assets/arrow-down';
 import { StyledHomeContainer, TabContainer } from '@/styles/promoters/home';
 import { useEffect, useRef, useState, useContext, useMemo } from 'react';
 import ArrowUp from '@/public/assets/arrow-up';
-import ScrollContainer from 'react-indiana-drag-scroll';
 import useDraggableScroll from 'use-draggable-scroll';
 import more from '@/public/assets/ellipsis.svg';
 import {
@@ -40,7 +37,6 @@ import arrowDown from '@/public/assets/arrow-down.svg';
 import bell from '@/public/assets/notif.svg';
 import ScrollIntoView from 'react-scroll-into-view';
 import TimeAgo from '@/components/timeAgo';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import { Spinner, useToast } from '@chakra-ui/react';
 import {
@@ -51,6 +47,7 @@ import {
 import JobsContext from '@/context/jobsContext';
 import dynamic from 'next/dynamic';
 import PlacersChart from '@/components/placersChart';
+import axios from '../api/axios';
 
 const Index = () => {  
   const [showSortDropdown, setShowSortDropdown] = useState(false);
@@ -79,9 +76,7 @@ const Index = () => {
   const {recentJobs,setRecentJobs,isLoading,setIsLoading} = useContext(JobsContext)
   const scrollRef = useRef(null);
   const { onMouseDown } = useDraggableScroll(scrollRef, { direction: 'vertical' });
-
   
-
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-detail'));
     if(!user?.profilePicture || user?.profilePicture === ''){
@@ -96,50 +91,68 @@ const Index = () => {
     }
 
     if (token.current) {
-      Promise.all([
-        fetch('https://api.ad-promoter.com/api/v1/user/dashboard', {
-          headers: {
-            Authorization: `Bearer ${token.current}`,
-          },
-        }),
-      ])
-        .then(([resDashboardData]) => Promise.all([resDashboardData.json()]))
-        .then(([dataDashboardData]) => {
-          setRunningAds(dataDashboardData.data.adCount.runningAds);
-          setCompleteAds(dataDashboardData.data.adCount.completedAds);
-          setConversionGrowth(dataDashboardData.data.conversionRate);
-        });
-    }
-  }, [Router, token]);
-
-  useEffect(() => {
-    const userToken = JSON.parse(localStorage.getItem('user-token'));
-    if (userToken) {
-      token.current = userToken;
+      fetchDashboardData()
+      fetchRecentJobs();
     }
 
-    const fetchRecentJobs = async () => {
-      let apiUrl = `https://api.ad-promoter.com/api/v1/ads/recent-ads?page=1&pageSize=10`;
-      if (dashboardStartDate) {
-        apiUrl += `&startDate=${dashboardStartDate}`;
-      }
-      if (dashboardEndDate) {
-        apiUrl += `&endDate=${dashboardEndDate}`;
-      }
-      setIsLoading(true);
-      const result = await axios(apiUrl, {
+  }, [Router, token,dashboardEndDate, dashboardStartDate]);
+
+  const fetchDashboardData = async() =>{
+    try {
+      const response = await axios.get('/api/v1/user/dashboard', {
+        headers: {
+          Authorization: `Bearer ${token.current}`,
+        },
+      });
+    
+      const dashboardData = response.data;
+      setRunningAds(dashboardData.data.adCount.runningAds);
+      setCompleteAds(dashboardData.data.adCount.completedAds);
+      setConversionGrowth(dashboardData.data.conversionRate);
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: 'Unable to load data. Check your connection',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-left',
+      });
+    }   
+  }
+
+  const fetchRecentJobs = async () => {
+    let apiUrl = `/api/v1/ads/recent-ads?page=1&pageSize=10`;
+
+    if (dashboardStartDate) {
+      apiUrl += `&startDate=${dashboardStartDate}`;
+    }
+
+    if (dashboardEndDate) {
+      apiUrl += `&endDate=${dashboardEndDate}`;
+    }
+
+    setIsLoading(true);
+    try{
+      const result = await axios.get(apiUrl, {
         headers: {
           Authorization: `Bearer ${token.current}`,
         },
       });
       setRecentJobs(result.data.data.data);
       setIsLoading(false);
-    };
-
-    if (token.current) {
-      fetchRecentJobs();
+    }catch(error){
+      setIsLoading(false)
+      console.log(error);
+      toast({
+        title: 'Unable to load data. Check your connection',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-left',
+      });
     }
-  }, [dashboardEndDate, dashboardStartDate]);
+  };
 
   const toggleReadMore = () => {
     setIsReadMore(!isReadMore);
@@ -152,41 +165,54 @@ const Index = () => {
 
   const handleReport = async (id, report) => {
     setIsReportLoading(true);
-    const response = await fetch(
-      'https://api.ad-promoter.com/api/v1/reports/create',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token.current}`,
-        },
-        body: JSON.stringify({
+    try {
+      const response = await axios.post(
+        '/api/v1/reports/create',
+        {
           adsId: id,
           report: report,
-        }),
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token.current}`,
+          },
+        }
+      );
+  
+      const json = response.data;
+  
+      setIsReportLoading(false);
+      setShowReportModal(false);
+  
+      if (response.status === 200) {
+        toast({
+          title: json.msg,
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-left',
+          size: 'lg',
+        });
+      } else {
+        toast({
+          title: json.msg,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-left',
+          size: 'lg',
+        });
       }
-    );
-    const json = await response.json();
-
-    if (!response.ok) {
+    } catch (error) {
+      console.error(error);
       setIsReportLoading(false);
       setShowReportModal(false);
+  
       toast({
-        title: json.msg,
+        title: 'An error occurred while processing the report',
         status: 'error',
-        duration: '5000',
-        isClosable: true,
-        position: 'bottom-left',
-        size: 'lg',
-      });
-    }
-    if (response.ok) {
-      setIsReportLoading(false);
-      setShowReportModal(false);
-      toast({
-        title: json.msg,
-        status: 'success',
-        duration: '5000',
+        duration: 5000,
         isClosable: true,
         position: 'bottom-left',
         size: 'lg',
@@ -226,33 +252,41 @@ const Index = () => {
   };
 
   const handleAdRemoval = async (id) => {
-    const response = await fetch(
-      `https://api.ad-promoter.com/api/v1/ads/${id}`,
-      {
-        method: 'DELETE',
+    try {
+      const response = await axios.delete(`/api/v1/ads/${id}`, {
         headers: {
           Authorization: `Bearer ${token.current}`,
         },
-      }
-    );
-    const json = await response.json();
-
-    if (!response.ok) {
-      toast({
-        title: json.msg,
-        status: 'error',
-        duration: '5000',
-        isClosable: true,
-        position: 'bottom-left',
-        size: 'lg',
       });
-    }
-    if (response.ok) {
-      fetchFeed();
+  
+      const json = response.data;
+  
+      if (response.status === 200) {
+        fetchFeed();
+        toast({
+          title: json.msg,
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-left',
+          size: 'lg',
+        });
+      } else {
+        toast({
+          title: json.msg,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-left',
+          size: 'lg',
+        });
+      }
+    } catch (error) {
+      console.error(error);
       toast({
-        title: json.msg,
-        status: 'success',
-        duration: '5000',
+        title: 'An error occurred while removing the ad',
+        status: 'error',
+        duration: 5000,
         isClosable: true,
         position: 'bottom-left',
         size: 'lg',

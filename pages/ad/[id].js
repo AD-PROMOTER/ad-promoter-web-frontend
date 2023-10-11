@@ -27,6 +27,7 @@ const AdPage = () => {
   const [token, setToken] = useState('');
   const toast = useToast();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -36,70 +37,80 @@ const AdPage = () => {
 
   const handleCountClick = async (promotedLink) => {
     setIsAdCountLoading(true);
-    const response = await fetch(
-      `https://api.ad-promoter.com/api/v1/ads/conversion/${ref}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    const res = await response.text();
 
-    if (!response.ok) {
-      setIsAdCountLoading(false);
-      toast({
-        title: error.message,
-        status: 'error',
-        duration: '5000',
-        isClosable: true,
-        position: 'bottom-left',
-      });
-      throw new Error(`Failed to fetch data for ad ${id}`);
-    }
-    if (response.ok) {
-      setIsAdCountLoading(false);
-      if (
-        promotedLink &&
-        typeof promotedLink === 'string' &&
-        promotedLink.startsWith('https://')
-      ) {
-        router.push(promotedLink);
-      } else if (promotedLink && typeof promotedLink === 'string') {
-        router.push(`https://${promotedLink}`);
+    try {
+      const response = await fetch(
+        `https://api.ad-promoter.com/api/v1/ads/conversion/${ref}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const res = await response.text();
+
+      if (!response.ok) {
+        setIsAdCountLoading(false);
+        setError(true);
+        toast({
+          title: error.message,
+          status: 'error',
+          duration: '5000',
+          isClosable: true,
+          position: 'bottom-left',
+        });
+        throw new Error(`Failed to fetch data for ad ${id}`);
       }
+      if (response.ok) {
+        setIsAdCountLoading(false);
+        if (
+          promotedLink &&
+          typeof promotedLink === 'string' &&
+          promotedLink.startsWith('https://')
+        ) {
+          router.push(promotedLink);
+        } else if (promotedLink && typeof promotedLink === 'string') {
+          router.push(`https://${promotedLink}`);
+        }
+      }
+    } catch (error) {
+      setError(true);
     }
   };
 
   const fetchData = async () => {
-    const response = await fetch(
-      `https://api.ad-promoter.com/api/v1/ads/${id}?ref=${ref}
-      `,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    const res = await response.json();
+    try {
+      const response = await fetch(
+        `https://api.ad-promoter.com/api/v1/ads/${id}?ref=${ref}
+        `,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const res = await response.json();
 
-    if (!response.ok) {
-      toast({
-        title: `Error fetching ad data: ${error.message}`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-        position: 'bottom-left',
-      });
-      throw new Error(`Failed to fetch data for ad ${id}`);
-    }
-
-    if (response.ok) {
-      if (res.data.type === 'detail') {
-        setData(res.data);
-      } else {
-        handleCountClick(res.data.promotedLink);
+      if (!response.ok) {
+        toast({
+          title: `Error fetching ad data: ${error.message}`,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-left',
+        });
+        throw new Error(`Failed to fetch data for ad ${id}`);
       }
+
+      if (response.ok) {
+        if (res.data.type === 'detail') {
+          setData(res.data);
+        } else {
+          handleCountClick(res.data.promotedLink);
+        }
+      }
+    } catch (error) {
+      setError(true);
     }
   };
 
@@ -114,6 +125,22 @@ const AdPage = () => {
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
   };
+
+  if (error) {
+    return (
+      <h3
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          textAlign: 'center',
+        }}
+      >
+        Unable to fetch data | Please try again
+      </h3>
+    );
+  }
 
   return (
     <>

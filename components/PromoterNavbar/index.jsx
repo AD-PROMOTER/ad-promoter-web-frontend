@@ -12,8 +12,8 @@ import { useContext, useEffect, useRef } from 'react';
 import NotificationContext from '@/context/notificationContext';
 import NotificationContainer from '@/components/Notification/index';
 import { useState } from 'react';
-import axios from 'axios';
 import DefaultPic from '@/public/assets/squared-profile.png'
+import axios from '@/pages/api/axios';
 
 const Index = () => {
   const [profileImage, setProfileImage] = useState('');
@@ -57,31 +57,41 @@ const Index = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const fetchNotification = async() =>{
-    try{
-      setIsLoading(true)
-      const result = await axios(`https://api.ad-promoter.com/api/v1/notifications?page=1&pageSize=10`,{
-        headers:{
-          Authorization: `Bearer ${token.current}`
-        }
-      })
-      setNotificationData(result.data.data.data)
-      setIsLoading(false)
-    }catch(error){
-      console.error('Error fetching notifications:',error);
+  const fetchNotification = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get('/api/v1/notifications?page=1&pageSize=10', {
+        headers: {
+          Authorization: `Bearer ${token.current}`,
+        },
+      });
+  
+      if (response.status === 200) {
+        const result = response.data;
+        setNotificationData(result.data.data);
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+      setIsLoading(false);
     }
-  }
-
+  };
+  
   const checkNewNotifications = async () => {
     try {
-      const response = await fetch('https://api.ad-promoter.com/api/v1/notifications?page=1&pageSize=10',{
-        headers:{
-          Authorization: `Bearer ${token.current}`
-        }
+      const response = await axios.get('/api/v1/notifications?page=1&pageSize=10', {
+        headers: {
+          Authorization: `Bearer ${token.current}`,
+        },
       });
-      const data = await response.json();
-      const hasNew = data.length > notificationData.length;
-      setHasNewNotification(hasNew);
+  
+      if (response.status === 200) {
+        const data = response.data;
+        const hasNew = data.length > notificationData.length;
+        setHasNewNotification(hasNew);
+      } 
     } catch (error) {
       console.error('Error checking new notifications:', error);
     }

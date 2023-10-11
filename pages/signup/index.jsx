@@ -81,21 +81,6 @@ const Index = () => {
       });
     }
 
-    // if (PWD_REGEX.test(password)) {
-    //   passwordRef.current = true;
-    //   setPasswordState(true);
-    // } else {
-    //   passwordRef.current = false;
-    //   setPasswordState(false);
-    //   toast({
-    //     title: 'Password must be at least 8 characters long, contain a lowercase, contain an uppercase, contain a number and a special character',
-    //     status: 'error',
-    //     duration: 10000,
-    //     isClosable: true,
-    //     position: 'bottom-left',
-    //   });
-    // }
-  
     if (passwordRef.current && phoneRef.current) {
       router.push('/signup/preference');
     }

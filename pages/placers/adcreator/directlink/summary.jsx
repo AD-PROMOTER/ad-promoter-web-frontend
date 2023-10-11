@@ -17,7 +17,6 @@ const Summary = () => {
             await createAd(productName,redirectUrl,productDescription,tags,advertType,cta,images,webAddress,amount,containAdultContent)
         } catch (error) {
             console.error(error);
-            // handle error here, e.g. show error message to user
         }
     }
   return (

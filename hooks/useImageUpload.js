@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '@/pages/api/axios';
 import { useEffect, useState } from 'react';
 
 export const useImageUpload = () => {
@@ -12,35 +12,35 @@ export const useImageUpload = () => {
     if (userToken) {
       setToken(userToken.token);
     }
-    // console.log(token);
   }, []);
 
   const imageUpload = async (formData) => {
     setIsLoading(true);
     setError(null);
 
-    const response = await fetch(
-      'https://api.ad-promoter.com/api/v1/fileUpload/image',
-      {
-        method: 'POST',
+    try {
+      const response = await axios.post('/api/v1/fileUpload/image', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
-          Accept: '*/*',
         },
-        body: formData,
-      }
-    );
-    const json = await response.json();
+      });
 
-    if (!response.ok) {
-      console.log(json);
-      console.log('image not uploaded');
-    }
-    if (response.ok) {
-      console.log(json);
-      console.log('image uploaded');
+      const json = response.data;
+
+      if (response.status === 200) {
+        console.log(json);
+        console.log('Image uploaded');
+      } else {
+        console.log(json);
+        console.log('Image not uploaded');
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      setIsLoading(false);
+      // Handle errors here if needed.
     }
   };
+
   return { imageUpload, isLoading, error, msg };
 };

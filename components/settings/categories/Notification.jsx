@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { StyledNotification, Button, ball } from '../settings.style';
 import { Spinner, useToast } from '@chakra-ui/react';
+import axios from '@/pages/api/axios';
 
 const Notification = ({ userDetails, token }) => {
   const [browser, setBrowser] = useState(userDetails.browserNotification);
@@ -13,36 +14,27 @@ const Notification = ({ userDetails, token }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const notificationSettings = {
       browserNotification: browser,
       emailNotification: email,
       desktopNotification: desktop,
       NotifyOffers: others,
     };
-
-    setIsChangesUpdating(true)
-    const response = await fetch('https://api.ad-promoter.com/api/v1/user/', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(notificationSettings),
-    });
-
+  
+    setIsChangesUpdating(true);
+  
     try {
-      if (response.status === 401) {
-        throw new Error('Unauthorized');
-      }
-
-      if (response.status === 500) {
-        throw new Error('Could not update Notification settings please try again');
-      }
-
+      const response = await axios.patch('/api/v1/user/', notificationSettings, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
       if (response.status === 200) {
-        const data = await response.json();
-        setIsChangesUpdating(false)
+        const data = response.data;
+        setIsChangesUpdating(false);
         toast({
           title: 'Notification Settings Updated',
           status: 'success',
@@ -50,11 +42,13 @@ const Notification = ({ userDetails, token }) => {
           isClosable: true,
           position: 'bottom-left',
         });
-        window.localStorage.setItem("user-detail", JSON.stringify(data.data))
+        window.localStorage.setItem("user-detail", JSON.stringify(data.data));
         window.location.reload();
+      } else {
+        throw new Error('Could not update Notification settings please try again');
       }
     } catch (error) {
-      setIsChangesUpdating(false)
+      setIsChangesUpdating(false);
       toast({
         title: `${error.message}`,
         status: 'warning',
@@ -63,7 +57,7 @@ const Notification = ({ userDetails, token }) => {
         position: 'top-left',
       });
     }
-
+  
     setIsChangesMade(false);
   };
 

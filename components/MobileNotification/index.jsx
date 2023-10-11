@@ -6,8 +6,8 @@ import { NotificationStyle } from './style'
 import { Spinner } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useRef } from 'react'
-import axios from 'axios'
 import NotificationEmptyScreen from '../notificationEmptyScreen'
+import axios from '@/pages/api/axios'
 
 const Index = ({goBack,setHasNewNotification}) => {
   const [isLoading,setIsLoading] = useState(null)
@@ -38,7 +38,7 @@ const Index = ({goBack,setHasNewNotification}) => {
   const fetchNotification = async() =>{
     try{
       setIsLoading(true)
-      const result = await axios(`https://api.ad-promoter.com/api/v1/notifications?page=1&pageSize=10`,{
+      const result = await axios.get(`/api/v1/notifications?page=1&pageSize=10`,{
         headers:{
           Authorization: `Bearer ${token.current}`
         }
@@ -52,8 +52,13 @@ const Index = ({goBack,setHasNewNotification}) => {
 
   const checkNewNotifications = async () => {
     try {
-      const response = await fetch('https://api.ad-promoter.com/api/v1/notifications?page=1&pageSize=10');
-      const data = await response.json();
+      const response = await axios.get('https://api.ad-promoter.com/api/v1/notifications?page=1&pageSize=10', {
+        headers: {
+          Authorization: `Bearer ${token.current}`,
+        },
+      });
+  
+      const data = response.data;
       const hasNew = data.length > notificationData.length;
       setHasNewNotification(hasNew);
     } catch (error) {

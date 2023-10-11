@@ -8,10 +8,11 @@ import DiscoveryFeed from './DiscoveryFeed'
 import DiscoveryJob from './DiscoveryJob'
 import Modal from './ReportModal/Modal'
 import Backdrop from './ReportModal/Backdrop'
-import axios from 'axios'
 import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from '@/utils/formatFilterDate'
 import DiscoveryEmptyScreen from '../discoveryEmptyScreen'
 import SearchEmptyScreen from '../failedSearch'
+import axios from '@/pages/api/axios'
+import { useToast } from '@chakra-ui/react'
 
 const DiscoveryPage = () => {
     const [showDropdown, setShowDropdown] = useState(false)
@@ -30,7 +31,7 @@ const DiscoveryPage = () => {
     const [popular,setPopular] = useState()
     const [page, setPage] = useState(1);
     const [recPage, setRecPage] = useState(1);
-
+    const toast = useToast()
     useEffect(()=>{
         const userToken = JSON.parse(localStorage.getItem("user-token"));
         if (userToken) {
@@ -54,98 +55,170 @@ const DiscoveryPage = () => {
         };
     }, []);
 
-    const fetchFeed = async() =>{
-      let apiUrl = `https://api.ad-promoter.com/api/v1/ads/personal?page=1&pageSize=10`;
+    const fetchFeed = async () => {
+      let apiUrl = `/api/v1/ads/personal?page=1&pageSize=10`;
+    
       if (startDate) {
         apiUrl += `&startDate=${startDate}`;
       }
+    
       if (endDate) {
         apiUrl += `&endDate=${endDate}`;
       }
+    
       if (searchTag) {
         apiUrl += `&query=${searchTag}`;
       }
+    
       if (adType) {
         apiUrl += `&adType=${adType}`;
       }
+    
       if (recent) {
         apiUrl += `&recent=${recent}`;
       }
+    
       if (popular) {
         apiUrl += `&popular=${popular}`;
       }
-      setIsLoading(true)
-      const result = await axios(apiUrl,{
-        headers:{
-          Authorization: `Bearer ${token.current}`
-        }
-      })
-      setFeed(result.data.data)
-      setIsLoading(false)
-      setSearchTag('')
-    }
-
-    const fetchRecommended = async() =>{
-      let apiUrl = `https://api.ad-promoter.com/api/v1/ads/recommended?page=1&pageSize=10`;
+    
+      setIsLoading(true);
+    
+      try {
+        const response = await axios.get(apiUrl, {
+          headers: {
+            Authorization: `Bearer ${token.current}`,
+          },
+        });
+    
+        setFeed(response.data.data);
+        setIsLoading(false);
+        setSearchTag('');
+      } catch (error) {
+        console.error(error);
+        setIsLoading(false);
+        toast({
+          title: 'Unable to fetch feed at the moment',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-left',
+          size: 'lg',
+        });
+      }
+    };
+    const fetchRecommended = async () => {
+      let apiUrl = `/api/v1/ads/recommended?page=1&pageSize=10`;
+    
       if (searchTag) {
         apiUrl += `&name=${searchTag}`;
       }
+    
       if (startDate) {
         apiUrl += `&startDate=${startDate}`;
       }
+    
       if (endDate) {
         apiUrl += `&endDate=${endDate}`;
       }
+    
       if (adType) {
         apiUrl += `&adType=${adType}`;
       }
+    
       if (recent) {
         apiUrl += `&recent=${recent}`;
       }
+    
       if (popular) {
         apiUrl += `&popular=${popular}`;
       }
-      setIsRecLoading(true)
-      const result = await axios(apiUrl,{
-        headers:{
-          Authorization: `Bearer ${token.current}`
-        }
-      })
-      setRecommendedJobs(result.data.data.data);
-      setIsRecLoading(false)
-    }
+    
+      setIsRecLoading(true);
+    
+      try {
+        const response = await axios.get(apiUrl, {
+          headers: {
+            Authorization: `Bearer ${token.current}`,
+          },
+        });
+    
+        setRecommendedJobs(response.data.data.data);
+        setIsRecLoading(false);
+      } catch (error) {
+        console.error(error);
+        setIsRecLoading(false);
+        toast({
+          title: 'Unable to fetch recommended jobs at the moment',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-left',
+          size: 'lg',
+        });
+      }
+    };
 
     const handleFilterSelect = (e) =>{
         setClickedFilter(e.target.innerText)
         if(e.target.innerText === 'Recent'){
           setRecent(true)
+          setStartDate('')
+          setEndDate('')
+          setPopular()
+          setAdType('')
         }
         if(e.target.innerText === 'Popular'){
           setPopular(true)
+          setRecent()
+          setStartDate('')
+          setEndDate('')
+          setAdType('')
         }
         if(e.target.innerText === 'Link-only Ads'){
           setAdType('direct-link')
+          setRecent()
+          setStartDate('')
+          setEndDate('')
+          setPopular()
         }
         if(e.target.innerText === 'Visual Ads'){
           setAdType('visual')
+          setRecent()
+          setStartDate('')
+          setEndDate('')
+          setPopular()
         }
         if(e.target.innerText === 'Details Ads'){
           setAdType('detail')
+          setRecent()
+          setStartDate('')
+          setEndDate('')
+          setPopular()
         }
         if(e.target.innerText === 'A week ago'){
           const { startOfWeek, endOfWeek } = getWeekAgoRange();
           setStartDate(startOfWeek)
           setEndDate(endOfWeek)
+          setRecent()
+          setAdType('')
+          setPopular()
         }
         if(e.target.innerText === 'Less than 2 weeks'){
           const { startOfWeek, endOfWeek } = getTwoWeeksAgoRange();
           setStartDate(startOfWeek)
           setEndDate(endOfWeek)
+          setRecent()
+          setAdType('')
+          setPopular()
         }
         if(e.target.innerText === 'Last 30 days'){
           const { startOfWeek, endOfWeek } = getThirtyDaysAgoRange();
           setStartDate(startOfWeek)
           setEndDate(endOfWeek)
+          setRecent()
+          setAdType('')
+          setPopular()
         }
         setShowDropdown(false)
     }

@@ -15,10 +15,11 @@ import DiscoveryJob from "@/components/DiscoveryFolder/DiscoveryJob"
 import DiscoveryFeed from "@/components/DiscoveryFolder/DiscoveryFeed"
 import Backdrop from "@/components/DiscoveryFolder/ReportModal/Backdrop"
 import Modal from "@/components/DiscoveryFolder/ReportModal/Modal"
-import axios from "axios"
 import DiscoveryEmptyScreen from "@/components/discoveryEmptyScreen"
 import SearchEmptyScreen from "@/components/failedSearch"
 import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from "@/utils/formatFilterDate"
+import axios from "../api/axios"
+import { useToast } from "@chakra-ui/react"
 
 
 const Discovery = ({router}) => {
@@ -42,7 +43,7 @@ const Discovery = ({router}) => {
   const [recent,setRecent] = useState()
   const [popular,setPopular] = useState()
   const [page, setPage] = useState(1);
-  const [recPage, setRecPage] = useState(1);
+  const toast = useToast()
 
   useEffect(()=>{
       const userToken = JSON.parse(localStorage.getItem("user-token"));
@@ -67,98 +68,172 @@ const Discovery = ({router}) => {
     };
 }, []);
 
-  const fetchFeed = async() =>{
-    let apiUrl = `https://api.ad-promoter.com/api/v1/ads/personal?page=${page}&pageSize=10`;
-    if (startDate) {
-      apiUrl += `&startDate=${startDate}`;
-    }
-    if (endDate) {
-      apiUrl += `&endDate=${endDate}`;
-    }
-    if (searchTag) {
-      apiUrl += `&query=${searchTag}`;
-    }
-    if (adType) {
-      apiUrl += `&adType=${adType}`;
-    }
-    if (recent) {
-      apiUrl += `&recent=${recent}`;
-    }
-    if (popular) {
-      apiUrl += `&popular=${popular}`;
-    }
-    setIsLoading(true)
-    const result = await axios(apiUrl,{
-      headers:{
-        Authorization: `Bearer ${token.current}`
-      }
-    })
-    setFeed(result.data.data);
-    setIsLoading(false)
-    setSearchTag('')
+const fetchFeed = async () => {
+  let apiUrl = `/api/v1/ads/personal?page=${page}&pageSize=10`;
+
+  if (startDate) {
+    apiUrl += `&startDate=${startDate}`;
   }
 
-  const fetchRecommended = async() =>{
-    let apiUrl = `https://api.ad-promoter.com/api/v1/ads/recommended?page=1&pageSize=10`;
-    if (searchTag) {
-      apiUrl += `&name=${searchTag}`;
-    }
-    if (startDate) {
-      apiUrl += `&startDate=${startDate}`;
-    }
-    if (endDate) {
-      apiUrl += `&endDate=${endDate}`;
-    }
-    if (adType) {
-      apiUrl += `&adType=${adType}`;
-    }
-    if (recent) {
-      apiUrl += `&recent=${recent}`;
-    }
-    if (popular) {
-      apiUrl += `&popular=${popular}`;
-    }
-    setIsRecLoading(true)
-    const result = await axios(apiUrl,{
-      headers:{
-        Authorization: `Bearer ${token.current}`
-      }
-    })
-    setRecommendedJobs(result.data.data.data);
-    setIsRecLoading(false)
+  if (endDate) {
+    apiUrl += `&endDate=${endDate}`;
   }
+
+  if (searchTag) {
+    apiUrl += `&query=${searchTag}`;
+  }
+
+  if (adType) {
+    apiUrl += `&adType=${adType}`;
+  }
+
+  if (recent) {
+    apiUrl += `&recent=${recent}`;
+  }
+
+  if (popular) {
+    apiUrl += `&popular=${popular}`;
+  }
+
+  setIsLoading(true);
+
+  try {
+    const response = await axios.get(apiUrl, {
+      headers: {
+        Authorization: `Bearer ${token.current}`,
+      },
+    });
+
+    setFeed(response.data.data);
+    console.log(response.data.data)
+    setIsLoading(false);
+    setSearchTag('');
+  } catch (error) {
+    console.error(error);
+    setIsLoading(false);
+    toast({
+      title: 'Unable to fetch feed',
+      status: 'error',
+      duration: 5000,
+      isClosable: true,
+      position: 'bottom-left',
+      size: 'lg',
+    });
+  }
+};
+
+const fetchRecommended = async () => {
+  let apiUrl = `/api/v1/ads/recommended?page=1&pageSize=10`;
+
+  if (searchTag) {
+    apiUrl += `&name=${searchTag}`;
+  }
+
+  if (startDate) {
+    apiUrl += `&startDate=${startDate}`;
+  }
+
+  if (endDate) {
+    apiUrl += `&endDate=${endDate}`;
+  }
+
+  if (adType) {
+    apiUrl += `&adType=${adType}`;
+  }
+
+  if (recent) {
+    apiUrl += `&recent=${recent}`;
+  }
+
+  if (popular) {
+    apiUrl += `&popular=${popular}`;
+  }
+
+  setIsRecLoading(true);
+
+  try {
+    const response = await axios.get(apiUrl, {
+      headers: {
+        Authorization: `Bearer ${token.current}`,
+      },
+    });
+
+    setRecommendedJobs(response.data.data.data);
+    setIsRecLoading(false);
+  } catch (error) {
+    console.error(error);
+    setIsRecLoading(false);
+    toast({
+      title: 'Unable to fetch recommended feed',
+      status: 'error',
+      duration: 5000,
+      isClosable: true,
+      position: 'bottom-left',
+      size: 'lg',
+    });
+  }
+};
 
   const handleFilterSelect = (e) =>{
       setClickedFilter(e.target.innerText)
       if(e.target.innerText === 'Recent'){
         setRecent(true)
+        setStartDate('')
+        setEndDate('')
+        setAdType('')
+        setPopular()
       }
       if(e.target.innerText === 'Popular'){
         setPopular(true)
+        setStartDate('')
+        setEndDate('')
+        setAdType('')
+        setRecent()
       }
       if(e.target.innerText === 'Link-only Ads'){
         setAdType('direct-link')
+        setStartDate('')
+        setEndDate('')
+        setRecent()
+        setPopular()
       }
       if(e.target.innerText === 'Visual Ads'){
         setAdType('visual')
+        setStartDate('')
+        setEndDate('')
+        setRecent()
+        setPopular()
       }
       if(e.target.innerText === 'Details Ads'){
         setAdType('detail')
+        setStartDate('')
+        setEndDate('')
+        setRecent()
+        setPopular()
       }
       if(e.target.innerText === 'A week ago'){
         const { startOfWeek, endOfWeek } = getWeekAgoRange();
         setStartDate(startOfWeek)
         setEndDate(endOfWeek)
+        setAdType('')
+        setRecent()
+        setPopular()
       }
       if(e.target.innerText === 'Less than 2 weeks'){
         const { startOfWeek, endOfWeek } = getTwoWeeksAgoRange();
         setStartDate(startOfWeek)
         setEndDate(endOfWeek)
+        setAdType('')
+        setRecent()
+        setPopular()
       }
       if(e.target.innerText === 'Last 30 days'){
         const { startOfWeek, endOfWeek } = getThirtyDaysAgoRange();
         setStartDate(startOfWeek)
         setEndDate(endOfWeek)
+        setAdType('')
+        setRecent()
+        setPopular()
       }
       setShowDropdown(false)
   }

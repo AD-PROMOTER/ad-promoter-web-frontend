@@ -20,6 +20,7 @@ const Index = () => {
     const {phoneNumber,setPhoneNumber,setIsInputWithValue} = useContext(SignupContext)
     const [phoneState,setPhoneState] = useState(true)
     const [isLoading,setIsLoading] = useState(false)
+    const [error,setError] = useState(false)
     const router = useRouter()
     const phoneRef = useRef(true)
     const toast = useToast();
@@ -33,9 +34,10 @@ const Index = () => {
     })
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        if(phoneNumber && isPossiblePhoneNumber(phoneNumber) && phoneNumber && isValidPhoneNumber(phoneNumber) && phoneNumber && formatPhoneNumber(phoneNumber) && formatPhoneNumberIntl(phoneNumber)){
-          setIsLoading(true)
+      e.preventDefault()
+      if(phoneNumber && isPossiblePhoneNumber(phoneNumber) && phoneNumber && isValidPhoneNumber(phoneNumber) && phoneNumber && formatPhoneNumber(phoneNumber) && formatPhoneNumberIntl(phoneNumber)){
+        setIsLoading(true)
+        try{          
           const response = await fetch(
             'https://api.ad-promoter.com/api/v1/auth/forgot-password-phone',
             {
@@ -46,34 +48,46 @@ const Index = () => {
               }),
             }
           );
-            const json = await response.json();
-            if (!response.ok) {
-              setIsLoading(false)
-              toast({
-                title: json.msg,
-                status: 'error',
-                duration: '5000',
-                isClosable: true,
-                position: 'bottom-left',
-              });
-            }
-            if (response.ok) {
-                localStorage.setItem('OTP_INFO', JSON.stringify(json));
-                setIsLoading(false)
-                router.push("/password-recovery/verification")
-            }
-        }
-        else{
-            phoneRef.current = false
-            setPhoneState(false)
+          const json = await response.json();
+          if (!response.ok) {
+            setIsLoading(false)
             toast({
-              title: 'Enter a valid phone number',
+              title: json.msg,
               status: 'error',
               duration: '5000',
               isClosable: true,
               position: 'bottom-left',
             });
+          }
+          if (response.ok) {
+            localStorage.setItem('OTP_INFO', JSON.stringify(json));
+            setIsLoading(false)
+            router.push("/password-recovery/verification")
+          }
+        }catch(error){
+          setError(true)
+          console.log(error);
+          toast({
+            title: 'Unable to validate phone number',
+            status: 'error',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+          });
+          setIsLoading(false)
         }
+      }
+      else{
+        phoneRef.current = false
+        setPhoneState(false)
+        toast({
+          title: 'Enter a valid phone number',
+          status: 'error',
+          duration: '5000',
+          isClosable: true,
+          position: 'bottom-left',
+        });
+      }
     }
   return (
     <>    

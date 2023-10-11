@@ -6,6 +6,8 @@ import emptyWallet from '@/public/assets/empty-wallet-add.svg';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import axios from '@/pages/api/axios';
+import { useToast } from '@chakra-ui/react';
 
 const WithdrawDetails = (props) => {
   const {onOpenWithdrawProcess, onCloseWithdrawDetails} = props;
@@ -13,7 +15,7 @@ const WithdrawDetails = (props) => {
   const [isLoading,setIsLoading] = useState(null)
   const [token,setToken] = useState('')
   const [userId,setUserId] = useState('')
-
+  const toast = useToast()
   useEffect(() => {
     const userToken = JSON.parse(localStorage.getItem('user-token'));
     const userId = JSON.parse(localStorage.getItem('user-detail'))
@@ -36,43 +38,57 @@ const WithdrawDetails = (props) => {
     }
   };
 
-  const withdraw = async(amount,userId) =>{
-      setIsLoading(true)
-      const response = await fetch('https://api.ad-promoter.com/api/v1/payouts/create', {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          "amount": amount,
-          "recipient": userId
-        }),
-      });
-      const json = await response.json();
+  const withdraw = async (amount, userId) => {
+    setIsLoading(true);
   
-      if (!response.ok) {
-        success.current = false
-        setIsLoading(false)
-        props.setWithdrawConfirmed(false)
-        props.onOpenWithdrawModal()
-        props.onCloseModal()
-      }
-      if (response.ok) {
-        setIsLoading(false)
-        if(json.success){
-         props.setWithdrawConfirmed(true)
-         if(props.withdrawConfirmed){
-            props.onOpenWithdrawModal()
-            props.onCloseModal()
+    try {
+      const response = await axios.post(
+        '/api/v1/payouts/create',
+        {
+          amount: amount,
+          recipient: userId,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      const json = response.data;
+  
+      if (!response.status === 200) {
+        success.current = false;
+        setIsLoading(false);
+        props.setWithdrawConfirmed(false);
+        props.onOpenWithdrawModal();
+        props.onCloseModal();
+      } else {
+        setIsLoading(false);
+  
+        if (json.success) {
+          props.setWithdrawConfirmed(true);
+  
+          if (props.withdrawConfirmed) {
+            props.onOpenWithdrawModal();
+            props.onCloseModal();
           }
         }
       }
-
-  }
+    } catch (error) {
+      console.error('Error withdrawing:', error);
+      setIsLoading(false);
+      toast({
+        title: 'Something went wrong',
+        status: 'error',
+        duration: '5000',
+        isClosable: true,
+        position: 'bottom-left',
+        size: 'lg',
+      });
+    }
+  };
 
   const handleClick = () =>{
    withdraw(props.amount,userId)

@@ -15,7 +15,6 @@ import { BackdropContainer, Feed, ModalContainer } from './styles'
 import { detailsAd, directlinkAd, visualAd } from './data'
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
-import axios from 'axios'
 import { CgProfile } from 'react-icons/cg'
 import TimeAgo from '../timeAgo'
 import linkFrame from '@/public/assets/linkframe.svg'
@@ -23,6 +22,7 @@ import { Spinner, useToast } from '@chakra-ui/react'
 import ShareDialogue from '../shareDialogue'
 import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from 'react-icons/bs'
 import JobsContext from '@/context/jobsContext'
+import axios from '@/pages/api/axios'
 
 const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate}) => {
     const [showReport, setShowReport] = useState({})
@@ -34,7 +34,9 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
     const [showDropdown, setShowDropdown] = useState(false)
     const [listValue, setListValue] = useState('It has gory images')
     const [currentIndex,setCurrentIndex] = useState(0)
-    const {recentJobs,setRecentJobs,isLoading,setIsLoading} = useContext(JobsContext)
+    // const {recentJobs,setRecentJobs,isLoading,setIsLoading} = useContext(JobsContext)
+    const [recentJobs,setRecentJobs] = useState([])
+    const [isLoading,setIsLoading] = useState(false)
     const [showSubmit,setShowSubmit] = useState(true)
     const [showPaste,setShowPaste] = useState(false)
     const [inputValue, setInputValue] = useState('');
@@ -71,47 +73,80 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
         }
     }, [sortStartDate,sortEndDate]);
 
-
-    const fetchRecentJobs = async() =>{
-        let apiUrl = `https://api.ad-promoter.com/api/v1/ads/recent-ads?page=1&pageSize=10`;
-        if (sortStartDate) {
-          apiUrl += `&startDate=${sortStartDate}`;
-        }
-        if (sortEndDate) {
-          apiUrl += `&endDate=${sortEndDate}`;
-        }
-        setIsLoading(true)
-        const result = await axios(apiUrl,{
-          headers:{
-            Authorization: `Bearer ${token.current}`
+    const fetchRecentJobs = async () => {
+        try {
+          setIsLoading(true);
+      
+          let apiUrl = '/api/v1/ads/recent-ads?page=1&pageSize=10';
+      
+          if (sortStartDate) {
+            apiUrl += `&startDate=${sortStartDate}`;
           }
-        })
-        setRecentJobs(result.data.data.data)
-        setIsLoading(false)
-    }
+      
+          if (sortEndDate) {
+            apiUrl += `&endDate=${sortEndDate}`;
+          }
+      
+          const response = await axios.get(apiUrl, {
+            headers: {
+              Authorization: `Bearer ${token.current}`,
+            },
+          });
+      
+          setRecentJobs(response.data.data.data);
+          setIsLoading(false);
+        } catch (error) {
+          console.error('Error fetching recent jobs:', error);
+          toast({
+            title: 'Error fetching recent jobs',
+            status: 'error',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+          });
+        }
+    };
     
     const ClickedList = (e) =>{
       setListValue(e.target.innerText)
       setShowDropdown(false)
     }
 
-    const handleJobSave = async(id) =>{
-        const result = await axios(`https://api.ad-promoter.com/api/v1/user/save-job/${id}`,{
-          headers:{
-            Authorization: `Bearer ${token.current}`,
-          },
-          method: "PUT"
-        })
-        console.log(result.data)
-        toast({
-            title: result.data.data,
-            status: result.data.success ? "success" : "error",
-            duration: "5000",
+    const handleJobSave = async (id) => {
+        try {
+          const response = await axios.put(
+            `/api/v1/user/save-job/${id}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token.current}`,
+              },
+            }
+          );
+      
+          console.log(response.data);
+      
+          toast({
+            title: response.data.data,
+            status: response.data.success ? 'success' : 'error',
+            duration: '5000',
             isClosable: true,
-            position: "bottom-left",
-            size: "lg"
-        });
-    }
+            position: 'bottom-left',
+            size: 'lg',
+          });
+        } catch (error) {
+          console.error('Error saving job:', error);
+          toast({
+            title: 'Error saving job',
+            status: 'error',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+          });
+        }
+    };
 
     const handleOpenDialogue = (itemId) => {
         setShowDialogue((prevState) => ({
@@ -147,190 +182,228 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
         setShowPaste(true)
     }
 
-    const handleCopyLink = async(id) => {
-            const response = await fetch(
-              `https://api.ad-promoter.com/api/v1/promotion/promote/${id}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token.current}`,
-                },
-              }
-            );
-            const data = await response.json();
-      
-            if(!response.ok){
-                toast({
-                    title: 'Failed to copy link:', error,
-                    status: "error",
-                    duration: "5000",
-                    isClosable: true,
-                    position: "bottom-left",
-                    size: "lg"
-                });
-              throw new Error(data.msg);
-            }
-            if (response.ok) {
-                navigator.clipboard.writeText(`${data.uniqueLink}${data.promotionRef}`)
-                
-                toast({
-                    title: 'Link copied to clipboard!',
-                    status: "success",
-                    duration: "5000",
-                    isClosable: true,
-                    position: "bottom-left",
-                    size: "lg"
-                });
-            }
-        
-    };
-
-    const handleReport = async (id,report) =>{
-        setIsReportLoading(true)
-        const response = await fetch(
-            'https://api.ad-promoter.com/api/v1/reports/create',
+    const handleCopyLink = async (id) => {
+        try {
+          const response = await axios.get(
+            `/api/v1/promotion/promote/${id}`,
             {
-              method: 'POST',
-              headers: { 
-                    'Content-Type': 'application/json', 
-                    Authorization: `Bearer ${token.current}`
-                },
-              body: JSON.stringify({
-                adsId: id,
-                report: report
-              }),
+              headers: {
+                Authorization: `Bearer ${token.current}`,
+              },
             }
           );
-          const json = await response.json();
       
-          if (!response.ok) {
-            setIsReportLoading(false);
-            setShowReportModal(false)
+          const data = response.data;
+      
+          if (!response.status === 200) {
+            throw new Error(data.msg);
+          }
+      
+          navigator.clipboard.writeText(`${data.uniqueLink}${data.promotionRef}`);
+      
+          toast({
+            title: 'Link copied to clipboard!',
+            status: 'success',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+          });
+        } catch (error) {
+          console.error('Error copying link:', error);
+          toast({
+            title: 'Failed to copy link',
+            status: 'error',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+          });
+        }
+    };
+
+    const handleReport = async (id, report) => {
+        try {
+          setIsReportLoading(true);
+      
+          const response = await axios.post(
+            '/api/v1/reports/create',
+            {
+              adsId: id,
+              report: report,
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token.current}`,
+              },
+            }
+          );
+      
+          const json = response.data;
+      
+          if (!response.status === 200) {
             toast({
                 title: json.msg,
-                status: "error",
-                duration: "5000",
+                status: 'error',
+                duration: '5000',
                 isClosable: true,
-                position: "bottom-left",
-                size: "lg"
-            });
+                position: 'bottom-left',
+                size: 'lg',
+              });
           }
-          if (response.ok) {
-              setIsReportLoading(false);
-              setShowReportModal(false)
-              toast({
-                title: json.msg,
-                status: "success",
-                duration: "5000",
-                isClosable: true,
-                position: "bottom-left",
-                size: "lg"
-            });
-          }
+      
+          setIsReportLoading(false);
+          setShowReportModal(false);
+      
+          toast({
+            title: json.msg,
+            status: 'success',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+          });
+        } catch (error) {
+          setIsReportLoading(false);
+          setShowReportModal(false);
+      
+          toast({
+            title: 'Error reporting ad',
+            status: 'error',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+          });
         }
+    };
 
-        const handleShowReport = () =>{
-            setShowReportModal(true)
-            setShowReport(false)
-        }
+    const handleShowReport = () =>{
+        setShowReportModal(true)
+        setShowReport(false)
+    }
 
-        const handleAdRemoval = async(id) =>{
-            const response = await fetch(
-                `https://api.ad-promoter.com/api/v1/ads/${id}`,
-                {
-                  method: 'DELETE',
-                  headers: { 
-                        Authorization: `Bearer ${token.current}`
-                    },
-                }
-              );
-              const json = await response.json();
-          
-              if (!response.ok) {
-                toast({
-                    title: json.msg,
-                    status: "error",
-                    duration: "5000",
-                    isClosable: true,
-                    position: "bottom-left",
-                    size: "lg"
-                });
-              }
-              if (response.ok) {
-                 fetchRecentJobs()
-                  toast({
-                    title: json.msg,
-                    status: "success",
-                    duration: "5000",
-                    isClosable: true,
-                    position: "bottom-left",
-                    size: "lg"
-                });
+    const handleAdRemoval = async (id) => {
+        try {
+          const response = await axios.delete(
+            `/api/v1/ads/${id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token.current}`,
+              },
             }
-        }
-
-        const handleDownload = (url) => {
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'image.jpg';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        };
-
-        const handleVisualSubmit = async (id,link) =>{
-            const data = {
-                adID: id,
-                link: link
-            };
-            const response = await fetch(
-                `https://api.ad-promoter.com/api/v1/promotion/visual`,
-                {
-                  method: 'POST',
-                  headers: { 
-                        Authorization: `Bearer ${token.current}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                }
-              );
-            const json = await response.json();
-          
-            if (!response.ok) {
+          );
+      
+          const json = response.data;
+      
+          if (!response.status === 200) {
             toast({
                 title: json.msg,
-                status: "error",
-                duration: "5000",
+                status: 'error',
+                duration: '5000',
                 isClosable: true,
-                position: "bottom-left",
-                size: "lg"
-                });
-                setInputValue('')
-            }
-            if (response.ok) {
-                setInputValue('')
-                toast({
-                title: 'Link Submitted',
-                status: "success",
-                duration: "5000",
-                isClosable: true,
-                position: "bottom-left",
-                size: "lg"
-                });
-            }
+                position: 'bottom-left',
+                size: 'lg',
+              });
+            throw new Error(json.msg);
+          }
+      
+          fetchRecentJobs();
+      
+          toast({
+            title: json.msg,
+            status: 'success',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+          });
+        } catch (error) {
+          toast({
+            title: 'Something went wrong',
+            status: 'error',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+          });
         }
+    };
 
-        const toggleDropdown = (itemId) => {
-            setShowReport((prevState) => ({
-                ...prevState,
-                [itemId]: !prevState[itemId]
-            }));
+    const handleDownload = (url) => {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'image.jpg';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    };
+
+    const handleVisualSubmit = async (id, link) => {
+        try {
+          const data = {
+            adID: id,
+            link: link,
           };
-          
-        const handleButtonClick = (event, itemId) => {
-            // Prevent event propagation for the specific button
-            event.stopPropagation();
-            toggleDropdown(itemId); // Toggle the dropdown without affecting the global click event
+      
+          const response = await axios.post(
+            '/api/v1/promotion/visual',
+            data,
+            {
+              headers: {
+                Authorization: `Bearer ${token.current}`,
+              },
+            }
+          );
+      
+          if (response.status === 200) {
+            setInputValue('');
+            toast({
+              title: 'Link Submitted',
+              status: 'success',
+              duration: '5000',
+              isClosable: true,
+              position: 'bottom-left',
+              size: 'lg',
+            });
+          } else {
+            const json = response.data;
+            toast({
+              title: json.message,
+              status: 'error',
+              duration: '5000',
+              isClosable: true,
+              position: 'bottom-left',
+              size: 'lg',
+            });
+            setInputValue('');
+          }
+        } catch (error) {
+          console.error('Error submitting visual promotion:', error);
+          toast({
+            title: 'An error occurred while submitting the visual promotion.',
+            status: 'error',
+            duration: '5000',
+            isClosable: true,
+            position: 'bottom-left',
+            size: 'lg',
+          });
+        }
+    };
+
+    const toggleDropdown = (itemId) => {
+        setShowReport((prevState) => ({
+            ...prevState,
+            [itemId]: !prevState[itemId]
+        }));
         };
+        
+    const handleButtonClick = (event, itemId) => {
+        // Prevent event propagation for the specific button
+        event.stopPropagation();
+        toggleDropdown(itemId); // Toggle the dropdown without affecting the global click event
+    };
     
   return (
     <>

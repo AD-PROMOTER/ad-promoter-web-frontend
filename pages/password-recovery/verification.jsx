@@ -45,38 +45,49 @@ const Verification = () => {
         e.preventDefault()
         if(input1 && input2 && input3 && input4 && input4 !== ''){
             setIsLoading(true)
-            const response = await fetch(
-                'https://api.ad-promoter.com/api/v1/auth/verify-OTP-password',
-                {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    reference_id: refId,
-                    otp,
-                    phoneNumber,
-                    
-                  }),
+            try{
+                const response = await fetch(
+                    'https://api.ad-promoter.com/api/v1/auth/verify-OTP-password',
+                    {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        reference_id: refId,
+                        otp,
+                        phoneNumber,
+                        
+                      }),
+                    }
+                );
+                const json = await response.json();
+            
+                if (!response.ok) {
+                    setIsLoading(false);
+                    setError('Sign Up failed');
+                    toast({
+                        title: json.msg,
+                        status: 'error',
+                        duration: '5000',
+                        isClosable: true,
+                        position: 'bottom-left',
+                    });
                 }
-              );
-              const json = await response.json();
-          
-              if (!response.ok) {
-                setIsLoading(false);
-                setError('Sign Up failed');
-                toast({
-                  title: json.msg,
-                  status: 'error',
-                  duration: '5000',
-                  isClosable: true,
-                  position: 'bottom-left',
-                });
-              }
-              if (response.ok) {
+                if (response.ok) {
+                    setIsLoading(false)
+                    //save user to local storage
+                    localStorage.setItem('reset-token', JSON.stringify(json.data.resetToken));
+                    router.push("/password-recovery/password-change")
+                }
+            }catch(error){
                 setIsLoading(false)
-                //save user to local storage
-                localStorage.setItem('reset-token', JSON.stringify(json.data.resetToken));
-                router.push("/password-recovery/password-change")
-              }
+                toast({
+                    title: 'Unable to pocess Data',
+                    status: 'error',
+                    duration: '5000',
+                    isClosable: true,
+                    position: 'bottom-left',
+                });
+            }
         }
     }
 

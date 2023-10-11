@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import axios from '@/pages/api/axios';
 import { useEffect, useRef, useState } from 'react';
 
 export const useAddWallet = () => {
@@ -16,39 +16,48 @@ export const useAddWallet = () => {
   const createBank = async (bankCode, acctName, acctNumber, props) => {
     setIsLoading(true);
 
-    const response = await fetch(
-      'https://api.ad-promoter.com/api/v1/wallet/create-recipient',
-      {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
+    try {
+      const response = await axios.post(
+        '/api/v1/wallet/create-recipient',
+        {
           type: 'nuban',
           name: acctName,
           account_number: acctNumber,
           bank_code: bankCode,
           amount: 0,
-        }),
-      }
-    );
-    const json = await response.json();
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    if (!response.ok) {
-      success.current = false;
-      setIsLoading(false);
-    }
-    if (response.ok) {
-      setIsLoading(false);
-      if (json.success) {
-        props.onClose();
-        props.onOpen();
+      const json = response.data;
+
+      if (!response.status === 200) {
+        success.current = false;
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+        if (json.success) {
+          props.onClose();
+          props.onOpen();
+        }
       }
+    } catch (error) {
+      console.error('Error creating bank details:', error);
+      setIsLoading(false);
+      toast({
+        title: 'Error creating bank details',
+        status: 'error',
+        duration: '5000',
+        isClosable: true,
+        position: 'bottom-left',
+      });
     }
   };
+
   return { createBank, isLoading, success };
 };

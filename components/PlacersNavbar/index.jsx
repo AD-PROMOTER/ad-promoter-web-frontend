@@ -14,9 +14,8 @@ import NotificationContainer from '@/components/Notification/index';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import DefaultPic from '@/public/assets/squared-profile.png'
-
 import { GlobalStyle } from '@/styles/global';
-import axios from 'axios';
+import axios from '@/pages/api/axios';
 const Index = () => {
   const [profileImage, setProfileImage] = useState('');
   const [isLoading,setIsLoading] = useState(null)
@@ -56,35 +55,44 @@ const Index = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const fetchNotification = async() =>{
-    try{
-      setIsLoading(true)
-      const result = await axios(`https://api.ad-promoter.com/api/v1/notifications?page=1&pageSize=10`,{
-        headers:{
-          Authorization: `Bearer ${token.current}`
-        }
-      })
-      setNotificationData(result.data.data.data)
-      setIsLoading(false)
-    }catch(error){
-      console.error('Error fetching notifications:',error);
-    }
-  }
 
-  const checkNewNotifications = async () => {
-    try {
-      const response = await fetch('https://api.ad-promoter.com/api/v1/notifications?page=1&pageSize=10',{
-        headers:{
-          Authorization: `Bearer ${token.current}`
-        }
-      });
-      const data = await response.json();
-      const hasNew = data.length > notificationData.length;
-      setHasNewNotification(hasNew);
-    } catch (error) {
-      console.error('Error checking new notifications:', error);
-    }
-  };
+  const fetchNotification = async () => {
+  try {
+    setIsLoading(true);
+    const result = await axios.get('/api/v1/notifications', {
+      params: {
+        page: 1,
+        pageSize: 10,
+      },
+      headers: {
+        Authorization: `Bearer ${token.current}`,
+      },
+    });
+    setNotificationData(result.data.data.data);
+    setIsLoading(false);
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+  }
+};
+
+const checkNewNotifications = async () => {
+  try {
+    const response = await axios.get('/api/v1/notifications', {
+      params: {
+        page: 1,
+        pageSize: 10,
+      },
+      headers: {
+        Authorization: `Bearer ${token.current}`,
+      },
+    });
+    const data = response.data;
+    const hasNew = data.length > notificationData.length;
+    setHasNewNotification(hasNew);
+  } catch (error) {
+    console.error('Error checking new notifications:', error);
+  }
+};
 
   const variants = {
     animate: { width: '60px', transition: { duration: 0.5 } },

@@ -25,11 +25,11 @@ import WithdrawDetails from '@/components/MobilePromoterWallet/WithdrawDetails';
 import WithdrawFunds from '@/components/MobilePromoterWallet/WithdrawFunds';
 import arrowUp from '@/public/assets/arrow-up.svg'
 import arrowDown from '@/public/assets/arrow-down.svg'
-import axios from 'axios';
 import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from '@/utils/formatFilterDate';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Spinner } from '@chakra-ui/react';
 import AccountEmptyScreen from '@/components/accountEmptyScreen';
+import axios from '../api/axios';
 
 const PromoterWallet = () => {
   const [showModal, setShowModal] = useState(false);
@@ -81,6 +81,166 @@ const PromoterWallet = () => {
     fetchData();  
   }, []);
 
+  useEffect(() => {
+    const userToken = JSON.parse(localStorage.getItem("user-token"));
+    if (userToken) {
+      token.current = userToken
+    }
+
+    if(token.current){
+      fetchDashboard()
+      fetchTransactionHistory()
+    }
+  },[dashboardEndDate, dashboardStartDate]);
+
+  async function fetchBanks() {
+    const response = await fetch('https://nigerianbanks.xyz/');
+    const data = await response.json();
+    return data
+  }
+
+  const fetchAccountData = async () => {
+    try {
+      const response = await axios.get('/api/v1/wallet/fetch-recipient', {
+        headers: {
+          Authorization: `Bearer ${token.current}`,
+        },
+      });
+  
+      const data = response.data.data;
+      return data;
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Unable to fetch account data',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-left',
+        size: 'lg',
+      });
+      return null;
+    }
+  };
+
+  const fetchDashboard = async () => {
+    let apiUrl = '/api/v1/user/dashboard';
+  
+    if (dashboardStartDate || dashboardEndDate) {
+      apiUrl += '?';
+    }
+  
+    if (dashboardStartDate) {
+      apiUrl += `startDate=${dashboardStartDate}`;
+    }
+  
+    if (dashboardEndDate) {
+      apiUrl += `${dashboardStartDate ? '&' : ''}endDate=${dashboardEndDate}`;
+    }
+  
+    setIsDashboardLoading(true);
+  
+    try {
+      const response = await axios.get(apiUrl, {
+        headers: {
+          Authorization: `Bearer ${token.current}`,
+        },
+      });
+  
+      const data = response.data.data;
+  
+      setTotalBalance(data.totalBalance);
+      setPendingWithdrawals(data.pendingWithdrawals);
+      setAmountPaid(data.totalWithdrawals);
+      setIsDashboardLoading(false);
+    } catch (error) {
+      console.error(error);
+      setIsDashboardLoading(false);
+      toast({
+        title: 'Unable to fetch data',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-left',
+        size: 'lg',
+      });
+    }
+  };
+ 
+  const fetchTransactionHistory = async () => {
+    setIsTransactionHistoryLoading(true);
+  
+    try {
+      const response = await axios.get('/api/v1/payouts/history?page=1&pageSize=10', {
+        headers: {
+          Authorization: `Bearer ${token.current}`,
+        },
+      });
+  
+      setIsTransactionHistoryLoading(false);
+      setTransactionHistory(response.data.data.data);
+    } catch (error) {
+      console.error(error);
+      setIsTransactionHistoryLoading(false);
+      toast({
+        title: 'Unable to fetch transaction history',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-left',
+        size: 'lg',
+      });
+    }
+  };
+
+  const handleFilterSelect = (e) =>{
+    setClickedFilter(e.target.innerText)
+    if(e.target.innerText === 'Recent'){
+      setDashboardStartDate('')
+      setDashboardEndDate('')
+    }
+    if(e.target.innerText === 'A week ago'){
+      const { startOfWeek, endOfWeek } = getWeekAgoRange();
+      setDashboardStartDate(startOfWeek)
+      setDashboardEndDate(endOfWeek)
+    }
+    if(e.target.innerText === 'Less than 2 weeks'){
+      const { startOfWeek, endOfWeek } = getTwoWeeksAgoRange();
+      setDashboardStartDate(startOfWeek)
+      setDashboardEndDate(endOfWeek)
+    }
+    if(e.target.innerText === 'Last 30 days'){
+      const { startOfWeek, endOfWeek } = getThirtyDaysAgoRange();
+      setDashboardStartDate(startOfWeek)
+      setDashboardEndDate(endOfWeek)
+    }
+    setOpenFilter(false)
+  }
+
+  const toggleFirstBank = () => {
+    if (firstBank) {
+      setFirstBank(false);
+    }
+    return;
+  };
+
+  const toggleSecondBank = () => {
+    if (secondBank) {
+      setSecondBank(false);
+    }
+    return;
+  };
+
+  const selectFirstBank = () => {
+    setFirstBank(true);
+    toggleSecondBank();
+  };
+
+  const selectSecondBank = () => {
+    setSecondBank(true);
+    toggleFirstBank();
+  };
+
   const renderMappedElements = () => {
     return [...accountData].slice(0,2).map((item) => {
       const matchedBank = banks.find((bank) => bank.code === item.details.bank_code);
@@ -107,129 +267,6 @@ const PromoterWallet = () => {
         </div>
       );
     });
-  };
-
-  async function fetchBanks() {
-    const response = await fetch('https://nigerianbanks.xyz/');
-    const data = await response.json();
-    return data
-  }
-
-  const fetchAccountData = async() =>{
-    const result = await axios(`https://api.ad-promoter.com/api/v1/wallet/fetch-recipient`,{
-      headers:{
-        Authorization: `Bearer ${token.current}`
-      }
-    })
-    console.log(result.data.data);
-    return result.data.data
-  }
-
-  useEffect(() => {
-    const userToken = JSON.parse(localStorage.getItem("user-token"));
-    if (userToken) {
-      token.current = userToken
-    }
-
-    const fetchDashboard = async() =>{
-      let apiUrl = 'https://api.ad-promoter.com/api/v1/user/dashboard';
-      if (dashboardStartDate) {
-        apiUrl += `?startDate=${dashboardStartDate}`;
-      }
-      if (dashboardEndDate) {
-        apiUrl += `&endDate=${dashboardEndDate}`;
-      }
-      setIsDashboardLoading(true)
-      const result = await axios(apiUrl,{
-        headers:{
-          Authorization: `Bearer ${token.current}`
-        }
-      })
-      setTotalBalance(result.data.data.totalBalance)
-      setPendingWithdrawals(result.data.data.pendingWithdrawals)
-      setAmountPaid(result.data.data.totalWithdrawals)
-      setIsDashboardLoading(false)
-    }
-    if(token.current){
-      fetchDashboard()
-    }
-  },[dashboardEndDate, dashboardStartDate]);
- 
-
-  useEffect(()=>{
-    const userToken = JSON.parse(localStorage.getItem("user-token"));
-    if (userToken) {
-      token.current = userToken
-    }
-    
-    const fetchTransactionHistory = async() =>{
-      setIsTransactionHistoryLoading(true)
-      const result = await axios(`https://api.ad-promoter.com/api/v1/payouts/history?page=1&pageSize=10`,{
-        headers:{
-          Authorization: `Bearer ${token.current}`
-        }
-      })
-      setIsTransactionHistoryLoading(false)
-      setTransactionHistory(result.data.data.data)
-    }
-    
-    fetchTransactionHistory()
-  },[])
-
-  const handleFilterSelect = (e) =>{
-    setClickedFilter(e.target.innerText)
-    if(e.target.innerText === 'Recent'){
-      setDashboardStartDate('')
-      setDashboardEndDate('')
-    }
-    if(e.target.innerText === 'A week ago'){
-      const { startOfWeek, endOfWeek } = getWeekAgoRange();
-      setDashboardStartDate(startOfWeek)
-      setDashboardEndDate(endOfWeek)
-    }
-    if(e.target.innerText === 'Less than 2 weeks'){
-      const { startOfWeek, endOfWeek } = getTwoWeeksAgoRange();
-      setDashboardStartDate(startOfWeek)
-      setDashboardEndDate(endOfWeek)
-    }
-    if(e.target.innerText === 'Last 30 days'){
-      const { startOfWeek, endOfWeek } = getThirtyDaysAgoRange();
-      setDashboardStartDate(startOfWeek)
-      setDashboardEndDate(endOfWeek)
-    }
-    setOpenFilter(false)
-  }
-
-  const toggleDropdown = () => {
-    if (showDropdown) {
-      setShowDropdown(false);
-    } else {
-      setShowDropdown(true);
-    }
-  };
-
-  const toggleFirstBank = () => {
-    if (firstBank) {
-      setFirstBank(false);
-    }
-    return;
-  };
-
-  const toggleSecondBank = () => {
-    if (secondBank) {
-      setSecondBank(false);
-    }
-    return;
-  };
-
-  const selectFirstBank = () => {
-    setFirstBank(true);
-    toggleSecondBank();
-  };
-
-  const selectSecondBank = () => {
-    setSecondBank(true);
-    toggleFirstBank();
   };
 
   const walletData = [

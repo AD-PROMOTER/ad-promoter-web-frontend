@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from "react";
 import dynamic from 'next/dynamic';
-import axios from "axios";
 import { useEffect } from "react";
 import ChevronRight from '@/public/assets/chevron-right';
 import ChevronLeft from '@/public/assets/chevron-left';
 import { format, addMonths, subMonths, getWeeksInMonth, startOfWeek, endOfWeek,addWeeks } from 'date-fns';
+import axios from "@/pages/api/axios";
 
 function PlacersChart() {
   const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });

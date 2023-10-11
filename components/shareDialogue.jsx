@@ -4,6 +4,7 @@ import { FiTwitter, FiFacebook } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import { useToast } from '@chakra-ui/react';
+import axios from '@/pages/api/axios';
 
 const ShareButton = styled.button`
   padding: 8px;
@@ -62,118 +63,62 @@ const ShareDialogue = ({id}) => {
   }
 }, []);
 
-  const shareToTwitter = async() => {
-      const response = await fetch(
-        `https://api.ad-promoter.com/api/v1/promotion/promote/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token.current}`,
-          },
-        }
-      );
-      const data = await response.json();
+const shareLink = async (socialMedia) => {
+  try {
+    const response = await axios.get(`/api/v1/promotion/promote/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token.current}`,
+      },
+    });
 
-      if(!response.ok){
-        toast({
-          title: `Failed to share link:, ${data.msg}`,
-          status: "error",
-          duration: "5000",
-          isClosable: true,
-          position: "bottom-left",
-          size: "lg"
-        });
-        // throw new Error(data.msg);
-      }
-      if (response.ok) {
-        const shareLink = `https://app.ad-promoter.com/ad/${id}?ref=${data.promotionRef}`;
-        const shareUrl = `https://twitter.com/share?url=${encodeURIComponent(shareLink)}`;
-        window.open(shareUrl, '_blank');
-        toast({
-            title: 'Sharing Link!',
-            status: "success",
-            duration: "5000",
-            isClosable: true,
-            position: "bottom-left",
-            size: "lg"
-        });
-      }
-    
-  };
+    const data = response.data;
 
-  const shareToFacebook = async () => {
-    const response = await fetch(
-      `https://api.ad-promoter.com/api/v1/promotion/promote/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token.current}`,
-        },
-      }
-    );
-    const data = await response.json();
-
-    if(!response.ok){
-      toast({
-        title: `Failed to share link:, ${data.msg}`,
-        status: "error",
-        duration: "5000",
-        isClosable: true,
-        position: "bottom-left",
-        size: "lg"
-      });
-      // throw new Error(data.msg);
+    if (!response.status === 200 || !data.success) {
+      throw new Error(data.msg);
     }
-    if (response.ok) {
-      const shareLink = `https://app.ad-promoter.com/ad/${id}?ref=${data.promotionRef}`;
-      const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareLink)}`;
-      window.open(shareUrl, '_blank');
-      toast({
-          title: 'Sharing Link!',
-          status: "success",
-          duration: "5000",
-          isClosable: true,
-          position: "bottom-left",
-          size: "lg"
-      });
-    }
-    
-  };
 
-  const shareToWhatsApp = async() => {
-    const response = await fetch(
-      `https://api.ad-promoter.com/api/v1/promotion/promote/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token.current}`,
-        },
-      }
-    );
-    const data = await response.json();
+    const shareLink = `https://app.ad-promoter.com/ad/${id}?ref=${data.promotionRef}`;
 
-    if(!response.ok){
-      toast({
-        title: `Failed to share link:, ${data.msg}`,
-        status: "error",
-        duration: "5000",
-        isClosable: true,
-        position: "bottom-left",
-        size: "lg"
-      });
-      // throw new Error(data.msg);
+    let shareUrl;
+
+    switch (socialMedia) {
+      case 'twitter':
+        shareUrl = `https://twitter.com/share?url=${encodeURIComponent(shareLink)}`;
+        break;
+      case 'facebook':
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareLink)}`;
+        break;
+      case 'whatsapp':
+        shareUrl = `whatsapp://send?text=${encodeURIComponent(shareLink)}`;
+        break;
+      default:
+        throw new Error('Invalid social media platform');
     }
-    if (response.ok) {
-      const shareLink = `https://app.ad-promoter.com/ad/${id}?ref=${data.promotionRef}`;
-      const shareUrl = `whatsapp://send?text=${encodeURIComponent(shareLink)}`;
-      window.open(shareUrl, '_blank');
-      toast({
-          title: 'Sharing Link!',
-          status: "success",
-          duration: "5000",
-          isClosable: true,
-          position: "bottom-left",
-          size: "lg"
-      });
-    }
-  };
+
+    window.open(shareUrl, '_blank');
+    toast({
+      title: 'Sharing Link!',
+      status: "success",
+      duration: "5000",
+      isClosable: true,
+      position: "bottom-left",
+      size: "lg",
+    });
+  } catch (error) {
+    toast({
+      title: `Failed to share link: ${error.message}`,
+      status: "error",
+      duration: "5000",
+      isClosable: true,
+      position: "bottom-left",
+      size: "lg",
+    });
+  }
+};
+
+const shareToTwitter = () => shareLink('twitter');
+const shareToFacebook = () => shareLink('facebook');
+const shareToWhatsApp = () => shareLink('whatsapp');
 
   return (
     <>

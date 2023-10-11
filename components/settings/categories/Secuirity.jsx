@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Button, StyledSecuirity } from '../settings.style';
 import { useToast } from '@chakra-ui/react';
+import axios from '@/pages/api/axios';
 
 const Secuirity = () => {
   const [value, setValue] = useState('alanByte003');
@@ -30,45 +31,39 @@ const Secuirity = () => {
 
   const updatePassword = async (e) => {
     e.preventDefault();
-
+  
     const passwordDetails = {
       previousPasssword: value,
       newPassword: newValue,
       confirmNewPassword: confirmValue,
     };
-
-    const response = fetch(
-      'https://api.ad-promoter.com/api/v1/user/change-password',
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${userToken}` },
-        body: JSON.stringify(passwordDetails),
-      }
-    );
-
+  
     try {
-      if (response.status === 401) {
-        throw new Error('Unauthorized');
-      }
-
-      if (response.status === 500) {
-        throw new Error('Could not update password please try again');
-      }
-
+      const response = await axios.post('/api/v1/user/change-password', passwordDetails, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+  
       if (response.status === 201) {
-        const data = await response.json();
+        const data = response.data;
         toast({
           title: 'Password Updated',
-          status: 'sucess',
+          status: 'success',
           duration: '5000',
           isClosable: true,
           position: 'bottom-left',
         });
+      } else if (response.status === 401) {
+        throw new Error('Unauthorized');
+      } else if (response.status === 500) {
+        throw new Error('Could not update password please try again');
       }
     } catch (error) {
       console.log(error);
       toast({
-        title: `${error.message}`,
+        title: `${error}`,
         status: 'warning',
         duration: '5000',
         isClosable: true,

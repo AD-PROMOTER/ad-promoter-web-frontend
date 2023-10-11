@@ -9,10 +9,10 @@ import Image from 'next/image'
 import group from '@/public/assets/group.svg'
 import { gridData } from './data'
 import Backdrop from '../DiscoveryFolder/ReportModal/Backdrop'
-import axios from 'axios'
 import { Spinner } from '@chakra-ui/react'
 import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from '@/utils/formatFilterDate'
 import ActivitiesEmptyScreen from '../activitiesEmptyScreen'
+import axios from '@/pages/api/axios'
 
 const PlacersActivities = () => {
     const [showDropdown, setShowDropdown] = useState(false)
@@ -53,25 +53,45 @@ const PlacersActivities = () => {
       }
     },[dashboardStartDate,dashboardEndDate,pageNumber])
 
-    const fetchActivities = async() =>{
-      let apiUrl = `https://api.ad-promoter.com/api/v1/activities/all/${id.current}?page=${pageNumber}&pageSize=${activitiesPerPage}`;
-    if (dashboardStartDate) {
-      apiUrl += `&startDate=${dashboardStartDate}`;
-    }
-    if (dashboardEndDate) {
-      apiUrl += `&endDate=${dashboardEndDate}`;
-    }
-      setIsLoading(true)
-      const result = await axios(apiUrl,{
-        headers:{
-          Authorization: `Bearer ${token.current}`
+    const fetchActivities = async () => {
+      let apiUrl = `/api/v1/activities/all/${id.current}?page=${pageNumber}&pageSize=${activitiesPerPage}`;
+    
+      if (dashboardStartDate) {
+        apiUrl += `&startDate=${dashboardStartDate}`;
+      }
+    
+      if (dashboardEndDate) {
+        apiUrl += `&endDate=${dashboardEndDate}`;
+      }
+    
+      try {
+        setIsLoading(true);
+    
+        const response = await axios.get(apiUrl, {
+          headers: {
+            Authorization: `Bearer ${token.current}`,
+          },
+        });
+    
+        if (response.status === 200) {
+          const result = response.data;
+          setActivities(result.data.data.data);
+          setTotalActivities(result.data.data.total);
+          setIsLoading(false);
         }
-      })
-      setActivities(result.data.data.data);
-      console.log(result.data.data.data);
-      setTotalActivities(result.data.data.total)
-      setIsLoading(false)
-    }
+      } catch (error) {
+        console.error('Error fetching activities:', error);
+        setIsLoading(false);
+        toast({
+          title: 'Error fetching activities',
+          status: 'error',
+          duration: '5000',
+          isClosable: true,
+          position: 'bottom-left',
+          size: 'lg',
+        });
+      }
+    };
     
     const changeToLocalTIme = (utc) =>{
       const date = new Date(utc);
@@ -89,28 +109,30 @@ const PlacersActivities = () => {
       }
     };
 
-    const handleDelete = async() => {
-      const response = await fetch(`https://api.ad-promoter.com/api/v1/activities`,{
-        method: "DELETE",
-        headers:{
-          Authorization: `Bearer ${token.current}`,
-          Accept: "*/*",
-          "Content-Type": "application/json"
-        },
-        body: {
-          "activities": checkedItems
+    const handleDelete = async () => {
+      try {
+        const response = await axios.delete('https://api.ad-promoter.com/api/v1/activities', {
+          headers: {
+            Authorization: `Bearer ${token.current}`,
+            Accept: '*/*',
+            'Content-Type': 'application/json',
+          },
+          data: {
+            activities: checkedItems,
+          },
+        });
+    
+        if (response.status === 200) {
+          const json = response.data;
+          console.log(json);
+          console.log(checkedItems);
+        } else {
+          console.log('Request failed with status:', response.status);
         }
-      })
-      const json = response.json()
-
-      if(!response.ok){
-        console.log(json);
+      } catch (error) {
+        console.error('Error deleting activities:', error);
       }
-      if(response.ok){
-        console.log(json);
-      }
-      console.log(checkedItems);
-    }
+    };
 
     const handleFilterText = (e) =>{
       setClickedFilter(e.target.innerText)
