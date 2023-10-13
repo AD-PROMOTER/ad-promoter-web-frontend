@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { useRef } from 'react'
 import NotificationEmptyScreen from '../notificationEmptyScreen'
 import axios from '@/pages/api/axios'
+import DefaultPic from '@/public/assets/squared-profile.png'
 
 const Index = ({goBack,setHasNewNotification}) => {
   const [isLoading,setIsLoading] = useState(null)
@@ -92,7 +93,19 @@ const Index = ({goBack,setHasNewNotification}) => {
                 {notificationData.map((item) => (
                     <div key={item._id} className="each">
                         <div className='type'>
-                            <Image style={{borderRadius: '50%'}} src={item.sender?.profilePicture} alt='notification image' width={'48px'} height={'48px'}/>
+                        {item.sender?.profilePicture ? (
+                          <Image style={{borderRadius: '50%'}} src={item.sender?.profilePicture} alt='notification image' width={'48px'} height={'48px'}/>
+                        ):(
+                          <div style={{ width: '52px', height: '52px' }}>
+                            <Image
+                              src={DefaultPic}
+                              alt="profile picture"
+                              width={'100%'}
+                              height={'100%'}
+                              style={{objectFit: 'fill', borderRadius: '100px' }}
+                            />
+                          </div>
+                        )}
                             <div className='text'>
                                 <div className='advert'>
                                     <p>{item.title}</p>

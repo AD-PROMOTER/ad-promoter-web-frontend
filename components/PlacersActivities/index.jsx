@@ -7,7 +7,6 @@ import arrowDown from '@/public/assets/arrow-down.svg'
 import trash from '@/public/assets/trash.svg'
 import Image from 'next/image'
 import group from '@/public/assets/group.svg'
-import { gridData } from './data'
 import Backdrop from '../DiscoveryFolder/ReportModal/Backdrop'
 import { Spinner } from '@chakra-ui/react'
 import { getThirtyDaysAgoRange, getTwoWeeksAgoRange, getWeekAgoRange } from '@/utils/formatFilterDate'
@@ -16,7 +15,6 @@ import axios from '@/pages/api/axios'
 
 const PlacersActivities = () => {
     const [showDropdown, setShowDropdown] = useState(false)
-    const [rowData, setRowData] = useState(gridData)
     const [showBackdrop, setShowBackdrop] = useState(false)
     const token = useRef('')
     const id = useRef('')
@@ -75,8 +73,9 @@ const PlacersActivities = () => {
     
         if (response.status === 200) {
           const result = response.data;
-          setActivities(result.data.data.data);
-          setTotalActivities(result.data.data.total);
+          setActivities(result.data.data);
+          setTotalActivities(result.data.total);
+          console.log(result);
           setIsLoading(false);
         }
       } catch (error) {

@@ -21,11 +21,10 @@ export const useLogin = () => {
 
       const json = response.data;
 
-      if (response.status === 200) {
-        error.current = json.success;
+      if (!response.status === 200) {
         toast({
           title: json.msg,
-          status: 'warning',
+          status: 'error',
           duration: '5000',
           isClosable: true,
           position: 'bottom-left',
@@ -33,7 +32,7 @@ export const useLogin = () => {
         setIsLoading(false);
       }
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         // Save user to local storage
         localStorage.setItem('user-token', JSON.stringify(json?.token));
         localStorage.setItem('user-detail', JSON.stringify(json?.user));
@@ -60,7 +59,7 @@ export const useLogin = () => {
       console.error('Error during login:', error);
       setIsLoading(false);
       toast({
-        title: 'Error during login',
+        title: error.message,
         status: 'error',
         duration: '5000',
         isClosable: true,
