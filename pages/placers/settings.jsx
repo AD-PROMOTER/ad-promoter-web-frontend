@@ -9,7 +9,7 @@ import security from '@/public/assets/security-user.svg';
 import profile from '@/public/assets/user-tag-icon.svg';
 import general from '@/public/assets/general-icon.svg';
 import payment from '@/public/assets/cards.svg';
-import logout from '@/public/assets/logout.svg';
+import logoutArrow from '@/public/assets/logout.svg';
 import arrow from '@/public/assets/arrow-right.svg';
 import { MobileSettings } from '@/components/settings/settings.style';
 import Profile from '@/components/MobileSettings/Profile';
@@ -156,7 +156,7 @@ const PlacersSettings = () => {
                 </div>
               ))}
               <div className="logout" onClick={() => setShowlogout(true)}>
-                <Image src={logout} alt="logout" />
+                <Image src={logoutArrow} alt="logout" />
                 <p>Log out</p>
               </div>
             </div>
@@ -171,7 +171,7 @@ const PlacersSettings = () => {
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="logout-icon">
-                  <Image src={logout} alt="logout" />
+                  <Image src={logoutArrow} alt="logout" />
                 </div>
                 <h3>Are you sure you want to logout?</h3>
                 <p>
