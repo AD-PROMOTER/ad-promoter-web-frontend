@@ -21,15 +21,13 @@ export const useSendOtp = () => {
 
       const json = response.data;
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         setIsLoading(false);
         localStorage.setItem('OTP_INFO', JSON.stringify(json));
         router.push('/signup/verification');
-      } else {
-        setIsLoading(false);
         toast({
           title: json.msg,
-          status: 'error',
+          status: 'success',
           duration: '5000',
           isClosable: true,
           position: 'bottom-left',
@@ -38,6 +36,15 @@ export const useSendOtp = () => {
     } catch (error) {
       console.error('Error sending OTP:', error);
       setIsLoading(false);
+      if (error.response.status === 403) {
+        toast({
+          title: 'An account with this phoneNumber already exists',
+          status: 'error',
+          duration: '5000',
+          isClosable: true,
+          position: 'bottom-left',
+        });
+      }
       toast({
         title: 'Error sending OTP',
         status: 'error',

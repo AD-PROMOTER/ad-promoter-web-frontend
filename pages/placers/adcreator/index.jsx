@@ -1,10 +1,8 @@
-import ArrowDown from "@/public/assets/arrow-down"
 import { MobileCreator, ModalBackground, StyledCreator, TopStyledCreator } from "@/styles/placersCreator.styles"
 import userTag from '@/public/assets/user-tag.svg'
 import Image from "next/image"
 import send from '@/public/assets/send-2.svg'
 import cup from '@/public/assets/cup-2.svg'
-// import Cup from "@/public/assets/cup"
 import refresh from '@/public/assets/refresh-2.svg'
 import money from '@/public/assets/money-send.svg'
 import statusIcon from '@/public/assets/status.svg'
@@ -110,8 +108,11 @@ const Adcreator = () => {
   };
   
 
-  const handlePlace = () =>{
-    setToPlace(!toPlace)
+  const openModal = () =>{
+    setToPlace(true)
+  }
+  const closeModal = () =>{
+    setToPlace(false)
   }
 
   const handleFilterText = (e) =>{
@@ -244,14 +245,14 @@ const Adcreator = () => {
             }
           </>
         )}
-      <div className="creator-btn" onClick={handlePlace}>Place new Advert</div>
+      <div className="creator-btn" onClick={openModal}>Place new Advert</div>
         
       
 
       {toPlace && (
         <ModalBackground>
           <div className="modal">
-            <div onClick={()=>setToPlace(!toPlace)} className='close-btn'>
+            <div onClick={closeModal} className='close-btn'>
               <CloseCircle />
             </div>
             <div className="modal-head">
@@ -375,7 +376,7 @@ const Adcreator = () => {
             )}        
           </>
         )}
-        <div className="creator-btn" onClick={handlePlace}>Place new Advert</div>
+        <div className="creator-btn" onClick={openModal}>Place new Advert</div>
         </div>
       
       {toPlace && (

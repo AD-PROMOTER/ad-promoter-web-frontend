@@ -160,6 +160,7 @@ const fetchRecommended = async () => {
 
     setRecommendedJobs(response.data.data.data);
     setIsRecLoading(false);
+    console.log(response.data.data.data);
   } catch (error) {
     console.error(error);
     setIsRecLoading(false);

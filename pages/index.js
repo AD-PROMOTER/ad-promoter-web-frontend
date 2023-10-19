@@ -2,7 +2,6 @@
 import Link from 'next/link';
 import logo from '@/public/assets/newest-logo.png';
 import bg from '@/public/assets/bg.png';
-// import logo from '@/public/assets/onboarding-logo.svg';
 import adlogo from '@/public/assets/newOnboardLogo.svg';
 import Image from 'next/image';
 import hero from '@/public/assets/onboarding-hero.jpg';
@@ -19,7 +18,7 @@ import {
   StyledOnboarding,
   StyledTab,
 } from '@/styles/onboard';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { BgContainer } from '@/components/onboardingBg/styles';
 import { Overlay } from '@/styles/signup';
@@ -29,13 +28,14 @@ export default function Home() {
     router.prefetch('/signup');
   }, [router]);
 
-  const handleGoogleSignIn = () => {
+  const handleGoogleSignIn = useCallback(() => {
     window.open('https://api.ad-promoter.com/api/v1/auth/google', '_self');
-  };
+  }, []);
 
-  const handleFbSignIn = () => {
+  const handleFbSignIn = useCallback(() => {
     window.open('https://api.ad-promoter.com/api/v1/auth/facebook', '_self');
-  };
+  }, []);
+
   return (
     <>
       <StyledOnboarding>
@@ -110,6 +110,7 @@ export default function Home() {
           </div>
         </StyledContent>
       </StyledOnboarding>
+
       <StyledMobile>
         <div className="logo">
           <Image src={adlogo} alt="ad-promoter logo" />
@@ -137,9 +138,11 @@ export default function Home() {
         <div className="signup">
           <SignupBtn text="Sign up with email" path="/signup" />
         </div>
-        <div className="login" onClick={() => router.push('/login')}>
-          <p>Log in</p>
-        </div>
+        <Link href="/login" passHref>
+          <a className="login">
+            <p>Log in</p>
+          </a>
+        </Link>
         <div className="terms">
           <p>
             By signing up, you agree to the{' '}
@@ -157,6 +160,7 @@ export default function Home() {
           </p>
         </div>
       </StyledMobile>
+
       <StyledTab>
         <StyledNav>
           <div className="logo">

@@ -58,13 +58,23 @@ export const useLogin = () => {
     } catch (error) {
       console.error('Error during login:', error);
       setIsLoading(false);
-      toast({
-        title: error.message,
-        status: 'error',
-        duration: '5000',
-        isClosable: true,
-        position: 'bottom-left',
-      });
+      if (error.response?.status === 401) {
+        toast({
+          title: 'Credentials Incorrect',
+          status: 'error',
+          duration: '5000',
+          isClosable: true,
+          position: 'bottom-left',
+        });
+      } else {
+        toast({
+          title: error.message,
+          status: 'error',
+          duration: '5000',
+          isClosable: true,
+          position: 'bottom-left',
+        });
+      }
     }
   };
 

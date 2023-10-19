@@ -7,11 +7,9 @@ import {
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import UserTagBlue from '@/public/assets/user-tag-blue';
-import Link from 'next/link';
 import { Spinner, useToast } from '@chakra-ui/react';
 import Bg from '@/public/assets/landing-bg.png';
-import sign from '@/public/assets/sign.svg';
+import sign from '@/public/assets/16 x 16 Favicon.svg';
 import {
   BsFillArrowLeftCircleFill,
   BsFillArrowRightCircleFill,
@@ -21,7 +19,6 @@ const AdPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const { ref } = router.query;
-  const [isAdFetchLoading, setIsAdFetchLoading] = useState(null);
   const [isAdCountLoading, setIsAdCountLoading] = useState(null);
   const [data, setData] = useState();
   const [token, setToken] = useState('');

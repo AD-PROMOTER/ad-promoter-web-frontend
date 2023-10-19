@@ -19,13 +19,8 @@ export const useVerification = () => {
 
       const json = response.data;
 
-      if (response.status === 200) {
-        console.log(json);
-        console.log('Code sent');
-      } else {
-        console.log(json);
-        console.log('Code not sent');
-      }
+      console.log(json);
+      console.log('Code not sent');
     } catch (error) {
       console.error('Error sending verification code:', error);
       // Handle errors here if needed.

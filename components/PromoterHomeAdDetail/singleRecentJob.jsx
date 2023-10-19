@@ -98,7 +98,7 @@ const SingleRecentJob = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndD
         } catch (error) {
           console.error('Error fetching recent jobs:', error);
           toast({
-            title: 'Error fetching recent jobs',
+            title: `Unable to fetch recent jobs:${error.message}`,
             status: 'error',
             duration: '5000',
             isClosable: true,

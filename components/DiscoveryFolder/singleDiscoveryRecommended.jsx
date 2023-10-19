@@ -145,11 +145,11 @@ const handleCopyLink = async (id) => {
 
     const data = response.data;
 
-    if (!response.status === 200) {
+    if (!response.status === 201) {
       throw new Error(data.msg);
     }
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       const linkToCopy = `https://app.ad-promoter.com/ad/${id}?ref=${data.promotionRef}`;
 
       navigator.clipboard.writeText(linkToCopy)
@@ -207,7 +207,7 @@ const handleReport = async (id, report) => {
 
     const json = response.data;
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       setIsReportLoading(false);
       setShowReportModal(false);
       toast({
@@ -258,7 +258,7 @@ const handleReport = async (id, report) => {
 
     const json = response.data;
 
-    if (response.status === 200) {
+    if (response.status === 201) {
         fetchFeed();
         toast({
         title: json.msg,
@@ -326,7 +326,7 @@ const handleReport = async (id, report) => {
         },
       });
   
-      if (response.status === 200) {
+      if (response.status === 201) {
         toast({
           title: 'Link Submitted',
           status: 'success',

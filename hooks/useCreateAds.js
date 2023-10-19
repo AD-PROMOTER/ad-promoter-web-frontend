@@ -90,13 +90,23 @@ export const useCreateAds = () => {
     } catch (error) {
       console.error('Error creating ad:', error);
       setIsLoading(false);
-      toast({
-        title: 'Error creating ad',
-        status: 'error',
-        duration: '5000',
-        isClosable: true,
-        position: 'bottom-left',
-      });
+      if (error.response.status === 403) {
+        toast({
+          title: 'You cannot have more than 6 running ads per time',
+          status: 'error',
+          duration: '5000',
+          isClosable: true,
+          position: 'bottom-left',
+        });
+      } else {
+        toast({
+          title: 'Error creating ad',
+          status: 'error',
+          duration: '5000',
+          isClosable: true,
+          position: 'bottom-left',
+        });
+      }
     }
   };
 

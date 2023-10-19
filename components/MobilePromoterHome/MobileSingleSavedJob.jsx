@@ -358,7 +358,7 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
       
           const json = response.data;
       
-          if (!response.status === 200) {
+          if (!response.status === 201) {
             toast({
               title: json.msg,
               status: 'error',
@@ -368,7 +368,6 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
               size: 'lg',
             });
             setInputValue('');
-          } else {
             toast({
               title: 'Link Submitted',
               status: 'success',
@@ -377,18 +376,28 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
               position: 'bottom-left',
               size: 'lg',
             });
-            setInputValue('');
           }
         } catch (error) {
           console.error('Error submitting visual link:', error);
-          toast({
-            title: 'Error submitting visual link',
-            status: 'error',
-            duration: '5000',
-            isClosable: true,
-            position: 'bottom-left',
-            size: 'lg',
-          });
+          if(error.response.status === 403){
+            toast({
+              title: "You're not allowed to promote the same advert twice",
+              status: 'error',
+              duration: '5000',
+              isClosable: true,
+              position: 'bottom-left',
+              size: 'lg',
+            });
+          }else{
+            toast({
+              title: 'Error submitting visual link',
+              status: 'error',
+              duration: '5000',
+              isClosable: true,
+              position: 'bottom-left',
+              size: 'lg',
+            });
+          }
         }
     };
 
@@ -553,9 +562,13 @@ const MobileDirect = ({sortStartDate,setSortStartDate,setSortEndDate,sortEndDate
                                                 <Image src={copyLink} alt=""/>
                                             </div>
                                         )}
-                                        <div className='icons' onClick={()=>handleOpenDialogue(item.id)}>
-                                            <Image src={exportLink} alt=""/>
-                                        </div>
+
+                                        {item.type !== 'visual' && (
+                                          <div className='icons' onClick={()=>handleOpenDialogue(item.id)}>
+                                              <Image src={exportLink} alt=""/>
+                                          </div>
+                                        )}
+                                        
                                         <div className='icons' onClick={()=>handleJobSave(item.id)}>
                                             <Image src={archive} alt=""/>
                                         </div>

@@ -106,6 +106,7 @@ const Index = () => {
       });
     
       const dashboardData = response.data;
+      console.log(dashboardData);
       setRunningAds(dashboardData.data.adCount.runningAds);
       setCompleteAds(dashboardData.data.adCount.completedAds);
       setConversionGrowth(dashboardData.data.conversionRate);

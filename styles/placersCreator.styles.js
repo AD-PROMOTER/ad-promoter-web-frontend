@@ -413,6 +413,10 @@ export const ModalBackground = styled.div`
     z-index: 100;
   }
 
+  .modal-open {
+    overflow: hidden;
+  }
+
   .file-modal {
     padding: 1.5rem;
     gap: 4rem;

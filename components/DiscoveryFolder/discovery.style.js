@@ -413,6 +413,7 @@ export const Feed = styled.div`
           border-radius: 0.8rem;
           width: 100%;
           background-color: var(--light-gray-3);
+          margin: 0 1rem;
         }
       }
 

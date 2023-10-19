@@ -176,7 +176,7 @@ const PromoterSettings = () => {
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="logout-icon">
-                  <Image src={logout} alt="logout" />
+                  <Image src={logoutArrow} alt="logout" />
                 </div>
                 <h3>Are you sure you want to logout?</h3>
                 <p>

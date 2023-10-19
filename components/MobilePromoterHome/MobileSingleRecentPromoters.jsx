@@ -584,9 +584,12 @@ const MobileRecentPromoters = ({sortStartDate,setSortStartDate,setSortEndDate,so
                                                 <Image src={copyLink} alt=""/>
                                             </div>
                                         )}
-                                        <div className='icons' onClick={()=>handleOpenDialogue(item.id)}>
-                                            <Image src={exportLink} alt=""/>
-                                        </div>
+
+                                        {item.type !== 'visual' && (
+                                          <div className='icons' onClick={()=>handleOpenDialogue(item.id)}>
+                                              <Image src={exportLink} alt=""/>
+                                          </div>
+                                        )}
                                         <div className='icons' onClick={()=>handleJobSave(item.id)}>
                                             <Image src={archive} alt=""/>
                                         </div>

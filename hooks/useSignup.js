@@ -21,6 +21,7 @@ export const useSignup = () => {
   ) => {
     setIsVerificationLoading(true);
     setError(null);
+    console.log(userPref);
 
     const response = await fetch(
       'https://api.ad-promoter.com/api/v1/auth/signup',

@@ -132,7 +132,7 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
     
         const json = response.data;
     
-        if (response.status === 200) {
+        if (response.status === 201) {
             fetchFeed();
             toast({
             title: json.msg,
@@ -185,7 +185,7 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
       
           const json = response.data;
       
-          if (response.status === 200) {
+          if (response.status === 201) {
             setIsReportLoading(false);
             setShowReportModal(false);
             toast({
@@ -263,11 +263,11 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
       
           const data = response.data;
       
-          if (!response.status === 200) {
+          if (!response.status === 201) {
             throw new Error(data.msg);
           }
       
-          if (response.status === 200) {
+          if (response.status === 201) {
             const linkToCopy = `https://app.ad-promoter.com/ad/${id}?ref=${data.promotionRef}`;
       
             navigator.clipboard.writeText(linkToCopy)
@@ -397,7 +397,7 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
             },
           });
       
-          if (response.status === 200) {
+          if (response.status === 201) {
             toast({
               title: 'Link Submitted',
               status: 'success',
@@ -421,14 +421,25 @@ const SingleDiscoveryFeed = ({isLoading,feed,fetchFeed}) => {
           }
         } catch (error) {
           console.error('Error submitting visual data:', error);
-          toast({
-            title: 'Error submitting visual data',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-            position: 'bottom-left',
-            size: 'lg',
-          });
+          if(error.response?.status === 403){
+            toast({
+                title: "You're not allowed to promote the same advert twice",
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'bottom-left',
+                size: 'lg',
+            });
+            }else{
+                toast({
+                title: 'Error submitting visual data',
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'bottom-left',
+                size: 'lg',
+                });
+            }
         }
     };
   return (   
