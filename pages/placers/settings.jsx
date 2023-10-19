@@ -20,6 +20,8 @@ import Payment from '@/components/MobileSettings/Payment';
 import Privacy from '@/components/MobileSettings/Privacy';
 import { BackdropContainer } from '@/components/DiscoveryFolder/ReportModal/ModalStyle';
 import DefaultPic from '@/public/assets/squared-profile.png'
+import { useLogout } from '@/hooks/useLogout';
+import { useRouter } from 'next/router';
 
 const PlacersSettings = () => {
   const [selected, setSelected] = useState('Settings');
@@ -33,6 +35,8 @@ const PlacersSettings = () => {
   const [profileModal, setProfileModal] = useState(false);
   const [listValue, setListValue] = useState('None');
   const [userToken, setUserToken] = useState();
+  const { logout } = useLogout();
+  const router = useRouter()
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-detail'));
@@ -178,7 +182,7 @@ const PlacersSettings = () => {
                   <div className="cancel" onClick={() => setShowlogout(false)}>
                     Cancel
                   </div>
-                  <div className="proceed">Logout</div>
+                  <div onClick={() => {logout(), router.push('/')}} className="proceed">Logout</div>
                 </div>
               </div>
             )}
