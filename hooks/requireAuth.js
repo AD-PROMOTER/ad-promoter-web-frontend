@@ -12,7 +12,7 @@ const RequireAuth = ({ children }) => {
     } else {
       return children;
     }
-  }, [auth]);
+  }, [auth, children, router]);
 };
 
 export default RequireAuth;

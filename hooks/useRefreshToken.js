@@ -20,8 +20,10 @@ const useRefreshToken = () => {
           token: refreshedToken,
         };
       });
+      console.log(auth);
+      console.log(refreshedToken);
 
-      return response.data;
+      return response.data.data.token;
     } catch (error) {
       console.log(error);
     }

@@ -14,6 +14,7 @@ import {
   BsFillArrowLeftCircleFill,
   BsFillArrowRightCircleFill,
 } from 'react-icons/bs';
+import axios from 'axios';
 
 const AdPage = () => {
   const router = useRouter();
@@ -77,20 +78,24 @@ const AdPage = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        `https://api.ad-promoter.com/api/v1/ads/${id}?ref=${ref}
-        `,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const res = await response.json();
+      const apiUrl = `https://api.ad-promoter.com/api/v1/ads/${id}?ref=${ref}`;
+      const response = await axios.get(apiUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      if (!response.ok) {
+      if (response.status === 201) {
+        const res = response.data;
+
+        if (res.data.type === 'detail') {
+          setData(res.data);
+        } else {
+          handleCountClick(res.data.promotedLink);
+        }
+      } else {
         toast({
-          title: `Error fetching ad data: ${error.message}`,
+          title: `Error fetching ad data: ${response.statusText}`,
           status: 'error',
           duration: 5000,
           isClosable: true,
@@ -98,16 +103,28 @@ const AdPage = () => {
         });
         throw new Error(`Failed to fetch data for ad ${id}`);
       }
-
-      if (response.ok) {
-        if (res.data.type === 'detail') {
-          setData(res.data);
-        } else {
-          handleCountClick(res.data.promotedLink);
-        }
-      }
     } catch (error) {
-      setError(true);
+      console.error(error);
+
+      if (error.response && error.response.status === 404) {
+        toast({
+          title: `Advert doesn't exist anymore`,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-left',
+        });
+        router.push('/');
+      } else {
+        toast({
+          title: `Error fetching ad data: ${error.message}`,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'bottom-left',
+        });
+        setError(true);
+      }
     }
   };
 

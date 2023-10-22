@@ -48,6 +48,7 @@ import JobsContext from '@/context/jobsContext';
 import dynamic from 'next/dynamic';
 import PlacersChart from '@/components/placersChart';
 import axios from '../api/axios';
+import useAxiosPrivate from '@/hooks/useAxiosPrivate';
 
 const Index = () => {  
   const [showSortDropdown, setShowSortDropdown] = useState(false);
@@ -76,6 +77,7 @@ const Index = () => {
   const {recentJobs,setRecentJobs,isLoading,setIsLoading} = useContext(JobsContext)
   const scrollRef = useRef(null);
   const { onMouseDown } = useDraggableScroll(scrollRef, { direction: 'vertical' });
+  const axiosPrivate = useAxiosPrivate()
   
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-detail'));
@@ -98,8 +100,10 @@ const Index = () => {
   }, [Router, token,dashboardEndDate, dashboardStartDate]);
 
   const fetchDashboardData = async() =>{
+    const controller = new AbortController()
     try {
       const response = await axios.get('/api/v1/user/dashboard', {
+        signal: controller.signal,
         headers: {
           Authorization: `Bearer ${token.current}`,
         },
@@ -109,11 +113,11 @@ const Index = () => {
       console.log(dashboardData);
       setRunningAds(dashboardData.data.adCount.runningAds);
       setCompleteAds(dashboardData.data.adCount.completedAds);
-      setConversionGrowth(dashboardData.data.conversionRate);
+      setConversionGrowth(dashboardData.data.conversionRate+'%');
     } catch (error) {
       console.log(error);
       toast({
-        title: 'Unable to load data. Check your connection',
+        title: error.message,
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -329,7 +333,6 @@ const Index = () => {
   ];
   
   return (
-   
         <>
           <StyledHomeContainer>
             <StyledHome>
