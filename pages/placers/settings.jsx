@@ -56,6 +56,14 @@ const PlacersSettings = () => {
     }
   }, [setName, setEmail, setPhoneNumber]);
 
+  useEffect(()=>{
+    if(selected === 'Privacy Policy'){
+      const newTab = window.open('', '_blank');
+      newTab.location = 'https://www.ad-promoter.com/privacy-policy';
+      setSelected('Settings')
+    }
+  },[selected])
+
   const settingsTabs = [
     {
       icon: profile,
@@ -99,7 +107,7 @@ const PlacersSettings = () => {
         ) : selected == 'Profile' ? (
           <Profile handleBack={() => setSelected('Settings')} />
         ) : selected == 'Privacy Policy' ? (
-          <Privacy handleBack={() => setSelected('Settings')} />
+          <></>
         ) : selected == 'Notification' ? (
           <Notification handleBack={() => setSelected('Settings')} />
         ) : selected == 'Security' ? (

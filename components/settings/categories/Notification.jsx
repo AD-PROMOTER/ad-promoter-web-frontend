@@ -4,10 +4,10 @@ import { Spinner, useToast } from '@chakra-ui/react';
 import axios from '@/pages/api/axios';
 
 const Notification = ({ userDetails, token }) => {
-  const [browser, setBrowser] = useState(userDetails.browserNotification);
-  const [email, setEmail] = useState(userDetails.emailNotification);
-  const [desktop, setDesktop] = useState(userDetails.desktopNotification);
-  const [others, setOthers] = useState(userDetails.NotifyOffers);
+  const [browser, setBrowser] = useState(userDetails?.browserNotification);
+  const [email, setEmail] = useState(userDetails?.emailNotification);
+  const [desktop, setDesktop] = useState(userDetails?.desktopNotification);
+  const [others, setOthers] = useState(userDetails?.NotifyOffers);
   const [isChangesMade, setIsChangesMade] = useState(false);
   const [isChangesUpdating, setIsChangesUpdating] = useState(false);
   const toast = useToast();

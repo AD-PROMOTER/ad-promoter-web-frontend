@@ -18,6 +18,8 @@ import { adminSettingCategories } from './settingsCategories';
 import AdminNavbar from '@/components/AdminNavbar/index';
 import { useLogout } from '@/hooks/useLogout';
 import { useEffect } from 'react';
+import Link from 'next/link';
+import { Spinner } from '@chakra-ui/react';
 
 const Settings = (props) => {
   const router = useRouter();
@@ -36,6 +38,14 @@ const Settings = (props) => {
     const userToken = JSON.parse(window.localStorage.getItem('user-token'));
     setUserToken(userToken);
   }, []);
+
+  useEffect(()=>{
+    if(selected === 'Privacy policy'){
+      const newTab = window.open('', '_blank');
+      newTab.location = 'https://www.ad-promoter.com/privacy-policy';
+      setSelected('General')
+    }
+  },[router, selected])
 
   return (
     <Container>
@@ -97,7 +107,7 @@ const Settings = (props) => {
             ) : selected == 'Profile' ? (
               <Profile />
             ) : selected == 'Privacy policy' ? (
-              <Policy />
+              <Spinner />
             ) : selected == 'Administrator' ? (
               <Administrator />
             ) : (

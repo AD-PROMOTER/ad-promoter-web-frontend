@@ -49,6 +49,14 @@ const PromoterSettings = () => {
     }
   }, []);
 
+  useEffect(()=>{
+    if(selected === 'Privacy Policy'){
+      const newTab = window.open('', '_blank');
+      newTab.location = 'https://www.ad-promoter.com/privacy-policy';
+      setSelected('Settings')
+    }
+  },[selected])
+
   const handleFileInput = async (e) => {
     const files = e.target.files;
     const result = await uploadImage(files);
@@ -105,7 +113,7 @@ const PromoterSettings = () => {
         ) : selected == 'Profile' ? (
           <Profile handleBack={() => setSelected('Settings')} />
         ) : selected == 'Privacy Policy' ? (
-          <Privacy handleBack={() => setSelected('Settings')} />
+          <></>
         ) : selected == 'Notification' ? (
           <Notification handleBack={() => setSelected('Settings')}  />
         ) : selected == 'Security' ? (
